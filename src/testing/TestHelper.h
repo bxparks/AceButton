@@ -35,18 +35,18 @@ class TestHelper {
         TestableButtonConfig& testableConfig,
         AceButton& button,
         EventTracker& eventTracker):
-      testableConfig_(testableConfig),
-      button_(button),
-      eventTracker_(eventTracker) {}
+      mTestableConfig(testableConfig),
+      mButton(button),
+      mEventTracker(eventTracker) {}
 
     /** Reinitiliaze to its pristine state. */
     void init(uint8_t pin, uint8_t defaultReleasedState, uint8_t id) {
-      pin_ = pin;
-      defaultReleasedState_ = defaultReleasedState;
-      id_ = id;
-      button_.init(pin_, defaultReleasedState_, id_);
-      testableConfig_.init();
-      testableConfig_.setButtonState(defaultReleasedState);
+      mPin = pin;
+      mDefaultReleasedState = defaultReleasedState;
+      mId = id;
+      mButton.init(mPin, mDefaultReleasedState, mId);
+      mTestableConfig.init();
+      mTestableConfig.setButtonState(defaultReleasedState);
     }
 
     /**
@@ -55,42 +55,42 @@ class TestHelper {
      * (HIGH) or pulldown (LOW) resister.
      */
     void pressButton(unsigned long time) {
-      uint8_t targetState = (HIGH == defaultReleasedState_) ? LOW : HIGH;
-      testableConfig_.setClock(time);
-      testableConfig_.setButtonState(targetState);
-      eventTracker_.clear();
-      button_.check();
+      uint8_t targetState = (HIGH == mDefaultReleasedState) ? LOW : HIGH;
+      mTestableConfig.setClock(time);
+      mTestableConfig.setButtonState(targetState);
+      mEventTracker.clear();
+      mButton.check();
     }
 
     /**
      * Simulate a release of the button and run the button.check() processing.
      */
     void releaseButton(unsigned long time) {
-      uint8_t targetState = (HIGH == defaultReleasedState_) ? HIGH : LOW;
-      testableConfig_.setClock(time);
-      testableConfig_.setButtonState(targetState);
-      eventTracker_.clear();
-      button_.check();
+      uint8_t targetState = (HIGH == mDefaultReleasedState) ? HIGH : LOW;
+      mTestableConfig.setClock(time);
+      mTestableConfig.setButtonState(targetState);
+      mEventTracker.clear();
+      mButton.check();
     }
 
     /**
      * Simply move the time forward and check the button. No changes to button.
      */
     void checkTime(unsigned long time) {
-      testableConfig_.setClock(time);
-      eventTracker_.clear();
-      button_.check();
+      mTestableConfig.setClock(time);
+      mEventTracker.clear();
+      mButton.check();
     }
 
     
   private:
-    TestableButtonConfig& testableConfig_;
-    AceButton& button_;
-    EventTracker& eventTracker_;
+    TestableButtonConfig& mTestableConfig;
+    AceButton& mButton;
+    EventTracker& mEventTracker;
 
-    uint8_t pin_;
-    uint8_t defaultReleasedState_;
-    uint8_t id_;
+    uint8_t mPin;
+    uint8_t mDefaultReleasedState;
+    uint8_t mId;
 };
 
 }

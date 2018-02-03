@@ -22,5 +22,5 @@ using namespace ace_button;
 ButtonConfig ButtonConfig::sSystemButtonConfig;
 
 ButtonConfig::ButtonConfig():
-    eventHandler_(nullptr),
-    featureFlags_(0) {}
+    mEventHandler(nullptr),
+    mFeatureFlags(0) {}

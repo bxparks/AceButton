@@ -26,24 +26,24 @@ namespace testing {
 class EventRecord {
   public:
     EventRecord():
-        eventType_(0),
-        buttonState_(LOW) {}
+        mEventType(0),
+        mButtonState(LOW) {}
 
     EventRecord(uint8_t eventType, uint8_t buttonState):
-        eventType_(eventType),
-        buttonState_(buttonState) {}
+        mEventType(eventType),
+        mButtonState(buttonState) {}
 
     uint8_t getEventType() {
-      return eventType_;
+      return mEventType;
     }
 
     uint8_t getButtonState() {
-      return buttonState_;
+      return mButtonState;
     }
 
   private:
-    uint8_t eventType_;
-    uint8_t buttonState_;
+    uint8_t mEventType;
+    uint8_t mButtonState;
 };
 
 /**
@@ -54,28 +54,28 @@ class EventTracker {
   public:
 
     EventTracker():
-        numEvents_(0) {}
+        mNumEvents(0) {}
       
     /** Add event to a circular buffer of records. */
     void addEvent(uint8_t eventType, uint8_t buttonState) {
-      records_[numEvents_] = EventRecord(eventType, buttonState);
-      numEvents_++;
-      if (numEvents_ >= MAX_EVENTS) {
-        numEvents_ = 0;
+      mRecords[mNumEvents] = EventRecord(eventType, buttonState);
+      mNumEvents++;
+      if (mNumEvents >= kMaxEvents) {
+        mNumEvents = 0;
       }
     }
 
-    void clear() { numEvents_ = 0; }
+    void clear() { mNumEvents = 0; }
 
-    int getNumEvents() { return numEvents_; }
+    int getNumEvents() { return mNumEvents; }
 
-    EventRecord& getRecord(int i) { return records_[i]; }
+    EventRecord& getRecord(int i) { return mRecords[i]; }
 
   private:
-    static const int MAX_EVENTS = 5;
+    static const int kMaxEvents = 5;
 
-    EventRecord records_[MAX_EVENTS];
-    int numEvents_;
+    EventRecord mRecords[kMaxEvents];
+    int mNumEvents;
 };
 
 }

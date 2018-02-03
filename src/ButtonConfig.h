@@ -217,22 +217,22 @@ class ButtonConfig {
 
     /** Check if the given features are enabled. */
     bool isFeature(uint8_t features) ACE_BUTTON_INLINE {
-      return featureFlags_ & features;
+      return mFeatureFlags & features;
     }
 
     /** Enable the given features. */
     void setFeature(uint8_t features) ACE_BUTTON_INLINE {
-      featureFlags_ |= features;
+      mFeatureFlags |= features;
     }
 
     /** Disable the given features. */
     void clearFeature(uint8_t features) ACE_BUTTON_INLINE {
-      featureFlags_ &= ~features;
+      mFeatureFlags &= ~features;
     }
 
     /** Return the eventHandler. */
     EventHandler getEventHandler() ACE_BUTTON_INLINE {
-      return eventHandler_;
+      return mEventHandler;
     }
 
     /**
@@ -240,7 +240,7 @@ class ButtonConfig {
      * AceButton to be useful.
      */
     void setEventHandler(EventHandler eventHandler) ACE_BUTTON_INLINE {
-      eventHandler_ = eventHandler;
+      mEventHandler = eventHandler;
     }
 
     /**
@@ -256,14 +256,14 @@ class ButtonConfig {
      * Initialize to its pristine state, except for the EventHandler which is
      * unchanged. This is intended mostly for testing purposes.
      */
-    virtual void init() { featureFlags_ = 0; }
+    virtual void init() { mFeatureFlags = 0; }
 
   private:
     /** The event handler for all buttons associated with this ButtonConfig. */
-    EventHandler eventHandler_;
+    EventHandler mEventHandler;
 
     /** A bit mask flag that activates certain features. */
-    uint8_t featureFlags_;
+    uint8_t mFeatureFlags;
 
     /**
      * A single static instance of ButtonConfig provided by default to all

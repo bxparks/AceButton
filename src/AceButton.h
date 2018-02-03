@@ -126,12 +126,12 @@ class AceButton {
 
     /** Get the ButtonConfig associated with this Button. */
     ButtonConfig* getButtonConfig() ACE_BUTTON_INLINE {
-      return buttonConfig_;
+      return mButtonConfig;
     }
 
     /** Set the ButtonConfig associated with this Button. */
     void setButtonConfig(ButtonConfig* buttonConfig) ACE_BUTTON_INLINE {
-      buttonConfig_ = buttonConfig;
+      mButtonConfig = buttonConfig;
     }
 
     /**
@@ -145,14 +145,14 @@ class AceButton {
      */
     void setEventHandler(ButtonConfig::EventHandler eventHandler)
         ACE_BUTTON_INLINE {
-      buttonConfig_->setEventHandler(eventHandler);
+      mButtonConfig->setEventHandler(eventHandler);
     }
 
     /** Get the button's pin number. */
-    uint8_t getPin() ACE_BUTTON_INLINE { return pin_; }
+    uint8_t getPin() ACE_BUTTON_INLINE { return mPin; }
 
     /** Get the custom identifier of the button. */
-    uint8_t getId() ACE_BUTTON_INLINE { return id_; }
+    uint8_t getId() ACE_BUTTON_INLINE { return mId; }
 
     /** Get the initial released state of the button, HIGH or LOW. */
     uint8_t getDefaultReleasedState();
@@ -171,7 +171,7 @@ class AceButton {
      * words, there is a race-condition.
      */
     uint8_t getLastButtonState() ACE_BUTTON_INLINE {
-      return lastButtonState_;
+      return mLastButtonState;
     }
 
     /**
@@ -211,7 +211,7 @@ class AceButton {
 
   private:
     /** Set the pin number of the button. */
-    void setPin(uint8_t pin) ACE_BUTTON_INLINE { pin_ = pin; }
+    void setPin(uint8_t pin) ACE_BUTTON_INLINE { mPin = pin; }
 
     /**
      * Set the initial released state of the button.
@@ -223,9 +223,9 @@ class AceButton {
     void setDefaultReleasedState(uint8_t state);
 
     /** Set the identifier of the button. */
-    void setId(uint8_t id) ACE_BUTTON_INLINE { id_ = id; }
+    void setId(uint8_t id) ACE_BUTTON_INLINE { mId = id; }
 
-    // Various bit masks to store a boolean flag in the 'flags_' field.
+    // Various bit masks to store a boolean flag in the 'mFlags' field.
     // We use bit masks to save static RAM. If we had used a 'bool' type, each
     // of these would consume one byte.
     static const uint8_t kFlagDefaultReleasedState = 0x01;
@@ -239,84 +239,84 @@ class AceButton {
     // Methods for accessing the button's internal states.
     // I don't expect these to be useful to the outside world.
 
-    // If this is set, then lastDebounceTime_ is valid.
+    // If this is set, then mLastDebounceTime is valid.
     bool isDebouncing() ACE_BUTTON_INLINE {
-      return flags_ & kFlagDebouncing;
+      return mFlags & kFlagDebouncing;
     }
 
     void setDebouncing() ACE_BUTTON_INLINE {
-      flags_ |= kFlagDebouncing;
+      mFlags |= kFlagDebouncing;
     }
 
     void clearDebouncing() ACE_BUTTON_INLINE {
-      flags_ &= ~kFlagDebouncing;
+      mFlags &= ~kFlagDebouncing;
     }
 
-    // If this is set, then lastPressTime_ is valid.
+    // If this is set, then mLastPressTime is valid.
     bool isPressed() ACE_BUTTON_INLINE {
-      return flags_ & kFlagPressed;
+      return mFlags & kFlagPressed;
     }
 
     void setPressed() ACE_BUTTON_INLINE {
-      flags_ |= kFlagPressed;
+      mFlags |= kFlagPressed;
     }
 
     void clearPressed() ACE_BUTTON_INLINE {
-      flags_ &= ~kFlagPressed;
+      mFlags &= ~kFlagPressed;
     }
 
-    // If this is set, then lastClickTime_ is valid.
+    // If this is set, then mLastClickTime is valid.
     bool isClicked() ACE_BUTTON_INLINE {
-      return flags_ & kFlagClicked;
+      return mFlags & kFlagClicked;
     }
 
     void setClicked() ACE_BUTTON_INLINE {
-      flags_ |= kFlagClicked;
+      mFlags |= kFlagClicked;
     }
 
     void clearClicked() ACE_BUTTON_INLINE {
-      flags_ &= ~kFlagClicked;
+      mFlags &= ~kFlagClicked;
     }
 
     // A double click was detected. No need to store the last double-clicked
     // time because we don't support a triple-click event (yet).
     bool isDoubleClicked() ACE_BUTTON_INLINE {
-      return flags_ & kFlagDoubleClicked;
+      return mFlags & kFlagDoubleClicked;
     }
 
     void setDoubleClicked() ACE_BUTTON_INLINE {
-      flags_ |= kFlagDoubleClicked;
+      mFlags |= kFlagDoubleClicked;
     }
 
     void clearDoubleClicked() ACE_BUTTON_INLINE {
-      flags_ &= ~kFlagDoubleClicked;
+      mFlags &= ~kFlagDoubleClicked;
     }
 
-    // If this is set, then lastPressTime_ can be treated as the start
+    // If this is set, then mLastPressTime can be treated as the start
     // of a long press.
     bool isLongPressed() ACE_BUTTON_INLINE {
-      return flags_ & kFlagLongPressed;
+      return mFlags & kFlagLongPressed;
     }
 
     void setLongPressed() ACE_BUTTON_INLINE {
-      flags_ |= kFlagLongPressed;
+      mFlags |= kFlagLongPressed;
     }
 
     void clearLongPressed() ACE_BUTTON_INLINE {
-      flags_ &= ~kFlagLongPressed;
+      mFlags &= ~kFlagLongPressed;
     }
 
-    // If this is set, then lastRepeatPressTime_ is valid.
+    // If this is set, then mLastRepeatPressTime is valid.
     bool isRepeatPressed() ACE_BUTTON_INLINE {
-      return flags_ & kFlagRepeatPressed;
+      return mFlags & kFlagRepeatPressed;
     }
 
     void setRepeatPressed() ACE_BUTTON_INLINE {
-      flags_ |= kFlagRepeatPressed;
+      mFlags |= kFlagRepeatPressed;
     }
 
     void clearRepeatPressed() ACE_BUTTON_INLINE {
-      flags_ &= ~kFlagRepeatPressed;
+      mFlags &= ~kFlagRepeatPressed;
     }
 
     /**
@@ -372,7 +372,7 @@ class AceButton {
     void checkOrphanedClick(uint16_t now, uint8_t buttonState);
 
     /**
-     * Dispatch to the event handler defined in the buttonConfig_.
+     * Dispatch to the event handler defined in the mButtonConfig.
      *
      * This method will always be called and it's up to the user-provided
      * handler to ignore the events which aren't interesting.
@@ -383,7 +383,7 @@ class AceButton {
      *
      * @code
      *    setEventSelection(uint8_t eventSelection) {
-     *      eventSelection_ = eventSelection;
+     *      mEventSelection = eventSelection;
      *    }
      * @endcode
      *
@@ -405,7 +405,7 @@ class AceButton {
      *
      * @code
      * void handleEvent(uint8_t eventType) {
-     *    if (eventHandler_ && (eventSelections_ & (0x1 << eventType))) {
+     *    if (mEventHandler && (eventSelections & (0x1 << eventType))) {
      *      handleEvent(this, eventType);
      *    }
      * }
@@ -419,28 +419,28 @@ class AceButton {
      */
     void handleEvent(uint8_t eventType);
 
-    uint8_t pin_; // button pin number
-    uint8_t id_; // identifier, e.g. an index into an array
+    uint8_t mPin; // button pin number
+    uint8_t mId; // identifier, e.g. an index into an array
 
     // Internal states of the button debouncing and event handling.
     // NOTE: We don't keep track of the lastDoubleClickTime, because we
     // don't support a TripleClicked event. That may change in the future.
-    uint16_t lastDebounceTime_; // ms
-    uint16_t lastClickTime_; // ms
-    uint16_t lastPressTime_; // ms
-    uint16_t lastRepeatPressTime_; // ms
+    uint16_t mLastDebounceTime; // ms
+    uint16_t mLastClickTime; // ms
+    uint16_t mLastPressTime; // ms
+    uint16_t mLastRepeatPressTime; // ms
 
     /** Internal flags. Bit masks are defined by the kFlag* constants. */
-    uint8_t flags_;
+    uint8_t mFlags;
 
     /**
      * Last button state. This is a tri-state variable: LOW, HIGH or
      * kButtonStateUnknown.
      */
-    uint8_t lastButtonState_;
+    uint8_t mLastButtonState;
 
     /** ButtonConfig associated with this button. */
-    ButtonConfig* buttonConfig_;
+    ButtonConfig* mButtonConfig;
 };
 
 }

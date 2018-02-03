@@ -40,77 +40,77 @@ class AdjustableButtonConfig: public ButtonConfig {
     }
 
     virtual uint16_t getDebounceDelay() override {
-      return debounceDelay_;
+      return mDebounceDelay;
     }
 
     virtual uint16_t getClickDelay() override {
-      return clickDelay_;
+      return mClickDelay;
     }
 
     virtual uint16_t getDoubleClickDelay() override {
-      return doubleClickDelay_;
+      return mDoubleClickDelay;
     }
 
     virtual uint16_t getLongPressDelay() override {
-      return longPressDelay_;
+      return mLongPressDelay;
     }
 
     virtual uint16_t getRepeatPressDelay() override {
-      return repeatPressDelay_;
+      return mRepeatPressDelay;
     }
 
     virtual uint16_t getRepeatPressInterval() override {
-      return repeatPressInterval_;
+      return mRepeatPressInterval;
     }
 
     /** Set the debounceDelay. */
     void setDebounceDelay(uint16_t debounceDelay) {
-      debounceDelay_ = debounceDelay;
+      mDebounceDelay = debounceDelay;
     }
 
     /** Set the clickDelay. */
     void setClickDelay(uint16_t clickDelay) {
-      clickDelay_ = clickDelay;
+      mClickDelay = clickDelay;
     }
 
     /** Set the doubleClickDelay. */
     void setDoubleClickDelay(uint16_t doubleClickDelay) {
-      doubleClickDelay_ = doubleClickDelay;
+      mDoubleClickDelay = doubleClickDelay;
     }
 
     /** Set the longPressDelay. */
     void setLongPressDelay(uint16_t longPressDelay) {
-      longPressDelay_ = longPressDelay;
+      mLongPressDelay = longPressDelay;
     }
 
     /** Set the repeatPressDelay. */
     void setRepeatPressDelay(uint16_t repeatPressDelay) {
-      repeatPressDelay_ = repeatPressDelay;
+      mRepeatPressDelay = repeatPressDelay;
     }
 
     /** Set the repeatPressInterval. */
     void setRepeatPressInterval(uint16_t repeatPressInterval) {
-      repeatPressInterval_ = repeatPressInterval;
+      mRepeatPressInterval = repeatPressInterval;
     }
 
   private:
     // This method must remain non-virtual so that it can be called safely from
     // the constructor.
     void initInternal() {
-      debounceDelay_ = kDebounceDelay;
-      clickDelay_ = kClickDelay;
-      doubleClickDelay_ = kDoubleClickDelay;
-      longPressDelay_ = kLongPressDelay;
-      repeatPressDelay_ = kRepeatPressDelay;
-      repeatPressInterval_ = kRepeatPressInterval;
+      mDebounceDelay = kDebounceDelay;
+      mClickDelay = kClickDelay;
+      mDoubleClickDelay = kDoubleClickDelay;
+      mLongPressDelay = kLongPressDelay;
+      mRepeatPressDelay = kRepeatPressDelay;
+      mRepeatPressInterval = kRepeatPressInterval;
     }
 
-    uint16_t debounceDelay_;
-    uint16_t clickDelay_;
-    uint16_t doubleClickDelay_;
-    uint16_t longPressDelay_;
-    uint16_t repeatPressDelay_;
-    uint16_t repeatPressInterval_;
+    uint16_t mDebounceDelay;
+    uint16_t mClickDelay;
+    uint16_t mDoubleClickDelay;
+    uint16_t mLongPressDelay;
+    uint16_t mRepeatPressDelay;
+    uint16_t mRepeatPressInterval;
 };
 
 }

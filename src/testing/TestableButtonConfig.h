@@ -30,8 +30,8 @@ namespace testing {
 class TestableButtonConfig: public ButtonConfig {
   public:
     TestableButtonConfig():
-        millis_(0),
-        buttonState_(HIGH) {}
+        mMillis(0),
+        mButtonState(HIGH) {}
 
     /**
      * Initialize to its pristine state. This method is needed because
@@ -42,25 +42,25 @@ class TestableButtonConfig: public ButtonConfig {
      */
     virtual void init() override {
       ButtonConfig::init();
-      millis_ = 0;
-      buttonState_ = HIGH;
+      mMillis = 0;
+      mButtonState = HIGH;
     }
 
     /** Read the time of the fake clock. */
-    virtual unsigned long getClock() override { return millis_; }
+    virtual unsigned long getClock() override { return mMillis; }
 
     /** Read the fake physical button. */
-    virtual int readButton(uint8_t pin) override { return buttonState_; }
+    virtual int readButton(uint8_t pin) override { return mButtonState; }
 
     /** Set the time of the fake clock. */
-    void setClock(unsigned long millis) { millis_ = millis; }
+    void setClock(unsigned long millis) { mMillis = millis; }
 
     /** Set the state of the fake physical button. */
-    void setButtonState(int buttonState) { buttonState_ = buttonState; }
+    void setButtonState(int buttonState) { mButtonState = buttonState; }
 
   private:
-    unsigned long millis_;
-    int buttonState_;
+    unsigned long mMillis;
+    int mButtonState;
 };
 
 }
