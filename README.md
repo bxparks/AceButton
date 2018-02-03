@@ -145,15 +145,23 @@ manually copying over the contents to your `./libraries` directory.
 The following example sketches are provided:
 
 * HelloButton.ino
-  * minimal program that reads a switch and controls the built-in LED
+  * minimal program that reads a switch and control the built-in LED
 * SingleButton.ino
   * controls a single button wired with a pull-up resister
+  * prints out a status line for every supported event
 * SingleButtonPullDown.ino
   * same as SingleButton.ino but with an external pull-down resister
-* TunerButtons.ino
-  * 5 radio buttons (tune-up, tune-down, and 3 presets)
 * Stopwatch.ino
   * measures the speed of `AceButton:check()` with a start/stop/reset button
+  * shows example use of `AdjustableButtonConfig`
+  * uses `kFeatureLongPress`
+* TunerButtons.ino
+  * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
+  * shows multiple `ButtonConfig` instances
+  * shows multiple `EventHandler`s
+  * shows an example of how to use `getId()`
+  * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
+    `kFeatureSuppressAfterLongPress`, and `kFeatureSuppressAfterRepeatPress`
 
 ## Usage
 
