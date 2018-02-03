@@ -619,7 +619,7 @@ This library was developed using Arduino IDE 1.8.5 on an Arduino Nano clone
 running at 16 MHz. The Nano uses an ATmega328P chip, with 32KB of flash, and
 2KB of static RAM.
 
-### Background Motivation
+## Background Motivation
 
 There are numerous "button" libraries out there for the Arduino. Why write
 another one? I wanted to add a button to an addressable strip LED controller,
