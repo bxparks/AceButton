@@ -52,12 +52,13 @@ void loop() {
 
 // Test a single click.
 test(click_without_suppression) {
-  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
-  static const unsigned long BASE_TIME = 65500;
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
   uint8_t expected;
 
   // reset the button
   helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.setFeature(ButtonConfig::kFeatureClick);
 
   // initial button state
   helper.releaseButton(BASE_TIME + 0);
@@ -82,7 +83,7 @@ test(click_without_suppression) {
   helper.releaseButton(BASE_TIME + 300);
   assertEqual(0, eventTracker.getNumEvents());
 
-  // Wait another 50 ms for debounce.
+  // Wait another 50 ms to get event
   helper.releaseButton(BASE_TIME + 350);
   assertEqual(2, eventTracker.getNumEvents());
   expected = AceButton::kEventClicked;
@@ -95,12 +96,13 @@ test(click_without_suppression) {
 
 // Test a single click.
 test(click_with_suppression) {
-  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
-  static const unsigned long BASE_TIME = 65500;
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
   uint8_t expected;
 
   // reset the button
   helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.setFeature(ButtonConfig::kFeatureClick);
   testableConfig.setFeature(ButtonConfig::kFeatureSuppressAfterClick);
 
   // initial button state
@@ -126,7 +128,7 @@ test(click_with_suppression) {
   helper.releaseButton(BASE_TIME + 300);
   assertEqual(0, eventTracker.getNumEvents());
 
-  // Wait another 50 ms for debounce.
+  // Wait another 50 ms to get event
   helper.releaseButton(BASE_TIME + 350);
   assertEqual(1, eventTracker.getNumEvents());
   expected = AceButton::kEventClicked;
@@ -139,13 +141,14 @@ test(click_with_suppression) {
 // We can also verify that this test fails if the checkOrphanedClick() is
 // commented out.
 test(orphaned_click) {
-  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
-  static const unsigned long BASE_TIME = 65500;
-  static const unsigned long ROLLOVER_TIME = 65536;
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
+  const unsigned long ROLLOVER_TIME = 65536;
   uint8_t expected;
 
   // reset the button
   helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.setFeature(ButtonConfig::kFeatureClick);
 
   // initial button state
   helper.releaseButton(BASE_TIME + 0);
@@ -170,7 +173,7 @@ test(orphaned_click) {
   helper.releaseButton(BASE_TIME + 300);
   assertEqual(0, eventTracker.getNumEvents());
 
-  // Wait another 50 ms for debounce.
+  // Wait another 50 ms to get event
   helper.releaseButton(BASE_TIME + 350);
   assertEqual(2, eventTracker.getNumEvents());
   expected = AceButton::kEventClicked;
@@ -216,4 +219,46 @@ test(orphaned_click) {
   expected = AceButton::kEventReleased;
   assertEqual(expected, eventTracker.getRecord(1).getEventType());
   assertEqual(HIGH, eventTracker.getRecord(1).getButtonState());
+}
+
+// Test that no click generated with isFeature() flag off.
+test(no_click_without_feature_flag) {
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
+  uint8_t expected;
+
+  // reset the button
+  // make sure isFeatureClick flag is cleared
+  helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.clearFeature(ButtonConfig::kFeatureClick);
+
+  // initial button state
+  helper.releaseButton(BASE_TIME + 0);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // initilization phase
+  helper.releaseButton(BASE_TIME + 50);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(BASE_TIME + 140);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get an event
+  helper.pressButton(BASE_TIME + 190);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click
+  helper.releaseButton(BASE_TIME + 300);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms to get event. Only a Released event should be generated.
+  helper.releaseButton(BASE_TIME + 350);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
 }

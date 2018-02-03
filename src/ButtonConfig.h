@@ -93,27 +93,37 @@ class ButtonConfig {
 
     // Various features controlled by feature flags.
 
+    /** Flag to activate the AceButton::kEventClicked event. */
+    static const uint8_t kFeatureClick = 0x01;
+
+    /**
+     * Flag to activate the AceButton::kEventDoubleClicked event.
+     * Activating this automatically activates kEventClicked since there is
+     * no double-click without a click.
+     */
+    static const uint8_t kFeatureDoubleClick = 0x02;
+
     /** Flag to activate the AceButton::kEventLongPress event. */
-    static const uint8_t kFeatureLongPress = 0x01;
+    static const uint8_t kFeatureLongPress = 0x04;
 
     /** Flag to activate the AceButton::kEventRepeatPressed event. */
-    static const uint8_t kFeatureRepeatPress = 0x02;
+    static const uint8_t kFeatureRepeatPress = 0x08;
 
     /** Flag to suppress kEventReleased after a kEventClicked. */
-    static const uint8_t kFeatureSuppressAfterClick = 0x04;
+    static const uint8_t kFeatureSuppressAfterClick = 0x10;
 
     /**
      * Flag to suppress kEventReleased after a kEventDoubleClicked. A
      * kEventClicked is _always_ suppressed after a kEventDoubleClicked to
      * prevent generating 2 double-clicks if the user performed a triple-click.
      */
-    static const uint8_t kFeatureSuppressAfterDoubleClick = 0x08;
+    static const uint8_t kFeatureSuppressAfterDoubleClick = 0x20;
 
     /** Flag to suppress kEventReleased after a kEventLongPressed. */
-    static const uint8_t kFeatureSuppressAfterLongPress = 0x10;
+    static const uint8_t kFeatureSuppressAfterLongPress = 0x40;
 
     /** Flag to suppress kEventReleased after a kEventRepeatPressed. */
-    static const uint8_t kFeatureSuppressAfterRepeatPress = 0x20;
+    static const uint8_t kFeatureSuppressAfterRepeatPress = 0x80;
 
     /** Convenience flag to suppress all suppressions. */
     static const uint8_t kFeatureSuppressAll =

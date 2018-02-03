@@ -52,8 +52,8 @@ void loop() {
 
 // Test repeated press
 test(repeat_press_without_suppression) {
-  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
-  static const unsigned long BASE_TIME = 65500;
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
   uint8_t expected;
 
   // reset the button
@@ -112,8 +112,8 @@ test(repeat_press_without_suppression) {
 
 // Test repeated press
 test(repeat_press_with_suppression) {
-  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
-  static const unsigned long BASE_TIME = 65500;
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
   uint8_t expected;
 
   // reset the button
@@ -167,4 +167,58 @@ test(repeat_press_with_suppression) {
   // But there is no Released event because of suppression.
   helper.releaseButton(BASE_TIME + 1760);
   assertEqual(0, eventTracker.getNumEvents());
+}
+
+// Test that no RepeatPress generated with isFeature() flag off.
+test(no_repeat_press_without_feature_flag) {
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
+  uint8_t expected;
+
+  // reset the button
+  helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.clearFeature(ButtonConfig::kFeatureRepeatPress);
+
+  // initial button state
+  helper.releaseButton(BASE_TIME + 0);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // initilization phase
+  helper.releaseButton(BASE_TIME + 50);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(BASE_TIME + 140);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get an event
+  helper.pressButton(BASE_TIME + 190);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // keeping holding the button
+  helper.pressButton(BASE_TIME + 1100);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // keeping holding the button longer than 1000 ms, nothing should
+  // should trigger
+  helper.pressButton(BASE_TIME + 1200);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // keeping holding the button for longer than repeat interval (200ms)
+  helper.pressButton(BASE_TIME + 1400);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // finally release the button
+  helper.releaseButton(BASE_TIME + 1700);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Must wait for debouncing. Only a Released event should be generated.
+  helper.releaseButton(BASE_TIME + 1760);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
 }

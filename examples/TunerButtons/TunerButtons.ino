@@ -50,8 +50,8 @@ void setup() {
   Serial.begin(9600);
 #endif
 
-  // Configs for the preset buttons. Need LongPress events to memorize
-  // the current station.
+  // Configs for the preset buttons. Need Released event to change the station,
+  // and LongPressed to memorize the current station. Don't need Clicked.
   presetConfig.setEventHandler(handlePresetEvent);
   presetConfig.setFeature(ButtonConfig::kFeatureLongPress);
   presetConfig.setFeature(ButtonConfig::kFeatureSuppressAfterLongPress);
@@ -59,7 +59,11 @@ void setup() {
   // Configs for the tune-up and tune-down buttons. Need RepeatPress instead of
   // LongPress.
   tuneConfig.setEventHandler(handleTuneEvent);
+  tuneConfig.setFeature(ButtonConfig::kFeatureClick);
   tuneConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
+  // These suppressions not really necessary but cleaner.
+  tuneConfig.setFeature(ButtonConfig::kFeatureSuppressAfterClick);
+  tuneConfig.setFeature(ButtonConfig::kFeatureSuppressAfterRepeatPress);
 
   // Preset Button 1
   pinMode(PRESET_1_PIN, INPUT_PULLUP);

@@ -187,7 +187,10 @@ void AceButton::checkReleased(uint16_t now, uint8_t buttonState) {
 
   // check for click (before sending off the Released event)
   // Make sure that we don't clearPressed() before calling this.
-  checkClicked(now, buttonState);
+  if (buttonConfig_->isFeature(ButtonConfig::kFeatureClick)
+      || buttonConfig_->isFeature(ButtonConfig::kFeatureDoubleClick)) {
+    checkClicked(now, buttonState);
+  }
 
   // check if Released events are suppressed
   bool suppress =
@@ -229,7 +232,9 @@ void AceButton::checkClicked(uint16_t now, uint8_t buttonState) {
   }
 
   // check for double click
-  checkDoubleClicked(now, buttonState);
+  if (buttonConfig_->isFeature(ButtonConfig::kFeatureDoubleClick)) {
+    checkDoubleClicked(now, buttonState);
+  }
 
   // suppress a second click (both buttonState change and event message) if
   // double-click detected, which has the side-effect of preventing 3 clicks

@@ -53,7 +53,7 @@ void loop() {
 // We assume this will be the common case because of the Aruino boards provide
 // internal pullup resisters on the digital input pins.
 test(press_and_release_pullup) {
-  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   uint8_t expected;
 
   // reset the button
@@ -97,7 +97,7 @@ test(press_and_release_pullup) {
 // Do the same test as press_and_release_pullup, but using
 // the logic levels of an external pulldown resister.
 test(press_and_release_pulldown) {
-  static const uint8_t DEFAULT_RELEASED_STATE = LOW;
+  const uint8_t DEFAULT_RELEASED_STATE = LOW;
   uint8_t expected;
 
   // reset the button
@@ -140,8 +140,8 @@ test(press_and_release_pulldown) {
 // The AceButton class uses 16-bit timer variables for memory efficiency.
 // Verify that we can rollover those variables without affecting the logic.
 test(clock_rollover) {
-  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
-  static const unsigned long BASE_TIME = 65500; // rolls over in 36 milliseconds
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500; // rolls over in 36 milliseconds
   uint8_t expected;
 
   // reset the button

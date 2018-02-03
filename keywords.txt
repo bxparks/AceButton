@@ -78,6 +78,8 @@ kLongPressDelay	LITERAL1
 kRepeatPressDelay	LITERAL1
 kRepeatPressInterval	LITERAL1
 #
+kFeatureClick	LITERAL1
+kFeatureDoubleClick	LITERAL1
 kFeatureLongPress	LITERAL1
 kFeatureRepeatPress	LITERAL1
 kFeatureSuppressAfterClick	LITERAL1

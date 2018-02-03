@@ -52,7 +52,8 @@ void setup() {
   // instance instead.
   button.setButtonConfig(&adjustableButtonConfig);
 
-  // Configure the ButtonConfig with the event handler and enable the LongPress.
+  // Configure the ButtonConfig with the event handler and enable LongPress.
+  // SupressAfterLongPress is optional since we don't do anything if we get it.
   adjustableButtonConfig.setEventHandler(handleEvent);
   adjustableButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
   adjustableButtonConfig.setLongPressDelay(2000);

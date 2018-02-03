@@ -37,10 +37,10 @@ void setup() {
   // and RepeatPress events which are turned off by default.
   ButtonConfig* buttonConfig = button.getButtonConfig();
   buttonConfig->setEventHandler(handleEvent);
+  buttonConfig->setFeature(ButtonConfig::kFeatureClick);
+  buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
   buttonConfig->setFeature(ButtonConfig::kFeatureLongPress);
   buttonConfig->setFeature(ButtonConfig::kFeatureRepeatPress);
-  // Suppress lower-level events when higher-level events are detected
-  buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAll);
 
 #if ENABLE_SERIAL == 1
   while (! Serial); // Wait until Serial is ready - Leonardo

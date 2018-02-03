@@ -28,6 +28,7 @@ using namespace ace_button::testing;
 const uint8_t PIN = 13;
 const uint8_t BUTTON_ID = 1;
 
+ButtonConfig buttonConfig;
 TestableButtonConfig testableConfig;
 AceButton button;
 EventTracker eventTracker;
@@ -85,6 +86,22 @@ test(button_state_unknown) {
 
   uint8_t expected = AceButton::kButtonStateUnknown;
   assertEqual(expected, button.getLastButtonState());
+}
+
+test(feature_flags_off_by_default) {
+  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureClick));
+  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureDoubleClick));
+  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureLongPress));
+  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureRepeatPress));
+
+  assertFalse(buttonConfig.isFeature(
+      ButtonConfig::kFeatureSuppressAfterClick));
+  assertFalse(buttonConfig.isFeature(
+      ButtonConfig::kFeatureSuppressAfterDoubleClick));
+  assertFalse(buttonConfig.isFeature(
+      ButtonConfig::kFeatureSuppressAfterLongPress));
+  assertFalse(buttonConfig.isFeature(
+      ButtonConfig::kFeatureSuppressAfterRepeatPress));
 }
 
 // Test that the button transitions out of the kButtonStateUnknown after
