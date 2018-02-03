@@ -128,7 +128,6 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
       break;
   }
 }
-
 ```
 
 ## Installation
@@ -250,15 +249,21 @@ The `ButtonConfig` can be created simply:
 ButtonConfig buttonConfig;
 ```
 
-and assigned to one or more `AceButton` instances:
+and assigned to one or more `AceButton` instances, for example:
 
 ```
+const uint8_t PIN1 = 2;
+const uint8_t PIN2 = 4;
+
 AceButton button1;
 AceButton button2;
 
 void setup() {
-  button1.setButtonConfig(buttonConfig);
-  button2.setButtonConfig(buttonConfig);
+  button1.setButtonConfig(&buttonConfig);
+  button1.init(PIN1);
+
+  button2.setButtonConfig(&buttonConfig);
+  button2.init(PIN2);
   ...
 }
 ```
