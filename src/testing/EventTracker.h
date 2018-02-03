@@ -27,13 +27,11 @@ class EventRecord {
   public:
     EventRecord():
         eventType_(0),
-        buttonState_(LOW)
-        {}
+        buttonState_(LOW) {}
 
     EventRecord(uint8_t eventType, uint8_t buttonState):
         eventType_(eventType),
-        buttonState_(buttonState)
-        {}
+        buttonState_(buttonState) {}
 
     uint8_t getEventType() {
       return eventType_;

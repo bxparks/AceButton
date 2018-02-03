@@ -32,13 +32,12 @@ namespace testing {
 class TestHelper {
   public:
     TestHelper(
-            TestableButtonConfig& testableConfig,
-            AceButton& button,
-            EventTracker& eventTracker):
-        testableConfig_(testableConfig),
-        button_(button),
-        eventTracker_(eventTracker) {
-    }
+        TestableButtonConfig& testableConfig,
+        AceButton& button,
+        EventTracker& eventTracker):
+      testableConfig_(testableConfig),
+      button_(button),
+      eventTracker_(eventTracker) {}
 
     /** Reinitiliaze to its pristine state. */
     void init(uint8_t pin, uint8_t defaultReleasedState, uint8_t id) {

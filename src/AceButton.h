@@ -113,7 +113,7 @@ class AceButton {
      * button. For example, this could be an index into an array of data that is
      * associated with the button.
      */
-    AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
+    explicit AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
         uint8_t id = 0);
 
     /**
