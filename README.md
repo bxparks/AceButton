@@ -27,7 +27,7 @@ The `AceButton` class contains the logic for debouncing and determining if a
 particular event has occurred. The `ButtonConfig` class holds various timing
 parameters, the event handler, code for reading the button, and code for
 getting the internal clock. The `EventHandler` is a user-defined callback
-function with a specific signature which is registed with the `ButtonConfig`
+function with a specific signature which is registered with the `ButtonConfig`
 object. When the library detects interesting events, the callback function is
 called by the library, allowing the client code to handle the event.
 
@@ -122,14 +122,14 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 An Arduino UNO or Nano has 16 times more flash memory (32KB) than static memory
 (2KB), so the library is optimized to minimize the static memory usage. The
 AceButton library is not optimized to create a small program size (i.e. flash
-memory), or for small CPU cycles (i.e. high execution spped). I assumed that if
+memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
 you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
 That said, the __Stopwatch.ino__ example sketch shows that the call to
 `AceButton::check()` (which should be called at least every 10-20 milliseconds
 from `setup()`) takes only 15 microseconds on a 16MHz ATmega328P chip in the
-idel case. Hopefully that is fast enough for the vast majority of people.
+idle case. Hopefully that is fast enough for the vast majority of people.
 
 ## Installation
 
