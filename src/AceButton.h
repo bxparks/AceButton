@@ -107,7 +107,7 @@ class AceButton {
      * should be set to HIGH. When using an external pulldown resister and the
      * button is connected to Vcc (5V or 3.3V), this should be set to LOW. The
      * defaultReleasedState can be assigned using the constructor or the
-     * setDefaultReleasedState() method.
+     * init() method.
      *
      * @param id This is an optional user-defined identifier for the
      * button. For example, this could be an index into an array of data that is
@@ -136,7 +136,7 @@ class AceButton {
 
     /**
      * Convenience method to set the event handler. Event handlers are stored in
-     * the ButtonConfig object, not in the AceButton object to save
+     * the ButtonConfig object, not in the AceButton object, to save
      * memory. (Multiple buttons are likely to share the same event handler.) So
      * this method is just a pass-through to ButtonConfig::setEventHandler(). If
      * you are using multiple ButtonConfig objects, you should call the
