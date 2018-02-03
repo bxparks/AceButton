@@ -1,0 +1,219 @@
+#line 2 "AceButtonClickTest.ino"
+/*
+   Copyright 2018 Brian T. Park
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+#include <ArduinoUnit.h>
+#include <AdjustableButtonConfig.h>
+#include <AceButton.h>
+#include <testing/TestableButtonConfig.h>
+#include <testing/EventTracker.h>
+#include <testing/TestHelper.h>
+
+using namespace ace_button;
+using namespace ace_button::testing;
+
+const uint8_t PIN = 13;
+const uint8_t BUTTON_ID = 1;
+
+TestableButtonConfig testableConfig;
+AceButton button;
+EventTracker eventTracker;
+TestHelper helper(testableConfig, button, eventTracker);
+
+// The event handler takes the arguments sent with the event and stored them
+// into the EventTracker circular buffer.
+void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  eventTracker.addEvent(eventType, buttonState);
+}
+
+void setup() {
+  Serial.begin(9600);
+  testableConfig.setEventHandler(handleEvent);
+  button.setButtonConfig(&testableConfig);
+  while (!Serial); // for the Arduino Leonardo/Micro only
+}
+
+void loop() {
+  Test::run();
+}
+
+// Test a single click.
+test(click_without_suppression) {
+  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  static const unsigned long BASE_TIME = 65500;
+  uint8_t expected;
+
+  // reset the button
+  helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+
+  // initial button state
+  helper.releaseButton(BASE_TIME + 0);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // initilization phase
+  helper.releaseButton(BASE_TIME + 50);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(BASE_TIME + 140);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get an event
+  helper.pressButton(BASE_TIME + 190);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click
+  helper.releaseButton(BASE_TIME + 300);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms for debounce.
+  helper.releaseButton(BASE_TIME + 350);
+  assertEqual(2, eventTracker.getNumEvents());
+  expected = AceButton::kEventClicked;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(1).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(1).getButtonState());
+}
+
+// Test a single click.
+test(click_with_suppression) {
+  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  static const unsigned long BASE_TIME = 65500;
+  uint8_t expected;
+
+  // reset the button
+  helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.setFeature(ButtonConfig::kFeatureSuppressAfterClick);
+
+  // initial button state
+  helper.releaseButton(BASE_TIME + 0);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // initilization phase
+  helper.releaseButton(BASE_TIME + 50);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(BASE_TIME + 140);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get an event
+  helper.pressButton(BASE_TIME + 190);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click
+  helper.releaseButton(BASE_TIME + 300);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms for debounce.
+  helper.releaseButton(BASE_TIME + 350);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventClicked;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+}
+
+// Test that an orphaned click does not cause spurious double-click
+// if the second click happens slightly over 65.536 seconds later.
+// We can also verify that this test fails if the checkOrphanedClick() is
+// commented out.
+test(orphaned_click) {
+  static const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  static const unsigned long BASE_TIME = 65500;
+  static const unsigned long ROLLOVER_TIME = 65536;
+  uint8_t expected;
+
+  // reset the button
+  helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+
+  // initial button state
+  helper.releaseButton(BASE_TIME + 0);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // initilization phase
+  helper.releaseButton(BASE_TIME + 50);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(BASE_TIME + 140);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get an event
+  helper.pressButton(BASE_TIME + 190);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click, but must wait for debounce
+  helper.releaseButton(BASE_TIME + 300);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms for debounce.
+  helper.releaseButton(BASE_TIME + 350);
+  assertEqual(2, eventTracker.getNumEvents());
+  expected = AceButton::kEventClicked;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(1).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(1).getButtonState());
+
+  // Move time forward, so that the orphaned click is cleared.
+  // If AceButton.checkOrphanedClick() is disabled, or this statement is removed
+  // (thereby preventing a call to checkOrphanedClick()), then the asserts below
+  // will fail.
+  helper.checkTime(BASE_TIME + 5000);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Generate another click between (65.535s, 65.535s + 400 ms) of the first
+  // CLICK event (i.e. +250 ms). If the first orphaned click was not properly
+  // reset, then this will genearte a double click instead of a single click.
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(ROLLOVER_TIME + BASE_TIME + 400);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get an event
+  helper.pressButton(ROLLOVER_TIME + BASE_TIME + 450);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click, but must wait for debounce
+  helper.releaseButton(ROLLOVER_TIME + BASE_TIME + 550);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms for debounce. Should get a single click, not
+  // a double click.
+  helper.releaseButton(ROLLOVER_TIME + BASE_TIME + 600);
+  assertEqual(2, eventTracker.getNumEvents());
+  expected = AceButton::kEventClicked;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(1).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(1).getButtonState());
+}
