@@ -14,8 +14,8 @@
    limitations under the License.
 */
 
-#ifndef DEBOUNCED_BUTTON_H
-#define DEBOUNCED_BUTTON_H
+#ifndef ACE_BUTTON_H
+#define ACE_BUTTON_H
 
 #include <Arduino.h>
 #include "ButtonConfig.h"
