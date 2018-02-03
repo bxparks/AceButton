@@ -18,7 +18,7 @@ AdjustableButtonConfig	KEYWORD1
 # public methods from AceButton.h
 init	KEYWORD2
 getButtonConfig	KEYWORD2
-setButtonConfig KEYWORD2
+setButtonConfig	KEYWORD2
 setEventHandler	KEYWORD2
 getPin	KEYWORD2
 getId	KEYWORD2
