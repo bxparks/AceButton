@@ -84,6 +84,11 @@ class TestHelper {
 
     
   private:
+    // Disable copy-constructor and assignment operator
+    TestHelper(const TestHelper&) = delete;
+    TestHelper& operator=(const TestHelper&) = delete;
+
+    // Should I use pointers here for consistency?
     TestableButtonConfig& mTestableConfig;
     AceButton& mButton;
     EventTracker& mEventTracker;

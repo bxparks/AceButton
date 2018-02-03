@@ -210,6 +210,10 @@ class AceButton {
   // compatibility with older client code.)
 
   private:
+    // Disable copy-constructor and assignment operator
+    AceButton(const AceButton&) = delete;
+    AceButton& operator=(const AceButton&) = delete;
+
     /** Set the pin number of the button. */
     void setPin(uint8_t pin) ACE_BUTTON_INLINE { mPin = pin; }
 

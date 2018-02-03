@@ -259,6 +259,10 @@ class ButtonConfig {
     virtual void init() { mFeatureFlags = 0; }
 
   private:
+    // Disable copy-constructor and assignment operator
+    ButtonConfig(const ButtonConfig&) = delete;
+    ButtonConfig& operator=(const ButtonConfig&) = delete;
+
     /** The event handler for all buttons associated with this ButtonConfig. */
     EventHandler mEventHandler;
 

@@ -94,6 +94,10 @@ class AdjustableButtonConfig: public ButtonConfig {
     }
 
   private:
+    // Disable copy-constructor and assignment operator
+    AdjustableButtonConfig(const AdjustableButtonConfig&) = delete;
+    AdjustableButtonConfig& operator=(const AdjustableButtonConfig&) = delete;
+
     // This method must remain non-virtual so that it can be called safely from
     // the constructor.
     void initInternal() {

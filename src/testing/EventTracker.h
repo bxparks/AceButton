@@ -42,6 +42,10 @@ class EventRecord {
     }
 
   private:
+    // Accept the default copy-constructor and assignment operator.
+    //EventRecord(const EventRecord&) = delete;
+    //EventRecord& operator=(const EventRecord&) = delete;
+
     uint8_t mEventType;
     uint8_t mButtonState;
 };
@@ -72,6 +76,12 @@ class EventTracker {
     EventRecord& getRecord(int i) { return mRecords[i]; }
 
   private:
+    // Disable copy-constructor and assignment operator
+    EventTracker(const EventTracker&) = delete;
+    EventTracker& operator=(const EventTracker&) = delete;
+
+    // Don't expect more than about 3. Set to 5 just in case.
+    // Use a circular buffer to prevent corrupting memory.
     static const int kMaxEvents = 5;
 
     EventRecord mRecords[kMaxEvents];

@@ -59,6 +59,10 @@ class TestableButtonConfig: public ButtonConfig {
     void setButtonState(int buttonState) { mButtonState = buttonState; }
 
   private:
+    // Disable copy-constructor and assignment operator
+    TestableButtonConfig(const TestableButtonConfig&) = delete;
+    TestableButtonConfig& operator=(const TestableButtonConfig&) = delete;
+
     unsigned long mMillis;
     int mButtonState;
 };
