@@ -611,7 +611,7 @@ Program size:
 
 CPU cycles:
 
-* 15 microseconds for AceButton::check()
+* 15 microseconds for `AceButton::check()`
 
 ## System Requirements
 
