@@ -642,7 +642,6 @@ Here are the sizes of the various classes:
 * sizeof(AceButton): 14
 * sizeof(ButtonConfig): 5
 * sizeof(AdjustableButtonConfig): 17
-* sizeof(TestableButtonConfig): 11
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
