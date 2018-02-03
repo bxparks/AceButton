@@ -615,9 +615,17 @@ CPU cycles:
 
 ## System Requirements
 
-This library was developed using Arduino IDE 1.8.5 on an Arduino Nano clone
-running at 16 MHz. The Nano uses an ATmega328P chip, with 32KB of flash, and
-2KB of static RAM.
+This library was developed using
+[Arduino IDE 1.8.5](https://www.arduino.cc/en/Main/Software) running on
+MacOS 10.13.3 and Ubuntu Linux 17.04, connected to an
+[Arduino Nano](https://store.arduino.cc/usa/arduino-nano)
+clone running at 16 MHz. The Nano clone uses an ATmega328P chip, a CH340
+USB-to-serial chip, and contains 32KB of flash and 2KB of static RAM.
+
+The library has been verified to run on an Arduino UNO R3 (clone).
+
+The unit tests require [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
+to be installed.
 
 ## Background Motivation
 
