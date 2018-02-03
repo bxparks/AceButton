@@ -79,6 +79,20 @@ features of the AceButton library are:
 * proper handling of orphaned clicks
 * proper handling of a reboot while button is pressed
 
+### Non-goals
+
+An Arduino UNO or Nano has 16 times more flash memory (32KB) than static memory
+(2KB), so the library is optimized to minimize the static memory usage. The
+AceButton library is not optimized to create a small program size (i.e. flash
+memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
+you are seriously optimizing for program size or CPU cycles, you will probably
+want to write everything yourself from scratch.
+
+That said, the __Stopwatch.ino__ example sketch shows that the call to
+`AceButton::check()` (which should be called at least every 10-20 milliseconds
+from `setup()`) takes only 14-15 microseconds on a 16MHz ATmega328P chip in the
+idle case. Hopefully that is fast enough for the vast majority of people.
+
 ### HelloButton
 
 Here is a simple program (see `examples/HelloButton.ino`) which controls
@@ -116,20 +130,6 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 
 ```
-
-### Non-goals
-
-An Arduino UNO or Nano has 16 times more flash memory (32KB) than static memory
-(2KB), so the library is optimized to minimize the static memory usage. The
-AceButton library is not optimized to create a small program size (i.e. flash
-memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
-you are seriously optimizing for program size or CPU cycles, you will probably
-want to write everything yourself from scratch.
-
-That said, the __Stopwatch.ino__ example sketch shows that the call to
-`AceButton::check()` (which should be called at least every 10-20 milliseconds
-from `setup()`) takes only 14-15 microseconds on a 16MHz ATmega328P chip in the
-idle case. Hopefully that is fast enough for the vast majority of people.
 
 ## Installation
 
