@@ -69,7 +69,7 @@ Here are the high-level features of the AceButton library:
   [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
-* only 15 microseconds per polling call to `AceButton::check()`
+* only 14-15 microseconds per polling call to `AceButton::check()`
 
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
@@ -128,7 +128,7 @@ want to write everything yourself from scratch.
 
 That said, the __Stopwatch.ino__ example sketch shows that the call to
 `AceButton::check()` (which should be called at least every 10-20 milliseconds
-from `setup()`) takes only 15 microseconds on a 16MHz ATmega328P chip in the
+from `setup()`) takes only 14-15 microseconds on a 16MHz ATmega328P chip in the
 idle case. Hopefully that is fast enough for the vast majority of people.
 
 ## Installation
@@ -336,8 +336,25 @@ The `EventHandler` function received 3 parameters from the `AceButton`:
 * `buttonState`
   * the `HIGH` or `LOW` button state that generated this event
 
+The `aceButton` pointer should be used only to extract information about the
+button that triggered the event. It should **not** be used to modify the
+button's internal variables in any way within the eventHandler. The logic in
+`AceButton.check()` assumes that those internal variable are held constant,
+and if they are changed by the eventHandler, unpredictable results may occur.
+(I was tempted to make the `aceButton` a pointer to a `const AceButton`
+but this cause too many viral changes to the code which seemed to increase
+the complexity without too much benefit.)
+
 If you are using only a single button, then you should need to check
 only the `eventType`.
+
+It is not expected that `buttonState` will be needed very often. It should be
+sufficient to exmaine just the `eventType` to determine the action that needs
+to be performed. Part of the difficulty with this parameter is that it has the
+value of `LOW` or `HIGH`, but the physical interpreation of those values depends
+on whether the button was wired with a pull-up or pull-down resister. The helper
+function `AceButton::isReleased(uint8_t buttonState)` is provided to make this
+determination if you need it.
 
 #### One EventHandler
 
@@ -384,20 +401,25 @@ world.
 
 The supported events are defined by a list of constants in `AceButton`:
 
-* `AceButton::kEventPressed`
-* `AceButton::kEventReleased`
-* `AceButton::kEventClicked`
-* `AceButton::kEventDoubleClicked`
-* `AceButton::kEventLongPressed`
-* `AceButton::kEventRepeatPressed`
+* `AceButton::kEventPressed` (always enabled)
+* `AceButton::kEventReleased` (conditionally enabled)
+* `AceButton::kEventClicked` (default: disabled)
+* `AceButton::kEventDoubleClicked` (default: disabled)
+* `AceButton::kEventLongPressed` (default: disabled)
+* `AceButton::kEventRepeatPressed` (default: disabled)
 
 These values are sent to the `EventHandler` in the `eventType` parameter.
 
+Two of the events are enabled by default, four are disabled by default but can
+be enabled by using a Feature flag described below.
+
 ### ButtonConfig Feature Flags
 
-There are 6 flags defined in `ButtonConfig` which can be used to
+There are 9 flags defined in `ButtonConfig` which can be used to
 control the behavior of `AceButton` event handling:
 
+* `ButtonConfig::kFeatureClick`
+* `ButtonConfig::kFeatureDoubleClick`
 * `ButtonConfig::kFeatureLongPress`
 * `ButtonConfig::kFeatureRepeatPress`
 * `ButtonConfig::kFeatureSuppressAfterClick`
@@ -412,15 +434,10 @@ These constants are used to set or clear the given flag:
 ButtonConfig* config = button.getButtonConfig();
 
 config->setFeature(ButtonConfig::kFeatureLongPress);
-config->setFeature(ButtonConfig::kFeatureRepeatPress);
 ...
 config->clearFeature(ButtonConfig::kFeatureLongPress);
-config->clearFeature(ButtonConfig::kFeatureRepeatPress);
 ...
 if (config->isFeature(ButtonConfig::kFeatureLongPress)) {
-  ...
-}
-if (config->clearFeature(ButtonConfig::kFeatureRepeatPress)) {
   ...
 }
 ```
@@ -429,16 +446,26 @@ The meaning of these flags are described below.
 
 #### Event Activation
 
-Of the 6 event types, two are not active by default:
+Of the 6 event types, 4 are not active by default:
 
+* `AceButton::kEventClicked`
+* `AceButton::kEventDoubleClicked`
 * `AceButton::kEventLongPressed`
 * `AceButton::kEventRepeatPressed`
 
 To receive these events, call `ButtonConfig::setFeature()` with the following
 flags respectively:
 
+* `ButtonConfig::kFeatureClick`
+* `ButtonConfig::kFeatureDoubleClick`
 * `ButtonConfig::kFeatureLongPress`
 * `ButtonConfig::kFeatureRepeatPress`
+
+To disable these events, call `ButtonConfig::clearFeature()` with one of these
+flags.
+
+Enabling `kFeatureDoubleClick` automatically enables `kFeatureClick`, because we
+need to have a Clicked event before a DoubleClicked event can be detected.
 
 It seems unlikely that both `LongPress` and `RepeatPress` events would be
 useful at the same time, but both event types can be activated if you need it.
@@ -487,13 +514,23 @@ ButtonConfig* config = button.getButtonConfig();
 config->setFeature(ButtonConfig::kFeatureSuppressAfterLongPress);
 ```
 
-A special convenient constant `kFeatureSuppressAll` is available that is
-the equivalent of using all suppression constants:
+The special convenient constant `kFeatureSuppressAll` is equivalent of using all
+suppression constants:
 
 ```
 ButtonConfig* config = button.getButtonConfig();
 config->setFeature(ButtonConfig::kFeatureSuppressAll);
 ```
+
+All suppressions can be cleared by using:
+```
+ButtonConfig* config = button.getButtonConfig();
+config->clearFeature(ButtonConfig::kFeatureSuppressAll);
+```
+
+Note, however, that the `isFeature(ButtonConfig::kFeatureSuppressAll)` currently
+means "isAnyFeature() implemented?" not "areAllFeatures() implemented?" We don't
+expect `isFeature()` to be used often (or at all) for `kFeatureSuppressAll`.
 
 ### Single Button Simplifications
 
@@ -611,7 +648,8 @@ Program size:
 
 CPU cycles:
 
-* 15 microseconds for `AceButton::check()`
+* 14-15 microseconds for `AceButton::check()` (depending on which
+  `kFeatureXxx` events are enabled)
 
 ## System Requirements
 

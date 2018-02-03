@@ -125,7 +125,13 @@ class ButtonConfig {
     /** Flag to suppress kEventReleased after a kEventRepeatPressed. */
     static const uint8_t kFeatureSuppressAfterRepeatPress = 0x80;
 
-    /** Convenience flag to suppress all suppressions. */
+    /**
+     * Convenience flag to suppress all suppressions.
+     * Calling setFeature(kFeatureSuppressAll) suppresses all lower-level
+     * events, and clearFeature(kFeatureSuppressAll) clears all suppressesion.
+     * Note however that isFeature(kFeatureSuppressAll) currently means "is ANY
+     * feature enabled?" not "are ALL features enabled?".
+     */
     static const uint8_t kFeatureSuppressAll =
         (kFeatureSuppressAfterClick |
         kFeatureSuppressAfterDoubleClick |
