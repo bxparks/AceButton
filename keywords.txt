@@ -53,10 +53,6 @@ setLongPressDelay	KEYWORD2
 setRepeatPressDelay	KEYWORD2
 setRepeatPressInterval	KEYWORD2
 
-# methods from TestableButtonConfig.
-setClock	KEYWORD2
-setButtonState	KEYWORD2
-
 #######################################
 # Instances (KEYWORD2)
 #######################################
