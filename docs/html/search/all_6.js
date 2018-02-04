@@ -10,6 +10,8 @@ var searchData=
   ['keventpressed',['kEventPressed',['../classace__button_1_1AceButton.html#ae723d826fe219a8415764b9fed5d8976',1,'ace_button::AceButton']]],
   ['keventreleased',['kEventReleased',['../classace__button_1_1AceButton.html#ada5bd7c31950e2acdb8a9464e795c13c',1,'ace_button::AceButton']]],
   ['keventrepeatpressed',['kEventRepeatPressed',['../classace__button_1_1AceButton.html#a9c4195cb128da40677ea223eb81743c9',1,'ace_button::AceButton']]],
+  ['kfeatureclick',['kFeatureClick',['../classace__button_1_1ButtonConfig.html#a17d1acafc0aafab28d2cbd354e1c83c8',1,'ace_button::ButtonConfig']]],
+  ['kfeaturedoubleclick',['kFeatureDoubleClick',['../classace__button_1_1ButtonConfig.html#a276bb2bd21f525f0d02a0688ae9c5e97',1,'ace_button::ButtonConfig']]],
   ['kfeaturelongpress',['kFeatureLongPress',['../classace__button_1_1ButtonConfig.html#a79e965c0e55630e2db1d2e58ded965b5',1,'ace_button::ButtonConfig']]],
   ['kfeaturerepeatpress',['kFeatureRepeatPress',['../classace__button_1_1ButtonConfig.html#adabd1b5731300810946043e4940708d5',1,'ace_button::ButtonConfig']]],
   ['kfeaturesuppressafterclick',['kFeatureSuppressAfterClick',['../classace__button_1_1ButtonConfig.html#a1d56ce41c67c07b625924fef81ca4390',1,'ace_button::ButtonConfig']]],

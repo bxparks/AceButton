@@ -170,22 +170,28 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a218c1aa09b45ea2fe6884e3af3a18310"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a218c1aa09b45ea2fe6884e3af3a18310">kRepeatPressInterval</a> = 200</td></tr>
 <tr class="memdesc:a218c1aa09b45ea2fe6884e3af3a18310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a2329e8fa28651ed12ccfec355c8e7eab" title="Milliseconds between two successive RepeatPressed events. ">getRepeatPressInterval()</a>.  <a href="#a218c1aa09b45ea2fe6884e3af3a18310">More...</a><br /></td></tr>
 <tr class="separator:a218c1aa09b45ea2fe6884e3af3a18310"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79e965c0e55630e2db1d2e58ded965b5"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a79e965c0e55630e2db1d2e58ded965b5">kFeatureLongPress</a> = 0x01</td></tr>
+<tr class="memitem:a17d1acafc0aafab28d2cbd354e1c83c8"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a17d1acafc0aafab28d2cbd354e1c83c8">kFeatureClick</a> = 0x01</td></tr>
+<tr class="memdesc:a17d1acafc0aafab28d2cbd354e1c83c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a21797e5e069da3f7bba42b40ab3a7305" title="Button was clicked (Pressed and Released within ButtonConfig::getClickDelay()). ">AceButton::kEventClicked</a> event.  <a href="#a17d1acafc0aafab28d2cbd354e1c83c8">More...</a><br /></td></tr>
+<tr class="separator:a17d1acafc0aafab28d2cbd354e1c83c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a276bb2bd21f525f0d02a0688ae9c5e97"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a276bb2bd21f525f0d02a0688ae9c5e97">kFeatureDoubleClick</a> = 0x02</td></tr>
+<tr class="memdesc:a276bb2bd21f525f0d02a0688ae9c5e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a0c63f30106e4688425ba37d8f7a9546b" title="Button was double-clicked. ">AceButton::kEventDoubleClicked</a> event.  <a href="#a276bb2bd21f525f0d02a0688ae9c5e97">More...</a><br /></td></tr>
+<tr class="separator:a276bb2bd21f525f0d02a0688ae9c5e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79e965c0e55630e2db1d2e58ded965b5"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a79e965c0e55630e2db1d2e58ded965b5">kFeatureLongPress</a> = 0x04</td></tr>
 <tr class="memdesc:a79e965c0e55630e2db1d2e58ded965b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the AceButton::kEventLongPress event.  <a href="#a79e965c0e55630e2db1d2e58ded965b5">More...</a><br /></td></tr>
 <tr class="separator:a79e965c0e55630e2db1d2e58ded965b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adabd1b5731300810946043e4940708d5"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#adabd1b5731300810946043e4940708d5">kFeatureRepeatPress</a> = 0x02</td></tr>
+<tr class="memitem:adabd1b5731300810946043e4940708d5"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#adabd1b5731300810946043e4940708d5">kFeatureRepeatPress</a> = 0x08</td></tr>
 <tr class="memdesc:adabd1b5731300810946043e4940708d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a9c4195cb128da40677ea223eb81743c9" title="Button was held down and auto generated multiple presses. ">AceButton::kEventRepeatPressed</a> event.  <a href="#adabd1b5731300810946043e4940708d5">More...</a><br /></td></tr>
 <tr class="separator:adabd1b5731300810946043e4940708d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d56ce41c67c07b625924fef81ca4390"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a1d56ce41c67c07b625924fef81ca4390">kFeatureSuppressAfterClick</a> = 0x04</td></tr>
+<tr class="memitem:a1d56ce41c67c07b625924fef81ca4390"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a1d56ce41c67c07b625924fef81ca4390">kFeatureSuppressAfterClick</a> = 0x10</td></tr>
 <tr class="memdesc:a1d56ce41c67c07b625924fef81ca4390"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventClicked.  <a href="#a1d56ce41c67c07b625924fef81ca4390">More...</a><br /></td></tr>
 <tr class="separator:a1d56ce41c67c07b625924fef81ca4390"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c678cadf6a4ff09e2572a6300891b8c"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a4c678cadf6a4ff09e2572a6300891b8c">kFeatureSuppressAfterDoubleClick</a> = 0x08</td></tr>
+<tr class="memitem:a4c678cadf6a4ff09e2572a6300891b8c"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a4c678cadf6a4ff09e2572a6300891b8c">kFeatureSuppressAfterDoubleClick</a> = 0x20</td></tr>
 <tr class="memdesc:a4c678cadf6a4ff09e2572a6300891b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventDoubleClicked.  <a href="#a4c678cadf6a4ff09e2572a6300891b8c">More...</a><br /></td></tr>
 <tr class="separator:a4c678cadf6a4ff09e2572a6300891b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89ac38c17b052cd0c392f513e3dbdd07"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a89ac38c17b052cd0c392f513e3dbdd07">kFeatureSuppressAfterLongPress</a> = 0x10</td></tr>
+<tr class="memitem:a89ac38c17b052cd0c392f513e3dbdd07"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a89ac38c17b052cd0c392f513e3dbdd07">kFeatureSuppressAfterLongPress</a> = 0x40</td></tr>
 <tr class="memdesc:a89ac38c17b052cd0c392f513e3dbdd07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventLongPressed.  <a href="#a89ac38c17b052cd0c392f513e3dbdd07">More...</a><br /></td></tr>
 <tr class="separator:a89ac38c17b052cd0c392f513e3dbdd07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1aa4964df6d3a2d83616a0d7cf027460"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a1aa4964df6d3a2d83616a0d7cf027460">kFeatureSuppressAfterRepeatPress</a> = 0x20</td></tr>
+<tr class="memitem:a1aa4964df6d3a2d83616a0d7cf027460"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a1aa4964df6d3a2d83616a0d7cf027460">kFeatureSuppressAfterRepeatPress</a> = 0x80</td></tr>
 <tr class="memdesc:a1aa4964df6d3a2d83616a0d7cf027460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventRepeatPressed.  <a href="#a1aa4964df6d3a2d83616a0d7cf027460">More...</a><br /></td></tr>
 <tr class="separator:a1aa4964df6d3a2d83616a0d7cf027460"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64a967f3a2f2000dd3a5948d44f91361"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a64a967f3a2f2000dd3a5948d44f91361">kFeatureSuppressAll</a></td></tr>
@@ -674,6 +680,55 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a17d1acafc0aafab28d2cbd354e1c83c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17d1acafc0aafab28d2cbd354e1c83c8">&#9670;&nbsp;</a></span>kFeatureClick</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureClick = 0x01</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a21797e5e069da3f7bba42b40ab3a7305" title="Button was clicked (Pressed and Released within ButtonConfig::getClickDelay()). ">AceButton::kEventClicked</a> event. </p>
+
+</div>
+</div>
+<a id="a276bb2bd21f525f0d02a0688ae9c5e97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a276bb2bd21f525f0d02a0688ae9c5e97">&#9670;&nbsp;</a></span>kFeatureDoubleClick</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureDoubleClick = 0x02</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a0c63f30106e4688425ba37d8f7a9546b" title="Button was double-clicked. ">AceButton::kEventDoubleClicked</a> event. </p>
+<p>Activating this automatically activates kEventClicked since there is no double-click without a click. </p>
+
+</div>
+</div>
 <a id="a79e965c0e55630e2db1d2e58ded965b5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a79e965c0e55630e2db1d2e58ded965b5">&#9670;&nbsp;</a></span>kFeatureLongPress</h2>
 
@@ -684,7 +739,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureLongPress = 0x01</td>
+          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureLongPress = 0x04</td>
         </tr>
       </table>
   </td>
@@ -708,7 +763,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureRepeatPress = 0x02</td>
+          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureRepeatPress = 0x08</td>
         </tr>
       </table>
   </td>
@@ -732,7 +787,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterClick = 0x04</td>
+          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterClick = 0x10</td>
         </tr>
       </table>
   </td>
@@ -756,7 +811,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterDoubleClick = 0x08</td>
+          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterDoubleClick = 0x20</td>
         </tr>
       </table>
   </td>
@@ -781,7 +836,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterLongPress = 0x10</td>
+          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterLongPress = 0x40</td>
         </tr>
       </table>
   </td>
@@ -805,7 +860,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterRepeatPress = 0x20</td>
+          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterRepeatPress = 0x80</td>
         </tr>
       </table>
   </td>
@@ -840,6 +895,8 @@ Protected Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        (<a class="code" href="classace__button_1_1ButtonConfig.html#a1d56ce41c67c07b625924fef81ca4390">kFeatureSuppressAfterClick</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a4c678cadf6a4ff09e2572a6300891b8c">kFeatureSuppressAfterDoubleClick</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a89ac38c17b052cd0c392f513e3dbdd07">kFeatureSuppressAfterLongPress</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a1aa4964df6d3a2d83616a0d7cf027460">kFeatureSuppressAfterRepeatPress</a>)</div></div><!-- fragment -->
 <p>Convenience flag to suppress all suppressions. </p>
+<p>Calling setFeature(kFeatureSuppressAll) suppresses all lower-level events, and clearFeature(kFeatureSuppressAll) clears all suppressesion. Note however that isFeature(kFeatureSuppressAll) currently means "is ANY
+feature enabled?" not "are ALL features enabled?". </p>
 
 </div>
 </div>
@@ -916,8 +973,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/brian/dev/arduino/projects/AceButton/src/<a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a></li>
-<li>/home/brian/dev/arduino/projects/AceButton/src/ButtonConfig.cpp</li>
+<li>/home/brian/dev/AceButton/src/<a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a></li>
+<li>/home/brian/dev/AceButton/src/ButtonConfig.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

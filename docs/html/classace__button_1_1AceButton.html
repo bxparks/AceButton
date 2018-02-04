@@ -158,6 +158,9 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">AceButton::AceButton </td>
@@ -183,6 +186,11 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Constructor defines parameters of the button that changes from button to button. </p>
@@ -191,7 +199,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pin</td><td>The pin number of the button. Default 0. Normally the pin number should be given at construction time. However, the pin number the pin number can be omitted so that the pin number can be assigned at setup() time using the setPin() method.</td></tr>
-    <tr><td class="paramname">defaultReleasedState</td><td>The pin state when the button is in the initial released position. Default HIGH. When using a pullup resister (either external or internal) and the button is connected to ground, this should be set to HIGH. When using an external pulldown resister and the button is connected to Vcc (5V or 3.3V), this should be set to LOW. The defaultReleasedState can be assigned using the constructor or the setDefaultReleasedState() method.</td></tr>
+    <tr><td class="paramname">defaultReleasedState</td><td>The pin state when the button is in the initial released position. Default HIGH. When using a pullup resister (either external or internal) and the button is connected to ground, this should be set to HIGH. When using an external pulldown resister and the button is connected to Vcc (5V or 3.3V), this should be set to LOW. The defaultReleasedState can be assigned using the constructor or the <a class="el" href="classace__button_1_1AceButton.html#abc05f8d5fa926688b37a216889014258" title="Reset the button to the initial constructed state. ">init()</a> method.</td></tr>
     <tr><td class="paramname">id</td><td>This is an optional user-defined identifier for the button. For example, this could be an index into an array of data that is associated with the button. </td></tr>
   </table>
   </dd>
@@ -471,7 +479,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 </div><div class="memdoc">
 
 <p>Convenience method to set the event handler. </p>
-<p>Event handlers are stored in the <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> object, not in the <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> object to save memory. (Multiple buttons are likely to share the same event handler.) So this method is just a pass-through to <a class="el" href="classace__button_1_1ButtonConfig.html#a5d228f08e9943fd4ab90caab39ef80be" title="Install the event handler. ">ButtonConfig::setEventHandler()</a>. If you are using multiple <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> objects, you should call the <a class="el" href="classace__button_1_1ButtonConfig.html#a5d228f08e9943fd4ab90caab39ef80be" title="Install the event handler. ">ButtonConfig::setEventHandler()</a> method on those objects directly, instead of using this method. </p>
+<p>Event handlers are stored in the <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> object, not in the <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> object, to save memory. (Multiple buttons are likely to share the same event handler.) So this method is just a pass-through to <a class="el" href="classace__button_1_1ButtonConfig.html#a5d228f08e9943fd4ab90caab39ef80be" title="Install the event handler. ">ButtonConfig::setEventHandler()</a>. If you are using multiple <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> objects, you should call the <a class="el" href="classace__button_1_1ButtonConfig.html#a5d228f08e9943fd4ab90caab39ef80be" title="Install the event handler. ">ButtonConfig::setEventHandler()</a> method on those objects directly, instead of using this method. </p>
 
 </div>
 </div>
@@ -600,8 +608,8 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/brian/dev/arduino/projects/AceButton/src/<a class="el" href="AceButton_8h_source.html">AceButton.h</a></li>
-<li>/home/brian/dev/arduino/projects/AceButton/src/AceButton.cpp</li>
+<li>/home/brian/dev/AceButton/src/<a class="el" href="AceButton_8h_source.html">AceButton.h</a></li>
+<li>/home/brian/dev/AceButton/src/AceButton.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
