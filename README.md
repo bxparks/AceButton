@@ -90,7 +90,7 @@ want to write everything yourself from scratch.
 
 That said, the __Stopwatch.ino__ example sketch shows that the call to
 `AceButton::check()` (which should be called at least every 10-20 milliseconds
-from `setup()`) takes only 14-15 microseconds on a 16MHz ATmega328P chip in the
+from `loop()`) takes only 14-15 microseconds on a 16MHz ATmega328P chip in the
 idle case. Hopefully that is fast enough for the vast majority of people.
 
 ### HelloButton
@@ -227,7 +227,8 @@ void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 * `id`: an optional,user-defined identifier for the the button,
   for example, an index into an array with additional information
 
-The `pin` must be defined. But the other two may be optional in many cases.
+The `pin` must be defined either through the constructor or the `init()` method.
+But the other two parameters may be optional in many cases.
 
 ### ButtonConfig Class
 
@@ -271,8 +272,8 @@ void setup() {
 We explain below (see _Single Button Simplifications_ section below) that in
 the simple case, we don't need to explicitly create an instance of
 `ButtonConfig` or call `setButtonConfig()` because all instances of `AceButton`
-automatically gets assigned an instance of the System ButtonConfig which is
-automatically created by the library.
+automatically gets assigned to the singleton instance of the System ButtonConfig
+which is automatically created by the library.
 
 The `ButtonConfig` class provides a number of methods which are mostly
 used internally by the `AceButton` class. The one method which is expected
@@ -548,8 +549,8 @@ expect `isFeature()` to be used often (or at all) for `kFeatureSuppressAll`.
 ### Single Button Simplifications
 
 Although the AceButton library is designed to shine for multiple buttons, you
-may just want to handle one button. The library provides some features to make
-the simple case easy.
+may want to use it to handle just one button. The library provides some features
+to make this simple case easy.
 
 1. The library automatically creates one instance of `ButtonConfig`
    called a "System ButtonConfig". This System ButtonConfig can be retrieved
@@ -672,7 +673,8 @@ MacOS 10.13.3 and Ubuntu Linux 17.04, connected to an
 clone running at 16 MHz. The Nano clone uses an ATmega328P chip, a CH340
 USB-to-serial chip, and contains 32KB of flash and 2KB of static RAM.
 
-The library has been verified to run on an Arduino UNO R3 (clone).
+The library has been verified to run on an Arduino UNO R3 (clone). It will
+probably work for many other Arduino boards, but they have not been tested yet.
 
 The unit tests require [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
 to be installed.
