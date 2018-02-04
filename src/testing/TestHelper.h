@@ -32,21 +32,21 @@ namespace testing {
 class TestHelper {
   public:
     TestHelper(
-        TestableButtonConfig& testableConfig,
-        AceButton& button,
-        EventTracker& eventTracker):
+        TestableButtonConfig* testableConfig,
+        AceButton* button,
+        EventTracker* eventTracker):
       mTestableConfig(testableConfig),
       mButton(button),
       mEventTracker(eventTracker) {}
 
-    /** Reinitiliaze to its pristine state. */
+    /** Reinitilize to its pristine state. */
     void init(uint8_t pin, uint8_t defaultReleasedState, uint8_t id) {
       mPin = pin;
       mDefaultReleasedState = defaultReleasedState;
       mId = id;
-      mButton.init(mPin, mDefaultReleasedState, mId);
-      mTestableConfig.init();
-      mTestableConfig.setButtonState(defaultReleasedState);
+      mButton->init(mPin, mDefaultReleasedState, mId);
+      mTestableConfig->init();
+      mTestableConfig->setButtonState(defaultReleasedState);
     }
 
     /**
@@ -56,10 +56,10 @@ class TestHelper {
      */
     void pressButton(unsigned long time) {
       uint8_t targetState = (HIGH == mDefaultReleasedState) ? LOW : HIGH;
-      mTestableConfig.setClock(time);
-      mTestableConfig.setButtonState(targetState);
-      mEventTracker.clear();
-      mButton.check();
+      mTestableConfig->setClock(time);
+      mTestableConfig->setButtonState(targetState);
+      mEventTracker->clear();
+      mButton->check();
     }
 
     /**
@@ -67,31 +67,29 @@ class TestHelper {
      */
     void releaseButton(unsigned long time) {
       uint8_t targetState = (HIGH == mDefaultReleasedState) ? HIGH : LOW;
-      mTestableConfig.setClock(time);
-      mTestableConfig.setButtonState(targetState);
-      mEventTracker.clear();
-      mButton.check();
+      mTestableConfig->setClock(time);
+      mTestableConfig->setButtonState(targetState);
+      mEventTracker->clear();
+      mButton->check();
     }
 
     /**
      * Simply move the time forward and check the button. No changes to button.
      */
     void checkTime(unsigned long time) {
-      mTestableConfig.setClock(time);
-      mEventTracker.clear();
-      mButton.check();
+      mTestableConfig->setClock(time);
+      mEventTracker->clear();
+      mButton->check();
     }
 
-    
   private:
     // Disable copy-constructor and assignment operator
     TestHelper(const TestHelper&) = delete;
     TestHelper& operator=(const TestHelper&) = delete;
 
-    // Should I use pointers here for consistency?
-    TestableButtonConfig& mTestableConfig;
-    AceButton& mButton;
-    EventTracker& mEventTracker;
+    TestableButtonConfig* mTestableConfig;
+    AceButton* mButton;
+    EventTracker* mEventTracker;
 
     uint8_t mPin;
     uint8_t mDefaultReleasedState;

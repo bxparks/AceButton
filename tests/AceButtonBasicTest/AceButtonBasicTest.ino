@@ -32,7 +32,7 @@ ButtonConfig buttonConfig;
 TestableButtonConfig testableConfig;
 AceButton button;
 EventTracker eventTracker;
-TestHelper helper(testableConfig, button, eventTracker);
+TestHelper helper(&testableConfig, &button, &eventTracker);
 
 // The event handler takes the arguments sent with the event and stored them
 // into the EventTracker circular buffer.
