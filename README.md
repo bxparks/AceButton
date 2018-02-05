@@ -272,13 +272,13 @@ void setup() {
 We explain below (see _Single Button Simplifications_ section below) that in
 the simple case, we don't need to explicitly create an instance of
 `ButtonConfig` or call `setButtonConfig()` because all instances of `AceButton`
-automatically gets assigned to the singleton instance of the System ButtonConfig
+automatically get assigned to the singleton instance of the System ButtonConfig
 which is automatically created by the library.
 
 The `ButtonConfig` class provides a number of methods which are mostly
 used internally by the `AceButton` class. The one method which is expected
 to be used by the calling client code is `setEventHandler()` which
-assigns the user-defined `EventHandler` callback fundtion to the `ButtonConfig`
+assigns the user-defined `EventHandler` callback function to the `ButtonConfig`
 instance. This is explained in more detail below in the
 _EventHandler Callback_ section.
 
@@ -287,7 +287,7 @@ override various parameters. Normally we try to avoid virtual methods in an
 embedded environment. But we wanted the ability to plug in different types of
 `ButtonConfig` into the `AceButton` class, and this C++ feature solves this
 problem very well. The cost is 2 extra bytes for the virtual table
-pointer in each instance of `ButtonConfig`, and an extra CPU overhead during
+pointer in each instance of `ButtonConfig`, and some extra CPU overhead during
 the call to the virtual functions.
 
 We have assumed that there is a 1-to-many relationship between a `ButtonConfig`
@@ -327,10 +327,20 @@ typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
 ```
 
 The event handler is registered with the `ButtonConfig` object, not with the
-`AceButton` object as you might expect.
+`AceButton` object as you might expect:
 
 ```
-void setEventHandler(EventHandler eventHandler);
+ButtonConfig buttonConfig;
+
+void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  ...
+}
+
+setup() {
+  ...
+  buttonConfig.setEventHandler(handleEvent);
+  ...
+}
 ```
 
 The motivation for this design is to save static memory. If multiple buttons
