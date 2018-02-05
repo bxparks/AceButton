@@ -108,13 +108,13 @@ const uint8_t BUTTON_PIN = 2;
 
 AceButton button(BUTTON_PIN);
 
-setup() {
+void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   button.setEventHandler(handleEvent);
 }
 
-loop() {
+void loop() {
   button.check();
 }
 
@@ -327,7 +327,9 @@ typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
 ```
 
 The event handler is registered with the `ButtonConfig` object, not with the
-`AceButton` object as you might expect:
+`AceButton` object, although the convenience method
+`AceButton::setEventHandler()` is provided as a pass-through to the underlying
+`ButtonConfig` (see the _Single Button Simplifications_ section below):
 
 ```
 ButtonConfig buttonConfig;
@@ -336,7 +338,7 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   ...
 }
 
-setup() {
+void setup() {
   ...
   buttonConfig.setEventHandler(handleEvent);
   ...
@@ -470,7 +472,7 @@ The meaning of these flags are described below.
 
 #### Event Activation
 
-Of the 6 event types, 4 are not active by default:
+Of the 6 event types, 4 are disabled by default:
 
 * `AceButton::kEventClicked`
 * `AceButton::kEventDoubleClicked`
@@ -499,7 +501,7 @@ useful at the same time, but both event types can be activated if you need it.
 Event types can be considered to be built up in layers, starting with the
 lowest level primitive events: Pressed and Released. Higher level events are
 built on top of the lower level events through various timing delays. When a
-higher level event is detected, it is sometime useful to suppress the lower
+higher level event is detected, it is sometimes useful to suppress the lower
 level event that was used to detect the higher level event.
 
 For example, a Clicked event requires a Pressed event followed by a Released
@@ -579,13 +581,13 @@ this:
 ```
 AceButton button(BUTTON_PIN);
 
-setup() {
+void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   button.setEventHandler(handleEvent);
   ...
 }
 
-loop() {
+void loop() {
   button.check();
 }
 
