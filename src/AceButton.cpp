@@ -266,8 +266,16 @@ void AceButton::checkDoubleClicked(uint16_t now, uint8_t buttonState) {
 }
 
 void AceButton::checkOrphanedClick(uint16_t now, uint8_t buttonState) {
-  // NOTE: Should orphanedClickDelay be configurable using ButtonConfig?
-  uint16_t orphanedClickDelay = 10 * mButtonConfig->getDoubleClickDelay();
+  // The amount of time which must pass before a click is determined to be
+  // orphaned and reclaimed. If only DoubleClicked is supported, then I think
+  // just getDoubleClickDelay() is correct. No other higher level event uses the
+  // first Clicked event. If TripleClicked becomes supported, I think
+  // orphanedClickDelay will be either (2 * getDoubleClickDelay()) or
+  // (getDoubleClickDelay() + getTripleClickDelay()), depending on whether the
+  // TripleClick has an independent delay time, or reuses the DoubleClick delay
+  // time. But I'm not sure that I've thought through all the details.
+  uint16_t orphanedClickDelay = mButtonConfig->getDoubleClickDelay();
+
   if (isClicked() && (now - mLastClickTime >= orphanedClickDelay)) {
     clearClicked();
   }
