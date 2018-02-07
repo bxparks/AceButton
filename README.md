@@ -47,7 +47,7 @@ requested.)
 
 Here are the high-level features of the AceButton library:
 
-* debounces the mechnical contact
+* debounces the mechanical contact
 * handles both pull-up and pull-down wiring
 * event-driven through a user-defined `EventHandler` callback funcition
 * supports 6 event types:
@@ -224,11 +224,23 @@ void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 * `defaultReleasedState`: the logical value of the button when it is in its
   default "released" state (`HIGH` using a pull-up resister,
   `LOW` for a pull-down pull-down resister)
-* `id`: an optional,user-defined identifier for the the button,
+* `id`: an optional, user-defined identifier for the the button,
   for example, an index into an array with additional information
 
 The `pin` must be defined either through the constructor or the `init()` method.
 But the other two parameters may be optional in many cases.
+
+Finally, the `ButtonConfig::check()` method should be called from the `loop()`
+method periodically. Ideally, this should be every 10-20 milliseconds or faster
+so that the various event detection logic can work properly.
+
+```
+void loop() {
+  ...
+  button.check();
+  ...
+}
+```
 
 ### ButtonConfig Class
 
@@ -241,8 +253,8 @@ button (`AceButton`) from its configuration (`ButtonConfig`).
   specific instance of that `AceButton`.
 * The `ButtonConfig` class has the various timing parameters which control
   how much time is needed to detect certain events. This class also has the
-  ability to override the default methods for reading the pin (`digitalRead()`)
-  and the clock (`millis()`). This ability allows unit tests to be written.
+  ability to override the default methods for reading the pin (`readButton()`)
+  and the clock (`getClock()`). This ability allows unit tests to be written.
 
 The `ButtonConfig` can be created simply:
 
@@ -269,11 +281,15 @@ void setup() {
 }
 ```
 
-We explain below (see _Single Button Simplifications_ section below) that in
-the simple case, we don't need to explicitly create an instance of
-`ButtonConfig` or call `setButtonConfig()` because all instances of `AceButton`
-automatically get assigned to the singleton instance of the System ButtonConfig
-which is automatically created by the library.
+#### System ButtonConfig
+
+A single instance of `ButtonConfig` called the "System ButtonConfig" is
+automatically created by the library at startup. By default, all instances of
+`AceButton` are automatically assigned to this singleton instance. We explain in
+the _Single Button Simplifications_ section below how this simplifies the code
+needed to handle a single button.
+
+#### Configuring the EventHandler
 
 The `ButtonConfig` class provides a number of methods which are mostly
 used internally by the `AceButton` class. The one method which is expected
@@ -282,13 +298,75 @@ assigns the user-defined `EventHandler` callback function to the `ButtonConfig`
 instance. This is explained in more detail below in the
 _EventHandler Callback_ section.
 
-The `ButtonConfig` class uses `virtual` functions so that the user can
-override various parameters. Normally we try to avoid virtual methods in an
-embedded environment. But we wanted the ability to plug in different types of
-`ButtonConfig` into the `AceButton` class, and this C++ feature solves this
-problem very well. The cost is 2 extra bytes for the virtual table
-pointer in each instance of `ButtonConfig`, and some extra CPU overhead during
-the call to the virtual functions.
+#### Timing Parameters
+
+Here are the methods to retrieve the timing parameters:
+
+* `virtual uint16_t getDebounceDelay();`
+* `virtual uint16_t getClickDelay();`
+* `virtual uint16_t getDoubleClickDelay();`
+* `virtual uint16_t getLongPressDelay();`
+* `virtual uint16_t getRepeatPressDelay();`
+* `virtual uint16_t getRepeatPressInterval();`
+
+The values of these timing parameters are hardwired at compile time. They can be
+changed in two ways:
+
+1. Use a user-defined subclass to override one or more of these `virtual`
+   methods. Normally we avoid virtual methods in an embedded environment. But we
+   wanted the ability to plug in different types of `ButtonConfig` into the
+   `AceButton` class, and this C++ feature solves this problem very well. The
+   cost is 2 extra bytes for the virtual table pointer in each instance of
+   `ButtonConfig`, and some extra CPU overhead during the call to the virtual
+   functions.
+1. Use the `AdjustableButtonConfig` (see below) to configure these parameters at
+   run-time.
+
+An example of a user-defined subclass to override one of these parameters at
+compile-time would look like this:
+
+```
+class MyButtonConfig: public ButtonConfig {
+  public:
+    virtual uint16_t getClickDelay() override { return 250; }
+};
+```
+
+#### AdjustableButtonConfig
+
+The `AdjustableButtonConfig` is a subclass of `ButtonConfig` that allows the
+timing parameters of `ButtonConfig` to be changed at run-time. Everywhere that
+you see a `ButtonConfig` uses, you can substitute an `AdjustableButtonConfig`.
+It provides the following methods to change the timing parameters:
+
+* `void setDebounceDelay(uint16_t debounceDelay);`
+* `void setClickDelay(uint16_t clickDelay);`
+* `void setDoubleClickDelay(uint16_t doubleClickDelay);`
+* `void setLongPressDelay(uint16_t longPressDelay);`
+* `void setRepeatPressDelay(uint16_t repeatPressDelay);`
+* `void setRepeatPressInterval(uint16_t repeatPressInterval);`
+
+The cost of this flexibility is the larger static memory usage of an
+`AdjustableButtonConfig`, taking up 17 bytes of memory compared to 5 bytes for
+a `ButtonConfig`.
+
+#### Hardware Dependencies
+
+The `ButtonConfig` class has 2 methods which provide hooks to its external
+hardware dependencies:
+
+* `virtual unsigned long getClock();`
+* `virtual int readButton(uint8_t pin);`
+
+By default these are mapped to the underlying Arduino system functions respectively:
+
+* `millis()`
+* `digitalRead()`
+
+Unit tests are possible because these methods are `virtual` and the hardware
+dependencies can be swapped out with fake ones.
+
+#### Multiple ButtonConfig Instances
 
 We have assumed that there is a 1-to-many relationship between a `ButtonConfig`
 and the `AceButton`. In other words, multiple buttons will normally be
@@ -375,9 +453,9 @@ If you are using only a single button, then you should need to check
 only the `eventType`.
 
 It is not expected that `buttonState` will be needed very often. It should be
-sufficient to exmaine just the `eventType` to determine the action that needs
+sufficient to examine just the `eventType` to determine the action that needs
 to be performed. Part of the difficulty with this parameter is that it has the
-value of `LOW` or `HIGH`, but the physical interpreation of those values depends
+value of `LOW` or `HIGH`, but the physical interpretation of those values depends
 on whether the button was wired with a pull-up or pull-down resister. The helper
 function `AceButton::isReleased(uint8_t buttonState)` is provided to make this
 determination if you need it.
