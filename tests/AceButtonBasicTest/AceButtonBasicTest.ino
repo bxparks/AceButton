@@ -30,6 +30,7 @@ const uint8_t BUTTON_ID = 1;
 
 ButtonConfig buttonConfig;
 TestableButtonConfig testableConfig;
+AdjustableButtonConfig adjustableConfig;;
 AceButton button;
 EventTracker eventTracker;
 TestHelper helper(&testableConfig, &button, &eventTracker);
@@ -171,7 +172,8 @@ test(init_while_pressed) {
   assertEqual(LOW, button.getLastButtonState());
 }
 
-// Test that the TestableConfig overrides properly
+// Test that the TestableButtonConfig overrides the corresponding
+// parameters on AceButton properly.
 test(testable_config) {
   testableConfig.setClock(0);
   assertEqual(0, button.getButtonConfig()->getClock());
@@ -184,4 +186,25 @@ test(testable_config) {
 
   testableConfig.setButtonState(LOW);
   assertEqual(LOW, button.getButtonConfig()->readButton(0));
+}
+
+// Test that the AdjustableButtonConfig overrides properly.
+test(adjustable_config) {
+  adjustableConfig.setDebounceDelay(1);
+  assertEqual(1, adjustableConfig.getDebounceDelay());
+
+  adjustableConfig.setClickDelay(2);
+  assertEqual(2, adjustableConfig.getClickDelay());
+
+  adjustableConfig.setDoubleClickDelay(3);
+  assertEqual(3, adjustableConfig.getDoubleClickDelay());
+
+  adjustableConfig.setLongPressDelay(4);
+  assertEqual(4, adjustableConfig.getLongPressDelay());
+
+  adjustableConfig.setRepeatPressDelay(5);
+  assertEqual(5, adjustableConfig.getRepeatPressDelay());
+
+  adjustableConfig.setRepeatPressInterval(6);
+  assertEqual(6, adjustableConfig.getRepeatPressInterval());
 }

@@ -60,12 +60,11 @@ class EventTracker {
     EventTracker():
         mNumEvents(0) {}
       
-    /** Add event to a circular buffer of records. */
+    /** Add event to a buffer of records, stopping when the buffer fills up. */
     void addEvent(uint8_t eventType, uint8_t buttonState) {
-      mRecords[mNumEvents] = EventRecord(eventType, buttonState);
-      mNumEvents++;
-      if (mNumEvents >= kMaxEvents) {
-        mNumEvents = 0;
+      if (mNumEvents < kMaxEvents) {
+        mRecords[mNumEvents] = EventRecord(eventType, buttonState);
+        mNumEvents++;
       }
     }
 
@@ -81,7 +80,6 @@ class EventTracker {
     EventTracker& operator=(const EventTracker&) = delete;
 
     // Don't expect more than about 3. Set to 5 just in case.
-    // Use a circular buffer to prevent corrupting memory.
     static const int kMaxEvents = 5;
 
     EventRecord mRecords[kMaxEvents];

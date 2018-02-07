@@ -47,7 +47,7 @@ requested.)
 
 Here are the high-level features of the AceButton library:
 
-* debounces the mechnical contact
+* debounces the mechanical contact
 * handles both pull-up and pull-down wiring
 * event-driven through a user-defined `EventHandler` callback funcition
 * supports 6 event types:
@@ -90,7 +90,7 @@ want to write everything yourself from scratch.
 
 That said, the __Stopwatch.ino__ example sketch shows that the call to
 `AceButton::check()` (which should be called at least every 10-20 milliseconds
-from `setup()`) takes only 14-15 microseconds on a 16MHz ATmega328P chip in the
+from `loop()`) takes only 14-15 microseconds on a 16MHz ATmega328P chip in the
 idle case. Hopefully that is fast enough for the vast majority of people.
 
 ### HelloButton
@@ -108,13 +108,13 @@ const uint8_t BUTTON_PIN = 2;
 
 AceButton button(BUTTON_PIN);
 
-setup() {
+void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   button.setEventHandler(handleEvent);
 }
 
-loop() {
+void loop() {
   button.check();
 }
 
@@ -224,10 +224,23 @@ void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 * `defaultReleasedState`: the logical value of the button when it is in its
   default "released" state (`HIGH` using a pull-up resister,
   `LOW` for a pull-down pull-down resister)
-* `id`: an optional,user-defined identifier for the the button,
+* `id`: an optional, user-defined identifier for the the button,
   for example, an index into an array with additional information
 
-The `pin` must be defined. But the other two may be optional in many cases.
+The `pin` must be defined either through the constructor or the `init()` method.
+But the other two parameters may be optional in many cases.
+
+Finally, the `ButtonConfig::check()` method should be called from the `loop()`
+method periodically. Ideally, this should be every 10-20 milliseconds or faster
+so that the various event detection logic can work properly.
+
+```
+void loop() {
+  ...
+  button.check();
+  ...
+}
+```
 
 ### ButtonConfig Class
 
@@ -240,8 +253,8 @@ button (`AceButton`) from its configuration (`ButtonConfig`).
   specific instance of that `AceButton`.
 * The `ButtonConfig` class has the various timing parameters which control
   how much time is needed to detect certain events. This class also has the
-  ability to override the default methods for reading the pin (`digitalRead()`)
-  and the clock (`millis()`). This ability allows unit tests to be written.
+  ability to override the default methods for reading the pin (`readButton()`)
+  and the clock (`getClock()`). This ability allows unit tests to be written.
 
 The `ButtonConfig` can be created simply:
 
@@ -268,26 +281,92 @@ void setup() {
 }
 ```
 
-We explain below (see _Single Button Simplifications_ section below) that in
-the simple case, we don't need to explicitly create an instance of
-`ButtonConfig` or call `setButtonConfig()` because all instances of `AceButton`
-automatically gets assigned an instance of the System ButtonConfig which is
-automatically created by the library.
+#### System ButtonConfig
+
+A single instance of `ButtonConfig` called the "System ButtonConfig" is
+automatically created by the library at startup. By default, all instances of
+`AceButton` are automatically assigned to this singleton instance. We explain in
+the _Single Button Simplifications_ section below how this simplifies the code
+needed to handle a single button.
+
+#### Configuring the EventHandler
 
 The `ButtonConfig` class provides a number of methods which are mostly
 used internally by the `AceButton` class. The one method which is expected
 to be used by the calling client code is `setEventHandler()` which
-assigns the user-defined `EventHandler` callback fundtion to the `ButtonConfig`
+assigns the user-defined `EventHandler` callback function to the `ButtonConfig`
 instance. This is explained in more detail below in the
 _EventHandler Callback_ section.
 
-The `ButtonConfig` class uses `virtual` functions so that the user can
-override various parameters. Normally we try to avoid virtual methods in an
-embedded environment. But we wanted the ability to plug in different types of
-`ButtonConfig` into the `AceButton` class, and this C++ feature solves this
-problem very well. The cost is 2 extra bytes for the virtual table
-pointer in each instance of `ButtonConfig`, and an extra CPU overhead during
-the call to the virtual functions.
+#### Timing Parameters
+
+Here are the methods to retrieve the timing parameters:
+
+* `virtual uint16_t getDebounceDelay();`
+* `virtual uint16_t getClickDelay();`
+* `virtual uint16_t getDoubleClickDelay();`
+* `virtual uint16_t getLongPressDelay();`
+* `virtual uint16_t getRepeatPressDelay();`
+* `virtual uint16_t getRepeatPressInterval();`
+
+The values of these timing parameters are hardwired at compile time. They can be
+changed in two ways:
+
+1. Use a user-defined subclass to override one or more of these `virtual`
+   methods. Normally we avoid virtual methods in an embedded environment. But we
+   wanted the ability to plug in different types of `ButtonConfig` into the
+   `AceButton` class, and this C++ feature solves this problem very well. The
+   cost is 2 extra bytes for the virtual table pointer in each instance of
+   `ButtonConfig`, and some extra CPU overhead during the call to the virtual
+   functions.
+1. Use the `AdjustableButtonConfig` (see below) to configure these parameters at
+   run-time.
+
+An example of a user-defined subclass to override one of these parameters at
+compile-time would look like this:
+
+```
+class MyButtonConfig: public ButtonConfig {
+  public:
+    virtual uint16_t getClickDelay() override { return 250; }
+};
+```
+
+#### AdjustableButtonConfig
+
+The `AdjustableButtonConfig` is a subclass of `ButtonConfig` that allows the
+timing parameters of `ButtonConfig` to be changed at run-time. Everywhere that
+you see a `ButtonConfig` uses, you can substitute an `AdjustableButtonConfig`.
+It provides the following methods to change the timing parameters:
+
+* `void setDebounceDelay(uint16_t debounceDelay);`
+* `void setClickDelay(uint16_t clickDelay);`
+* `void setDoubleClickDelay(uint16_t doubleClickDelay);`
+* `void setLongPressDelay(uint16_t longPressDelay);`
+* `void setRepeatPressDelay(uint16_t repeatPressDelay);`
+* `void setRepeatPressInterval(uint16_t repeatPressInterval);`
+
+The cost of this flexibility is the larger static memory usage of an
+`AdjustableButtonConfig`, taking up 17 bytes of memory compared to 5 bytes for
+a `ButtonConfig`.
+
+#### Hardware Dependencies
+
+The `ButtonConfig` class has 2 methods which provide hooks to its external
+hardware dependencies:
+
+* `virtual unsigned long getClock();`
+* `virtual int readButton(uint8_t pin);`
+
+By default these are mapped to the underlying Arduino system functions respectively:
+
+* `millis()`
+* `digitalRead()`
+
+Unit tests are possible because these methods are `virtual` and the hardware
+dependencies can be swapped out with fake ones.
+
+#### Multiple ButtonConfig Instances
 
 We have assumed that there is a 1-to-many relationship between a `ButtonConfig`
 and the `AceButton`. In other words, multiple buttons will normally be
@@ -326,10 +405,22 @@ typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
 ```
 
 The event handler is registered with the `ButtonConfig` object, not with the
-`AceButton` object as you might expect.
+`AceButton` object, although the convenience method
+`AceButton::setEventHandler()` is provided as a pass-through to the underlying
+`ButtonConfig` (see the _Single Button Simplifications_ section below):
 
 ```
-void setEventHandler(EventHandler eventHandler);
+ButtonConfig buttonConfig;
+
+void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  ...
+}
+
+void setup() {
+  ...
+  buttonConfig.setEventHandler(handleEvent);
+  ...
+}
 ```
 
 The motivation for this design is to save static memory. If multiple buttons
@@ -362,9 +453,9 @@ If you are using only a single button, then you should need to check
 only the `eventType`.
 
 It is not expected that `buttonState` will be needed very often. It should be
-sufficient to exmaine just the `eventType` to determine the action that needs
+sufficient to examine just the `eventType` to determine the action that needs
 to be performed. Part of the difficulty with this parameter is that it has the
-value of `LOW` or `HIGH`, but the physical interpreation of those values depends
+value of `LOW` or `HIGH`, but the physical interpretation of those values depends
 on whether the button was wired with a pull-up or pull-down resister. The helper
 function `AceButton::isReleased(uint8_t buttonState)` is provided to make this
 determination if you need it.
@@ -459,7 +550,7 @@ The meaning of these flags are described below.
 
 #### Event Activation
 
-Of the 6 event types, 4 are not active by default:
+Of the 6 event types, 4 are disabled by default:
 
 * `AceButton::kEventClicked`
 * `AceButton::kEventDoubleClicked`
@@ -488,7 +579,7 @@ useful at the same time, but both event types can be activated if you need it.
 Event types can be considered to be built up in layers, starting with the
 lowest level primitive events: Pressed and Released. Higher level events are
 built on top of the lower level events through various timing delays. When a
-higher level event is detected, it is sometime useful to suppress the lower
+higher level event is detected, it is sometimes useful to suppress the lower
 level event that was used to detect the higher level event.
 
 For example, a Clicked event requires a Pressed event followed by a Released
@@ -548,8 +639,8 @@ expect `isFeature()` to be used often (or at all) for `kFeatureSuppressAll`.
 ### Single Button Simplifications
 
 Although the AceButton library is designed to shine for multiple buttons, you
-may just want to handle one button. The library provides some features to make
-the simple case easy.
+may want to use it to handle just one button. The library provides some features
+to make this simple case easy.
 
 1. The library automatically creates one instance of `ButtonConfig`
    called a "System ButtonConfig". This System ButtonConfig can be retrieved
@@ -568,13 +659,13 @@ this:
 ```
 AceButton button(BUTTON_PIN);
 
-setup() {
+void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   button.setEventHandler(handleEvent);
   ...
 }
 
-loop() {
+void loop() {
   button.check();
 }
 
@@ -672,7 +763,8 @@ MacOS 10.13.3 and Ubuntu Linux 17.04, connected to an
 clone running at 16 MHz. The Nano clone uses an ATmega328P chip, a CH340
 USB-to-serial chip, and contains 32KB of flash and 2KB of static RAM.
 
-The library has been verified to run on an Arduino UNO R3 (clone).
+The library has been verified to run on an Arduino UNO R3 (clone). It will
+probably work for many other Arduino boards, but they have not been tested yet.
 
 The unit tests require [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
 to be installed.
