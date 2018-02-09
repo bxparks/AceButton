@@ -36,7 +36,7 @@ style for consistency and ease of diffing.
     many people. I've personally gone back and forth, and I decided to just pick
     a style.
 * only one variable declaration per line
-  * e.g. `int i, j;' not allowed, use 2 lines
+  * e.g. `int i, j;` not allowed, use 2 lines
   * _rationale_: Helps readability, and avoids the confusion of
    `AceButton* b1, *b2;` caused by the previous rule.
 * open brace on the same line as the function name (Java style)
