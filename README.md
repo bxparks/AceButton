@@ -743,28 +743,41 @@ Here are the sizes of the various classes:
 40 bytes. It got down to 11 bytes before additional functionality increased it
 to 14.)
 
-Program size:
+**Program size:**
+
+On the Arduino Nano (16 MHz ATmega328P):
 
 * `HelloButton` sketch: 1972 bytes flash
 * `HelloButton` sketch without `AceButton`: 622 bytes flash
 * Therefore, the AceButton library: 1350 bytes flash
 
-CPU cycles:
+**CPU cycles:**
 
-* 14-15 microseconds for `AceButton::check()` (depending on which
-  `kFeatureXxx` events are enabled)
+Here are the profiling numbers for `AceButton::check()` using the
+`Stopwatch.ino` example program:
+
+* Arduino Nano (16 MHz ATmega328P)
+    * 14-15 microseconds
+* Arduino UNO R3 (16 MHz ATmega328P)
+    * 14-15 microseconds
+* Teensy LC (48 MHz ARM Cortex-M0+)
+    * 10-11 microseconds
+* Teensy 3.2 (72 MHz ARM Cortex-M4)
+    * 5-6 microseconds
 
 ## System Requirements
 
 This library was developed using
-[Arduino IDE 1.8.5](https://www.arduino.cc/en/Main/Software) running on
-MacOS 10.13.3 and Ubuntu Linux 17.04, connected to an
-[Arduino Nano](https://store.arduino.cc/usa/arduino-nano)
-clone running at 16 MHz. The Nano clone uses an ATmega328P chip, a CH340
-USB-to-serial chip, and contains 32KB of flash and 2KB of static RAM.
+[Arduino IDE 1.8.5](https://www.arduino.cc/en/Main/Software)
+running on MacOS 10.13.3 and Ubuntu Linux 17.04, and
+[Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html).
 
-The library has been verified to run on an Arduino UNO R3 (clone). It will
-probably work for many other Arduino boards, but they have not been tested yet.
+The library has been verified to work on the following hardware:
+
+* Arduino Nano (16 MHz ATmega328P)
+* Arduino UNO R3 (16 MH ATmega328P)
+* Teensy LC (48 MHz ARM Cortex-M0+)
+* Teensy 3.2 (72 MHz ARM Corect-M4)
 
 The unit tests require [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
 to be installed.
@@ -793,6 +806,10 @@ none.
 
 I decided to write my own and use the opportunity to learn how to create and
 publish an Arduino library.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
