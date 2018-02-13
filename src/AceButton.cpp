@@ -83,9 +83,21 @@ void AceButton::check() {
 
 bool AceButton::checkDebounced(uint16_t now, uint8_t buttonState) {
   if (isDebouncing()) {
-    // currently in debouncing phase
+
+    // NOTE: This is a bit tricky. The elapsedTime will be valid even if the
+    // uint16_t representation of 'now' rolls over so that (now <
+    // mLastDebounceTime). This is true as long as the 'unsigned long'
+    // representation of 'now' is < (65536 + mLastDebounceTime). We need to cast
+    // this expression into an uint16_t before doing the '>=' comparison below
+    // for compatability with processors whose sizeof(int) == 4 instead of 2.
+    // For those processors, the expression (now - mLasDebounceTime >=
+    // getDebounceDelay()) won't work because the terms in the expression get
+    // promoted to an (int).
+    uint16_t elapsedTime = now - mLastDebounceTime;
+
     bool isDebouncingTimeOver =
-        (now - mLastDebounceTime >= mButtonConfig->getDebounceDelay());
+        (elapsedTime >= mButtonConfig->getDebounceDelay());
+
     if (isDebouncingTimeOver) {
       clearDebouncing();
       return true;
@@ -128,7 +140,8 @@ void AceButton::checkLongPress(uint16_t now, uint8_t buttonState) {
   }
 
   if (isPressed() && !isLongPressed()) {
-    if (now - mLastPressTime >= mButtonConfig->getLongPressDelay()) {
+    uint16_t elapsedTime = now - mLastPressTime;
+    if (elapsedTime >= mButtonConfig->getLongPressDelay()) {
       setLongPressed();
       handleEvent(kEventLongPressed);
     }
@@ -142,13 +155,14 @@ void AceButton::checkRepeatPress(uint16_t now, uint8_t buttonState) {
 
   if (isPressed()) {
     if (isRepeatPressed()) {
-      if (now - mLastRepeatPressTime
-          >= mButtonConfig->getRepeatPressInterval()) {
+      uint16_t elapsedTime = now - mLastRepeatPressTime;
+      if (elapsedTime >= mButtonConfig->getRepeatPressInterval()) {
         handleEvent(kEventRepeatPressed);
         mLastRepeatPressTime = now;
       }
     } else {
-      if (now - mLastPressTime >= mButtonConfig->getRepeatPressDelay()) {
+      uint16_t elapsedTime = now - mLastPressTime;
+      if (elapsedTime >= mButtonConfig->getRepeatPressDelay()) {
         setRepeatPressed();
         // Trigger the RepeatPressed immedidately, instead of waiting until the
         // first getRepeatPressInterval() has passed.
@@ -226,7 +240,8 @@ void AceButton::checkClicked(uint16_t now, uint8_t buttonState) {
     clearClicked();
     return;
   }
-  if (now - mLastPressTime >= mButtonConfig->getClickDelay()) {
+  uint16_t elapsedTime = now - mLastPressTime;
+  if (elapsedTime >= mButtonConfig->getClickDelay()) {
     clearClicked();
     return;
   }
@@ -256,7 +271,8 @@ void AceButton::checkDoubleClicked(uint16_t now, uint8_t buttonState) {
     return;
   }
 
-  if (now - mLastClickTime >= mButtonConfig->getDoubleClickDelay()) {
+  uint16_t elapsedTime = now - mLastClickTime;
+  if (elapsedTime >= mButtonConfig->getDoubleClickDelay()) {
     clearDoubleClicked();
     return;
   }
@@ -276,7 +292,8 @@ void AceButton::checkOrphanedClick(uint16_t now, uint8_t buttonState) {
   // time. But I'm not sure that I've thought through all the details.
   uint16_t orphanedClickDelay = mButtonConfig->getDoubleClickDelay();
 
-  if (isClicked() && (now - mLastClickTime >= orphanedClickDelay)) {
+  uint16_t elapsedTime = now - mLastClickTime;
+  if (isClicked() && (elapsedTime >= orphanedClickDelay)) {
     clearClicked();
   }
 }
