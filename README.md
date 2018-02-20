@@ -764,13 +764,16 @@ Here are the profiling numbers for `AceButton::check()` using the
 `Stopwatch.ino` example program:
 
 * Arduino Nano (16 MHz ATmega328P)
-    * 14-15 microseconds
+    * 13.2 - 14.0 microseconds
 * Arduino UNO R3 (16 MHz ATmega328P)
-    * 14-15 microseconds
+    * 13.2 - 14.0 microseconds
 * Teensy LC (48 MHz ARM Cortex-M0+)
-    * 10-11 microseconds
+    * 5.0 - 6.2 microseconds
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
-    * 5-6 microseconds
+    * 2.2 - 3.1 microseconds
+
+The small numbers are with all events (except Pressed and Released) disabled.
+The larger numbers are with all events enabled.
 
 ## System Requirements
 

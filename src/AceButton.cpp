@@ -78,7 +78,9 @@ void AceButton::check() {
   if (mButtonConfig->isFeature(ButtonConfig::kFeatureRepeatPress)) {
     checkRepeatPress(now, buttonState);
   }
-  checkChanged(now, buttonState);
+  if (buttonState != getLastButtonState()) {
+    checkChanged(now, buttonState);
+  }
 }
 
 bool AceButton::checkDebounced(uint16_t now, uint8_t buttonState) {
@@ -174,10 +176,6 @@ void AceButton::checkRepeatPress(uint16_t now, uint8_t buttonState) {
 }
 
 void AceButton::checkChanged(uint16_t now, uint8_t buttonState) {
-  if (buttonState == getLastButtonState()) {
-    return;
-  }
-
   mLastButtonState = buttonState;
   checkPressed(now, buttonState);
   checkReleased(now, buttonState);

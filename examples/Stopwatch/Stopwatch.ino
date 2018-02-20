@@ -42,6 +42,8 @@ const uint8_t STOPWATCH_STOPPED = 2;
 // implements a finite state machine (FSM)
 uint8_t stopwatchState = STOPWATCH_INIT;
 
+bool allEventsEnabled = false;
+
 void setup() {
   Serial.begin(9600);
 
@@ -63,13 +65,17 @@ void setup() {
 }
 
 void loop() {
-  // Should be called every 20ms or faster for the default debouncing time
-  // of ~50ms.
-  button.check();
+  // Use an explicit infinite loop to avoid the overhead of the loop() processor
+  // for timing purposes. Normally, we wouldn't do this.
+  while (true) {
+    // Should be called every 20ms or faster for the default debouncing time
+    // of ~50ms.
+    button.check();
 
-  // increment loop counter
-  if (stopwatchState == STOPWATCH_STARTED) {
-    loopCounter++;
+    // increment loop counter
+    if (stopwatchState == STOPWATCH_STARTED) {
+      loopCounter++;
+    }
   }
 }
 
@@ -79,15 +85,27 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   switch (eventType) {
     case AceButton::kEventPressed:
       if (stopwatchState == STOPWATCH_INIT) {
+
+        // enable or disable higher level events, to get different performance
+        // numbers
+        if (allEventsEnabled) {
+          enableAllEvents();
+        } else {
+          disableAllEvents();
+        }
+
+        Serial.println(F("handleEvent(): stopwatch started"));
         startMillis = now;
         loopCounter = 0;
         stopwatchState = STOPWATCH_STARTED;
-        Serial.println(F("handleEvent(): stopwatch started"));
       } else if (stopwatchState == STOPWATCH_STARTED) {
         stopMillis = now;
         stopwatchState = STOPWATCH_STOPPED;
         unsigned long duration = stopMillis - startMillis;
-        double microsPerLoop = (double) duration * 1000 / loopCounter;
+        float microsPerLoop = duration * 1000.0 / loopCounter;
+
+        // reenable all events after stopping
+        enableAllEvents();
 
         Serial.println(F("handleEvent(): stopwatch stopped"));
         Serial.print(F("handleEvent(): duration (ms): "));
@@ -96,13 +114,31 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
         Serial.print(loopCounter);
         Serial.print(F("; micros/loop: "));
         Serial.println(microsPerLoop);
+
       }
       break;
     case AceButton::kEventLongPressed:
       if (stopwatchState == STOPWATCH_STOPPED) {
         stopwatchState = STOPWATCH_INIT;
         Serial.println(F("handleEvent(): stopwatch reset"));
+        allEventsEnabled = !allEventsEnabled;
       }
       break;
   }
+}
+
+void enableAllEvents() {
+  Serial.println(F("enabling high level events"));
+  adjustableButtonConfig.setFeature(ButtonConfig::kFeatureClick);
+  adjustableButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+  adjustableButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
+  adjustableButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
+}
+
+void disableAllEvents() {
+  Serial.println(F("disabling high level events"));
+  adjustableButtonConfig.clearFeature(ButtonConfig::kFeatureClick);
+  adjustableButtonConfig.clearFeature(ButtonConfig::kFeatureDoubleClick);
+  adjustableButtonConfig.clearFeature(ButtonConfig::kFeatureLongPress);
+  adjustableButtonConfig.clearFeature(ButtonConfig::kFeatureRepeatPress);
 }
