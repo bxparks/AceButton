@@ -784,13 +784,15 @@ running on MacOS 10.13.3 and Ubuntu Linux 17.04, and
 
 The library has been verified to work on the following hardware:
 
-* Arduino Nano (16 MHz ATmega328P)
-* Arduino UNO R3 (16 MH ATmega328P)
+* Arduino Nano clone (16 MHz ATmega328P)
+* Arduino UNO R3 clone (16 MH ATmega328P)
 * Teensy LC (48 MHz ARM Cortex-M0+)
 * Teensy 3.2 (72 MHz ARM Corect-M4)
+* NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
 
-The unit tests require [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
-to be installed.
+The unit tests require [ArduinoUnit 2.2](https://github.com/mmurdoch/arduinounit)
+to be installed. Unfortunately, ArduinoUnit lacks
+[support for ESP8266](https://github.com/mmurdoch/arduinounit/issues/68).
 
 ## Background Motivation
 

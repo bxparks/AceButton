@@ -66,7 +66,8 @@ void setup() {
 
 void loop() {
   // Use an explicit infinite loop to avoid the overhead of the loop() processor
-  // for timing purposes. Normally, we wouldn't do this.
+  // for timing purposes. Normally, we wouldn't do this. In particular, this
+  // infinite loop causes Watch Dog Timer errors on the ESP8266 boards.
   while (true) {
     // Should be called every 20ms or faster for the default debouncing time
     // of ~50ms.
