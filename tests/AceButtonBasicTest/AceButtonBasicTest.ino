@@ -176,10 +176,10 @@ test(init_while_pressed) {
 // parameters on AceButton properly.
 test(testable_config) {
   testableConfig.setClock(0);
-  assertEqual(0, button.getButtonConfig()->getClock());
+  assertEqual(0UL, button.getButtonConfig()->getClock());
 
   testableConfig.setClock(40);
-  assertEqual(40, button.getButtonConfig()->getClock());
+  assertEqual(40UL, button.getButtonConfig()->getClock());
 
   testableConfig.setButtonState(HIGH);
   assertEqual(HIGH, button.getButtonConfig()->readButton(0));
@@ -191,20 +191,20 @@ test(testable_config) {
 // Test that the AdjustableButtonConfig overrides properly.
 test(adjustable_config) {
   adjustableConfig.setDebounceDelay(1);
-  assertEqual(1, adjustableConfig.getDebounceDelay());
+  assertEqual(1U, adjustableConfig.getDebounceDelay());
 
   adjustableConfig.setClickDelay(2);
-  assertEqual(2, adjustableConfig.getClickDelay());
+  assertEqual(2U, adjustableConfig.getClickDelay());
 
   adjustableConfig.setDoubleClickDelay(3);
-  assertEqual(3, adjustableConfig.getDoubleClickDelay());
+  assertEqual(3U, adjustableConfig.getDoubleClickDelay());
 
   adjustableConfig.setLongPressDelay(4);
-  assertEqual(4, adjustableConfig.getLongPressDelay());
+  assertEqual(4U, adjustableConfig.getLongPressDelay());
 
   adjustableConfig.setRepeatPressDelay(5);
-  assertEqual(5, adjustableConfig.getRepeatPressDelay());
+  assertEqual(5U, adjustableConfig.getRepeatPressDelay());
 
   adjustableConfig.setRepeatPressInterval(6);
-  assertEqual(6, adjustableConfig.getRepeatPressInterval());
+  assertEqual(6U, adjustableConfig.getRepeatPressInterval());
 }

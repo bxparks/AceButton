@@ -16,7 +16,7 @@
 
 #include "AceButton.h"
 
-using namespace ace_button;
+namespace ace_button {
 
 // Check that the Arduino constants HIGH and LOW are defined to be 1 and 0,
 // respectively. Otherwise, this library won't work.
@@ -301,4 +301,6 @@ void AceButton::handleEvent(uint8_t eventType) {
   if (eventHandler) {
     eventHandler(this, eventType, getLastButtonState());
   }
+}
+
 }
