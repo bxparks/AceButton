@@ -336,7 +336,7 @@ class AceButton {
      * kButtonStateUnknown state which implies that the event handler should
      * NOT be fired.
      */
-    bool checkInitialized(uint16_t now, uint16_t buttonState);
+    bool checkInitialized(uint16_t buttonState);
 
     /** Check for a long press event and dispatch to event handler. */
     void checkLongPress(uint16_t now, uint8_t buttonState);
@@ -357,13 +357,13 @@ class AceButton {
     void checkPressed(uint16_t now, uint8_t buttonState);
 
     /** Check for a single click event and dispatch to handler. */
-    void checkClicked(uint16_t now, uint8_t buttonState);
+    void checkClicked(uint16_t now);
 
     /**
      * Check for a double click event and dispatch to handler. Return true if
      * double click detected.
      */
-    void checkDoubleClicked(uint16_t now, uint8_t buttonState);
+    void checkDoubleClicked(uint16_t now);
 
     /**
      * Check for an orphaned click that did not generate a double click and
@@ -373,7 +373,7 @@ class AceButton {
      * the 'lastClickTime', we'd still need this function to prevent a rollover
      * of the 32-bit number in 49.7 days.
      */
-    void checkOrphanedClick(uint16_t now, uint8_t buttonState);
+    void checkOrphanedClick(uint16_t now);
 
     /**
      * Dispatch to the event handler defined in the mButtonConfig.
