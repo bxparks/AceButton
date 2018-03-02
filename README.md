@@ -780,7 +780,8 @@ The larger numbers are with all events enabled.
 This library was developed and tested using:
 * [Arduino IDE 1.8.5](https://www.arduino.cc/en/Main/Software)
 * [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
-* [ESP8266 Arduino Core * 2.4.0](https://arduino-esp8266.readthedocs.io/en/2.4.0-rc2/)
+* [ESP8266 Arduino Core 2.4.0](https://arduino-esp8266.readthedocs.io/en/2.4.0-rc2/)
+
 I used MacOS 10.13.3 and Ubuntu Linux 17.04 for most of my development.
 
 The library has been verified to work on the following hardware:
