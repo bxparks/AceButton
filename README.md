@@ -777,22 +777,25 @@ The larger numbers are with all events enabled.
 
 ## System Requirements
 
-This library was developed using
-[Arduino IDE 1.8.5](https://www.arduino.cc/en/Main/Software)
-running on MacOS 10.13.3 and Ubuntu Linux 17.04, and
-[Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html).
+This library was developed and tested using:
+* [Arduino IDE 1.8.5](https://www.arduino.cc/en/Main/Software)
+* [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
+* [ESP8266 Arduino Core * 2.4.0](https://arduino-esp8266.readthedocs.io/en/2.4.0-rc2/)
+I used MacOS 10.13.3 and Ubuntu Linux 17.04 for most of my development.
 
 The library has been verified to work on the following hardware:
 
 * Arduino Nano clone (16 MHz ATmega328P)
-* Arduino UNO R3 clone (16 MH ATmega328P)
+* Arduino UNO R3 clone (16 MHz ATmega328P)
 * Teensy LC (48 MHz ARM Cortex-M0+)
-* Teensy 3.2 (72 MHz ARM Corect-M4)
+* Teensy 3.2 (72 MHz ARM Cortex-M4)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
 
-The unit tests require [ArduinoUnit 2.2](https://github.com/mmurdoch/arduinounit)
-to be installed. Unfortunately, ArduinoUnit lacks
-[support for ESP8266](https://github.com/mmurdoch/arduinounit/issues/68).
+The unit tests require
+[ArduinoUnit 2.2](https://github.com/mmurdoch/arduinounit)
+to be installed. Unfortunately, ArduinoUnit
+[lacks support for ESP8266](https://github.com/mmurdoch/arduinounit/issues/68)
+so only manual testing was possible on the ESP8266 platform.
 
 ## Background Motivation
 
