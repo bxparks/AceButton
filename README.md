@@ -69,7 +69,7 @@ Here are the high-level features of the AceButton library:
   [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
-* only 14-15 microseconds per polling call to `AceButton::check()`
+* only 12-14 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
 
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
@@ -90,7 +90,7 @@ want to write everything yourself from scratch.
 
 That said, the __Stopwatch.ino__ example sketch shows that the call to
 `AceButton::check()` (which should be called at least every 10-20 milliseconds
-from `loop()`) takes only 14-15 microseconds on a 16MHz ATmega328P chip in the
+from `loop()`) takes only 12-14 microseconds on a 16MHz ATmega328P chip in the
 idle case. Hopefully that is fast enough for the vast majority of people.
 
 ### HelloButton
@@ -764,13 +764,13 @@ Here are the profiling numbers for `AceButton::check()` using the
 `Stopwatch.ino` example program:
 
 * Arduino Nano (16 MHz ATmega328P)
-    * 13.2 - 14.0 microseconds
+    * 11.8 - 14.4 microseconds
 * Arduino UNO R3 (16 MHz ATmega328P)
-    * 13.2 - 14.0 microseconds
+    * 11.8 - 14.4 microseconds
 * Teensy LC (48 MHz ARM Cortex-M0+)
-    * 5.0 - 6.2 microseconds
+    * 4.3 - 6.4 microseconds
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
-    * 2.2 - 3.1 microseconds
+    * 2.0 - 3.2 microseconds
 
 The small numbers are with all events (except Pressed and Released) disabled.
 The larger numbers are with all events enabled.

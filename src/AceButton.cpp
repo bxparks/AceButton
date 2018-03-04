@@ -71,7 +71,19 @@ void AceButton::check() {
   // check if the button was not initialized (i.e. UNKNOWN state)
   if (!checkInitialized(buttonState)) return;
 
-  checkOrphanedClick(now);
+  // We need to remove orphaned clicks even if just Click is enabled. It is not
+  // sufficient to do this for just DoubleClick. That's because it's possible
+  // for a Clicked event to be generated, then 65.536 seconds later, the
+  // ButtonConfig could be changed to enable DoubleClick. (Such real-time change
+  // of ButtonConfig is not recommended, but is sometimes convenient.) If the
+  // orphaned click is not cleared, then the next Click would be errorneously
+  // considered to be a DoubleClick. Therefore, we must clear the orphaned click
+  // even if just the Clicked event is enabled.
+  if (mButtonConfig->isFeature(ButtonConfig::kFeatureClick) ||
+      mButtonConfig->isFeature(ButtonConfig::kFeatureDoubleClick)) {
+    checkOrphanedClick(now);
+  }
+
   if (mButtonConfig->isFeature(ButtonConfig::kFeatureLongPress)) {
     checkLongPress(now, buttonState);
   }
@@ -197,7 +209,7 @@ void AceButton::checkReleased(uint16_t now, uint8_t buttonState) {
     return;
   }
 
-  // check for click (before sending off the Released event)
+  // Check for click (before sending off the Released event).
   // Make sure that we don't clearPressed() before calling this.
   if (mButtonConfig->isFeature(ButtonConfig::kFeatureClick)
       || mButtonConfig->isFeature(ButtonConfig::kFeatureDoubleClick)) {
@@ -249,7 +261,7 @@ void AceButton::checkClicked(uint16_t now) {
     checkDoubleClicked(now);
   }
 
-  // suppress a second click (both buttonState change and event message) if
+  // Suppress a second click (both buttonState change and event message) if
   // double-click detected, which has the side-effect of preventing 3 clicks
   // from generating another double-click at the third click.
   if (isDoubleClicked()) {

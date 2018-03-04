@@ -496,3 +496,91 @@ test(orphaned_click_causes_double_click_if_not_cleared) {
   assertEqual(expected, eventTracker.getRecord(1).getEventType());
   assertEqual(HIGH, eventTracker.getRecord(1).getButtonState());
 }
+
+// Test that an orphaned click is removed if Click is enabled.
+test(orphaned_click_removed_if_click_enabled) {
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
+  const unsigned long ROLLOVER_TIME = 65536;
+  uint8_t expected;
+
+  // reset the button, and enable double-click
+  helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.setFeature(ButtonConfig::kFeatureClick);
+
+  // initial button state
+  helper.releaseButton(BASE_TIME + 0);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // initilization phase
+  helper.releaseButton(BASE_TIME + 50);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(BASE_TIME + 140);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get an event
+  helper.pressButton(BASE_TIME + 190);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click, but must wait for debounce
+  helper.releaseButton(BASE_TIME + 300);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms to get event
+  helper.releaseButton(BASE_TIME + 350);
+  assertEqual(2, eventTracker.getNumEvents());
+  expected = AceButton::kEventClicked;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(1).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(1).getButtonState());
+
+  // Move time forward, so that the orphaned click is cleared.
+  // If AceButton.checkOrphanedClick() is disabled, or this statement is removed
+  // (thereby preventing a call to checkOrphanedClick()), then the asserts below
+  // will fail.
+  helper.checkTime(BASE_TIME + 5000);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Turn on DoubleClick in the middle of click processing. If we called
+  // checkOrphanedClick() only if DoubleClick was enabled (instead of checking
+  // it when Click is enabled as well), then this change in ButtonConfig will
+  // cause this test to fail.
+  testableConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+
+  // Generate another click between (65.535s, 65.535s + 400 ms) of the first
+  // CLICK event (i.e. +250 ms). If the first orphaned click was not properly
+  // reset, then this will genearte a double click instead of a single click.
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(ROLLOVER_TIME + BASE_TIME + 400);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get an event
+  helper.pressButton(ROLLOVER_TIME + BASE_TIME + 450);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click, but must wait for debounce
+  helper.releaseButton(ROLLOVER_TIME + BASE_TIME + 550);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms for debounce. Should get a single click, not
+  // a double click.
+  helper.releaseButton(ROLLOVER_TIME + BASE_TIME + 600);
+  assertEqual(2, eventTracker.getNumEvents());
+  expected = AceButton::kEventClicked;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(1).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(1).getButtonState());
+}
