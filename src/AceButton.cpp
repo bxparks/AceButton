@@ -104,7 +104,7 @@ bool AceButton::checkDebounced(uint16_t now, uint8_t buttonState) {
     // representation of 'now' is < (65536 + mLastDebounceTime). We need to cast
     // this expression into an uint16_t before doing the '>=' comparison below
     // for compatability with processors whose sizeof(int) == 4 instead of 2.
-    // For those processors, the expression (now - mLasDebounceTime >=
+    // For those processors, the expression (now - mLastDebounceTime >=
     // getDebounceDelay()) won't work because the terms in the expression get
     // promoted to an (int).
     uint16_t elapsedTime = now - mLastDebounceTime;
