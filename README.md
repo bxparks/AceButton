@@ -9,9 +9,9 @@ will refer to all of these as "buttons" from now on.
 
 The library is called the ACE Button Library (or AceButton Library) because:
 
-* many configurations of the button is **adjustable**, either at compile-time or
-  run-time
-* the library has been optimized to create **compact** objects which take up
+* many configurations of the button are **adjustable**, either at compile-time
+  or run-time
+* the library is optimized to create **compact** objects which take up
   a minimal amount of static memory
 * the library detects changes in the button state and sends **events** to
   a user-defined `EventHandler` callback function
