@@ -15,6 +15,31 @@
    limitations under the License.
 */
 
+/*
+ * Using Multiple Cpp Files:
+ *
+ * I tried to spread the tests of this .ino file into 6 .cpp files (and one
+ * .h file), matching the 6 logical sections indicated below. Unfortunately,
+ * on the AVR platform (Arduino Nano), the flash memory consumption increased
+ * from 26768 (87%) to 28630 (93%), a difference of 1862 bytes. Since an Arduino
+ * Nano has only 32720 bytes in flash, the difference of 1862 bytes (5.7%) is
+ * signficant. I'm not sure where the flash consumption is coming from. Maybe
+ * the compiler is includeing debugging information to the 6 additional .cpp
+ * file names, or maybe the compiler/linker is using 4-bytes references to
+ * various global variables instead of 2-bytes? For now, let's leave all the
+ * tests in this single .ino file. I also noticed that changing from "const int
+ * PIN = 13" to "#define PIN 13" (and the same with BUTTON_ID) in the .h header
+ * file, the #define saved 210 bytes.
+ *
+ * On the Teensy-ARM platform (Teensy LC), using 6 separate .cpp files instead
+ * of one giant .ino file caused the flash memory to *decrease* from 31408 to
+ * 31204 bytes(!). And on the ARM platform, there was no difference in flash
+ * memory size between "const int PIN = 13" and "#define PIN 13".
+ *
+ * Conclusion, this seems to be a problem with the avr-gcc compiler, or a
+ * suboptimal compiler flags set by the Arduino IDE.
+ */
+
 #include <ArduinoUnit.h>
 #include <AceButton.h>
 #include <AdjustableButtonConfig.h>
