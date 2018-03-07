@@ -7,7 +7,9 @@
  * - press: stop the stopwatch, printing out the result
  * - long press: reset the stopwatch, allowing press to start the process again
  *
- * It appears that AceButton::check() takes about 16 microseconds.
+ * Each 'long press' alternates between enableAllEvents() and disableAllEvents()
+ * so that we can compare the timing of check() when all events are off (except
+ * Pressed and Released) and when all events are on.
  */
 
 #include <AceButton.h>
@@ -30,7 +32,8 @@ AdjustableButtonConfig adjustableButtonConfig;
 AceButton button(BUTTON_PIN);
 
 // counters to determine the duration of a single call to AceButton::check()
-unsigned long loopCounter = 0;
+uint16_t innerLoopCounter = 0;
+uint16_t outerLoopCounter = 0;
 unsigned long startMillis = 0;
 unsigned long stopMillis  = 0;
 
@@ -65,19 +68,26 @@ void setup() {
 }
 
 void loop() {
-  // Use an explicit infinite loop to avoid the overhead of the loop() processor
-  // for timing purposes. Normally, we wouldn't do this. In particular, this
-  // infinite loop causes Watch Dog Timer errors on the ESP8266 boards.
-  while (true) {
-    // Should be called every 20ms or faster for the default debouncing time
-    // of ~50ms.
+  // We split the loop into an inner loop and an outer loop. The inner loop
+  // allows us to measure the speed of button.check() without the overhead of
+  // the outer loop. However, we must allow the outer loop() method to return
+  // periodically to allow the microcontroller to its own stuff. This is
+  // especially true on an ESP8266 board, where a Watch Dog Timer will
+  // soft-reset the board if loop() doesn't return every few seconds.
+  do {
+    // button.check() Should be called every 20ms or faster for the default
+    // debouncing time of ~50ms.
     button.check();
 
     // increment loop counter
     if (stopwatchState == STOPWATCH_STARTED) {
-      loopCounter++;
+      innerLoopCounter++;
     }
-  }
+  } while (innerLoopCounter);
+
+  // Each time the innerLoopCounter rolls over (65536), increment the outer loop
+  // counter, and return from loop(), to prevent WDT errors on ESP8266.
+  outerLoopCounter++;
 }
 
 // The event handler for the button.
@@ -97,13 +107,16 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 
         Serial.println(F("handleEvent(): stopwatch started"));
         startMillis = now;
-        loopCounter = 0;
+        innerLoopCounter = 0;
+        outerLoopCounter = 0;
         stopwatchState = STOPWATCH_STARTED;
       } else if (stopwatchState == STOPWATCH_STARTED) {
         stopMillis = now;
         stopwatchState = STOPWATCH_STOPPED;
         unsigned long duration = stopMillis - startMillis;
-        float microsPerLoop = duration * 1000.0 / loopCounter;
+        uint32_t loopCounter = ((uint32_t) outerLoopCounter << 16) +
+            innerLoopCounter;
+        float microsPerLoop = duration * 1000.0f / loopCounter;
 
         // reenable all events after stopping
         enableAllEvents();
@@ -116,6 +129,8 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
         Serial.print(F("; micros/loop: "));
         Serial.println(microsPerLoop);
 
+        // Setting 0 allows the loop() function to return periodically.
+        innerLoopCounter = 0;
       }
       break;
     case AceButton::kEventLongPressed:
