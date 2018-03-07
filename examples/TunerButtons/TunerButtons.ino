@@ -95,7 +95,7 @@ void setup() {
 
 #if ENABLE_SERIAL == 1
   while (! Serial); // Wait until Serial is ready - Leonardo
-  Serial.println(F("stopwatch ready"));
+  Serial.println(F("tuner buttons ready"));
 #endif
 
   printStation(currentStation);
@@ -157,7 +157,7 @@ void handleTuneEvent(AceButton* button, uint8_t eventType,
 }
 
 void retrievePreset(uint8_t id) {
-  if (id >= 0 || id <= NUM_PRESETS) {
+  if (id <= NUM_PRESETS) {
     currentStation = stations[id];
 #if ENABLE_SERIAL == 1
     Serial.print(F("memory "));
@@ -169,7 +169,7 @@ void retrievePreset(uint8_t id) {
 }
 
 void setPreset(uint8_t id) {
-  if (id >= 0 || id <= NUM_PRESETS) {
+  if (id <= NUM_PRESETS) {
     stations[id] = currentStation;
 
 #if ENABLE_SERIAL == 1
