@@ -37,7 +37,7 @@ namespace ace_button {
  * The check() method should be called from the loop() at least 2-3 times during
  * the debouncing time period. For 50 ms delay, the check() method should be
  * called at a minimum of every 15-20 ms. The execution time of check() on a 16
- * MHz Arduino ATmega328P MCU seems to about about 15 microseconds.
+ * MHz Arduino ATmega328P MCU seems to about about 12-14 microseconds.
  */
 class AceButton {
   public:
@@ -177,10 +177,9 @@ class AceButton {
     /**
      * Check state of button and trigger event processing. This method should be
      * called from the loop() method in Arduino every 2-3 times during the
-     * getDebounceDelay() time (default 50 ms), so about every 10-20 ms.
-     *
-     * The class will still work if called less of than that because the
-     * debouncing algorithm may not work correctly.
+     * getDebounceDelay() time (default 50 ms), so about every 10-20 ms. If this
+     * is called less often than that, the debouncing algorithm may not work
+     * correctly, which may cause other event detection algorithms to fail.
      */
     void check();
 
@@ -203,7 +202,7 @@ class AceButton {
       return buttonState == getDefaultReleasedState();
     }
 
-  // Some of these protected methods may be useful to the calling client but I
+  // Some of these private methods may be useful to the calling client but I
   // don't want to release them to the public because I want to keep the API as
   // small as possible for easier long term maintenance. (Once a method is
   // released to the public, it must be supported forever to ensure backwards
@@ -336,7 +335,7 @@ class AceButton {
      * kButtonStateUnknown state which implies that the event handler should
      * NOT be fired.
      */
-    bool checkInitialized(uint16_t now, uint16_t buttonState);
+    bool checkInitialized(uint16_t buttonState);
 
     /** Check for a long press event and dispatch to event handler. */
     void checkLongPress(uint16_t now, uint8_t buttonState);
@@ -357,13 +356,13 @@ class AceButton {
     void checkPressed(uint16_t now, uint8_t buttonState);
 
     /** Check for a single click event and dispatch to handler. */
-    void checkClicked(uint16_t now, uint8_t buttonState);
+    void checkClicked(uint16_t now);
 
     /**
      * Check for a double click event and dispatch to handler. Return true if
      * double click detected.
      */
-    void checkDoubleClicked(uint16_t now, uint8_t buttonState);
+    void checkDoubleClicked(uint16_t now);
 
     /**
      * Check for an orphaned click that did not generate a double click and
@@ -373,7 +372,7 @@ class AceButton {
      * the 'lastClickTime', we'd still need this function to prevent a rollover
      * of the 32-bit number in 49.7 days.
      */
-    void checkOrphanedClick(uint16_t now, uint8_t buttonState);
+    void checkOrphanedClick(uint16_t now);
 
     /**
      * Dispatch to the event handler defined in the mButtonConfig.

@@ -1,5 +1,14 @@
 # Changelog
 
+* 1.0.4 (2018-03-07)
+    * Support ESP8266.
+        * Split `loop()` in `Stopwatch.ino` into inner and outer loops, to
+          allow `loop()` to return periodically.
+        * Perform manual testing, since ArduinoUnit does not work on ESP8266.
+    * Optimize `check()` so that `checkOrphanedClick()` is called only when
+      needed.
+    * README.md: add  benchmark numbers for ESP8266, fix typos.
+    * Fix various compiler warnings about unused variables.
 * 1.0.3 (2018-02-13)
     * Make library work on Teensy LC and 3.2.
         * Fix `elapsedTime` expression that breaks on 32-bit processors

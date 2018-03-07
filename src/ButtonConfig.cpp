@@ -16,7 +16,7 @@
 
 #include "ButtonConfig.h"
 
-using namespace ace_button;
+namespace ace_button {
 
 // The default "System" instance of a ButtonConfig.
 ButtonConfig ButtonConfig::sSystemButtonConfig;
@@ -24,3 +24,5 @@ ButtonConfig ButtonConfig::sSystemButtonConfig;
 ButtonConfig::ButtonConfig():
     mEventHandler(nullptr),
     mFeatureFlags(0) {}
+
+}

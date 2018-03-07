@@ -16,7 +16,7 @@
 
 #include "AceButton.h"
 
-using namespace ace_button;
+namespace ace_button {
 
 // Check that the Arduino constants HIGH and LOW are defined to be 1 and 0,
 // respectively. Otherwise, this library won't work.
@@ -69,16 +69,30 @@ void AceButton::check() {
   if (!checkDebounced(now, buttonState)) return;
 
   // check if the button was not initialized (i.e. UNKNOWN state)
-  if (!checkInitialized(now, buttonState)) return;
+  if (!checkInitialized(buttonState)) return;
 
-  checkOrphanedClick(now, buttonState);
+  // We need to remove orphaned clicks even if just Click is enabled. It is not
+  // sufficient to do this for just DoubleClick. That's because it's possible
+  // for a Clicked event to be generated, then 65.536 seconds later, the
+  // ButtonConfig could be changed to enable DoubleClick. (Such real-time change
+  // of ButtonConfig is not recommended, but is sometimes convenient.) If the
+  // orphaned click is not cleared, then the next Click would be errorneously
+  // considered to be a DoubleClick. Therefore, we must clear the orphaned click
+  // even if just the Clicked event is enabled.
+  if (mButtonConfig->isFeature(ButtonConfig::kFeatureClick) ||
+      mButtonConfig->isFeature(ButtonConfig::kFeatureDoubleClick)) {
+    checkOrphanedClick(now);
+  }
+
   if (mButtonConfig->isFeature(ButtonConfig::kFeatureLongPress)) {
     checkLongPress(now, buttonState);
   }
   if (mButtonConfig->isFeature(ButtonConfig::kFeatureRepeatPress)) {
     checkRepeatPress(now, buttonState);
   }
-  checkChanged(now, buttonState);
+  if (buttonState != getLastButtonState()) {
+    checkChanged(now, buttonState);
+  }
 }
 
 bool AceButton::checkDebounced(uint16_t now, uint8_t buttonState) {
@@ -90,7 +104,7 @@ bool AceButton::checkDebounced(uint16_t now, uint8_t buttonState) {
     // representation of 'now' is < (65536 + mLastDebounceTime). We need to cast
     // this expression into an uint16_t before doing the '>=' comparison below
     // for compatability with processors whose sizeof(int) == 4 instead of 2.
-    // For those processors, the expression (now - mLasDebounceTime >=
+    // For those processors, the expression (now - mLastDebounceTime >=
     // getDebounceDelay()) won't work because the terms in the expression get
     // promoted to an (int).
     uint16_t elapsedTime = now - mLastDebounceTime;
@@ -119,7 +133,7 @@ bool AceButton::checkDebounced(uint16_t now, uint8_t buttonState) {
   }
 }
 
-bool AceButton::checkInitialized(uint16_t now, uint16_t buttonState) {
+bool AceButton::checkInitialized(uint16_t buttonState) {
   if (mLastButtonState != kButtonStateUnknown) {
     return true;
   }
@@ -174,10 +188,6 @@ void AceButton::checkRepeatPress(uint16_t now, uint8_t buttonState) {
 }
 
 void AceButton::checkChanged(uint16_t now, uint8_t buttonState) {
-  if (buttonState == getLastButtonState()) {
-    return;
-  }
-
   mLastButtonState = buttonState;
   checkPressed(now, buttonState);
   checkReleased(now, buttonState);
@@ -199,11 +209,11 @@ void AceButton::checkReleased(uint16_t now, uint8_t buttonState) {
     return;
   }
 
-  // check for click (before sending off the Released event)
+  // Check for click (before sending off the Released event).
   // Make sure that we don't clearPressed() before calling this.
   if (mButtonConfig->isFeature(ButtonConfig::kFeatureClick)
       || mButtonConfig->isFeature(ButtonConfig::kFeatureDoubleClick)) {
-    checkClicked(now, buttonState);
+    checkClicked(now);
   }
 
   // check if Released events are suppressed
@@ -231,7 +241,7 @@ void AceButton::checkReleased(uint16_t now, uint8_t buttonState) {
   }
 }
 
-void AceButton::checkClicked(uint16_t now, uint8_t buttonState) {
+void AceButton::checkClicked(uint16_t now) {
   if (!isPressed()) {
     // Not a Click unless the previous state was a Pressed state.
     // This can happen if the chip was rebooted with the button Pressed. Upon
@@ -248,10 +258,10 @@ void AceButton::checkClicked(uint16_t now, uint8_t buttonState) {
 
   // check for double click
   if (mButtonConfig->isFeature(ButtonConfig::kFeatureDoubleClick)) {
-    checkDoubleClicked(now, buttonState);
+    checkDoubleClicked(now);
   }
 
-  // suppress a second click (both buttonState change and event message) if
+  // Suppress a second click (both buttonState change and event message) if
   // double-click detected, which has the side-effect of preventing 3 clicks
   // from generating another double-click at the third click.
   if (isDoubleClicked()) {
@@ -265,7 +275,7 @@ void AceButton::checkClicked(uint16_t now, uint8_t buttonState) {
   handleEvent(kEventClicked);
 }
 
-void AceButton::checkDoubleClicked(uint16_t now, uint8_t buttonState) {
+void AceButton::checkDoubleClicked(uint16_t now) {
   if (!isClicked()) {
     clearDoubleClicked();
     return;
@@ -281,7 +291,7 @@ void AceButton::checkDoubleClicked(uint16_t now, uint8_t buttonState) {
   handleEvent(kEventDoubleClicked);
 }
 
-void AceButton::checkOrphanedClick(uint16_t now, uint8_t buttonState) {
+void AceButton::checkOrphanedClick(uint16_t now) {
   // The amount of time which must pass before a click is determined to be
   // orphaned and reclaimed. If only DoubleClicked is supported, then I think
   // just getDoubleClickDelay() is correct. No other higher level event uses the
@@ -303,4 +313,6 @@ void AceButton::handleEvent(uint8_t eventType) {
   if (eventHandler) {
     eventHandler(this, eventType, getLastButtonState());
   }
+}
+
 }
