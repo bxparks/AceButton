@@ -47,7 +47,6 @@
 #include <testing/EventTracker.h>
 #include <testing/TestHelper.h>
 
-using aunit::TestManager;
 using namespace ace_button;
 using namespace ace_button::testing;
 
@@ -68,7 +67,7 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(74880);
   testableConfig.setEventHandler(handleEvent);
   button.setButtonConfig(&testableConfig);
   while (!Serial); // for the Arduino Leonardo/Micro only
@@ -84,7 +83,7 @@ void setup() {
 }
 
 void loop() {
-  TestManager::run();
+  aunit::TestRunner::run();
 }
 
 // ------------------------------------------------------------------
