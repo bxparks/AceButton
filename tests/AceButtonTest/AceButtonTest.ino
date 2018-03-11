@@ -40,13 +40,14 @@
  * suboptimal compiler flags set by the Arduino IDE.
  */
 
-#include <ArduinoUnit.h>
+#include <AUnit.h>
 #include <AceButton.h>
 #include <AdjustableButtonConfig.h>
 #include <testing/TestableButtonConfig.h>
 #include <testing/EventTracker.h>
 #include <testing/TestHelper.h>
 
+using aunit::TestManager;
 using namespace ace_button;
 using namespace ace_button::testing;
 
@@ -83,7 +84,7 @@ void setup() {
 }
 
 void loop() {
-  Test::run();
+  TestManager::run();
 }
 
 // ------------------------------------------------------------------
@@ -220,22 +221,22 @@ test(testable_config) {
 // Test that the AdjustableButtonConfig overrides properly.
 test(adjustable_config) {
   adjustableConfig.setDebounceDelay(1);
-  assertEqual(1U, adjustableConfig.getDebounceDelay());
+  assertEqual((uint16_t)1, adjustableConfig.getDebounceDelay());
 
   adjustableConfig.setClickDelay(2);
-  assertEqual(2U, adjustableConfig.getClickDelay());
+  assertEqual((uint16_t)2, adjustableConfig.getClickDelay());
 
   adjustableConfig.setDoubleClickDelay(3);
-  assertEqual(3U, adjustableConfig.getDoubleClickDelay());
+  assertEqual((uint16_t)3, adjustableConfig.getDoubleClickDelay());
 
   adjustableConfig.setLongPressDelay(4);
-  assertEqual(4U, adjustableConfig.getLongPressDelay());
+  assertEqual((uint16_t)4, adjustableConfig.getLongPressDelay());
 
   adjustableConfig.setRepeatPressDelay(5);
-  assertEqual(5U, adjustableConfig.getRepeatPressDelay());
+  assertEqual((uint16_t)5, adjustableConfig.getRepeatPressDelay());
 
   adjustableConfig.setRepeatPressInterval(6);
-  assertEqual(6U, adjustableConfig.getRepeatPressInterval());
+  assertEqual((uint16_t)6, adjustableConfig.getRepeatPressInterval());
 }
 
 // ------------------------------------------------------------------
