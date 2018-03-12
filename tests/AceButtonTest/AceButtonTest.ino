@@ -40,7 +40,14 @@
  * suboptimal compiler flags set by the Arduino IDE.
  */
 
+#define USE_AUNIT 1
+
+#if USE_AUNIT == 1
 #include <AUnit.h>
+#else
+#include <ArduinoUnit.h>
+#endif
+
 #include <AceButton.h>
 #include <AdjustableButtonConfig.h>
 #include <testing/TestableButtonConfig.h>
@@ -67,10 +74,10 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 
 void setup() {
-  Serial.begin(74880);
+  Serial.begin(74880); // 74880 is the default for some ESP8266 boards
+  while (!Serial); // for the Arduino Leonardo/Micro only
   testableConfig.setEventHandler(handleEvent);
   button.setButtonConfig(&testableConfig);
-  while (!Serial); // for the Arduino Leonardo/Micro only
 
   Serial.print(F("sizeof(AceButton): "));
   Serial.println(sizeof(AceButton));
@@ -83,7 +90,11 @@ void setup() {
 }
 
 void loop() {
+#if USE_AUNIT == 1
   aunit::TestRunner::run();
+#else
+  Test::run();
+#endif
 }
 
 // ------------------------------------------------------------------
