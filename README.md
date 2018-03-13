@@ -65,8 +65,8 @@ Here are the high-level features of the AceButton library:
   * each AceButton consumes 14 bytes
   * each ButtonConfig consumes 5 bytes
   * one System ButtonConfig instance created automatically by the library
-* thoroughly unit tested using
-  [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
+* thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
+  (a derivative of [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
 * only 12-14 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
@@ -792,11 +792,8 @@ The library has been verified to work on the following hardware:
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
 
-The unit tests require
-[ArduinoUnit 2.2](https://github.com/mmurdoch/arduinounit)
-to be installed. Unfortunately, ArduinoUnit
-[lacks support for ESP8266](https://github.com/mmurdoch/arduinounit/issues/68)
-so only manual testing was possible on the ESP8266 platform.
+The unit tests require [AUnit](https://github.com/bxparks/AUnit)
+to be installed.
 
 ## Background Motivation
 
