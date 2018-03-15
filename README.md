@@ -66,7 +66,7 @@ Here are the high-level features of the AceButton library:
   * each ButtonConfig consumes 5 bytes
   * one System ButtonConfig instance created automatically by the library
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
-  (a derivative of [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
+  (a derivative of [ArduinoUnit](https://github.com/mmurdoch/arduinounit))
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
 * only 12-14 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
