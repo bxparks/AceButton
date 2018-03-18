@@ -1,7 +1,7 @@
 /*
  * A demo of a simplest AceButton that has a visible effect. One button is
  * connected to the digital pin BUTTON_PIN. It uses the internal pull-up
- * resister (INPUT_PULLUP). Pressing the button turns on the built-in LED.
+ * resistor (INPUT_PULLUP). Pressing the button turns on the built-in LED.
  * Releasing the button turns off the LED.
  */
 

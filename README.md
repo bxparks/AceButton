@@ -65,8 +65,8 @@ Here are the high-level features of the AceButton library:
   * each AceButton consumes 14 bytes
   * each ButtonConfig consumes 5 bytes
   * one System ButtonConfig instance created automatically by the library
-* thoroughly unit tested using
-  [ArduinoUnit](https://github.com/mmurdoch/arduinounit)
+* thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
+  (a derivative of [ArduinoUnit](https://github.com/mmurdoch/arduinounit))
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
 * only 12-14 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
@@ -146,10 +146,10 @@ The following example sketches are provided:
 * HelloButton.ino
   * minimal program that reads a switch and control the built-in LED
 * SingleButton.ino
-  * controls a single button wired with a pull-up resister
+  * controls a single button wired with a pull-up resistor
   * prints out a status line for every supported event
 * SingleButtonPullDown.ino
-  * same as SingleButton.ino but with an external pull-down resister
+  * same as SingleButton.ino but with an external pull-down resistor
 * Stopwatch.ino
   * measures the speed of `AceButton:check()` with a start/stop/reset button
   * shows example use of `AdjustableButtonConfig`
@@ -222,8 +222,8 @@ void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 
 * `pin`: the I/O pin number assigned to the button
 * `defaultReleasedState`: the logical value of the button when it is in its
-  default "released" state (`HIGH` using a pull-up resister,
-  `LOW` for a pull-down pull-down resister)
+  default "released" state (`HIGH` using a pull-up resistor,
+  `LOW` for a pull-down pull-down resistor)
 * `id`: an optional, user-defined identifier for the the button,
   for example, an index into an array with additional information
 
@@ -456,7 +456,7 @@ It is not expected that `buttonState` will be needed very often. It should be
 sufficient to examine just the `eventType` to determine the action that needs
 to be performed. Part of the difficulty with this parameter is that it has the
 value of `LOW` or `HIGH`, but the physical interpretation of those values depends
-on whether the button was wired with a pull-up or pull-down resister. The helper
+on whether the button was wired with a pull-up or pull-down resistor. The helper
 function `AceButton::isReleased(uint8_t buttonState)` is provided to make this
 determination if you need it.
 
@@ -792,11 +792,8 @@ The library has been verified to work on the following hardware:
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
 
-The unit tests require
-[ArduinoUnit 2.2](https://github.com/mmurdoch/arduinounit)
-to be installed. Unfortunately, ArduinoUnit
-[lacks support for ESP8266](https://github.com/mmurdoch/arduinounit/issues/68)
-so only manual testing was possible on the ESP8266 platform.
+The unit tests require [AUnit](https://github.com/bxparks/AUnit)
+to be installed.
 
 ## Background Motivation
 

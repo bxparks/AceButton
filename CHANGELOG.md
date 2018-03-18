@@ -1,5 +1,8 @@
 # Changelog
 
+* 1.0.5 (2018-03-17)
+    * Migrate unit tests to [AUnit](https://github.com/bxparks/AUnit).
+    * Fix various typos in README.md.
 * 1.0.4 (2018-03-07)
     * Support ESP8266.
         * Split `loop()` in `Stopwatch.ino` into inner and outer loops, to
