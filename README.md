@@ -1,5 +1,7 @@
 # An Adjustable Compact Event-driven (ACE) Button Library for Arduino
 
+Version: 1.0.5 (2018-03-17)
+
 ## Summary
 
 This library provides classes which accept inputs from a mechanical button
@@ -132,12 +134,14 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 
 ## Installation
 
-The library can be installed from the Arduino IDE Library Manager.
+The latest stable release is available in the Arduino IDE Library Manager.
 Search for "AceButton". Click install.
 
-It can also be installed by cloning the
-[GitHub repository](https://github.com/bxparks/AceButton), then
-manually copying over the contents to your `./libraries` directory.
+The development version can be installed by cloning the
+[GitHub repository](https://github.com/bxparks/AceButton), checking out the
+`develop` branch, then manually copying over the contents to the `./libraries`
+directory used by the Arduino IDE. (The result is a directory named
+`./libraries/AceButton`.) The `master` branch contains the stable release.
 
 ### Examples
 
