@@ -102,9 +102,9 @@ class AceButton {
      * setup() time using the setPin() method.
      *
      * @param defaultReleasedState The pin state when the button is in the
-     * initial released position. Default HIGH. When using a pullup resister
+     * initial released position. Default HIGH. When using a pullup resistor
      * (either external or internal) and the button is connected to ground, this
-     * should be set to HIGH. When using an external pulldown resister and the
+     * should be set to HIGH. When using an external pulldown resistor and the
      * button is connected to Vcc (5V or 3.3V), this should be set to LOW. The
      * defaultReleasedState can be assigned using the constructor or the
      * init() method.
@@ -190,7 +190,7 @@ class AceButton {
      *
      * The HIGH or LOW logical value of buttonState represents different a
      * button position depending on whether the button is wired with a pull-up
-     * or a pull-down resister. This method translates the logical level to the
+     * or a pull-down resistor. This method translates the logical level to the
      * physical position which allows the client code to be independent of the
      * physical wiring.
      *
@@ -219,8 +219,8 @@ class AceButton {
     /**
      * Set the initial released state of the button.
      *
-     * @param state If a pull up resister is used, this should be HIGH. If a
-     * pull down resister is used, this should be LOW. The behavior is undefined
+     * @param state If a pull up resistor is used, this should be HIGH. If a
+     * pull down resistor is used, this should be LOW. The behavior is undefined
      * for any other values of 'state'.
      */
     void setDefaultReleasedState(uint8_t state);

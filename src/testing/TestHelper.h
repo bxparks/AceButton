@@ -52,7 +52,7 @@ class TestHelper {
     /**
      * Simulate a press of the button and run the button.check() processing. The
      * defaultReleasedState is determined by whether the button has a pullup
-     * (HIGH) or pulldown (LOW) resister.
+     * (HIGH) or pulldown (LOW) resistor.
      */
     void pressButton(unsigned long time) {
       uint8_t targetState = (HIGH == mDefaultReleasedState) ? LOW : HIGH;

@@ -146,10 +146,10 @@ The following example sketches are provided:
 * HelloButton.ino
   * minimal program that reads a switch and control the built-in LED
 * SingleButton.ino
-  * controls a single button wired with a pull-up resister
+  * controls a single button wired with a pull-up resistor
   * prints out a status line for every supported event
 * SingleButtonPullDown.ino
-  * same as SingleButton.ino but with an external pull-down resister
+  * same as SingleButton.ino but with an external pull-down resistor
 * Stopwatch.ino
   * measures the speed of `AceButton:check()` with a start/stop/reset button
   * shows example use of `AdjustableButtonConfig`
@@ -222,8 +222,8 @@ void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 
 * `pin`: the I/O pin number assigned to the button
 * `defaultReleasedState`: the logical value of the button when it is in its
-  default "released" state (`HIGH` using a pull-up resister,
-  `LOW` for a pull-down pull-down resister)
+  default "released" state (`HIGH` using a pull-up resistor,
+  `LOW` for a pull-down pull-down resistor)
 * `id`: an optional, user-defined identifier for the the button,
   for example, an index into an array with additional information
 
@@ -456,7 +456,7 @@ It is not expected that `buttonState` will be needed very often. It should be
 sufficient to examine just the `eventType` to determine the action that needs
 to be performed. Part of the difficulty with this parameter is that it has the
 value of `LOW` or `HIGH`, but the physical interpretation of those values depends
-on whether the button was wired with a pull-up or pull-down resister. The helper
+on whether the button was wired with a pull-up or pull-down resistor. The helper
 function `AceButton::isReleased(uint8_t buttonState)` is provided to make this
 determination if you need it.
 

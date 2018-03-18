@@ -254,7 +254,7 @@ test(adjustable_config) {
 // ------------------------------------------------------------------
 
 // We assume this will be the common case because of the Aruino boards provide
-// internal pullup resisters on the digital input pins.
+// internal pullup resistors on the digital input pins.
 test(press_and_release_pullup) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   uint8_t expected;
@@ -298,7 +298,7 @@ test(press_and_release_pullup) {
 }
 
 // Do the same test as press_and_release_pullup, but using
-// the logic levels of an external pulldown resister.
+// the logic levels of an external pulldown resistor.
 test(press_and_release_pulldown) {
   const uint8_t DEFAULT_RELEASED_STATE = LOW;
   uint8_t expected;

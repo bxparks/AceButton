@@ -1,8 +1,8 @@
 /*
  * A demo of a simple AceButton used to handle the events from one button.
  * Pretty much the same as SingleButton.ino example but the button is wired with
- * an external pull-down resister, instead of using the built-in pull-up
- * resister.
+ * an external pull-down resistor, instead of using the built-in pull-up
+ * resistor.
  */
 
 #include <AceButton.h>
@@ -25,7 +25,7 @@ void setup() {
   // initialize built-in LED as an output
   pinMode(LED_BUILTIN, OUTPUT);
 
-  // Button uses an external 10k resister.
+  // Button uses an external 10k resistor.
   pinMode(BUTTON_PIN, INPUT);
 
   // We use the AceButton::init() method here instead of using the constructor
