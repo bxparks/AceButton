@@ -76,6 +76,8 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 void setup() {
   Serial.begin(74880); // 74880 is the default for some ESP8266 boards
   while (!Serial); // for the Arduino Leonardo/Micro only
+  delay(1000); // Wait for stability on some boards, otherwise garage on Serial
+
   testableConfig.setEventHandler(handleEvent);
   button.setButtonConfig(&testableConfig);
 
