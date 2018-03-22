@@ -14,6 +14,13 @@
    limitations under the License.
 */
 
+/**
+@mainpage AceButton Library
+
+This is the Doxygen documentation for the
+<a href="https://github.com/bxparks/AceButton">AceButton Library</a>.
+*/
+
 #include "AceButton.h"
 
 namespace ace_button {
