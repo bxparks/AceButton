@@ -176,6 +176,12 @@ There are 2 classes and one typedef that a user will normally interact with:
 
 We explain how to use these below.
 
+### Class and Header Documentation
+
+The [class and header documentation](https://bxparks.github.io/AceButton/html/)
+was generated using Doxygen and published using GitHub Pages. It can help you
+navigate an unfamiliar code base.
+
 ### Include Header and Use Namespace
 
 To prevent name clashes with other libraries that the calling code may use, all
