@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pressbutton',['pressButton',['../classace__button_1_1testing_1_1TestHelper.html#a19fe2539a6a912f1c229fb15e3455630',1,'ace_button::testing::TestHelper']]]
+  ['readbutton',['readButton',['../classace__button_1_1ButtonConfig.html#a5dab877bf124bfdf5a5eb703ca123027',1,'ace_button::ButtonConfig']]]
 ];
