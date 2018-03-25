@@ -89,6 +89,11 @@ void setup() {
   Serial.println(sizeof(AdjustableButtonConfig));
   Serial.print(F("sizeof(TestableButtonConfig): "));
   Serial.println(sizeof(TestableButtonConfig));
+
+  /*
+  aunit::TestRunner::exclude("*");
+  aunit::TestRunner::include("suppress_click_before_double_click");
+  */
 }
 
 void loop() {
@@ -714,7 +719,7 @@ test(double_click_not_suppressed) {
   assertEqual(0, eventTracker.getNumEvents());
 
   // Wait another 50 ms for debounce.
-  // Verify that we get only 1 Clicked event not another DoubleClicked, 
+  // Verify that we get only 1 Clicked event not another DoubleClicked,
   // and an unsuppressed Released.
   helper.releaseButton(BASE_TIME + 1100);
   assertEqual(2, eventTracker.getNumEvents());
@@ -1052,6 +1057,120 @@ test(orphaned_click_removed_if_click_enabled) {
   expected = AceButton::kEventReleased;
   assertEqual(expected, eventTracker.getRecord(1).getEventType());
   assertEqual(HIGH, eventTracker.getRecord(1).getButtonState());
+}
+
+// Test that kFeatureSuppressClickBeforeDoubleClick causes the first Clicked to
+// be postponed until it can determine if a DoubleClick actually occurred.
+test(suppress_click_before_double_click) {
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
+  uint8_t expected;
+
+  // reset the button
+  helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+  testableConfig.setFeature(
+      ButtonConfig::kFeatureSuppressClickBeforeDoubleClick);
+
+  // initial button state
+  helper.releaseButton(BASE_TIME + 0);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // initilization phase
+  helper.releaseButton(BASE_TIME + 50);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // generate first click
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(BASE_TIME + 140);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get an event
+  helper.pressButton(BASE_TIME + 190);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click, but must wait for debounce
+  helper.releaseButton(BASE_TIME + 300);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms for debounce. Check that this first Click is
+  // postponed, so we get only the Released.
+  helper.releaseButton(BASE_TIME + 350);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+
+  // generate second click within 400 ms of the Clicked event (which
+  // occurred at +350 ms) for a double click
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(BASE_TIME + 500);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get a Pressed
+  helper.pressButton(BASE_TIME + 550);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click, but must wait for debounce
+  helper.releaseButton(BASE_TIME + 650);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms for debounce. Should get a (DoubleClicked, Released) but
+  // not a Clicked because we suppressed the first postponed Clicked.
+  helper.releaseButton(BASE_TIME + 700);
+  assertEqual(2, eventTracker.getNumEvents());
+  expected = AceButton::kEventDoubleClicked;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(1).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(1).getButtonState());
+
+  // generate third click within 400 ms of the DoubleClicked event (which
+  // occurred at +700 ms)
+
+  // button pressed, but must wait to debounce
+  helper.pressButton(BASE_TIME + 900);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // after 50 ms or more, we should get a Pressed event
+  helper.pressButton(BASE_TIME + 950);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventPressed;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(LOW, eventTracker.getRecord(0).getButtonState());
+
+  // release the button within 200 ms for a click, but must wait for debounce
+  helper.releaseButton(BASE_TIME + 1050);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait another 50 ms for debounce.
+  // Verify that we get only a Released event not another DoubleClicked.
+  // The Clicked event is postponed again.
+  helper.releaseButton(BASE_TIME + 1100);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+
+  // Wait 300 ms, nothing should happen.
+  helper.checkTime(BASE_TIME + 1400);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Wait 400 ms to get the long postponed Clicked.
+  helper.checkTime(BASE_TIME + 1500);
+  assertEqual(1, eventTracker.getNumEvents());
+  assertEqual(+AceButton::kEventClicked,
+      eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
 }
 
 // ------------------------------------------------------------------
