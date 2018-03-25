@@ -13,6 +13,10 @@ using namespace ace_button;
 // The pin number attached to the button.
 const int BUTTON_PIN = 7;
 
+// LED states. Some microcontrollers wire their built-in LED the reverse.
+const int LED_ON = HIGH;
+const int LED_OFF = LOW;
+
 // Automatically uses the default ButtonConfig. We will configure this later
 // using AceButton::init() method in setup() below.
 AceButton button;
@@ -70,10 +74,10 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   // event is triggered and the LED remains off.
   switch (eventType) {
     case AceButton::kEventReleased:
-      digitalWrite(LED_BUILTIN, LOW); // turn the led off
+      digitalWrite(LED_BUILTIN, LED_ON);
       break;
     case AceButton::kEventPressed:
-      digitalWrite(LED_BUILTIN, HIGH); // turn the led on
+      digitalWrite(LED_BUILTIN, LED_OFF);
       break;
   }
 }
