@@ -60,13 +60,13 @@ Here are the high-level features of the AceButton library:
     * LongPressed
     * RepeatPressed
 * configurations are adjustable at runtime or compile-time
-  * timing parameters
-  * `digitalRead()` button read function can be overridden
-  * `millis()` clock function can be overridden
+    * timing parameters
+    * `digitalRead()` button read function can be overridden
+    * `millis()` clock function can be overridden
 * small memory footprint
-  * each AceButton consumes 14 bytes
-  * each ButtonConfig consumes 5 bytes
-  * one System ButtonConfig instance created automatically by the library
+    * each AceButton consumes 14 bytes
+    * each ButtonConfig consumes 5 bytes
+    * one System ButtonConfig instance created automatically by the library
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
   (a derivative of [ArduinoUnit](https://github.com/mmurdoch/arduinounit))
 * properly handles reboots while the button is pressed
@@ -148,23 +148,28 @@ directory used by the Arduino IDE. (The result is a directory named
 The following example sketches are provided:
 
 * HelloButton.ino
-  * minimal program that reads a switch and control the built-in LED
+    * minimal program that reads a switch and control the built-in LED
 * SingleButton.ino
-  * controls a single button wired with a pull-up resistor
-  * prints out a status line for every supported event
+    * controls a single button wired with a pull-up resistor
+    * prints out a status line for every supported event
 * SingleButtonPullDown.ino
-  * same as SingleButton.ino but with an external pull-down resistor
+    * same as SingleButton.ino but with an external pull-down resistor
 * Stopwatch.ino
-  * measures the speed of `AceButton:check()` with a start/stop/reset button
-  * shows example use of `AdjustableButtonConfig`
-  * uses `kFeatureLongPress`
+    * measures the speed of `AceButton:check()` with a start/stop/reset button
+    * shows example use of `AdjustableButtonConfig`
+    * uses `kFeatureLongPress`
 * TunerButtons.ino
-  * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
-  * shows multiple `ButtonConfig` instances
-  * shows multiple `EventHandler`s
-  * shows an example of how to use `getId()`
-  * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
-    `kFeatureSuppressAfterLongPress`, and `kFeatureSuppressAfterRepeatPress`
+    * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
+    * shows multiple `ButtonConfig` instances
+    * shows multiple `EventHandler`s
+    * shows an example of how to use `getId()`
+    * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
+      `kFeatureSuppressAfterLongPress`, and `kFeatureSuppressAfterRepeatPress`
+* ClickVersusDoubleClick.ino
+    * shows a workaround to distinguish a `kEventClicked` from a
+      `kEventDoubleClicked` since it is not possible to suppress a
+      `kEventClicked` "after" a `kEventDoubleClicked` (because a `kEventClicked`
+      must happen first, and we cannot predict the future)
 
 ## Usage
 
@@ -443,12 +448,13 @@ is only necessary to save that information once, in the `ButtonConfig` object.
 The `EventHandler` function received 3 parameters from the `AceButton`:
 
 * `aceButton`
-  * pointer to the `AceButton` instance that generated this event
-  * can be used to retrieve the `getPin()` or the `getId()`
+    * pointer to the `AceButton` instance that generated this event
+    * can be used to retrieve the `getPin()` or the `getId()`
 * `eventType`
-  * the type of this event given by the various `AceButton::kEventXxx` constants
+    * the type of this event given by the various `AceButton::kEventXxx`
+      constants
 * `buttonState`
-  * the `HIGH` or `LOW` button state that generated this event
+    * the `HIGH` or `LOW` button state that generated this event
 
 The `aceButton` pointer should be used only to extract information about the
 button that triggered the event. It should **not** be used to modify the
@@ -617,6 +623,8 @@ level events. Call the `setFeature(feature)` method passing the various
     * (an optional Feature flag could be added if suppression of the
       *first* Clicked is needed, at the expense of waiting extra time for this
       first Clicked event to trigger)
+    * see `examples/ClickVersusDoubleClick` for an example of how to get
+      around this limitation using Released event instead of a Clicked event
 * `ButtonConfig::kFeatureSuppressAfterLongPress`
     * suppresses the Released event if a LongPressed event is detected
 * `ButtonConfig::kFeatureSuppressAfterRepeatPress`
