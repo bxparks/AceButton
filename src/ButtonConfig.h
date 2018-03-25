@@ -93,37 +93,53 @@ class ButtonConfig {
 
     // Various features controlled by feature flags.
 
+    /**
+     * Type of the feature flag. It used to be a uint8_t but got changed to a
+     * uint16_t when more than 8 flags were needed. Let's define a typedef to
+     * make it easier to change this in the future.
+     */
+    typedef uint16_t FeatureFlagType;
+
     /** Flag to activate the AceButton::kEventClicked event. */
-    static const uint8_t kFeatureClick = 0x01;
+    static const FeatureFlagType kFeatureClick = 0x01;
 
     /**
      * Flag to activate the AceButton::kEventDoubleClicked event.
      * Activating this automatically activates kEventClicked since there is
      * no double-click without a click.
      */
-    static const uint8_t kFeatureDoubleClick = 0x02;
+    static const FeatureFlagType kFeatureDoubleClick = 0x02;
 
     /** Flag to activate the AceButton::kEventLongPress event. */
-    static const uint8_t kFeatureLongPress = 0x04;
+    static const FeatureFlagType kFeatureLongPress = 0x04;
 
     /** Flag to activate the AceButton::kEventRepeatPressed event. */
-    static const uint8_t kFeatureRepeatPress = 0x08;
+    static const FeatureFlagType kFeatureRepeatPress = 0x08;
 
     /** Flag to suppress kEventReleased after a kEventClicked. */
-    static const uint8_t kFeatureSuppressAfterClick = 0x10;
+    static const FeatureFlagType kFeatureSuppressAfterClick = 0x10;
 
     /**
      * Flag to suppress kEventReleased after a kEventDoubleClicked. A
      * kEventClicked is _always_ suppressed after a kEventDoubleClicked to
      * prevent generating 2 double-clicks if the user performed a triple-click.
      */
-    static const uint8_t kFeatureSuppressAfterDoubleClick = 0x20;
+    static const FeatureFlagType kFeatureSuppressAfterDoubleClick = 0x20;
 
     /** Flag to suppress kEventReleased after a kEventLongPressed. */
-    static const uint8_t kFeatureSuppressAfterLongPress = 0x40;
+    static const FeatureFlagType kFeatureSuppressAfterLongPress = 0x40;
 
     /** Flag to suppress kEventReleased after a kEventRepeatPressed. */
-    static const uint8_t kFeatureSuppressAfterRepeatPress = 0x80;
+    static const FeatureFlagType kFeatureSuppressAfterRepeatPress = 0x80;
+
+    /**
+     * Flag to suppress kEventClicked before a kEventDoubleClicked. This causes
+     * the notification of a kEventClicked to be delayed until the delay time of
+     * the kEventDoubleClicked has passed (i.e. getDoubleClickDelay()), because
+     * we don't know if we are supposed to suppress the first kEventClicked
+     * until we know whether or not there was a kEventDoubleClicked.
+     */
+    static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
 
     /**
      * Convenience flag to suppress all suppressions.
@@ -132,7 +148,7 @@ class ButtonConfig {
      * Note however that isFeature(kFeatureSuppressAll) currently means "is ANY
      * feature enabled?" not "are ALL features enabled?".
      */
-    static const uint8_t kFeatureSuppressAll =
+    static const FeatureFlagType kFeatureSuppressAll =
         (kFeatureSuppressAfterClick |
         kFeatureSuppressAfterDoubleClick |
         kFeatureSuppressAfterLongPress |
@@ -216,17 +232,17 @@ class ButtonConfig {
     // functionality of the AceButton.
 
     /** Check if the given features are enabled. */
-    bool isFeature(uint8_t features) ACE_BUTTON_INLINE {
+    bool isFeature(FeatureFlagType features) ACE_BUTTON_INLINE {
       return mFeatureFlags & features;
     }
 
     /** Enable the given features. */
-    void setFeature(uint8_t features) ACE_BUTTON_INLINE {
+    void setFeature(FeatureFlagType features) ACE_BUTTON_INLINE {
       mFeatureFlags |= features;
     }
 
     /** Disable the given features. */
-    void clearFeature(uint8_t features) ACE_BUTTON_INLINE {
+    void clearFeature(FeatureFlagType features) ACE_BUTTON_INLINE {
       mFeatureFlags &= ~features;
     }
 
@@ -267,7 +283,7 @@ class ButtonConfig {
     EventHandler mEventHandler;
 
     /** A bit mask flag that activates certain features. */
-    uint8_t mFeatureFlags;
+    FeatureFlagType mFeatureFlags;
 
     /**
      * A single static instance of ButtonConfig provided by default to all
