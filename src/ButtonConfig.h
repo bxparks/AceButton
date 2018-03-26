@@ -135,24 +135,24 @@ class ButtonConfig {
     /**
      * Flag to suppress kEventClicked before a kEventDoubleClicked. This causes
      * the notification of a kEventClicked to be delayed until the delay time of
-     * the kEventDoubleClicked has passed (i.e. getDoubleClickDelay()), because
-     * we don't know if we are supposed to suppress the first kEventClicked
-     * until we know whether or not there was a kEventDoubleClicked.
+     * getDoubleClickDelay() has passed so that we can determine if there was a
+     * kEventDoubleClicked.
      */
     static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
 
     /**
-     * Convenience flag to suppress all suppressions.
-     * Calling setFeature(kFeatureSuppressAll) suppresses all lower-level
-     * events, and clearFeature(kFeatureSuppressAll) clears all suppressesion.
-     * Note however that isFeature(kFeatureSuppressAll) currently means "is ANY
-     * feature enabled?" not "are ALL features enabled?".
+     * Convenience flag to suppress all suppressions. Calling
+     * setFeature(kFeatureSuppressAll) suppresses all and
+     * clearFeature(kFeatureSuppressAll) clears all suppression. Note however
+     * that isFeature(kFeatureSuppressAll) currently means "is ANY feature
+     * enabled?" not "are ALL features enabled?".
      */
     static const FeatureFlagType kFeatureSuppressAll =
         (kFeatureSuppressAfterClick |
         kFeatureSuppressAfterDoubleClick |
         kFeatureSuppressAfterLongPress |
-        kFeatureSuppressAfterRepeatPress);
+        kFeatureSuppressAfterRepeatPress |
+        kFeatureSuppressClickBeforeDoubleClick);
 
     /**
      * The event handler signature.

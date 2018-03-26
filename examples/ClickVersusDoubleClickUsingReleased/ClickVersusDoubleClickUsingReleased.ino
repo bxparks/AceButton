@@ -44,8 +44,8 @@ void setup() {
 
   ButtonConfig* buttonConfig = button.getButtonConfig();
   buttonConfig->setEventHandler(handleEvent);
-  buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterClick);
   buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
+  buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterClick);
   buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
 }
 

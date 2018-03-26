@@ -165,11 +165,14 @@ The following example sketches are provided:
     * shows an example of how to use `getId()`
     * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
       `kFeatureSuppressAfterLongPress`, and `kFeatureSuppressAfterRepeatPress`
-* ClickVersusDoubleClick.ino
-    * shows a workaround to distinguish a `kEventClicked` from a
-      `kEventDoubleClicked` since it is not possible to suppress a
-      `kEventClicked` "after" a `kEventDoubleClicked` (because a `kEventClicked`
-      must happen first, and we cannot predict the future)
+* ClickVersusDoubleClickUsingReleased.ino
+    * a way to distinguish between a `kEventClicked` from a
+      `kEventDoubleClicked` using a `kEventReleased` instead
+* ClickVersusDoubleClickUsingSuppression.ino
+    * another way to dstinguish between a `kEventClicked` from a
+      `kEventDoubleClicked` using the `kFeatureSuppressClickBeforeDoubleClick`
+      flag at the cost of increasing the response time of the `kEventClicked`
+      event
 
 ## Usage
 
@@ -546,6 +549,7 @@ control the behavior of `AceButton` event handling:
 * `ButtonConfig::kFeatureSuppressAfterDoubleClick`
 * `ButtonConfig::kFeatureSuppressAfterLongPress`
 * `ButtonConfig::kFeatureSuppressAfterRepeatPress`
+* `ButtonConfig::kFeatureSuppressClickBeforeDoubleClick`
 * `ButtonConfig::kFeatureSuppressAll`
 
 These constants are used to set or clear the given flag:
@@ -617,14 +621,6 @@ level events. Call the `setFeature(feature)` method passing the various
 * `ButtonConfig::kFeatureSuppressAfterDoubleClick`
     * suppresses the Released event and the *second* Clicked event if a
       DoubleClicked event is detected
-    * the *first* Clicked event cannot be suppressed because the code does not
-      wait for a possible DoubleClicked before triggering the first Clicked
-      event
-    * (an optional Feature flag could be added if suppression of the
-      *first* Clicked is needed, at the expense of waiting extra time for this
-      first Clicked event to trigger)
-    * see `examples/ClickVersusDoubleClick` for an example of how to get
-      around this limitation using Released event instead of a Clicked event
 * `ButtonConfig::kFeatureSuppressAfterLongPress`
     * suppresses the Released event if a LongPressed event is detected
 * `ButtonConfig::kFeatureSuppressAfterRepeatPress`
@@ -632,6 +628,12 @@ level events. Call the `setFeature(feature)` method passing the various
 * `ButtonConfig::kFeatureSuppressAll`
     * a convenience parameter that is the equivalent of suppressing all of the
       previous events
+* `ButtonConfig::kFeatureSuppressClickBeforeDoubleClick`
+    * The *first* Clicked event is postponed by `getDoubleClickDelay()`
+      millis until the code can determine if a DoubleClick has occurred. If so,
+      then the postponed Clicked message to the `EventHandler` is suppressed.
+    * See the section ___Distinguishing Between a Clicked and DoubleClicked___
+      for more info.
 
 By default, no suppression is performed.
 
@@ -660,6 +662,83 @@ config->clearFeature(ButtonConfig::kFeatureSuppressAll);
 Note, however, that the `isFeature(ButtonConfig::kFeatureSuppressAll)` currently
 means "isAnyFeature() implemented?" not "areAllFeatures() implemented?" We don't
 expect `isFeature()` to be used often (or at all) for `kFeatureSuppressAll`.
+
+### Distinguishing Between a Clicked and DoubleClicked
+
+On a project using only a small number of buttons (due to physical limits or the
+limited availability of pins), it may be desirable to distinguish between a
+single Clicked event and a DoubleClicked event from a single button. This is a
+challenging problem to solve because fundamentally, a DoubleClicked event *must
+always* generate a Clicked event, because a Clicked event must happen before it
+can become a DoubleClicked event.
+
+Notice that on a desktop computer (running Windows, MacOS or Linux), a
+double-click on a mouse always generates both a Clicked and a DoubleClicked. The
+first Click selects the given desktop object (e.g. an icon or a window), and
+the DoubleClick performs some action on the selected object (e.g. open the
+icon, or resize the window).
+
+The AceButton Library provides 2 solutions which may work for some projects:
+
+**Method 1:** The `kFeatureSuppressClickBeforeDoubleClick` flag causes the first
+Clicked event to be detected, but the posting of the event message (i.e. the
+call to the `EventHandler`) is postponed until the state of the DoubleClicked
+can be determined. If the DoubleClicked happens, then the first Clicked event
+message is suppressed. If DoubleClicked occurs, the long delayed Clicked message
+is sent via the `EventHandler`.
+
+There are two noticible disadvantages of this method. First, the response time
+of all Clicked events is delayed by about 600 ms (`kClickDelay +
+kDoubleClickDelay`) whether or not the DoubleClicked event happens. Second, the
+user may not be able to accurately produce a Clicked event (due to the physical
+characteristics of the button, or the user's dexterity).
+
+It may also be worth noting that only the Clicked event is postponed.
+The accompanying Released event of the Clicked event is not postponed. So a
+single click action (without a DoubleClick) produces the following sequence of
+events to the EventHandler:
+
+1. `kEventPressed` - at time 0ms
+1. `kEventReleased` - at time 200ms
+1. `kEventClicked` - at time 600ms (200ms + 400ms)
+
+The `ButtonConfig` configuration looks like this:
+```
+ButtonConfig* buttonConfig = button.getButtonConfig();
+buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
+buttonConfig->setFeature(
+    ButtonConfig::kFeatureSuppressClickBeforeDoubleClick);
+```
+
+See the example code at
+`examples/ClickVersusDoubleClickUsingSuppression/`.
+
+**Method 2:** A viable alternative is to use the Released event instead of the
+Clicked event to distinguish it from the DoubleClicked. For this method to work,
+we need to suppress the Released event after both Clicked and DoubleClicked.
+
+The advantage of using this method is that there is no response time lag in the
+handling of the Released event. To the user, there is almost no difference
+between triggering on the Released event, versus triggering on the Clicked
+event.
+
+The disadvantage of this method is that the Clicked event must be be ignored
+(because of the spurious Clicked event generated by the DoubleClicked). If the
+user accidentally presses and releases the button to quickly, it generates a
+Clicked event, which will cause the program to do nothing.
+
+
+The `ButtonConfig` configuration looks like this:
+```
+ButtonConfig* buttonConfig = button.getButtonConfig();
+buttonConfig->setEventHandler(handleEvent);
+buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
+buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterClick);
+buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
+```
+
+See the example code at
+`examples/ClickVersusDoubleClickUsingReleased/`.
 
 ### Single Button Simplifications
 
@@ -758,11 +837,12 @@ would still need logic to take care of orphaned Clicked events.
 
 ## Resource Consumption
 
-Here are the sizes of the various classes:
+Here are the sizes of the various classes on the 8-bit AVR microcontrollers
+(Arduino Uno, Nano, etc):
 
 * sizeof(AceButton): 14
-* sizeof(ButtonConfig): 5
-* sizeof(AdjustableButtonConfig): 17
+* sizeof(ButtonConfig): 6
+* sizeof(AdjustableButtonConfig): 18
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
