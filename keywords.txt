@@ -86,4 +86,5 @@ kFeatureSuppressAfterClick	LITERAL1
 kFeatureSuppressAfterDoubleClick	LITERAL1
 kFeatureSuppressAfterLongPress	LITERAL1
 kFeatureSuppressAfterRepeatPress	LITERAL1
+kFeatureSuppressClickBeforeDoubleClick	LITERAL1
 kFeatureSuppressAll	LITERAL1

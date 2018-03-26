@@ -94,6 +94,9 @@ Inheritance diagram for ace_button::ButtonConfig:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:a1c7c7bfc42738278330243dfc43f23eb"><td class="memItemLeft" align="right" valign="top">typedef uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a></td></tr>
+<tr class="memdesc:a1c7c7bfc42738278330243dfc43f23eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of the feature flag.  <a href="#a1c7c7bfc42738278330243dfc43f23eb">More...</a><br /></td></tr>
+<tr class="separator:a1c7c7bfc42738278330243dfc43f23eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d9db3c7b221b474c3cfd8fca5f4ba1e"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a6d9db3c7b221b474c3cfd8fca5f4ba1e">EventHandler</a>) (<a class="el" href="classace__button_1_1AceButton.html">AceButton</a> *button, uint8_t eventType, uint8_t buttonState)</td></tr>
 <tr class="memdesc:a6d9db3c7b221b474c3cfd8fca5f4ba1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The event handler signature.  <a href="#a6d9db3c7b221b474c3cfd8fca5f4ba1e">More...</a><br /></td></tr>
 <tr class="separator:a6d9db3c7b221b474c3cfd8fca5f4ba1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -129,15 +132,15 @@ virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <tr class="memitem:a5dab877bf124bfdf5a5eb703ca123027"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a5dab877bf124bfdf5a5eb703ca123027">readButton</a> (uint8_t pin)</td></tr>
 <tr class="memdesc:a5dab877bf124bfdf5a5eb703ca123027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the HIGH or LOW state of the button.  <a href="#a5dab877bf124bfdf5a5eb703ca123027">More...</a><br /></td></tr>
 <tr class="separator:a5dab877bf124bfdf5a5eb703ca123027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef8a6719e516561e0462957106109daa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aef8a6719e516561e0462957106109daa">isFeature</a> (uint8_t features) ACE_BUTTON_INLINE</td></tr>
-<tr class="memdesc:aef8a6719e516561e0462957106109daa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the given features are enabled.  <a href="#aef8a6719e516561e0462957106109daa">More...</a><br /></td></tr>
-<tr class="separator:aef8a6719e516561e0462957106109daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa24d7247e3f91760eb7714c9b7ee840d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aa24d7247e3f91760eb7714c9b7ee840d">setFeature</a> (uint8_t features) ACE_BUTTON_INLINE</td></tr>
-<tr class="memdesc:aa24d7247e3f91760eb7714c9b7ee840d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable the given features.  <a href="#aa24d7247e3f91760eb7714c9b7ee840d">More...</a><br /></td></tr>
-<tr class="separator:aa24d7247e3f91760eb7714c9b7ee840d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e4aef889be3ec663d5bad4cbe3f5cb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a2e4aef889be3ec663d5bad4cbe3f5cb3">clearFeature</a> (uint8_t features) ACE_BUTTON_INLINE</td></tr>
-<tr class="memdesc:a2e4aef889be3ec663d5bad4cbe3f5cb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable the given features.  <a href="#a2e4aef889be3ec663d5bad4cbe3f5cb3">More...</a><br /></td></tr>
-<tr class="separator:a2e4aef889be3ec663d5bad4cbe3f5cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae51c7a2986eafd400784cdbe6bb1815"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aae51c7a2986eafd400784cdbe6bb1815">isFeature</a> (<a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> features) ACE_BUTTON_INLINE</td></tr>
+<tr class="memdesc:aae51c7a2986eafd400784cdbe6bb1815"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the given features are enabled.  <a href="#aae51c7a2986eafd400784cdbe6bb1815">More...</a><br /></td></tr>
+<tr class="separator:aae51c7a2986eafd400784cdbe6bb1815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac1c9029b1cf9aa793060d372fc09a1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aac1c9029b1cf9aa793060d372fc09a1a">setFeature</a> (<a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> features) ACE_BUTTON_INLINE</td></tr>
+<tr class="memdesc:aac1c9029b1cf9aa793060d372fc09a1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable the given features.  <a href="#aac1c9029b1cf9aa793060d372fc09a1a">More...</a><br /></td></tr>
+<tr class="separator:aac1c9029b1cf9aa793060d372fc09a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac782903e4a60924db3d17c00accc7f3b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#ac782903e4a60924db3d17c00accc7f3b">clearFeature</a> (<a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> features) ACE_BUTTON_INLINE</td></tr>
+<tr class="memdesc:ac782903e4a60924db3d17c00accc7f3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable the given features.  <a href="#ac782903e4a60924db3d17c00accc7f3b">More...</a><br /></td></tr>
+<tr class="separator:ac782903e4a60924db3d17c00accc7f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fc32804ba102f61ba97bcc5f4fe8448"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classace__button_1_1ButtonConfig.html#a6d9db3c7b221b474c3cfd8fca5f4ba1e">EventHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a8fc32804ba102f61ba97bcc5f4fe8448">getEventHandler</a> () ACE_BUTTON_INLINE</td></tr>
 <tr class="memdesc:a8fc32804ba102f61ba97bcc5f4fe8448"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the eventHandler.  <a href="#a8fc32804ba102f61ba97bcc5f4fe8448">More...</a><br /></td></tr>
 <tr class="separator:a8fc32804ba102f61ba97bcc5f4fe8448"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,33 +175,36 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a218c1aa09b45ea2fe6884e3af3a18310"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a218c1aa09b45ea2fe6884e3af3a18310">kRepeatPressInterval</a> = 200</td></tr>
 <tr class="memdesc:a218c1aa09b45ea2fe6884e3af3a18310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a2329e8fa28651ed12ccfec355c8e7eab" title="Milliseconds between two successive RepeatPressed events. ">getRepeatPressInterval()</a>.  <a href="#a218c1aa09b45ea2fe6884e3af3a18310">More...</a><br /></td></tr>
 <tr class="separator:a218c1aa09b45ea2fe6884e3af3a18310"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17d1acafc0aafab28d2cbd354e1c83c8"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a17d1acafc0aafab28d2cbd354e1c83c8">kFeatureClick</a> = 0x01</td></tr>
-<tr class="memdesc:a17d1acafc0aafab28d2cbd354e1c83c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a21797e5e069da3f7bba42b40ab3a7305" title="Button was clicked (Pressed and Released within ButtonConfig::getClickDelay()). ">AceButton::kEventClicked</a> event.  <a href="#a17d1acafc0aafab28d2cbd354e1c83c8">More...</a><br /></td></tr>
-<tr class="separator:a17d1acafc0aafab28d2cbd354e1c83c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a276bb2bd21f525f0d02a0688ae9c5e97"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a276bb2bd21f525f0d02a0688ae9c5e97">kFeatureDoubleClick</a> = 0x02</td></tr>
-<tr class="memdesc:a276bb2bd21f525f0d02a0688ae9c5e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a0c63f30106e4688425ba37d8f7a9546b" title="Button was double-clicked. ">AceButton::kEventDoubleClicked</a> event.  <a href="#a276bb2bd21f525f0d02a0688ae9c5e97">More...</a><br /></td></tr>
-<tr class="separator:a276bb2bd21f525f0d02a0688ae9c5e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79e965c0e55630e2db1d2e58ded965b5"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a79e965c0e55630e2db1d2e58ded965b5">kFeatureLongPress</a> = 0x04</td></tr>
-<tr class="memdesc:a79e965c0e55630e2db1d2e58ded965b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the AceButton::kEventLongPress event.  <a href="#a79e965c0e55630e2db1d2e58ded965b5">More...</a><br /></td></tr>
-<tr class="separator:a79e965c0e55630e2db1d2e58ded965b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adabd1b5731300810946043e4940708d5"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#adabd1b5731300810946043e4940708d5">kFeatureRepeatPress</a> = 0x08</td></tr>
-<tr class="memdesc:adabd1b5731300810946043e4940708d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a9c4195cb128da40677ea223eb81743c9" title="Button was held down and auto generated multiple presses. ">AceButton::kEventRepeatPressed</a> event.  <a href="#adabd1b5731300810946043e4940708d5">More...</a><br /></td></tr>
-<tr class="separator:adabd1b5731300810946043e4940708d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d56ce41c67c07b625924fef81ca4390"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a1d56ce41c67c07b625924fef81ca4390">kFeatureSuppressAfterClick</a> = 0x10</td></tr>
-<tr class="memdesc:a1d56ce41c67c07b625924fef81ca4390"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventClicked.  <a href="#a1d56ce41c67c07b625924fef81ca4390">More...</a><br /></td></tr>
-<tr class="separator:a1d56ce41c67c07b625924fef81ca4390"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c678cadf6a4ff09e2572a6300891b8c"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a4c678cadf6a4ff09e2572a6300891b8c">kFeatureSuppressAfterDoubleClick</a> = 0x20</td></tr>
-<tr class="memdesc:a4c678cadf6a4ff09e2572a6300891b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventDoubleClicked.  <a href="#a4c678cadf6a4ff09e2572a6300891b8c">More...</a><br /></td></tr>
-<tr class="separator:a4c678cadf6a4ff09e2572a6300891b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89ac38c17b052cd0c392f513e3dbdd07"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a89ac38c17b052cd0c392f513e3dbdd07">kFeatureSuppressAfterLongPress</a> = 0x40</td></tr>
-<tr class="memdesc:a89ac38c17b052cd0c392f513e3dbdd07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventLongPressed.  <a href="#a89ac38c17b052cd0c392f513e3dbdd07">More...</a><br /></td></tr>
-<tr class="separator:a89ac38c17b052cd0c392f513e3dbdd07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1aa4964df6d3a2d83616a0d7cf027460"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a1aa4964df6d3a2d83616a0d7cf027460">kFeatureSuppressAfterRepeatPress</a> = 0x80</td></tr>
-<tr class="memdesc:a1aa4964df6d3a2d83616a0d7cf027460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventRepeatPressed.  <a href="#a1aa4964df6d3a2d83616a0d7cf027460">More...</a><br /></td></tr>
-<tr class="separator:a1aa4964df6d3a2d83616a0d7cf027460"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64a967f3a2f2000dd3a5948d44f91361"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a64a967f3a2f2000dd3a5948d44f91361">kFeatureSuppressAll</a></td></tr>
-<tr class="memdesc:a64a967f3a2f2000dd3a5948d44f91361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience flag to suppress all suppressions.  <a href="#a64a967f3a2f2000dd3a5948d44f91361">More...</a><br /></td></tr>
-<tr class="separator:a64a967f3a2f2000dd3a5948d44f91361"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac662555100416c4843c6ee5156699c56"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#ac662555100416c4843c6ee5156699c56">kFeatureClick</a> = 0x01</td></tr>
+<tr class="memdesc:ac662555100416c4843c6ee5156699c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a21797e5e069da3f7bba42b40ab3a7305" title="Button was clicked (Pressed and Released within ButtonConfig::getClickDelay()). ">AceButton::kEventClicked</a> event.  <a href="#ac662555100416c4843c6ee5156699c56">More...</a><br /></td></tr>
+<tr class="separator:ac662555100416c4843c6ee5156699c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a638943c127dd60288a83e83260825d01"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a638943c127dd60288a83e83260825d01">kFeatureDoubleClick</a> = 0x02</td></tr>
+<tr class="memdesc:a638943c127dd60288a83e83260825d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a0c63f30106e4688425ba37d8f7a9546b" title="Button was double-clicked. ">AceButton::kEventDoubleClicked</a> event.  <a href="#a638943c127dd60288a83e83260825d01">More...</a><br /></td></tr>
+<tr class="separator:a638943c127dd60288a83e83260825d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d175560047a4ca245186fb26fa413f2"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a4d175560047a4ca245186fb26fa413f2">kFeatureLongPress</a> = 0x04</td></tr>
+<tr class="memdesc:a4d175560047a4ca245186fb26fa413f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the AceButton::kEventLongPress event.  <a href="#a4d175560047a4ca245186fb26fa413f2">More...</a><br /></td></tr>
+<tr class="separator:a4d175560047a4ca245186fb26fa413f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9b941ca87f0eeb899ed503481439c92"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#ac9b941ca87f0eeb899ed503481439c92">kFeatureRepeatPress</a> = 0x08</td></tr>
+<tr class="memdesc:ac9b941ca87f0eeb899ed503481439c92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a9c4195cb128da40677ea223eb81743c9" title="Button was held down and auto generated multiple presses. ">AceButton::kEventRepeatPressed</a> event.  <a href="#ac9b941ca87f0eeb899ed503481439c92">More...</a><br /></td></tr>
+<tr class="separator:ac9b941ca87f0eeb899ed503481439c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57327066d135bcc99c4a68b55fca162e"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a57327066d135bcc99c4a68b55fca162e">kFeatureSuppressAfterClick</a> = 0x10</td></tr>
+<tr class="memdesc:a57327066d135bcc99c4a68b55fca162e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventClicked.  <a href="#a57327066d135bcc99c4a68b55fca162e">More...</a><br /></td></tr>
+<tr class="separator:a57327066d135bcc99c4a68b55fca162e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7642e16b2cc8dd0136312054b1da8f9e"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a7642e16b2cc8dd0136312054b1da8f9e">kFeatureSuppressAfterDoubleClick</a> = 0x20</td></tr>
+<tr class="memdesc:a7642e16b2cc8dd0136312054b1da8f9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventDoubleClicked.  <a href="#a7642e16b2cc8dd0136312054b1da8f9e">More...</a><br /></td></tr>
+<tr class="separator:a7642e16b2cc8dd0136312054b1da8f9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b8e90b1ffe01009a1d7dd18b5b6aae"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a15b8e90b1ffe01009a1d7dd18b5b6aae">kFeatureSuppressAfterLongPress</a> = 0x40</td></tr>
+<tr class="memdesc:a15b8e90b1ffe01009a1d7dd18b5b6aae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventLongPressed.  <a href="#a15b8e90b1ffe01009a1d7dd18b5b6aae">More...</a><br /></td></tr>
+<tr class="separator:a15b8e90b1ffe01009a1d7dd18b5b6aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b43b591ba53d360e787bf780af0abbc"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a6b43b591ba53d360e787bf780af0abbc">kFeatureSuppressAfterRepeatPress</a> = 0x80</td></tr>
+<tr class="memdesc:a6b43b591ba53d360e787bf780af0abbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventReleased after a kEventRepeatPressed.  <a href="#a6b43b591ba53d360e787bf780af0abbc">More...</a><br /></td></tr>
+<tr class="separator:a6b43b591ba53d360e787bf780af0abbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80d621dbcf533c9bb91a111b8fec2c53"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a80d621dbcf533c9bb91a111b8fec2c53">kFeatureSuppressClickBeforeDoubleClick</a> = 0x100</td></tr>
+<tr class="memdesc:a80d621dbcf533c9bb91a111b8fec2c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to suppress kEventClicked before a kEventDoubleClicked.  <a href="#a80d621dbcf533c9bb91a111b8fec2c53">More...</a><br /></td></tr>
+<tr class="separator:a80d621dbcf533c9bb91a111b8fec2c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfd736234ae852f22894c7aceb4e534e"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#abfd736234ae852f22894c7aceb4e534e">kFeatureSuppressAll</a></td></tr>
+<tr class="memdesc:abfd736234ae852f22894c7aceb4e534e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience flag to suppress all suppressions.  <a href="#abfd736234ae852f22894c7aceb4e534e">More...</a><br /></td></tr>
+<tr class="separator:abfd736234ae852f22894c7aceb4e534e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -240,7 +246,26 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00148">148</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00164">164</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+
+</div>
+</div>
+<a id="a1c7c7bfc42738278330243dfc43f23eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c7c7bfc42738278330243dfc43f23eb">&#9670;&nbsp;</a></span>FeatureFlagType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef uint16_t <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">ace_button::ButtonConfig::FeatureFlagType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Type of the feature flag. </p>
+<p>It used to be a uint8_t but got changed to a uint16_t when more than 8 flags were needed. Let's define a typedef to make it easier to change this in the future. </p>
+
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00101">101</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -267,8 +292,8 @@ Protected Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2e4aef889be3ec663d5bad4cbe3f5cb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e4aef889be3ec663d5bad4cbe3f5cb3">&#9670;&nbsp;</a></span>clearFeature()</h2>
+<a id="ac782903e4a60924db3d17c00accc7f3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac782903e4a60924db3d17c00accc7f3b">&#9670;&nbsp;</a></span>clearFeature()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -279,7 +304,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void ace_button::ButtonConfig::clearFeature </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype"><a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td>
           <td class="paramname"><em>features</em></td><td>)</td>
           <td></td>
         </tr>
@@ -293,7 +318,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Disable the given features. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00229">229</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00245">245</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -324,7 +349,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a822ba547aa2ccf2e809b0f69856cbf94">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00163">163</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00179">179</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +379,7 @@ Protected Member Functions</h2></td></tr>
 <p>Return the milliseconds of the internal clock. </p>
 <p>Override to use something other than millis(). The return type is 'unsigned long' instead of uint16_t because that's the return type of millis(). </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00204">204</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00220">220</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +410,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a57c3f6b7cf167b32d2e2e1acf56d9935">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00160">160</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00176">176</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -414,7 +439,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Return the eventHandler. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00234">234</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00250">250</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -445,7 +470,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a4e9e74238da047d34b0005bf76eb3787">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00174">174</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00190">190</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -477,7 +502,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a1f239392b2f91f34cc1a5639ae444e31">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00184">184</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00200">200</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -509,12 +534,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a5ec03eb201260aea635e804c874c641d">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00259">259</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00275">275</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="aef8a6719e516561e0462957106109daa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef8a6719e516561e0462957106109daa">&#9670;&nbsp;</a></span>isFeature()</h2>
+<a id="aae51c7a2986eafd400784cdbe6bb1815"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae51c7a2986eafd400784cdbe6bb1815">&#9670;&nbsp;</a></span>isFeature()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -525,7 +550,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool ace_button::ButtonConfig::isFeature </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype"><a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td>
           <td class="paramname"><em>features</em></td><td>)</td>
           <td></td>
         </tr>
@@ -539,7 +564,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Check if the given features are enabled. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00219">219</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00235">235</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -570,7 +595,7 @@ Protected Member Functions</h2></td></tr>
 <p>Return the HIGH or LOW state of the button. </p>
 <p>Override to use something other than digitalRead(). The return type is 'int' instead of uint16_t because that's the return type of digitalRead(). </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00211">211</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00227">227</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -601,12 +626,12 @@ Protected Member Functions</h2></td></tr>
 <p>Install the event handler. </p>
 <p>The event handler must be defined for the <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> to be useful. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00242">242</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00258">258</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="aa24d7247e3f91760eb7714c9b7ee840d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa24d7247e3f91760eb7714c9b7ee840d">&#9670;&nbsp;</a></span>setFeature()</h2>
+<a id="aac1c9029b1cf9aa793060d372fc09a1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac1c9029b1cf9aa793060d372fc09a1a">&#9670;&nbsp;</a></span>setFeature()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -617,7 +642,7 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void ace_button::ButtonConfig::setFeature </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype"><a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td>
           <td class="paramname"><em>features</em></td><td>)</td>
           <td></td>
         </tr>
@@ -631,7 +656,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Enable the given features. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00224">224</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00240">240</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -714,8 +739,8 @@ Protected Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a17d1acafc0aafab28d2cbd354e1c83c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17d1acafc0aafab28d2cbd354e1c83c8">&#9670;&nbsp;</a></span>kFeatureClick</h2>
+<a id="ac662555100416c4843c6ee5156699c56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac662555100416c4843c6ee5156699c56">&#9670;&nbsp;</a></span>kFeatureClick</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -724,7 +749,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureClick = 0x01</td>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureClick = 0x01</td>
         </tr>
       </table>
   </td>
@@ -736,12 +761,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a21797e5e069da3f7bba42b40ab3a7305" title="Button was clicked (Pressed and Released within ButtonConfig::getClickDelay()). ">AceButton::kEventClicked</a> event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00097">97</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00104">104</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a276bb2bd21f525f0d02a0688ae9c5e97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a276bb2bd21f525f0d02a0688ae9c5e97">&#9670;&nbsp;</a></span>kFeatureDoubleClick</h2>
+<a id="a638943c127dd60288a83e83260825d01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a638943c127dd60288a83e83260825d01">&#9670;&nbsp;</a></span>kFeatureDoubleClick</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -750,7 +775,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureDoubleClick = 0x02</td>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureDoubleClick = 0x02</td>
         </tr>
       </table>
   </td>
@@ -763,12 +788,12 @@ Protected Member Functions</h2></td></tr>
 <p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a0c63f30106e4688425ba37d8f7a9546b" title="Button was double-clicked. ">AceButton::kEventDoubleClicked</a> event. </p>
 <p>Activating this automatically activates kEventClicked since there is no double-click without a click. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00104">104</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00111">111</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a79e965c0e55630e2db1d2e58ded965b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79e965c0e55630e2db1d2e58ded965b5">&#9670;&nbsp;</a></span>kFeatureLongPress</h2>
+<a id="a4d175560047a4ca245186fb26fa413f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d175560047a4ca245186fb26fa413f2">&#9670;&nbsp;</a></span>kFeatureLongPress</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -777,7 +802,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureLongPress = 0x04</td>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureLongPress = 0x04</td>
         </tr>
       </table>
   </td>
@@ -789,12 +814,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to activate the AceButton::kEventLongPress event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00107">107</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00114">114</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="adabd1b5731300810946043e4940708d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adabd1b5731300810946043e4940708d5">&#9670;&nbsp;</a></span>kFeatureRepeatPress</h2>
+<a id="ac9b941ca87f0eeb899ed503481439c92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9b941ca87f0eeb899ed503481439c92">&#9670;&nbsp;</a></span>kFeatureRepeatPress</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -803,7 +828,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureRepeatPress = 0x08</td>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureRepeatPress = 0x08</td>
         </tr>
       </table>
   </td>
@@ -815,12 +840,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a9c4195cb128da40677ea223eb81743c9" title="Button was held down and auto generated multiple presses. ">AceButton::kEventRepeatPressed</a> event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00110">110</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00117">117</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a1d56ce41c67c07b625924fef81ca4390"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d56ce41c67c07b625924fef81ca4390">&#9670;&nbsp;</a></span>kFeatureSuppressAfterClick</h2>
+<a id="a57327066d135bcc99c4a68b55fca162e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57327066d135bcc99c4a68b55fca162e">&#9670;&nbsp;</a></span>kFeatureSuppressAfterClick</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -829,7 +854,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterClick = 0x10</td>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureSuppressAfterClick = 0x10</td>
         </tr>
       </table>
   </td>
@@ -841,12 +866,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to suppress kEventReleased after a kEventClicked. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00113">113</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00120">120</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a4c678cadf6a4ff09e2572a6300891b8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c678cadf6a4ff09e2572a6300891b8c">&#9670;&nbsp;</a></span>kFeatureSuppressAfterDoubleClick</h2>
+<a id="a7642e16b2cc8dd0136312054b1da8f9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7642e16b2cc8dd0136312054b1da8f9e">&#9670;&nbsp;</a></span>kFeatureSuppressAfterDoubleClick</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -855,7 +880,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterDoubleClick = 0x20</td>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureSuppressAfterDoubleClick = 0x20</td>
         </tr>
       </table>
   </td>
@@ -868,12 +893,12 @@ Protected Member Functions</h2></td></tr>
 <p>Flag to suppress kEventReleased after a kEventDoubleClicked. </p>
 <p>A kEventClicked is <em>always</em> suppressed after a kEventDoubleClicked to prevent generating 2 double-clicks if the user performed a triple-click. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00120">120</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00127">127</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a89ac38c17b052cd0c392f513e3dbdd07"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89ac38c17b052cd0c392f513e3dbdd07">&#9670;&nbsp;</a></span>kFeatureSuppressAfterLongPress</h2>
+<a id="a15b8e90b1ffe01009a1d7dd18b5b6aae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15b8e90b1ffe01009a1d7dd18b5b6aae">&#9670;&nbsp;</a></span>kFeatureSuppressAfterLongPress</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -882,7 +907,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterLongPress = 0x40</td>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureSuppressAfterLongPress = 0x40</td>
         </tr>
       </table>
   </td>
@@ -894,12 +919,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to suppress kEventReleased after a kEventLongPressed. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00123">123</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00130">130</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a1aa4964df6d3a2d83616a0d7cf027460"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1aa4964df6d3a2d83616a0d7cf027460">&#9670;&nbsp;</a></span>kFeatureSuppressAfterRepeatPress</h2>
+<a id="a6b43b591ba53d360e787bf780af0abbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b43b591ba53d360e787bf780af0abbc">&#9670;&nbsp;</a></span>kFeatureSuppressAfterRepeatPress</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -908,7 +933,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAfterRepeatPress = 0x80</td>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureSuppressAfterRepeatPress = 0x80</td>
         </tr>
       </table>
   </td>
@@ -920,12 +945,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to suppress kEventReleased after a kEventRepeatPressed. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00126">126</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00133">133</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a64a967f3a2f2000dd3a5948d44f91361"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64a967f3a2f2000dd3a5948d44f91361">&#9670;&nbsp;</a></span>kFeatureSuppressAll</h2>
+<a id="abfd736234ae852f22894c7aceb4e534e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfd736234ae852f22894c7aceb4e534e">&#9670;&nbsp;</a></span>kFeatureSuppressAll</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -934,7 +959,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint8_t ace_button::ButtonConfig::kFeatureSuppressAll</td>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureSuppressAll</td>
         </tr>
       </table>
   </td>
@@ -943,12 +968,39 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        (<a class="code" href="classace__button_1_1ButtonConfig.html#a1d56ce41c67c07b625924fef81ca4390">kFeatureSuppressAfterClick</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a4c678cadf6a4ff09e2572a6300891b8c">kFeatureSuppressAfterDoubleClick</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a89ac38c17b052cd0c392f513e3dbdd07">kFeatureSuppressAfterLongPress</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a1aa4964df6d3a2d83616a0d7cf027460">kFeatureSuppressAfterRepeatPress</a>)</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">        (<a class="code" href="classace__button_1_1ButtonConfig.html#a57327066d135bcc99c4a68b55fca162e">kFeatureSuppressAfterClick</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a7642e16b2cc8dd0136312054b1da8f9e">kFeatureSuppressAfterDoubleClick</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a15b8e90b1ffe01009a1d7dd18b5b6aae">kFeatureSuppressAfterLongPress</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a6b43b591ba53d360e787bf780af0abbc">kFeatureSuppressAfterRepeatPress</a> |</div><div class="line">        <a class="code" href="classace__button_1_1ButtonConfig.html#a80d621dbcf533c9bb91a111b8fec2c53">kFeatureSuppressClickBeforeDoubleClick</a>)</div></div><!-- fragment -->
 <p>Convenience flag to suppress all suppressions. </p>
-<p>Calling setFeature(kFeatureSuppressAll) suppresses all lower-level events, and clearFeature(kFeatureSuppressAll) clears all suppressesion. Note however that isFeature(kFeatureSuppressAll) currently means "is ANY
-feature enabled?" not "are ALL features enabled?". </p>
+<p>Calling setFeature(kFeatureSuppressAll) suppresses all and clearFeature(kFeatureSuppressAll) clears all suppression. Note however that isFeature(kFeatureSuppressAll) currently means "is ANY feature
+enabled?" not "are ALL features enabled?". </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00135">135</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00150">150</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+
+</div>
+</div>
+<a id="a80d621dbcf533c9bb91a111b8fec2c53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80d621dbcf533c9bb91a111b8fec2c53">&#9670;&nbsp;</a></span>kFeatureSuppressClickBeforeDoubleClick</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> ace_button::ButtonConfig::kFeatureSuppressClickBeforeDoubleClick = 0x100</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flag to suppress kEventClicked before a kEventDoubleClicked. </p>
+<p>This causes the notification of a kEventClicked to be delayed until the delay time of <a class="el" href="classace__button_1_1ButtonConfig.html#aaaa461efbfb02b973ecaac5ebdf6ca00" title="Milliseconds between the first and second click to register as a double-click. ">getDoubleClickDelay()</a> has passed so that we can determine if there was a kEventDoubleClicked. </p>
+
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00141">141</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>

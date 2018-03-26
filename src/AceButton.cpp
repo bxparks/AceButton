@@ -86,8 +86,12 @@ void AceButton::check() {
   // orphaned click is not cleared, then the next Click would be errorneously
   // considered to be a DoubleClick. Therefore, we must clear the orphaned click
   // even if just the Clicked event is enabled.
+  //
+  // We also need to check of any postponed clicks that got generated when
+  // kFeatureSuppressClickBeforeDoubleClick was enabled.
   if (mButtonConfig->isFeature(ButtonConfig::kFeatureClick) ||
       mButtonConfig->isFeature(ButtonConfig::kFeatureDoubleClick)) {
+    checkPostponedClick(now);
     checkOrphanedClick(now);
   }
 
@@ -279,7 +283,12 @@ void AceButton::checkClicked(uint16_t now) {
   // we got a single click
   mLastClickTime = now;
   setClicked();
-  handleEvent(kEventClicked);
+  if (mButtonConfig->isFeature(
+      ButtonConfig::kFeatureSuppressClickBeforeDoubleClick)) {
+    setClickPostponed();
+  } else {
+    handleEvent(kEventClicked);
+  }
 }
 
 void AceButton::checkDoubleClicked(uint16_t now) {
@@ -291,9 +300,18 @@ void AceButton::checkDoubleClicked(uint16_t now) {
   uint16_t elapsedTime = now - mLastClickTime;
   if (elapsedTime >= mButtonConfig->getDoubleClickDelay()) {
     clearDoubleClicked();
+    // There should be no postponed Click at this point because
+    // checkPostponedClick() should have taken care of it.
     return;
   }
 
+  // If there was a postponed click, suppress it because it could only have been
+  // postponed if kFeatureSuppressClickBeforeDoubleClick was enabled. If we got
+  // to this point, there was a DoubleClick, so we must suppress the first
+  // Click as requested.
+  if (isClickPostponed()) {
+    clearClickPostponed();
+  }
   setDoubleClicked();
   handleEvent(kEventDoubleClicked);
 }
@@ -312,6 +330,15 @@ void AceButton::checkOrphanedClick(uint16_t now) {
   uint16_t elapsedTime = now - mLastClickTime;
   if (isClicked() && (elapsedTime >= orphanedClickDelay)) {
     clearClicked();
+  }
+}
+
+void AceButton::checkPostponedClick(uint16_t now) {
+  uint16_t postponedClickDelay = mButtonConfig->getDoubleClickDelay();
+  uint16_t elapsedTime = now - mLastClickTime;
+  if (isClickPostponed() && elapsedTime >= postponedClickDelay) {
+    handleEvent(kEventClicked);
+    clearClickPostponed();
   }
 }
 

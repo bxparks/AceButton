@@ -238,6 +238,7 @@ class AceButton {
     static const uint8_t kFlagDoubleClicked = 0x10;
     static const uint8_t kFlagLongPressed = 0x20;
     static const uint8_t kFlagRepeatPressed = 0x40;
+    static const uint8_t kFlagClickPostponed = 0x80;
 
     // Methods for accessing the button's internal states.
     // I don't expect these to be useful to the outside world.
@@ -322,6 +323,18 @@ class AceButton {
       mFlags &= ~kFlagRepeatPressed;
     }
 
+    bool isClickPostponed() ACE_BUTTON_INLINE {
+      return mFlags & kFlagClickPostponed;
+    }
+
+    void setClickPostponed() ACE_BUTTON_INLINE {
+      mFlags |= kFlagClickPostponed;
+    }
+
+    void clearClickPostponed() ACE_BUTTON_INLINE {
+      mFlags &= ~kFlagClickPostponed;
+    }
+
     /**
      * Return true if debouncing succeeded and the buttonState value can be
      * used. Return false if buttonState should be ignored until debouncing
@@ -373,6 +386,12 @@ class AceButton {
      * of the 32-bit number in 49.7 days.
      */
     void checkOrphanedClick(uint16_t now);
+
+    /**
+     * Check if a click message has been postponed because of
+     * ButtonConfig::kFeatureSuppressClickBeforeDoubleClick.
+     */
+    void checkPostponedClick(uint16_t now);
 
     /**
      * Dispatch to the event handler defined in the mButtonConfig.
