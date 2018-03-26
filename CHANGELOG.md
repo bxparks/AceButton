@@ -1,5 +1,12 @@
 # Changelog
 
+* 1.0.6 (2018-03-25)
+    * Add `kFeatureSuppressClickBeforeDoubleClick` flag to suppress
+      Clicked event before a DoubleClicked event, at the cost of slower
+      response time of the Clicked event. Added 2 more examples to demonstrate 2
+      methods to distinguish between a Clicked and DoubleClicked.
+    * Publish [doxygen docs](https://bxparks.github.io/AceButton/html/)
+      on GitHub Pages.
 * 1.0.5 (2018-03-17)
     * Migrate unit tests to [AUnit](https://github.com/bxparks/AUnit).
     * Fix various typos in README.md.
