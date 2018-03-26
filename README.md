@@ -59,13 +59,14 @@ Here are the high-level features of the AceButton library:
     * DoubleClicked
     * LongPressed
     * RepeatPressed
+* distinguishing between Clicked and DoubleClicked
 * configurations are adjustable at runtime or compile-time
     * timing parameters
     * `digitalRead()` button read function can be overridden
     * `millis()` clock function can be overridden
 * small memory footprint
     * each AceButton consumes 14 bytes
-    * each ButtonConfig consumes 5 bytes
+    * each ButtonConfig consumes 6 bytes
     * one System ButtonConfig instance created automatically by the library
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
   (a derivative of [ArduinoUnit](https://github.com/mmurdoch/arduinounit))
@@ -76,6 +77,8 @@ Here are the high-level features of the AceButton library:
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
 
+* many supported event types (e.g. LongPressed and RepeatPressed)
+* able to distinguish between Clicked and DoubleClicked
 * low memory usage
 * thorough unit testing
 * proper handling of orphaned clicks
@@ -103,10 +106,11 @@ to PIN 2.
 
 ```
 #include <AceButton.h>
-
 using namespace ace_button;
 
-const uint8_t BUTTON_PIN = 2;
+const int BUTTON_PIN = 2;
+const int LED_ON = HIGH;
+const int LED_OFF = LOW;
 
 AceButton button(BUTTON_PIN);
 
@@ -123,10 +127,10 @@ void loop() {
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   switch (eventType) {
     case AceButton::kEventPressed:
-      digitalWrite(LED_BUILTIN, HIGH); // turn the LED on
+      digitalWrite(LED_BUILTIN, LED_ON);
       break;
     case AceButton::kEventReleased:
-      digitalWrite(LED_BUILTIN, LOW); // turn the LED off
+      digitalWrite(LED_BUILTIN, LED_OFF);
       break;
   }
 }
