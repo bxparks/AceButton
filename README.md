@@ -1,10 +1,6 @@
 # An Adjustable Compact Event-driven (ACE) Button Library for Arduino
 
-<<<<<<< HEAD
 Version: 1.0.6 (2018-03-25)
-=======
-Version: 1.0.5 (2018-03-17)
->>>>>>> master
 
 ## Summary
 
