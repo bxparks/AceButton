@@ -1,4 +1,6 @@
-# An Adjustable Compact Event-driven (ACE) Button Library for Arduino
+# AceButton
+
+An adjustable, compact, event-driven button library for Arduino platforms.
 
 Version: 1.0.6 (2018-03-25)
 
@@ -177,6 +179,9 @@ The following example sketches are provided:
       `kEventDoubleClicked` using the `kFeatureSuppressClickBeforeDoubleClick`
       flag at the cost of increasing the response time of the `kEventClicked`
       event
+* ClickVersusDoubleClickUsingBoth.ino
+    * an example that combines both the "UsingPressed" and "UsingSuppression"
+      techniques
 
 ## Usage
 
@@ -682,7 +687,7 @@ first Click selects the given desktop object (e.g. an icon or a window), and
 the DoubleClick performs some action on the selected object (e.g. open the
 icon, or resize the window).
 
-The AceButton Library provides 2 solutions which may work for some projects:
+The AceButton Library provides 3 solutions which may work for some projects:
 
 **Method 1:** The `kFeatureSuppressClickBeforeDoubleClick` flag causes the first
 Clicked event to be detected, but the posting of the event message (i.e. the
@@ -742,6 +747,24 @@ buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
 
 See the example code at
 `examples/ClickVersusDoubleClickUsingReleased/`.
+
+**Method 3:** We could actually combine both Methods 1 and 2 so that either
+Released or a delayed Click is considered to be a "Click". This may be the best
+of both worlds.
+
+The `ButtonConfig` configuration looks like this:
+```
+ButtonConfig* buttonConfig = button.getButtonConfig();
+buttonConfig->setEventHandler(handleEvent);
+buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
+buttonConfig->setFeature(
+    ButtonConfig::kFeatureSuppressClickBeforeDoubleClick);
+buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterClick);
+buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
+```
+
+See the example code at
+`examples/ClickVersusDoubleClickUsingBoth/`.
 
 ### Single Button Simplifications
 
