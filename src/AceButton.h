@@ -350,6 +350,9 @@ class AceButton {
      */
     bool checkInitialized(uint16_t buttonState);
 
+    /** Categorize the button event. */
+    void checkEvent(uint16_t now, uint8_t buttonState);
+
     /** Check for a long press event and dispatch to event handler. */
     void checkLongPress(uint16_t now, uint8_t buttonState);
 

@@ -25,8 +25,8 @@
 
 namespace ace_button {
 
-// forward declare the AceButton
 class AceButton;
+class TimingStats;
 
 /**
  * Class that defines the timing parameters and event handler of an AceButton or
@@ -220,6 +220,12 @@ class ButtonConfig {
     virtual unsigned long getClock() { return millis(); }
 
     /**
+     * Return the microseconds of the internal clock. Can be overridden
+     * for testing purposes.
+     */
+    virtual unsigned long getClockMicros() { return micros(); }
+
+    /**
      * Return the HIGH or LOW state of the button. Override to use something
      * other than digitalRead(). The return type is 'int' instead of uint16_t
      * because that's the return type of digitalRead().
@@ -246,6 +252,8 @@ class ButtonConfig {
       mFeatureFlags &= ~features;
     }
 
+    // EventHandler
+
     /** Return the eventHandler. */
     EventHandler getEventHandler() ACE_BUTTON_INLINE {
       return mEventHandler;
@@ -258,6 +266,16 @@ class ButtonConfig {
     void setEventHandler(EventHandler eventHandler) ACE_BUTTON_INLINE {
       mEventHandler = eventHandler;
     }
+
+    // TimingStats
+
+    /** Set the timing stats object. The timingStats can be nullptr. */
+    void setTimingStats(TimingStats* timingStats) {
+      mTimingStats = timingStats;
+    }
+
+    /** Get the timing stats. Can return nullptr. */
+    TimingStats* getTimingStats() { return mTimingStats; }
 
     /**
      * Return a pointer to the singleton instance of the ButtonConfig
@@ -272,7 +290,10 @@ class ButtonConfig {
      * Initialize to its pristine state, except for the EventHandler which is
      * unchanged. This is intended mostly for testing purposes.
      */
-    virtual void init() { mFeatureFlags = 0; }
+    virtual void init() {
+      mFeatureFlags = 0;
+      mTimingStats = nullptr;
+    }
 
   private:
     // Disable copy-constructor and assignment operator
@@ -284,6 +305,9 @@ class ButtonConfig {
 
     /** A bit mask flag that activates certain features. */
     FeatureFlagType mFeatureFlags;
+
+    /** The timing stats object. */
+    TimingStats* mTimingStats;
 
     /**
      * A single static instance of ButtonConfig provided by default to all
