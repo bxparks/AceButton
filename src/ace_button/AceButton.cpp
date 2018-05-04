@@ -22,13 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-/**
-@mainpage AceButton Library
-
-This is the Doxygen documentation for the
-<a href="https://github.com/bxparks/AceButton">AceButton Library</a>.
-*/
-
 #include "TimingStats.h"
 #include "AceButton.h"
 
