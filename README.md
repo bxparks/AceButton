@@ -2,7 +2,7 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.0.6 (2018-03-25)
+Version: 1.1.0 (2018-05-03)
 
 ## Summary
 
@@ -955,9 +955,9 @@ See [CHANGELOG.md](CHANGELOG.md).
 * Versions 1.0 to 1.0.6: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 * Versions 1.1 and above: [MIT License](https://opensource.org/licenses/MIT)
 
-I changed the license to MIT License starting from 1.1 because the MIT License
-is so simple to understand. The Apache License 2.0 is so long I was not sure
-that I understood what it meant.
+I changed to the MIT License starting with version 1.1 because the MIT License
+is so simple to understand. I could not be sure that I understood what the
+Apache License 2.0 meant.
 
 ## Author
 
