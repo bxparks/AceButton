@@ -185,7 +185,7 @@ The following example sketches are provided:
     * generates the timing stats (min/average/max) for the `AceButton::check()`
       method for various types of events (idle, press/release, click,
       double-click, and long-press)
-    * [docs/benchmarks.md](https://bxparks.github.io/AceButton/benchmarks.md)
+    * [docs/benchmarks.md](docs/benchmarks.md)
 
 ## Usage
 
@@ -890,7 +890,7 @@ On the Arduino Nano (16 MHz ATmega328P):
 
 The profiling numbers for `AceButton::check()` using the
 `examples/AutoBenchmark/` program are given in
-[docs/benchmarks.md](https://bxparks.github.io/AceButton/benchmarks.md).
+[docs/benchmarks.md](docs/benchmarks.md).
 
 In summary, the average numbers for various boards are:
 * Arduino Nano: 17-20 microsesconds
