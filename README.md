@@ -152,40 +152,39 @@ directory used by the Arduino IDE. (The result is a directory named
 
 The following example sketches are provided:
 
-* HelloButton.ino
+* [HelloButton.ino](examples/HelloButton)
     * minimal program that reads a switch and control the built-in LED
-* SingleButton.ino
+* [SingleButton.ino](examples/SingleButton)
     * controls a single button wired with a pull-up resistor
     * prints out a status line for every supported event
-* SingleButtonPullDown.ino
+* [SingleButtonPullDown.ino](examples/SingleButtonPullDown)
     * same as SingleButton.ino but with an external pull-down resistor
-* Stopwatch.ino
+* [Stopwatch.ino](examples/Stopwatch)
     * measures the speed of `AceButton:check()` with a start/stop/reset button
     * shows example use of `AdjustableButtonConfig`
     * uses `kFeatureLongPress`
-* TunerButtons.ino
+* [TunerButtons.ino](examples/TunerButtons)
     * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
     * shows multiple `ButtonConfig` instances
     * shows multiple `EventHandler`s
     * shows an example of how to use `getId()`
     * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
       `kFeatureSuppressAfterLongPress`, and `kFeatureSuppressAfterRepeatPress`
-* ClickVersusDoubleClickUsingReleased.ino
+* [ClickVersusDoubleClickUsingReleased.ino](examples/ClickVersusDoubleClickUsingReleased)
     * a way to distinguish between a `kEventClicked` from a
       `kEventDoubleClicked` using a `kEventReleased` instead
-* ClickVersusDoubleClickUsingSuppression.ino
+* [ClickVersusDoubleClickUsingSuppression.ino](examples/ClickVersusDoubleClickUsingSuppression)
     * another way to dstinguish between a `kEventClicked` from a
       `kEventDoubleClicked` using the `kFeatureSuppressClickBeforeDoubleClick`
       flag at the cost of increasing the response time of the `kEventClicked`
       event
-* ClickVersusDoubleClickUsingBoth.ino
+* [ClickVersusDoubleClickUsingBoth.ino](examples/ClickVersusDoubleClickUsingBoth)
     * an example that combines both the "UsingPressed" and "UsingSuppression"
       techniques
-* AutoBenchmark.ino
+* [AutoBenchmark.ino](examples/AutoBenchmark)
     * generates the timing stats (min/average/max) for the `AceButton::check()`
       method for various types of events (idle, press/release, click,
       double-click, and long-press)
-    * [docs/benchmarks.md](docs/benchmarks.md)
 
 ## Usage
 
@@ -888,9 +887,8 @@ On the Arduino Nano (16 MHz ATmega328P):
 
 **CPU cycles:**
 
-The profiling numbers for `AceButton::check()` using the
-`examples/AutoBenchmark/` program are given in
-[docs/benchmarks.md](docs/benchmarks.md).
+The profiling numbers for `AceButton::check()` can be found in
+[examples/AutoBenchmark](examples/AutoBenchmark).
 
 In summary, the average numbers for various boards are:
 * Arduino Nano: 17-20 microsesconds
