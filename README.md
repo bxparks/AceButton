@@ -75,13 +75,15 @@ Here are the high-level features of the AceButton library:
 * properly handles orphaned clicks, to prevent spurious double-clicks
 * only 17-20 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
 * can be instrumented to extract profiling numbers
+* tested on Arduino AVR (UNO, Nano, etc), Teensy ARM (LC
+  and 3.2), ESP8266 and ESP32 platforms
 
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
 
 * many supported event types (e.g. LongPressed and RepeatPressed)
 * able to distinguish between Clicked and DoubleClicked
-* low memory usage
+* small memory usage
 * thorough unit testing
 * proper handling of orphaned clicks
 * proper handling of a reboot while button is pressed
@@ -95,9 +97,10 @@ memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
 you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
-That said, the `examples/AutoBenchmark` sketch shows that `AceButton::check()`
-takes between 16 to 24 microseconds on a 16MHz ATmega328P chip in the idle case.
-Hopefully that is fast enough for the vast majority of people.
+That said, the [examples/AutoBenchmark](examples/AutoBenchmark) program
+shows that `AceButton::check()` takes between 17-20 microseconds on a 16MHz
+ATmega328P chip on average. Hopefully that is fast enough for the vast
+majority of people.
 
 ### HelloButton
 
@@ -148,6 +151,19 @@ The development version can be installed by cloning the
 directory used by the Arduino IDE. (The result is a directory named
 `./libraries/AceButton`.) The `master` branch contains the stable release.
 
+### Source Code
+
+The source files are organized as follows:
+* `src/AceButton.h` - main header file
+* `src/ace_button/` - all implementation files
+* `src/ace_button/testing/` - internal testing files
+
+### Docs
+
+Besides this README.md file, the [docs/](docs/) directory contains the
+[Doxygen docs published on GitHub Pages](https://bxparks.github.io/AceButton/html/).
+It can help you navigate an unfamiliar code base.
+
 ### Examples
 
 The following example sketches are provided:
@@ -196,14 +212,9 @@ There are 2 classes and one typedef that a user will normally interact with:
 
 We explain how to use these below.
 
-### Class and Header Documentation
-
-The [class and header documentation](https://bxparks.github.io/AceButton/html/)
-was generated using Doxygen and published using GitHub Pages. It can help you
-navigate an unfamiliar code base.
-
 ### Include Header and Use Namespace
 
+Only a single header file `AceButton.h` is required to use this library.
 To prevent name clashes with other libraries that the calling code may use, all
 classes are defined in the `ace_button` namespace. To use the code without
 prepending the `ace_button::` prefix, use the `using` directive:
