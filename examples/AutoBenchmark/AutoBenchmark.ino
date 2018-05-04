@@ -35,7 +35,7 @@ void setup() {
   delay(1000); // some microcontrollers reboot twice
   Serial.begin(115200);
   while (!Serial); // for Leonardo/Micro
-  Serial.println(F("setup(): start"));
+  Serial.println(F("setup(): begin"));
 
   // Button uses the built-in pull up register.
   pinMode(BUTTON_PIN, INPUT_PULLUP);

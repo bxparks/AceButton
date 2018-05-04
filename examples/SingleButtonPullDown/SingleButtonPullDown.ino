@@ -23,7 +23,10 @@ AceButton button;
 
 void setup() {
 #if ENABLE_SERIAL == 1
-  Serial.begin(9600);
+  delay(1000); // some microcontrollers reboot twice
+  Serial.begin(115200);
+  while (! Serial); // Wait until Serial is ready - Leonardo/Micro
+  Serial.println(F("setup(): begin"));
 #endif
 
   // initialize built-in LED as an output
@@ -47,7 +50,6 @@ void setup() {
   buttonConfig->setFeature(ButtonConfig::kFeatureRepeatPress);
 
 #if ENABLE_SERIAL == 1
-  while (! Serial); // Wait until Serial is ready - Leonardo
   Serial.println(F("setup(): ready"));
 #endif
 }

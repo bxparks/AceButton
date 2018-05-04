@@ -13,7 +13,6 @@
  */
 
 #include <AceButton.h>
-#include <AdjustableButtonConfig.h>
 
 using namespace ace_button;
 
@@ -48,7 +47,10 @@ uint8_t stopwatchState = STOPWATCH_INIT;
 bool allEventsEnabled = false;
 
 void setup() {
-  Serial.begin(9600);
+  delay(1000); // some boards reboot twice
+  Serial.begin(115200);
+  while (! Serial); // Wait until Serial is ready - Leonardo/Micro
+  Serial.println(F("setup(): begin"));
 
   // Button uses the built-in pull up register.
   pinMode(BUTTON_PIN, INPUT_PULLUP);
@@ -63,7 +65,6 @@ void setup() {
   adjustableButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
   adjustableButtonConfig.setLongPressDelay(2000);
 
-  while (! Serial); // Wait until Serial is ready - Leonardo
   Serial.println(F("setup(): stopwatch ready"));
 }
 
