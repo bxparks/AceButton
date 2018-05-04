@@ -81,5 +81,5 @@ fit into the 32KB flash memory space of an Arduino board.
 
 ## Authorship and License
 
-I will assume that your code is licensed under the same Apache 2.0 license as
+I will assume that your code is licensed under the same MIT License as
 the rest of the library.

@@ -952,7 +952,12 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-Apache License 2.0
+* Versions 1.0 to 1.0.6: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+* Versions 1.1 and above: [MIT License](https://opensource.org/licenses/MIT)
+
+I changed the license to MIT License starting from 1.1 because the MIT License
+is so simple to understand. The Apache License 2.0 is so long I was not sure
+that I understood what it meant.
 
 ## Author
 
