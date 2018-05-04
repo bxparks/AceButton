@@ -3,7 +3,7 @@
 * 1.1.0 (2018-05-03)
     * Change to MIT License.
     * Add instrumentation of AceButton.check() using TimingStats to measure
-      performance.
+      performance. (Fixes #9)
     * Add `examples/AutoBenchmark` sketch to auto-generate benchmarks for
       various microcontrollers.
     * Verify that library and examples compile, and the tests pass for ESP32.
