@@ -8,5 +8,6 @@ var searchData=
   ['setfeature',['setFeature',['../classace__button_1_1ButtonConfig.html#aac1c9029b1cf9aa793060d372fc09a1a',1,'ace_button::ButtonConfig']]],
   ['setlongpressdelay',['setLongPressDelay',['../classace__button_1_1AdjustableButtonConfig.html#a793f5cd759aec3994703dadca2b7ced5',1,'ace_button::AdjustableButtonConfig']]],
   ['setrepeatpressdelay',['setRepeatPressDelay',['../classace__button_1_1AdjustableButtonConfig.html#a025d05d24dce1ffab144eaf4fe812aa7',1,'ace_button::AdjustableButtonConfig']]],
-  ['setrepeatpressinterval',['setRepeatPressInterval',['../classace__button_1_1AdjustableButtonConfig.html#a66651af12f58d0dec14b5e533dd6bbc2',1,'ace_button::AdjustableButtonConfig']]]
+  ['setrepeatpressinterval',['setRepeatPressInterval',['../classace__button_1_1AdjustableButtonConfig.html#a66651af12f58d0dec14b5e533dd6bbc2',1,'ace_button::AdjustableButtonConfig']]],
+  ['settimingstats',['setTimingStats',['../classace__button_1_1ButtonConfig.html#a16d7dbbe1bb075018378e463cd8106de',1,'ace_button::ButtonConfig']]]
 ];
