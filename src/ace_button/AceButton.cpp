@@ -1,26 +1,28 @@
 /*
-   Copyright 2018 Brian T. Park
+MIT License
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Copyright (c) 2018 Brian T. Park
 
-       http://www.apache.org/licenses/LICENSE-2.0
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 */
 
-/**
-@mainpage AceButton Library
-
-This is the Doxygen documentation for the
-<a href="https://github.com/bxparks/AceButton">AceButton Library</a>.
-*/
-
+#include "TimingStats.h"
 #include "AceButton.h"
 
 namespace ace_button {
@@ -64,6 +66,9 @@ uint8_t AceButton::getDefaultReleasedState() {
 // NOTE: It would be interesting to rewrite the check() method using a Finite
 // State Machine.
 void AceButton::check() {
+  // Get the micros.
+  uint16_t nowMicros = mButtonConfig->getClockMicros();
+
   // Retrieve the current time just once and use that in the various checkXxx()
   // functions below. This provides some robustness of the various timing
   // algorithms even if any of the event handlers takes more time than the
@@ -72,12 +77,22 @@ void AceButton::check() {
 
   uint8_t buttonState = mButtonConfig->readButton(mPin);
 
-  // debounce the button and return if not debounced
-  if (!checkDebounced(now, buttonState)) return;
+  // debounce the button
+  if (checkDebounced(now, buttonState)) {
+    // check if the button was initialized (i.e. UNKNOWN state)
+    if (checkInitialized(buttonState)) {
+      checkEvent(now, buttonState);
+    }
+  }
 
-  // check if the button was not initialized (i.e. UNKNOWN state)
-  if (!checkInitialized(buttonState)) return;
+  TimingStats* stats = mButtonConfig->getTimingStats();
+  if (stats != nullptr) {
+    uint16_t elapsedMicros = mButtonConfig->getClockMicros() - nowMicros;
+    stats->update(elapsedMicros);
+  }
+}
 
+void AceButton::checkEvent(uint16_t now, uint8_t buttonState) {
   // We need to remove orphaned clicks even if just Click is enabled. It is not
   // sufficient to do this for just DoubleClick. That's because it's possible
   // for a Clicked event to be generated, then 65.536 seconds later, the

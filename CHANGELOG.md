@@ -1,5 +1,14 @@
 # Changelog
 
+* 1.1.0 (2018-05-03)
+    * Change to MIT License.
+    * Add instrumentation of AceButton.check() using TimingStats to measure
+      performance. (Fixes #9)
+    * Add `examples/AutoBenchmark` sketch to auto-generate benchmarks for
+      various microcontrollers.
+    * Verify that library and examples compile, and the tests pass for ESP32.
+    * Add a third method for distinguishing Clicked from DoubleClicked using
+      both techniques described in 1.0.6.
 * 1.0.6 (2018-03-25)
     * Add `kFeatureSuppressClickBeforeDoubleClick` flag to suppress
       Clicked event before a DoubleClicked event, at the cost of slower

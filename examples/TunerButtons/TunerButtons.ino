@@ -1,13 +1,17 @@
 /*
- * Emulate the buttons of a car radio: 3 preset buttons and a tune-up and
- * a tune-down button.
+ * Emulate the buttons of a car radio:
+ *
+ *    - 3 preset buttons
+ *    - 1 tune-up button
+ *    - 1 tune-down button
+ *
+ * LongPress of a preset button stores the station.
+ * LongPress of a tune-up or tune-down button scans the radio frequency.
  */
 
 #include <AceButton.h>
 
 using namespace ace_button;
-
-#define ENABLE_SERIAL 1
 
 const int NUM_PRESETS = 3;
 
@@ -46,9 +50,10 @@ uint16_t stations[NUM_PRESETS];
 uint16_t currentStation = FM_FREQ_MIN;
 
 void setup() {
-#if ENABLE_SERIAL == 1
-  Serial.begin(9600);
-#endif
+  delay(1000); // some boards reboot twice
+  Serial.begin(115200);
+  while (! Serial); // Wait until Serial is ready - Leonardo/Micro
+  Serial.println(F("setup(): begin()"));
 
   // Configs for the preset buttons. Need Released event to change the station,
   // and LongPressed to memorize the current station. Don't need Clicked.
@@ -93,11 +98,7 @@ void setup() {
   // init the stations associated with each button
   initStations();
 
-#if ENABLE_SERIAL == 1
-  while (! Serial); // Wait until Serial is ready - Leonardo
-  Serial.println(F("tuner buttons ready"));
-#endif
-
+  Serial.println(F("setup(): tuner buttons ready"));
   printStation(currentStation);
 }
 
@@ -116,12 +117,10 @@ void initStations() {
 }
 
 void printStation(uint16_t frequency) {
-#if ENABLE_SERIAL == 1
   Serial.print(F("station: "));
   Serial.print(frequency / 10);
   Serial.print('.');
   Serial.println(frequency % 10);
-#endif
 }
 
 void handlePresetEvent(AceButton* button, uint8_t eventType,
@@ -157,27 +156,23 @@ void handleTuneEvent(AceButton* button, uint8_t eventType,
 }
 
 void retrievePreset(uint8_t id) {
-  if (id <= NUM_PRESETS) {
+  if (id < NUM_PRESETS) {
     currentStation = stations[id];
-#if ENABLE_SERIAL == 1
     Serial.print(F("memory "));
     Serial.print(id + 1);
     Serial.print(F(": "));
     printStation(currentStation);
-#endif
   }
 }
 
 void setPreset(uint8_t id) {
-  if (id <= NUM_PRESETS) {
+  if (id < NUM_PRESETS) {
     stations[id] = currentStation;
 
-#if ENABLE_SERIAL == 1
     Serial.print(F("memory "));
     Serial.print(id + 1);
     Serial.print(F(" set: "));
     printStation(currentStation);
-#endif
   }
 }
 

@@ -1,6 +1,8 @@
-# An Adjustable Compact Event-driven (ACE) Button Library for Arduino
+# AceButton
 
-Version: 1.0.6 (2018-03-25)
+An adjustable, compact, event-driven button library for Arduino platforms.
+
+Version: 1.1.0 (2018-05-03)
 
 ## Summary
 
@@ -59,23 +61,26 @@ Here are the high-level features of the AceButton library:
     * DoubleClicked
     * LongPressed
     * RepeatPressed
-* configurations are adjustable at runtime or compile-time
+* can distinguish between Clicked and DoubleClicked
+* configurations adjustable at runtime or compile-time
     * timing parameters
     * `digitalRead()` button read function can be overridden
     * `millis()` clock function can be overridden
 * small memory footprint
-    * each AceButton consumes 14 bytes
-    * each ButtonConfig consumes 5 bytes
-    * one System ButtonConfig instance created automatically by the library
+    * each `AceButton` consumes 14 bytes
+    * each `ButtonConfig` consumes 8 bytes
+    * one System `ButtonConfig` instance created automatically by the library
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
-  (a derivative of [ArduinoUnit](https://github.com/mmurdoch/arduinounit))
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
-* only 12-14 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
+* only 17-20 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
+* can be instrumented to extract profiling numbers
 
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
 
+* many supported event types (e.g. LongPressed and RepeatPressed)
+* able to distinguish between Clicked and DoubleClicked
 * low memory usage
 * thorough unit testing
 * proper handling of orphaned clicks
@@ -90,10 +95,9 @@ memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
 you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
-That said, the __Stopwatch.ino__ example sketch shows that the call to
-`AceButton::check()` (which should be called at least every 10-20 milliseconds
-from `loop()`) takes only 12-14 microseconds on a 16MHz ATmega328P chip in the
-idle case. Hopefully that is fast enough for the vast majority of people.
+That said, the `examples/AutoBenchmark` sketch shows that `AceButton::check()`
+takes between 16 to 24 microseconds on a 16MHz ATmega328P chip in the idle case.
+Hopefully that is fast enough for the vast majority of people.
 
 ### HelloButton
 
@@ -103,10 +107,11 @@ to PIN 2.
 
 ```
 #include <AceButton.h>
-
 using namespace ace_button;
 
-const uint8_t BUTTON_PIN = 2;
+const int BUTTON_PIN = 2;
+const int LED_ON = HIGH;
+const int LED_OFF = LOW;
 
 AceButton button(BUTTON_PIN);
 
@@ -123,10 +128,10 @@ void loop() {
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   switch (eventType) {
     case AceButton::kEventPressed:
-      digitalWrite(LED_BUILTIN, HIGH); // turn the LED on
+      digitalWrite(LED_BUILTIN, LED_ON);
       break;
     case AceButton::kEventReleased:
-      digitalWrite(LED_BUILTIN, LOW); // turn the LED off
+      digitalWrite(LED_BUILTIN, LED_OFF);
       break;
   }
 }
@@ -173,6 +178,14 @@ The following example sketches are provided:
       `kEventDoubleClicked` using the `kFeatureSuppressClickBeforeDoubleClick`
       flag at the cost of increasing the response time of the `kEventClicked`
       event
+* ClickVersusDoubleClickUsingBoth.ino
+    * an example that combines both the "UsingPressed" and "UsingSuppression"
+      techniques
+* AutoBenchmark.ino
+    * generates the timing stats (min/average/max) for the `AceButton::check()`
+      method for various types of events (idle, press/release, click,
+      double-click, and long-press)
+    * [docs/benchmarks.md](https://bxparks.github.io/AceButton/benchmarks.md)
 
 ## Usage
 
@@ -678,16 +691,16 @@ first Click selects the given desktop object (e.g. an icon or a window), and
 the DoubleClick performs some action on the selected object (e.g. open the
 icon, or resize the window).
 
-The AceButton Library provides 2 solutions which may work for some projects:
+The AceButton Library provides 3 solutions which may work for some projects:
 
 **Method 1:** The `kFeatureSuppressClickBeforeDoubleClick` flag causes the first
 Clicked event to be detected, but the posting of the event message (i.e. the
 call to the `EventHandler`) is postponed until the state of the DoubleClicked
 can be determined. If the DoubleClicked happens, then the first Clicked event
-message is suppressed. If DoubleClicked occurs, the long delayed Clicked message
-is sent via the `EventHandler`.
+message is suppressed. If DoubleClicked does not occur, the long delayed
+Clicked message is sent via the `EventHandler`.
 
-There are two noticible disadvantages of this method. First, the response time
+There are two noticeable disadvantages of this method. First, the response time
 of all Clicked events is delayed by about 600 ms (`kClickDelay +
 kDoubleClickDelay`) whether or not the DoubleClicked event happens. Second, the
 user may not be able to accurately produce a Clicked event (due to the physical
@@ -727,7 +740,6 @@ The disadvantage of this method is that the Clicked event must be be ignored
 user accidentally presses and releases the button to quickly, it generates a
 Clicked event, which will cause the program to do nothing.
 
-
 The `ButtonConfig` configuration looks like this:
 ```
 ButtonConfig* buttonConfig = button.getButtonConfig();
@@ -739,6 +751,24 @@ buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
 
 See the example code at
 `examples/ClickVersusDoubleClickUsingReleased/`.
+
+**Method 3:** We could actually combine both Methods 1 and 2 so that either
+Released or a delayed Click is considered to be a "Click". This may be the best
+of both worlds.
+
+The `ButtonConfig` configuration looks like this:
+```
+ButtonConfig* buttonConfig = button.getButtonConfig();
+buttonConfig->setEventHandler(handleEvent);
+buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
+buttonConfig->setFeature(
+    ButtonConfig::kFeatureSuppressClickBeforeDoubleClick);
+buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterClick);
+buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
+```
+
+See the example code at
+`examples/ClickVersusDoubleClickUsingBoth/`.
 
 ### Single Button Simplifications
 
@@ -841,8 +871,8 @@ Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 (Arduino Uno, Nano, etc):
 
 * sizeof(AceButton): 14
-* sizeof(ButtonConfig): 6
-* sizeof(AdjustableButtonConfig): 18
+* sizeof(ButtonConfig): 8
+* sizeof(AdjustableButtonConfig): 20
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
@@ -858,20 +888,15 @@ On the Arduino Nano (16 MHz ATmega328P):
 
 **CPU cycles:**
 
-Here are the profiling numbers for `AceButton::check()` using the
-`Stopwatch.ino` example program:
+The profiling numbers for `AceButton::check()` using the
+`examples/AutoBenchmark/` program are given in
+[docs/benchmarks.md](https://bxparks.github.io/AceButton/benchmarks.md).
 
-* Arduino Nano (16 MHz ATmega328P)
-    * 11.4 - 14.4 microseconds
-* Teensy LC (48 MHz ARM Cortex-M0+)
-    * 4.3 - 6.4 microseconds
-* Teensy 3.2 (72 MHz ARM Cortex-M4)
-    * 1.7 - 3.5 microseconds
-* NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
-    * 6.0 - 7.1 microseconds
-
-The small numbers are with all events (except Pressed and Released) disabled.
-The larger numbers are with all events enabled.
+In summary, the average numbers for various boards are:
+* Arduino Nano: 17-20 microsesconds
+* Teensy 3.2: 4 microseconds
+* ESP8266: 7-8 microseconds
+* ESP32: 3-4 microseconds
 
 ## System Requirements
 
@@ -879,6 +904,7 @@ This library was developed and tested using:
 * [Arduino IDE 1.8.5](https://www.arduino.cc/en/Main/Software)
 * [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
 * [ESP8266 Arduino Core 2.4.1](https://arduino-esp8266.readthedocs.io/en/2.4.1/)
+* [arduino-esp32](https://github.com/espressif/arduino-esp32)
 
 I used MacOS 10.13.3 and Ubuntu Linux 17.04 for most of my development.
 
@@ -886,9 +912,11 @@ The library has been verified to work on the following hardware:
 
 * Arduino Nano clone (16 MHz ATmega328P)
 * Arduino UNO R3 clone (16 MHz ATmega328P)
+* Arduino Pro Micro clone (16 MHz ATmega32U4)
 * Teensy LC (48 MHz ARM Cortex-M0+)
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
+* ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
 
 The unit tests require [AUnit](https://github.com/bxparks/AUnit)
 to be installed.
@@ -924,7 +952,12 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-Apache License 2.0
+* Versions 1.0 to 1.0.6: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+* Versions 1.1 and above: [MIT License](https://opensource.org/licenses/MIT)
+
+I changed to the MIT License starting with version 1.1 because the MIT License
+is so simple to understand. I could not be sure that I understood what the
+Apache License 2.0 meant.
 
 ## Author
 
