@@ -14,8 +14,8 @@
    limitations under the License.
 */
 
-#ifndef EVENT_TRACKER_H
-#define EVENT_TRACKER_H
+#ifndef ACE_BUTTON_EVENT_TRACKER_H
+#define ACE_BUTTON_EVENT_TRACKER_H
 
 namespace ace_button {
 namespace testing {

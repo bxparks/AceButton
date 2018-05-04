@@ -14,12 +14,12 @@
    limitations under the License.
 */
 
-#ifndef TEST_HELPER_H
-#define TEST_HELPER_H
+#ifndef ACE_BUTTON_TEST_HELPER_H
+#define ACE_BUTTON_TEST_HELPER_H
 
 #include <AceButton.h>
-#include <testing/TestableButtonConfig.h>
-#include <testing/EventTracker.h>
+#include "TestableButtonConfig.h"
+#include "EventTracker.h"
 
 namespace ace_button {
 namespace testing {

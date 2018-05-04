@@ -14,10 +14,10 @@
    limitations under the License.
 */
 
-#ifndef TESTABLE_BUTTON_CONFIG_H
-#define TESTABLE_BUTTON_CONFIG_H
+#ifndef ACE_BUTTON_TESTABLE_BUTTON_CONFIG_H
+#define ACE_BUTTON_TESTABLE_BUTTON_CONFIG_H
 
-#include "ButtonConfig.h"
+#include "../ButtonConfig.h"
 
 namespace ace_button {
 namespace testing {

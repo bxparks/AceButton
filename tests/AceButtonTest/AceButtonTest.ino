@@ -49,10 +49,9 @@
 #endif
 
 #include <AceButton.h>
-#include <AdjustableButtonConfig.h>
-#include <testing/TestableButtonConfig.h>
-#include <testing/EventTracker.h>
-#include <testing/TestHelper.h>
+#include <ace_button/testing/TestableButtonConfig.h>
+#include <ace_button/testing/EventTracker.h>
+#include <ace_button/testing/TestHelper.h>
 
 using namespace ace_button;
 using namespace ace_button::testing;

@@ -3,7 +3,6 @@
  * AceButton::check() method.
  */
 
-#include <TimingStats.h>
 #include <AceButton.h>
 #include "ProfilingButtonConfig.h"
 using namespace ace_button;
