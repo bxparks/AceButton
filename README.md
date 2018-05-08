@@ -128,7 +128,8 @@ void loop() {
   button.check();
 }
 
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t buttonState) {
   switch (eventType) {
     case AceButton::kEventPressed:
       digitalWrite(LED_BUILTIN, LED_ON);
@@ -139,6 +140,10 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   }
 }
 ```
+
+(The `button` parameter is commented out to avoid an `unused parameter`
+warning from the compiler. We can't remove the parameter completely because
+the method signature is defined by the `EventHandler` typedef.)
 
 ## Installation
 
