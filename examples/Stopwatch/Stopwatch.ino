@@ -46,6 +46,8 @@ uint8_t stopwatchState = STOPWATCH_INIT;
 
 bool allEventsEnabled = false;
 
+void handleEvent(AceButton*, uint8_t, uint8_t);
+
 void setup() {
   delay(1000); // some boards reboot twice
   Serial.begin(115200);
@@ -92,7 +94,8 @@ void loop() {
 }
 
 // The event handler for the button.
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t /* buttonState */) {
   unsigned long now = millis();
   switch (eventType) {
     case AceButton::kEventPressed:

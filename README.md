@@ -118,6 +118,8 @@ const int LED_OFF = LOW;
 
 AceButton button(BUTTON_PIN);
 
+void handleEvent(AceButton*, uint8_t, uint8_t);
+
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
@@ -129,7 +131,7 @@ void loop() {
 }
 
 void handleEvent(AceButton* /* button */, uint8_t eventType,
-    uint8_t buttonState) {
+    uint8_t /* buttonState */) {
   switch (eventType) {
     case AceButton::kEventPressed:
       digitalWrite(LED_BUILTIN, LED_ON);
@@ -473,6 +475,21 @@ The motivation for this design is to save static memory. If multiple buttons
 are associated with a single `ButtonConfig`, then it is not necessary for every
 button of that type to hold the same pointer to the `EventHandler` function. It
 is only necessary to save that information once, in the `ButtonConfig` object.
+
+**Pro Tip**: Comment out the unused parameter(s) in the `handleEvent()` method
+to avoid the `unused parameter` compiler warning:
+```
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t /* buttonState */) {
+  ...
+}
+```
+The Arduino sketch compiler can get confused with the parameters commented out,
+so you may need to add a forward declaration for the `handleEvent()` method
+before the `setup()` method:
+```
+void handleEvent(AceButton*, uint8_t, uint8_t);
+```
 
 #### EventHandler Parameters
 

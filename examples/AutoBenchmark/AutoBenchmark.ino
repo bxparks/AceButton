@@ -31,6 +31,8 @@ const uint8_t LOOP_MODE_END = 6;
 uint8_t loopMode;
 uint8_t loopEventType;
 
+void handleEvent(AceButton*, uint8_t, uint8_t);
+
 void setup() {
   delay(1000); // some microcontrollers reboot twice
   Serial.begin(115200);
@@ -212,6 +214,7 @@ void printInt(uint16_t i) {
 }
 
 // An empty event handler.
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t /* buttonState */) {
   loopEventType = eventType;
 }

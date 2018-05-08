@@ -35,6 +35,8 @@ const int LED_OFF = LOW;
 // setup() below.
 AceButton button(BUTTON_PIN);
 
+void handleEvent(AceButton*, uint8_t, uint8_t);
+
 void setup() {
   // initialize built-in LED as an output
   pinMode(LED_BUILTIN, OUTPUT);
@@ -56,7 +58,8 @@ void loop() {
 }
 
 // The event handler for the button.
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t /* buttonState */) {
   switch (eventType) {
     case AceButton::kEventReleased:
       digitalWrite(LED_BUILTIN, LED_ON);

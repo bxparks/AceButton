@@ -8,8 +8,6 @@
 #include <AceButton.h>
 using namespace ace_button;
 
-#define ENABLE_SERIAL 1
-
 // The pin number attached to the button.
 const int BUTTON_PIN = 7;
 
@@ -21,13 +19,13 @@ const int LED_OFF = LOW;
 // using AceButton::init() method in setup() below.
 AceButton button;
 
+void handleEvent(AceButton*, uint8_t, uint8_t);
+
 void setup() {
-#if ENABLE_SERIAL == 1
   delay(1000); // some microcontrollers reboot twice
   Serial.begin(115200);
   while (! Serial); // Wait until Serial is ready - Leonardo/Micro
   Serial.println(F("setup(): begin"));
-#endif
 
   // initialize built-in LED as an output
   pinMode(LED_BUILTIN, OUTPUT);
@@ -49,9 +47,7 @@ void setup() {
   buttonConfig->setFeature(ButtonConfig::kFeatureLongPress);
   buttonConfig->setFeature(ButtonConfig::kFeatureRepeatPress);
 
-#if ENABLE_SERIAL == 1
   Serial.println(F("setup(): ready"));
-#endif
 }
 
 void loop() {
@@ -61,15 +57,14 @@ void loop() {
 }
 
 // The event handler for the button.
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t buttonState) {
 
-#if ENABLE_SERIAL == 1
   // Print out a message for all events.
   Serial.print(F("handleEvent(): eventType: "));
   Serial.print(eventType);
-  Serial.print(F("; button: "));
+  Serial.print(F("; buttonState: "));
   Serial.println(buttonState);
-#endif
 
   // Control the LED only for the Pressed and Released events.
   // Notice that if the MCU is rebooted while the button is pressed down, no
