@@ -164,6 +164,8 @@ The source files are organized as follows:
 * `src/AceButton.h` - main header file
 * `src/ace_button/` - all implementation files
 * `src/ace_button/testing/` - internal testing files
+* `tests/` - unit tests which require [AUnit](https://github.com/bxparks/AUnit)
+* `examples/` - example sketches
 
 ### Docs
 
@@ -948,9 +950,6 @@ The library has been verified to work on the following hardware:
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
-
-The unit tests require [AUnit](https://github.com/bxparks/AUnit)
-to be installed.
 
 ## Background Motivation
 
