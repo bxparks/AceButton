@@ -49,6 +49,9 @@ uint16_t stations[NUM_PRESETS];
 // The current station frequency.
 uint16_t currentStation = FM_FREQ_MIN;
 
+void handlePresetEvent(AceButton*, uint8_t, uint8_t);
+void handleTuneEvent(AceButton*, uint8_t, uint8_t);
+
 void setup() {
   delay(1000); // some boards reboot twice
   Serial.begin(115200);
@@ -124,7 +127,7 @@ void printStation(uint16_t frequency) {
 }
 
 void handlePresetEvent(AceButton* button, uint8_t eventType,
-    uint8_t buttonState) {
+    uint8_t /* buttonState */) {
   switch (eventType) {
     case AceButton::kEventReleased:
       // We trigger on the Released event not the Pressed event to distinguish
@@ -138,7 +141,7 @@ void handlePresetEvent(AceButton* button, uint8_t eventType,
 }
 
 void handleTuneEvent(AceButton* button, uint8_t eventType,
-    uint8_t buttonState) {
+    uint8_t /* buttonState */) {
   switch (eventType) {
     case AceButton::kEventPressed:
     case AceButton::kEventRepeatPressed: {

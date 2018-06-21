@@ -1,5 +1,10 @@
 # Changelog
 
+* 1.1.1 (2018-06-21)
+    * Fix compiler warnings about unused parameters in eventHandler callback.
+    * Move AutoBenchmark results into AutoBenchmark/README.md.
+    * Update various links in AceButton/README.md.
+    * No functional or API change.
 * 1.1.0 (2018-05-03)
     * Change to MIT License.
     * Add instrumentation of AceButton.check() using TimingStats to measure

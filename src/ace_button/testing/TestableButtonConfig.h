@@ -58,7 +58,7 @@ class TestableButtonConfig: public ButtonConfig {
     virtual unsigned long getClock() override { return mMillis; }
 
     /** Read the fake physical button. */
-    virtual int readButton(uint8_t pin) override { return mButtonState; }
+    virtual int readButton(uint8_t /* pin */) override { return mButtonState; }
 
     /** Set the time of the fake clock. */
     void setClock(unsigned long millis) { mMillis = millis; }

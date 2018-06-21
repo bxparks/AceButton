@@ -2,7 +2,7 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.1.0 (2018-05-03)
+Version: 1.1.1 (2018-06-21)
 
 ## Summary
 
@@ -75,13 +75,15 @@ Here are the high-level features of the AceButton library:
 * properly handles orphaned clicks, to prevent spurious double-clicks
 * only 17-20 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
 * can be instrumented to extract profiling numbers
+* tested on Arduino AVR (UNO, Nano, etc), Teensy ARM (LC
+  and 3.2), ESP8266 and ESP32 platforms
 
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
 
 * many supported event types (e.g. LongPressed and RepeatPressed)
 * able to distinguish between Clicked and DoubleClicked
-* low memory usage
+* small memory usage
 * thorough unit testing
 * proper handling of orphaned clicks
 * proper handling of a reboot while button is pressed
@@ -95,9 +97,10 @@ memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
 you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
-That said, the `examples/AutoBenchmark` sketch shows that `AceButton::check()`
-takes between 16 to 24 microseconds on a 16MHz ATmega328P chip in the idle case.
-Hopefully that is fast enough for the vast majority of people.
+That said, the [examples/AutoBenchmark](examples/AutoBenchmark) program
+shows that `AceButton::check()` takes between 17-20 microseconds on a 16MHz
+ATmega328P chip on average. Hopefully that is fast enough for the vast
+majority of people.
 
 ### HelloButton
 
@@ -115,6 +118,8 @@ const int LED_OFF = LOW;
 
 AceButton button(BUTTON_PIN);
 
+void handleEvent(AceButton*, uint8_t, uint8_t);
+
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
@@ -125,7 +130,8 @@ void loop() {
   button.check();
 }
 
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t /* buttonState */) {
   switch (eventType) {
     case AceButton::kEventPressed:
       digitalWrite(LED_BUILTIN, LED_ON);
@@ -136,6 +142,10 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   }
 }
 ```
+
+(The `button` parameter is commented out to avoid an `unused parameter`
+warning from the compiler. We can't remove the parameter completely because
+the method signature is defined by the `EventHandler` typedef.)
 
 ## Installation
 
@@ -148,44 +158,58 @@ The development version can be installed by cloning the
 directory used by the Arduino IDE. (The result is a directory named
 `./libraries/AceButton`.) The `master` branch contains the stable release.
 
+### Source Code
+
+The source files are organized as follows:
+* `src/AceButton.h` - main header file
+* `src/ace_button/` - all implementation files
+* `src/ace_button/testing/` - internal testing files
+* `tests/` - unit tests which require [AUnit](https://github.com/bxparks/AUnit)
+* `examples/` - example sketches
+
+### Docs
+
+Besides this README.md file, the [docs/](docs/) directory contains the
+[Doxygen docs published on GitHub Pages](https://bxparks.github.io/AceButton/html/).
+It can help you navigate an unfamiliar code base.
+
 ### Examples
 
 The following example sketches are provided:
 
-* HelloButton.ino
+* [HelloButton.ino](examples/HelloButton)
     * minimal program that reads a switch and control the built-in LED
-* SingleButton.ino
+* [SingleButton.ino](examples/SingleButton)
     * controls a single button wired with a pull-up resistor
     * prints out a status line for every supported event
-* SingleButtonPullDown.ino
+* [SingleButtonPullDown.ino](examples/SingleButtonPullDown)
     * same as SingleButton.ino but with an external pull-down resistor
-* Stopwatch.ino
+* [Stopwatch.ino](examples/Stopwatch)
     * measures the speed of `AceButton:check()` with a start/stop/reset button
     * shows example use of `AdjustableButtonConfig`
     * uses `kFeatureLongPress`
-* TunerButtons.ino
+* [TunerButtons.ino](examples/TunerButtons)
     * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
     * shows multiple `ButtonConfig` instances
     * shows multiple `EventHandler`s
     * shows an example of how to use `getId()`
     * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
       `kFeatureSuppressAfterLongPress`, and `kFeatureSuppressAfterRepeatPress`
-* ClickVersusDoubleClickUsingReleased.ino
+* [ClickVersusDoubleClickUsingReleased.ino](examples/ClickVersusDoubleClickUsingReleased)
     * a way to distinguish between a `kEventClicked` from a
       `kEventDoubleClicked` using a `kEventReleased` instead
-* ClickVersusDoubleClickUsingSuppression.ino
+* [ClickVersusDoubleClickUsingSuppression.ino](examples/ClickVersusDoubleClickUsingSuppression)
     * another way to dstinguish between a `kEventClicked` from a
       `kEventDoubleClicked` using the `kFeatureSuppressClickBeforeDoubleClick`
       flag at the cost of increasing the response time of the `kEventClicked`
       event
-* ClickVersusDoubleClickUsingBoth.ino
+* [ClickVersusDoubleClickUsingBoth.ino](examples/ClickVersusDoubleClickUsingBoth)
     * an example that combines both the "UsingPressed" and "UsingSuppression"
       techniques
-* AutoBenchmark.ino
+* [AutoBenchmark.ino](examples/AutoBenchmark)
     * generates the timing stats (min/average/max) for the `AceButton::check()`
       method for various types of events (idle, press/release, click,
       double-click, and long-press)
-    * [docs/benchmarks.md](https://bxparks.github.io/AceButton/benchmarks.md)
 
 ## Usage
 
@@ -197,14 +221,9 @@ There are 2 classes and one typedef that a user will normally interact with:
 
 We explain how to use these below.
 
-### Class and Header Documentation
-
-The [class and header documentation](https://bxparks.github.io/AceButton/html/)
-was generated using Doxygen and published using GitHub Pages. It can help you
-navigate an unfamiliar code base.
-
 ### Include Header and Use Namespace
 
+Only a single header file `AceButton.h` is required to use this library.
 To prevent name clashes with other libraries that the calling code may use, all
 classes are defined in the `ace_button` namespace. To use the code without
 prepending the `ace_button::` prefix, use the `using` directive:
@@ -458,6 +477,21 @@ The motivation for this design is to save static memory. If multiple buttons
 are associated with a single `ButtonConfig`, then it is not necessary for every
 button of that type to hold the same pointer to the `EventHandler` function. It
 is only necessary to save that information once, in the `ButtonConfig` object.
+
+**Pro Tip**: Comment out the unused parameter(s) in the `handleEvent()` method
+to avoid the `unused parameter` compiler warning:
+```
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t /* buttonState */) {
+  ...
+}
+```
+The Arduino sketch compiler can get confused with the parameters commented out,
+so you may need to add a forward declaration for the `handleEvent()` method
+before the `setup()` method:
+```
+void handleEvent(AceButton*, uint8_t, uint8_t);
+```
 
 #### EventHandler Parameters
 
@@ -888,9 +922,8 @@ On the Arduino Nano (16 MHz ATmega328P):
 
 **CPU cycles:**
 
-The profiling numbers for `AceButton::check()` using the
-`examples/AutoBenchmark/` program are given in
-[docs/benchmarks.md](https://bxparks.github.io/AceButton/benchmarks.md).
+The profiling numbers for `AceButton::check()` can be found in
+[examples/AutoBenchmark](examples/AutoBenchmark).
 
 In summary, the average numbers for various boards are:
 * Arduino Nano: 17-20 microsesconds
@@ -917,9 +950,6 @@ The library has been verified to work on the following hardware:
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
-
-The unit tests require [AUnit](https://github.com/bxparks/AUnit)
-to be installed.
 
 ## Background Motivation
 

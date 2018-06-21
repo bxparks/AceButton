@@ -1,17 +1,31 @@
-# Benchmark Results
+# AutoBenchmark
 
-I ran the `examples/AutoBenchmark.ino` sketch on various microcontroller boards,
-and the results are shown below.
+This sketch measures the amount of time consumed by the `AceButton::check()`
+method when processing various button events. It uses a special
+`ProfilingButtonConfig` object that allows the program to inject button events
+into the library. The profiling numbers come from activating the `TimingStats`
+object that has been instrumented into the `AceButton::check()` method.
 
-In all of the tests, the min time for the "idle" case is larger than any of the
-other button events. This is because when a button event occurs, the
-`AceButton::checkDebounced()` method returns immediately until the deboucing
+Note that `ProfilingButtonConfig` class generates synthetic button events,
+bypassing the actual `digitalRead()` function. The `digitalRead()` function on
+an Arduino AVR platform (UNO, Nano, etc) is
+[known to be slow](https://forum.arduino.cc/index.php?topic=337578)
+which will add to the timing values in actual usage.
+The [digitalWriteFast library](https://github.com/NicksonYap/digitalWriteFast)
+might be an alternative if speed is critical.
+
+## Benchmark Results
+
+In all of the tests, the **min** time for the "idle" case is larger than any of
+the other button events. This is because when a button event occurs, the
+`AceButton::checkDebounced()` method returns immediately until the debouncing
 time is over which brings down the minimum time. No debouncing is done in the
-"idle" case so the minimum code path takes a lot more CPU cycles.
+"idle" case so the minimum code path takes more CPU cycles.
 
-All times are in microseconds.
+All times are in microseconds. The "samples" column is the number of
+`TimingStats::update()` calls that were made.
 
-## Arduino Nano
+### Arduino Nano
 
 * 16MHz ATmega328P
 
@@ -27,7 +41,7 @@ long press/repeat press |   8/ 20/ 28 | 1917    |
 ------------------------+-------------+---------+
 ```
 
-## Arduino Pro Micro
+### Arduino Pro Micro
 
 * 16MHz ATmega32U4
 
@@ -43,7 +57,7 @@ long press/repeat press |   8/ 20/ 32 | 1918    |
 ------------------------+-------------+---------+
 ```
 
-## Teensy 3.2
+### Teensy 3.2
 
 * 72 MHz ARM Cortex-M4
 
@@ -59,7 +73,7 @@ long press/repeat press |   1/  4/  7 | 1980    |
 ------------------------+-------------+---------+
 ```
 
-## NodeMCU 1.0 clone
+### NodeMCU 1.0 clone
 
 * 80MHz ESP8266
 
@@ -80,7 +94,7 @@ reproducible. I have not researched this but my speculation is that the system
 WiFi code interrupts the `AceButton::check()` method right when the "double
 click" and "long press" samples are taken, causing the extra latency.
 
-## ESP32-01 Dev Board
+### ESP32-01 Dev Board
 
 * 240 MHz Tensilica LX6
 

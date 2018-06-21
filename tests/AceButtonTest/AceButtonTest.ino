@@ -76,7 +76,8 @@ TestHelper helper(&testableConfig, &button, &eventTracker);
 
 // The event handler takes the arguments sent with the event and stored them
 // into the EventTracker circular buffer.
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t buttonState) {
   eventTracker.addEvent(eventType, buttonState);
 }
 
