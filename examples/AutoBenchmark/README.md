@@ -18,7 +18,7 @@ might be an alternative if speed is critical.
 
 In all of the tests, the **min** time for the "idle" case is larger than any of
 the other button events. This is because when a button event occurs, the
-`AceButton::checkDebounced()` method returns immediately until the deboucing
+`AceButton::checkDebounced()` method returns immediately until the debouncing
 time is over which brings down the minimum time. No debouncing is done in the
 "idle" case so the minimum code path takes more CPU cycles.
 

@@ -2,7 +2,7 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.1.0 (2018-05-03)
+Version: 1.1.1 (2018-06-21)
 
 ## Summary
 
