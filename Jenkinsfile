@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                /var/lib/jenkins/arduino-1.8.5/portable/sketchbook/libraries/AUnit/tools/auniter.sh --boards nano --verify tests/AceButtonTest
+                sh '/var/lib/jenkins/arduino-1.8.5/portable/sketchbook/libraries/AUnit/tools/auniter.sh --boards nano --verify tests/AceButtonTest'
             }
         }
     }
