@@ -15,7 +15,7 @@ pipeline {
 
         stage('Build') { 
             steps {
-                sh 'AUniter/auniter.sh --config AceButton/AUniterConfig --boards nano --verify AceButton/tests/AceButtonTest'
+                sh 'AUniter/auniter.sh --config AceButton/tests/AUniterConfig --boards nano --verify AceButton/tests/AceButtonTest'
             }
         }
     }
