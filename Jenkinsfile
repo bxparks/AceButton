@@ -2,20 +2,20 @@ pipeline {
     agent { label 'master' }
     environment {
         AUNITER_ARDUINO_BINARY = '/var/lib/jenkins/arduino-1.8.5/arduino'
-        AUNITER_CONFIG = 'AceButton/AUniterConfig'
     }
     stages {
         stage('Setup') {
             steps {
-                dir('AUnit') {
-                    git url: 'https://github.com/bxparks/AUnit'
+                dir('AUniter') {
+                    git url: 'https://github.com/bxparks/AUniter',
+                        branch: 'develop'
                 }
             }
         }
 
         stage('Build') { 
             steps {
-                sh 'AUnit/tools/auniter.sh --boards nano --verify AceButton/tests/AceButtonTest'
+                sh 'AUniter/auniter.sh --config AceButton/AUniterConfig --boards nano --verify AceButton/tests/AceButtonTest'
             }
         }
     }
