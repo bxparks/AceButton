@@ -21,7 +21,7 @@ pipeline {
             steps {
                 sh "AUniter/auniter.sh \
                     --pref sketchbook.path=$WORKSPACE \
-                    --config libraries/AceButton/tests/AUniterConfig \
+                    --config libraries/AceButton/tests/auniter.conf \
                     --boards nano \
                     --verify \
                     libraries/AceButton/tests/AceButtonTest"
