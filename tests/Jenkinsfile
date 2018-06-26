@@ -10,12 +10,21 @@ pipeline {
                     git url: 'https://github.com/bxparks/AUniter',
                         branch: 'develop'
                 }
+                dir('libraries/AUnit') {
+                    git url: 'https://github.com/bxparks/AUnit',
+                        branch: 'develop'
+                }
             }
         }
 
         stage('Build') { 
             steps {
-                sh 'AUniter/auniter.sh --config AceButton/tests/AUniterConfig --boards nano --verify AceButton/tests/AceButtonTest'
+                sh "AUniter/auniter.sh \
+                    --config AceButton/tests/AUniterConfig \
+                    --boards nano \
+                    --pref sketchbook.path=$WORKSPACE \
+                    --verify \
+                    libraries/AceButton/tests/AceButtonTest"
             }
         }
     }
