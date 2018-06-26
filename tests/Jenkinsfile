@@ -20,7 +20,7 @@ pipeline {
         stage('Build') { 
             steps {
                 sh "AUniter/auniter.sh \
-                    --config AceButton/tests/AUniterConfig \
+                    --config libraries/AceButton/tests/AUniterConfig \
                     --boards nano \
                     --pref sketchbook.path=$WORKSPACE \
                     --verify \
