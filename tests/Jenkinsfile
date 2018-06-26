@@ -1,0 +1,40 @@
+pipeline {
+    agent { label 'master' }
+    environment {
+        AUNITER_ARDUINO_BINARY = '/var/lib/jenkins/arduino-1.8.5/arduino'
+    }
+    stages {
+        stage('Setup') {
+            steps {
+                dir('AUniter') {
+                    git url: 'https://github.com/bxparks/AUniter',
+                        branch: 'develop'
+                }
+                dir('libraries/AUnit') {
+                    git url: 'https://github.com/bxparks/AUnit',
+                        branch: 'develop'
+                }
+            }
+        }
+        stage('Examples') {
+            steps {
+                sh "AUniter/auniter.sh \
+                    --pref sketchbook.path=$WORKSPACE \
+                    --config libraries/AceButton/tests/auniter.conf \
+                    --boards nano:/dev/ttyUSB0 \
+                    --verify \
+                    libraries/AceButton/examples/*"
+            }
+        }
+        stage('Tests') {
+            steps {
+                sh "AUniter/auniter.sh \
+                    --pref sketchbook.path=$WORKSPACE \
+                    --config libraries/AceButton/tests/auniter.conf \
+                    --boards nano:/dev/ttyUSB0 \
+                    --verify \
+                    libraries/AceButton/tests/AceButtonTest"
+            }
+        }
+    }
+}
