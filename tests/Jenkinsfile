@@ -16,7 +16,7 @@ pipeline {
                 }
             }
         }
-        stage('Examples') {
+        stage('Verify Examples') {
             steps {
                 sh "AUniter/auniter.sh \
                     --pref sketchbook.path=$WORKSPACE \
@@ -26,7 +26,17 @@ pipeline {
                     libraries/AceButton/examples/*"
             }
         }
-        stage('Tests') {
+        stage('Verify Tests') {
+            steps {
+                sh "AUniter/auniter.sh \
+                    --pref sketchbook.path=$WORKSPACE \
+                    --config libraries/AceButton/tests/auniter.conf \
+                    --boards nano:/dev/ttyUSB0 \
+                    --test \
+                    libraries/AceButton/tests/AceButtonTest"
+            }
+        }
+        stage('Test') {
             steps {
                 sh "AUniter/auniter.sh \
                     --pref sketchbook.path=$WORKSPACE \
