@@ -39,7 +39,7 @@ pipeline {
                 sh "AUniter/auniter.sh --test \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
-                    --boards nano:/dev/ttyUSB0 \
+                    --boards nano:$PORT \
                     libraries/AceButton/tests/AceButtonTest"
             }
         }
