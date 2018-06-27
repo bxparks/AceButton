@@ -32,7 +32,7 @@ pipeline {
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
                     --boards nano:/dev/ttyUSB0 \
-                    --verify \
+                    --test \
                     libraries/AceButton/tests/AceButtonTest"
             }
         }
