@@ -1,9 +1,10 @@
-// The following environment variables are defined in the Jenkins global config:
-//  * AUNITER_ARDUINO_BINARY
-//  * BOARD_PORT
+// The AUNITER_ARDUINO_BINARY environment variable is defined in the Jenkins
+// system configuration.
 //
-// The following are provided by Jenkins itself:
-//  * WORKSPACE
+// The WORKSPACE variable is automatically filled in by Jenkins.
+//
+// The BOARDS variable is defined in the "This project is
+// parameterized" section of the Pipeline configuration.
 //
 pipeline {
     agent { label 'master' }
@@ -25,7 +26,7 @@ pipeline {
                 sh "AUniter/auniter.sh --verify \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
-                    --boards nano \
+                    --boards $BOARDS \
                     libraries/AceButton/examples/*"
             }
         }
@@ -34,7 +35,7 @@ pipeline {
                 sh "AUniter/auniter.sh --verify \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
-                    --boards nano \
+                    --boards $BOARDS \
                     libraries/AceButton/tests/AceButtonTest"
             }
         }
@@ -43,7 +44,7 @@ pipeline {
                 sh "AUniter/auniter.sh --test \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
-                    --boards nano:$BOARD_PORT \
+                    --boards $BOARDS \
                     libraries/AceButton/tests/AceButtonTest"
             }
         }
