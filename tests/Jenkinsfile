@@ -18,31 +18,28 @@ pipeline {
         }
         stage('Verify Examples') {
             steps {
-                sh "AUniter/auniter.sh \
+                sh "AUniter/auniter.sh --verify \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
-                    --boards nano:/dev/ttyUSB0 \
-                    --verify \
+                    --boards nano \
                     libraries/AceButton/examples/*"
             }
         }
         stage('Verify Tests') {
             steps {
-                sh "AUniter/auniter.sh \
+                sh "AUniter/auniter.sh --verify \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
-                    --boards nano:/dev/ttyUSB0 \
-                    --test \
+                    --boards nano \
                     libraries/AceButton/tests/AceButtonTest"
             }
         }
         stage('Test') {
             steps {
-                sh "AUniter/auniter.sh \
+                sh "AUniter/auniter.sh --test \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
                     --boards nano:/dev/ttyUSB0 \
-                    --test \
                     libraries/AceButton/tests/AceButtonTest"
             }
         }
