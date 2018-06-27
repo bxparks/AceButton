@@ -1,8 +1,12 @@
+// The following environment variables are defined in the Jenkins global config:
+//  * AUNITER_ARDUINO_BINARY
+//  * BOARD_PORT
+//
+// The following are provided by Jenkins itself:
+//  * WORKSPACE
+//
 pipeline {
     agent { label 'master' }
-    environment {
-        AUNITER_ARDUINO_BINARY = '/var/lib/jenkins/arduino-1.8.5/arduino'
-    }
     stages {
         stage('Setup') {
             steps {
@@ -39,7 +43,7 @@ pipeline {
                 sh "AUniter/auniter.sh --test \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
-                    --boards nano:$PORT \
+                    --boards nano:$BOARD_PORT \
                     libraries/AceButton/tests/AceButtonTest"
             }
         }
