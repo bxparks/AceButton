@@ -1,10 +1,12 @@
-// The AUNITER_ARDUINO_BINARY environment variable is defined in the Jenkins
-// system configuration.
+// See https://github.com/bxparks/AUniter/tree/develop/jenkins for
+// a description of AUniter integration with Jenkins.
 //
-// The WORKSPACE variable is automatically filled in by Jenkins.
+// The following variables are used:
 //
-// The BOARDS variable is defined in the "This project is
-// parameterized" section of the Pipeline configuration.
+//  * AUNITER_ARDUINO_BINARY - defined in the Jenkins system configuration
+//  * WORKSPACE - automatically filled in by Jenkins
+//  * BOARDS - defined in the "This project is parameterized" section of the
+//    Jenkins Pipeline configuration
 //
 pipeline {
     agent { label 'master' }
