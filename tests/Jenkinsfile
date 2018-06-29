@@ -44,6 +44,7 @@ pipeline {
         stage('Test') {
             steps {
                 sh "AUniter/auniter.sh --test \
+                    --skip_if_no_port \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
                     --boards $BOARDS \
