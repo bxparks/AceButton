@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Verify Examples') {
             steps {
-                sh "AUniter/auniter.sh --verify \
+                sh "AUniter/tools/auniter.sh --verify \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
                     --boards $BOARDS \
@@ -34,7 +34,7 @@ pipeline {
         }
         stage('Verify Tests') {
             steps {
-                sh "AUniter/auniter.sh --verify \
+                sh "AUniter/tools/auniter.sh --verify \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
                     --boards $BOARDS \
@@ -43,7 +43,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh "AUniter/auniter.sh --test \
+                sh "AUniter/tools/auniter.sh --test \
                     --skip_if_no_port \
                     --pref sketchbook.path=$WORKSPACE \
                     --config libraries/AceButton/tests/auniter.conf \
