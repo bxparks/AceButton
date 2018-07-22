@@ -4,6 +4,8 @@ An adjustable, compact, event-driven button library for Arduino platforms.
 
 Version: 1.1.1 (2018-06-21)
 
+![AUniter Badge](https://us-central1-xparks2015.cloudfunctions.net/badge?project=AceButton)
+
 ## Summary
 
 This library provides classes which accept inputs from a mechanical button

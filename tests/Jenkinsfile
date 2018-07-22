@@ -7,6 +7,7 @@
 //  * WORKSPACE - automatically filled in by Jenkins
 //  * BOARDS - defined in the "This project is parameterized" section of the
 //    Jenkins Pipeline configuration
+//  * BADGE_BUCKET - defined in "This project is parameterized" section.
 //
 pipeline {
     agent { label 'master' }
@@ -49,6 +50,24 @@ pipeline {
                     --config libraries/AceButton/tests/auniter.conf \
                     --boards $BOARDS \
                     libraries/AceButton/tests/AceButtonTest"
+            }
+        }
+    }
+    post {
+        failure {
+            script {
+                if (env.BADGE_BUCKET?.trim()) {
+                    sh "AUniter/BadgeService/set-badge-status.sh \
+                        $BADGE_BUCKET AceButton FAILED"
+                }
+            }
+        }
+        success {
+            script {
+                if (env.BADGE_BUCKET?.trim()) {
+                    sh "AUniter/BadgeService/set-badge-status.sh \
+                        $BADGE_BUCKET AceButton PASSED"
+                }
             }
         }
     }
