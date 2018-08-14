@@ -145,9 +145,9 @@ void handleEvent(AceButton* /* button */, uint8_t eventType,
 }
 ```
 
-(The `button` parameter is commented out to avoid an `unused parameter`
-warning from the compiler. We can't remove the parameter completely because
-the method signature is defined by the `EventHandler` typedef.)
+(The `button` and `buttonState` parameters are commented out to avoid an `unused
+parameter` warning from the compiler. We can't remove the parameters completely
+because the method signature is defined by the `EventHandler` typedef.)
 
 ## Installation
 
@@ -208,6 +208,10 @@ The following example sketches are provided:
 * [ClickVersusDoubleClickUsingBoth.ino](examples/ClickVersusDoubleClickUsingBoth)
     * an example that combines both the "UsingPressed" and "UsingSuppression"
       techniques
+* [CapacitiveButton](examples/CapacitiveButton)
+    * reads a capacitive button using the
+      [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
+      library
 * [AutoBenchmark.ino](examples/AutoBenchmark)
     * generates the timing stats (min/average/max) for the `AceButton::check()`
       method for various types of events (idle, press/release, click,
