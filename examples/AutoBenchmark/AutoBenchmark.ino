@@ -10,12 +10,10 @@ using namespace ace_button;
 // The pin number attached to the button.
 const int BUTTON_PIN = 2;
 
-// One button wired to the pin at BUTTON_PIN. Automatically uses the default
-// ButtonConfig. The alternative is to call the AceButton::init() method in
-// setup() below.
-AceButton button(BUTTON_PIN);
-
 ProfilingButtonConfig buttonConfig;
+
+// One button wired using the ProfilingButtonConfig.
+AceButton button(&buttonConfig);
 
 const unsigned long STATS_PRINT_INTERVAL = 2000;
 unsigned long lastStatsPrintedTime;
@@ -41,6 +39,7 @@ void setup() {
 
   // Button uses the built-in pull up register.
   pinMode(BUTTON_PIN, INPUT_PULLUP);
+  button.init(BUTTON_PIN);
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
@@ -51,7 +50,6 @@ void setup() {
   buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   buttonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
   buttonConfig.setTimingStats(&stats);
-  button.setButtonConfig(&buttonConfig);
 
   lastStatsPrintedTime = millis();
   loopMode = LOOP_MODE_START;

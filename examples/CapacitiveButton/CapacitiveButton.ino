@@ -49,7 +49,7 @@ static const unsigned long TIMEOUT_MILLIS = 10;
 CapacitiveSensor capSensor(4, 6);
 
 CapacitiveConfig buttonConfig(capSensor);
-AceButton button;
+AceButton button(&buttonConfig);
 
 void handleEvent(AceButton* /* button */, uint8_t eventType,
     uint8_t /* buttonState */) {
@@ -74,10 +74,10 @@ void setup() {
   // can have about 4-5 iterations during the 50 millisecond debouncing time.
   capSensor.set_CS_Timeout_Millis(TIMEOUT_MILLIS);
 
+  // Configure the button using CapacitiveConfig.
   buttonConfig.setFeature(ButtonConfig::kFeatureClick);
   buttonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
   buttonConfig.setEventHandler(handleEvent);
-  button.setButtonConfig(&buttonConfig);
 }
 
 void loop() {

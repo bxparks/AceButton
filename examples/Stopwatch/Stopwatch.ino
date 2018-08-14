@@ -25,10 +25,8 @@ const uint8_t BUTTON_PIN = 2;
 // different ButtonConfig.
 AdjustableButtonConfig adjustableButtonConfig;
 
-// One button wired to the pin at BUTTON_PIN. Automatically uses the System
-// ButtonConfig. The alternative is to call the AceButton::init() method in
-// setup() below.
-AceButton button(BUTTON_PIN);
+// Create one button which uses AdjustableButtonConfig.
+AceButton button(&adjustableButtonConfig);
 
 // counters to determine the duration of a single call to AceButton::check()
 uint16_t innerLoopCounter = 0;
@@ -56,10 +54,7 @@ void setup() {
 
   // Button uses the built-in pull up register.
   pinMode(BUTTON_PIN, INPUT_PULLUP);
-
-  // Override the System ButtonConfig with our own AdjustableButtonConfig
-  // instance instead.
-  button.setButtonConfig(&adjustableButtonConfig);
+  button.init(BUTTON_PIN);
 
   // Configure the ButtonConfig with the event handler and enable LongPress.
   // SupressAfterLongPress is optional since we don't do anything if we get it.

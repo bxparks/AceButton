@@ -63,6 +63,7 @@ class TimingStats;
  * For convenience and ease of use, every instance of AceButton is attached to
  * this "System" ButtonConfig by default. The client code can override this
  * association by attaching another ButtonConfig instance using the
+ * AceButton(ButtonConfig*) constuctor (the recommended solution) or the
  * AceButton::setButtonConfig() method.
  */
 class ButtonConfig {

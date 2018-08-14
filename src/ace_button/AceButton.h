@@ -125,6 +125,13 @@ class AceButton {
         uint8_t id = 0);
 
     /**
+     * Constructor that accepts a ButtonConfig as a dependency. Dependency
+     * injection using this constructor is now recommended over using the
+     * setButtonConfig() method because it makes the dependency more clear.
+     */
+    explicit AceButton(ButtonConfig* buttonConfig);
+
+    /**
      * Reset the button to the initial constructed state. In particular,
      * getLastButtonState() returns kButtonStateUnknown. The parameters are
      * identical as the parameters in the AceButton() constructor.
@@ -137,7 +144,11 @@ class AceButton {
       return mButtonConfig;
     }
 
-    /** Set the ButtonConfig associated with this Button. */
+    /**
+     * Set the ButtonConfig associated with this Button. It is recommended that
+     * the AceButton(ButtonConfig*) constructor is used instead to make the
+     * dependency to ButtonConfig more explicit.
+     */
     void setButtonConfig(ButtonConfig* buttonConfig) ACE_BUTTON_INLINE {
       mButtonConfig = buttonConfig;
     }
