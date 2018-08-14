@@ -264,6 +264,7 @@ Or we can use the `init()` method in the `setup()`:
 AceButton button;
 
 void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
   button.init(BUTTON_PIN);
   ...
 }
@@ -312,30 +313,32 @@ button (`AceButton`) from its configuration (`ButtonConfig`).
   ability to override the default methods for reading the pin (`readButton()`)
   and the clock (`getClock()`). This ability allows unit tests to be written.
 
-The `ButtonConfig` can be created simply:
-
-```
-ButtonConfig buttonConfig;
-```
-
-and assigned to one or more `AceButton` instances, for example:
+The `ButtonConfig` can be created and assigned to one or more `AceButton`
+instances using dependency injection through the `AceButton(ButtonConfig&)`
+constructor. If this constructor is used, then the `AceButton::init()` method
+must be used to set the pin number of the button. For example:
 
 ```
 const uint8_t PIN1 = 2;
 const uint8_t PIN2 = 4;
 
-AceButton button1;
-AceButton button2;
+ButtonConfig buttonConfig;
+AceButton button1(&buttonConfig);
+AceButton button2(&buttonConfig);
 
 void setup() {
-  button1.setButtonConfig(&buttonConfig);
+  pinMode(PIN1, INPUT_PULLUP);
   button1.init(PIN1);
 
-  button2.setButtonConfig(&buttonConfig);
+  pinMode(PIN2, INPUT_PULLUP);
   button2.init(PIN2);
   ...
 }
 ```
+
+Another way to inject the `ButtonConfig` dependency is to use the
+`AceButton::setButtonConfig()` method but it is recommended that you use the
+constructor instead because the dependency is easier to follow.
 
 #### System ButtonConfig
 
