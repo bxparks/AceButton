@@ -22,6 +22,11 @@ pipeline {
                     git url: 'https://github.com/bxparks/AUnit',
                         branch: 'develop'
                 }
+                dir('libraries/CapacitiveSensor') {
+                    git url:
+                          'https://github.com/PaulStoffregen/CapacitiveSensor',
+                        branch: 'master'
+                }
             }
         }
         stage('Verify Examples') {
