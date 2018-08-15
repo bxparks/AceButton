@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.1.0</span>
+   &#160;<span id="projectnumber">1.2</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven (ACE) button library for Arduino.</div>
   </td>
@@ -226,9 +226,9 @@ Protected Member Functions</h2></td></tr>
 <li>Use the <a class="el" href="classace__button_1_1AdjustableButtonConfig.html" title="A subclass of ButtonConfig which allows the user to override the varous timing parameters of ButtonCo...">AdjustableButtonConfig</a> subclass which allows all of these parameters to be changed at runtime, at the cost of additional static memory usage to hold those parameters.</li>
 <li>Subclass this <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> class, then override only the specific method to modify the specific timing parameter. This has the advantage of consuming no additional static RAM, at the expense of creating another class.</li>
 </ol>
-<p>A single default "System" <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> instance is created automatically and can be accessed using the ButtConfig::getSystemButtonConfig() static method. For convenience and ease of use, every instance of <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> is attached to this "System" <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> by default. The client code can override this association by attaching another <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> instance using the <a class="el" href="classace__button_1_1AceButton.html#abc9d705d1ca4341cf6f9434962b5b5e7" title="Set the ButtonConfig associated with this Button. ">AceButton::setButtonConfig()</a> method. </p>
+<p>A single default "System" <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> instance is created automatically and can be accessed using the ButtConfig::getSystemButtonConfig() static method. For convenience and ease of use, every instance of <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> is attached to this "System" <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> by default. The client code can override this association by attaching another <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> instance using the AceButton(ButtonConfig*) constuctor (the recommended solution) or the <a class="el" href="classace__button_1_1AceButton.html#abc9d705d1ca4341cf6f9434962b5b5e7" title="Set the ButtonConfig associated with this Button. ">AceButton::setButtonConfig()</a> method. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00068">68</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00069">69</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a6d9db3c7b221b474c3cfd8fca5f4ba1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d9db3c7b221b474c3cfd8fca5f4ba1e">&#9670;&nbsp;</a></span>EventHandler</h2>
@@ -252,7 +252,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00172">172</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00173">173</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -271,7 +271,7 @@ Protected Member Functions</h2></td></tr>
 <p>Type of the feature flag. </p>
 <p>It used to be a uint8_t but got changed to a uint16_t when more than 8 flags were needed. Let's define a typedef to make it easier to change this in the future. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00109">109</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00110">110</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -324,7 +324,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Disable the given features. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00259">259</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00260">260</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -355,7 +355,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a822ba547aa2ccf2e809b0f69856cbf94">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00187">187</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00188">188</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +385,7 @@ Protected Member Functions</h2></td></tr>
 <p>Return the milliseconds of the internal clock. </p>
 <p>Override to use something other than millis(). The return type is 'unsigned long' instead of uint16_t because that's the return type of millis(). </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00228">228</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00229">229</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -415,7 +415,7 @@ Protected Member Functions</h2></td></tr>
 <p>Return the microseconds of the internal clock. </p>
 <p>Can be overridden for testing purposes. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00234">234</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00235">235</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -446,7 +446,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a57c3f6b7cf167b32d2e2e1acf56d9935">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00184">184</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00185">185</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -475,7 +475,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Return the eventHandler. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00266">266</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00267">267</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -506,7 +506,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a4e9e74238da047d34b0005bf76eb3787">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00198">198</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00199">199</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -538,7 +538,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a1f239392b2f91f34cc1a5639ae444e31">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00208">208</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00209">209</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -568,7 +568,7 @@ Protected Member Functions</h2></td></tr>
 <p>Get the timing stats. </p>
 <p>Can return nullptr. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00286">286</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00287">287</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -600,7 +600,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a5ec03eb201260aea635e804c874c641d">ace_button::AdjustableButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00301">301</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00302">302</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -630,7 +630,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Check if the given features are enabled. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00249">249</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00250">250</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -661,7 +661,7 @@ Protected Member Functions</h2></td></tr>
 <p>Return the HIGH or LOW state of the button. </p>
 <p>Override to use something other than digitalRead(). The return type is 'int' instead of uint16_t because that's the return type of digitalRead(). </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00241">241</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00242">242</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -692,7 +692,7 @@ Protected Member Functions</h2></td></tr>
 <p>Install the event handler. </p>
 <p>The event handler must be defined for the <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> to be useful. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00274">274</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00275">275</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -722,7 +722,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Enable the given features. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00254">254</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00255">255</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -753,7 +753,7 @@ Protected Member Functions</h2></td></tr>
 <p>Set the timing stats object. </p>
 <p>The timingStats can be nullptr. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00281">281</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00282">282</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -780,7 +780,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a6293abbbde1dd959fb9edae4203cb58d" title="Milliseconds to wait for a possible click. ">getClickDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00088">88</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00089">89</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -806,7 +806,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a8e1959e4499dc4b9cf47ee0db5aca07e" title="Milliseconds to wait for debouncing. ">getDebounceDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00085">85</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00086">86</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -832,7 +832,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#aaaa461efbfb02b973ecaac5ebdf6ca00" title="Milliseconds between the first and second click to register as a double-click. ">getDoubleClickDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00091">91</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00092">92</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -858,7 +858,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a21797e5e069da3f7bba42b40ab3a7305" title="Button was clicked (Pressed and Released within ButtonConfig::getClickDelay()). ">AceButton::kEventClicked</a> event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00112">112</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00113">113</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -885,7 +885,7 @@ Protected Member Functions</h2></td></tr>
 <p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a0c63f30106e4688425ba37d8f7a9546b" title="Button was double-clicked. ">AceButton::kEventDoubleClicked</a> event. </p>
 <p>Activating this automatically activates kEventClicked since there is no double-click without a click. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00119">119</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00120">120</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -911,7 +911,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to activate the AceButton::kEventLongPress event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00122">122</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00123">123</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -937,7 +937,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a9c4195cb128da40677ea223eb81743c9" title="Button was held down and auto generated multiple presses. ">AceButton::kEventRepeatPressed</a> event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00125">125</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00126">126</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -963,7 +963,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to suppress kEventReleased after a kEventClicked. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00128">128</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00129">129</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -990,7 +990,7 @@ Protected Member Functions</h2></td></tr>
 <p>Flag to suppress kEventReleased after a kEventDoubleClicked. </p>
 <p>A kEventClicked is <em>always</em> suppressed after a kEventDoubleClicked to prevent generating 2 double-clicks if the user performed a triple-click. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00135">135</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00136">136</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1016,7 +1016,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to suppress kEventReleased after a kEventLongPressed. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00138">138</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00139">139</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1042,7 +1042,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to suppress kEventReleased after a kEventRepeatPressed. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00141">141</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00142">142</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1070,7 +1070,7 @@ Protected Member Functions</h2></td></tr>
 <p>Calling setFeature(kFeatureSuppressAll) suppresses all and clearFeature(kFeatureSuppressAll) clears all suppression. Note however that isFeature(kFeatureSuppressAll) currently means "is ANY feature
 enabled?" not "are ALL features enabled?". </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00158">158</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00159">159</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1097,7 +1097,7 @@ enabled?" not "are ALL features enabled?". </p>
 <p>Flag to suppress kEventClicked before a kEventDoubleClicked. </p>
 <p>This causes the notification of a kEventClicked to be delayed until the delay time of <a class="el" href="classace__button_1_1ButtonConfig.html#aaaa461efbfb02b973ecaac5ebdf6ca00" title="Milliseconds between the first and second click to register as a double-click. ">getDoubleClickDelay()</a> has passed so that we can determine if there was a kEventDoubleClicked. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00149">149</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00150">150</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1123,7 +1123,7 @@ enabled?" not "are ALL features enabled?". </p>
 
 <p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a22cb719756787cb19d6799d6236a22a0" title="Milliseconds for a long press event. ">getLongPressDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00094">94</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00095">95</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1149,7 +1149,7 @@ enabled?" not "are ALL features enabled?". </p>
 
 <p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a11cc4cde6b4f11c6920ac78f759b2422" title="Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed...">getRepeatPressDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00097">97</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00098">98</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1175,7 +1175,7 @@ enabled?" not "are ALL features enabled?". </p>
 
 <p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a2329e8fa28651ed12ccfec355c8e7eab" title="Milliseconds between two successive RepeatPressed events. ">getRepeatPressInterval()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00100">100</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00101">101</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
