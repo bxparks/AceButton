@@ -1,5 +1,12 @@
 # Changelog
 
+* 1.2 (2018-08-14)
+    * Add `AceButton(ButtonConfig*)` constructor to support constructor
+      dependency injection. Recommended over `setButtonConfig()`.
+      Should be 100% backwards compatible.
+    * Add examples/CapacitiveSwitch program to demonstrate integration
+      with CapacitiveSensor library to support capacitive switches.
+    * Add continuous integration using AUniter/Jenkins.
 * 1.1.1 (2018-06-21)
     * Fix compiler warnings about unused parameters in eventHandler callback.
     * Move AutoBenchmark results into AutoBenchmark/README.md.
