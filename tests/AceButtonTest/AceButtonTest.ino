@@ -68,9 +68,10 @@ const uint8_t PIN = 13;
 const uint8_t BUTTON_ID = 1;
 
 ButtonConfig buttonConfig;
+AdjustableButtonConfig adjustableConfig;
+
 TestableButtonConfig testableConfig;
-AdjustableButtonConfig adjustableConfig;;
-AceButton button;
+AceButton button(&testableConfig);
 EventTracker eventTracker;
 TestHelper helper(&testableConfig, &button, &eventTracker);
 
@@ -87,7 +88,6 @@ void setup() {
   while (!Serial); // for the Arduino Leonardo/Micro only
 
   testableConfig.setEventHandler(handleEvent);
-  button.setButtonConfig(&testableConfig);
 
   Serial.print(F("sizeof(AceButton): "));
   Serial.println(sizeof(AceButton));

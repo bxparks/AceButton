@@ -28,14 +28,14 @@ const uint16_t FM_FREQ_DELTA = 2; // 0.2 MHz increments in USA
 
 // Preset buttons.
 ButtonConfig presetConfig;
-AceButton presetButton1;
-AceButton presetButton2;
-AceButton presetButton3;
+AceButton presetButton1(&presetConfig);
+AceButton presetButton2(&presetConfig);
+AceButton presetButton3(&presetConfig);
 
 // Tune up or down buttons.
 ButtonConfig tuneConfig;
-AceButton tuneDownButton;
-AceButton tuneUpButton;
+AceButton tuneDownButton(&tuneConfig);
+AceButton tuneUpButton(&tuneConfig);
 
 // Array to hold the stations associated with the button whose id is an
 // index into this array. The value is the 10 * station_frequency (e.g. 88.5 MHz
@@ -75,27 +75,22 @@ void setup() {
 
   // Preset Button 1
   pinMode(PRESET_1_PIN, INPUT_PULLUP);
-  presetButton1.setButtonConfig(&presetConfig);
   presetButton1.init(PRESET_1_PIN, HIGH, 0 /* id */);
 
   // Preset Button 2
   pinMode(PRESET_2_PIN, INPUT_PULLUP);
-  presetButton2.setButtonConfig(&presetConfig);
   presetButton2.init(PRESET_2_PIN, HIGH, 1 /* id */);
 
   // Preset Button 3
   pinMode(PRESET_3_PIN, INPUT_PULLUP);
-  presetButton3.setButtonConfig(&presetConfig);
   presetButton3.init(PRESET_3_PIN, HIGH, 2 /* id */);
 
   // Tune Down Button
   pinMode(TUNE_DOWN_PIN, INPUT_PULLUP);
-  tuneDownButton.setButtonConfig(&tuneConfig);
   tuneDownButton.init(TUNE_DOWN_PIN);
 
   // Tune Up Button
   pinMode(TUNE_UP_PIN, INPUT_PULLUP);
-  tuneUpButton.setButtonConfig(&tuneConfig);
   tuneUpButton.init(TUNE_UP_PIN);
 
   // init the stations associated with each button

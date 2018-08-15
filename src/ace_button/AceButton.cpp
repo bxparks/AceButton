@@ -41,6 +41,11 @@ AceButton::AceButton(uint8_t pin, uint8_t defaultReleasedState, uint8_t id):
   init(pin, defaultReleasedState, id);
 }
 
+AceButton::AceButton(ButtonConfig* buttonConfig):
+    mButtonConfig(buttonConfig) {
+  init(0, HIGH, 0);
+}
+
 void AceButton::init(uint8_t pin, uint8_t defaultReleasedState, uint8_t id) {
   mPin = pin;
   mId = id;

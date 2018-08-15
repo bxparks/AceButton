@@ -10,6 +10,13 @@ using namespace ace_button;
 
 const int BUTTON_PIN = 2; // change this to the button pin
 
+#ifdef ESP32
+  // Different ESP32 boards use different pins
+  const int LED_PIN = 2;
+#else
+  const int LED_PIN = LED_BUILTIN;
+#endif
+
 // LED states. Some microcontrollers wire their built-in LED the reverse.
 const int LED_ON = HIGH;
 const int LED_OFF = LOW;
@@ -19,7 +26,7 @@ AceButton button(BUTTON_PIN);
 void handleEvent(AceButton*, uint8_t, uint8_t);
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   button.setEventHandler(handleEvent);
 }
@@ -32,10 +39,10 @@ void handleEvent(AceButton* /* button */, uint8_t eventType,
     uint8_t /* buttonState */) {
   switch (eventType) {
     case AceButton::kEventPressed:
-      digitalWrite(LED_BUILTIN, LED_ON);
+      digitalWrite(LED_PIN, LED_ON);
       break;
     case AceButton::kEventReleased:
-      digitalWrite(LED_BUILTIN, LED_OFF);
+      digitalWrite(LED_PIN, LED_OFF);
       break;
   }
 }
