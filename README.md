@@ -998,6 +998,16 @@ I changed to the MIT License starting with version 1.1 because the MIT License
 is so simple to understand. I could not be sure that I understood what the
 Apache License 2.0 meant.
 
+## Feedback and Support
+
+If you have any questions, comments, bug reports, or feature requests, please
+file a GitHub ticket or send me an email. I'd love to hear about how this
+software and its documentation can be improved. Instead of forking the
+repository to modify or add a feature for your own projects, let me have a
+chance to incorporate the change into the main repository so that your external
+dependencies are simpler and so that others can benefit. I can't promise that I
+will incorporate everything, but I will give your ideas serious consideration.
+
 ## Author
 
 Created by Brian T. Park (brian@xparks.net).
