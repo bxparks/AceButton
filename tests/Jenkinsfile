@@ -31,28 +31,31 @@ pipeline {
         }
         stage('Verify Examples') {
             steps {
-                sh "AUniter/tools/auniter.sh --verify \
-                    --pref sketchbook.path=$WORKSPACE \
+                sh "AUniter/tools/auniter.sh \
                     --config libraries/AceButton/tests/auniter.conf \
+                    verify \
+                    --pref sketchbook.path=$WORKSPACE \
                     --boards $BOARDS \
                     libraries/AceButton/examples/*"
             }
         }
         stage('Verify Tests') {
             steps {
-                sh "AUniter/tools/auniter.sh --verify \
-                    --pref sketchbook.path=$WORKSPACE \
+                sh "AUniter/tools/auniter.sh \
                     --config libraries/AceButton/tests/auniter.conf \
+                    verify \
+                    --pref sketchbook.path=$WORKSPACE \
                     --boards $BOARDS \
                     libraries/AceButton/tests/AceButtonTest"
             }
         }
         stage('Test') {
             steps {
-                sh "AUniter/tools/auniter.sh --test \
+                sh "AUniter/tools/auniter.sh \
+                    --config libraries/AceButton/tests/auniter.conf \
+                    test \
                     --skip_if_no_port \
                     --pref sketchbook.path=$WORKSPACE \
-                    --config libraries/AceButton/tests/auniter.conf \
                     --boards $BOARDS \
                     libraries/AceButton/tests/AceButtonTest"
             }
