@@ -16,7 +16,7 @@ pipeline {
             steps {
                 dir('AUniter') {
                     git url: 'https://github.com/bxparks/AUniter',
-                        branch: 'develop'
+                        branch: 'master'
                 }
                 dir('libraries/AUnit') {
                     git url: 'https://github.com/bxparks/AUnit',
