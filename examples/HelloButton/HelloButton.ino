@@ -8,7 +8,11 @@
 #include <AceButton.h>
 using namespace ace_button;
 
+#if defined(ENVIRONMENT_NANO)
+const int BUTTON_PIN = RIGHT_BUTTON;
+#else
 const int BUTTON_PIN = 2; // change this to the button pin
+#endif
 
 #ifdef ESP32
   // Different ESP32 boards use different pins
