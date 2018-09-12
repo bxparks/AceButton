@@ -34,7 +34,7 @@ pipeline {
                 sh "AUniter/tools/auniter.sh \
                     --config libraries/AceButton/tests/auniter.ini \
                     verify \
-                    --sketchbook=$WORKSPACE \
+                    --sketchbook $WORKSPACE \
                     $BOARDS \
                     libraries/AceButton/examples/*"
             }
@@ -44,7 +44,7 @@ pipeline {
                 sh "AUniter/tools/auniter.sh \
                     --config libraries/AceButton/tests/auniter.ini \
                     verify \
-                    --sketchbook=$WORKSPACE \
+                    --sketchbook $WORKSPACE \
                     $BOARDS \
                     libraries/AceButton/tests/AceButtonTest"
             }
@@ -55,7 +55,7 @@ pipeline {
                     --config libraries/AceButton/tests/auniter.ini \
                     test \
                     --skip_missing_port \
-                    --sketchbook=$WORKSPACE \
+                    --sketchbook $WORKSPACE \
                     $BOARDS \
                     libraries/AceButton/tests/AceButtonTest"
             }
