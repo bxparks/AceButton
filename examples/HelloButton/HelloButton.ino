@@ -8,8 +8,8 @@
 #include <AceButton.h>
 using namespace ace_button;
 
-#if defined(ENVIRONMENT_NANO)
-const int BUTTON_PIN = RIGHT_BUTTON;
+#if defined(AUNITER_NANO)
+const int BUTTON_PIN = AUNITER_RIGHT_BUTTON;
 #else
 const int BUTTON_PIN = 2; // change this to the button pin
 #endif
