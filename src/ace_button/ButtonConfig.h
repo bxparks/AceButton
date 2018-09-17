@@ -174,7 +174,7 @@ class ButtonConfig {
         uint8_t buttonState);
 
     /** Constructor. */
-    ButtonConfig();
+    ButtonConfig() {}
 
     // These configuration methods are virtual so that they can be overriddden.
     // Subclasses can override at the class-level by defining a new virtual
@@ -182,22 +182,22 @@ class ButtonConfig {
     // the parameter with each instance of this class.
 
     /** Milliseconds to wait for debouncing. */
-    virtual uint16_t getDebounceDelay() { return kDebounceDelay; }
+    uint16_t getDebounceDelay() { return mDebounceDelay; }
 
     /** Milliseconds to wait for a possible click. */
-    virtual uint16_t getClickDelay() { return kClickDelay; }
+    uint16_t getClickDelay() { return mClickDelay; }
 
     /**
      * Milliseconds between the first and second click to register as a
      * double-click.
      */
-    virtual uint16_t getDoubleClickDelay() {
-      return kDoubleClickDelay;
+    uint16_t getDoubleClickDelay() {
+      return mDoubleClickDelay;
     }
 
     /** Milliseconds for a long press event. */
-    virtual uint16_t getLongPressDelay() {
-      return kLongPressDelay;
+    uint16_t getLongPressDelay() {
+      return mLongPressDelay;
     }
 
     /**
@@ -206,15 +206,45 @@ class ButtonConfig {
      * as this delay has passed. Subsequent events will fire after
      * getRepeatPressInterval() time.
      */
-    virtual uint16_t getRepeatPressDelay() {
-      return kRepeatPressDelay;
+    uint16_t getRepeatPressDelay() {
+      return mRepeatPressDelay;
     }
 
     /**
      * Milliseconds between two successive RepeatPressed events.
      */
-    virtual uint16_t getRepeatPressInterval() {
-      return kRepeatPressInterval;
+    uint16_t getRepeatPressInterval() {
+      return mRepeatPressInterval;
+    }
+
+    /** Set the debounceDelay. */
+    void setDebounceDelay(uint16_t debounceDelay) {
+      mDebounceDelay = debounceDelay;
+    }
+
+    /** Set the clickDelay. */
+    void setClickDelay(uint16_t clickDelay) {
+      mClickDelay = clickDelay;
+    }
+
+    /** Set the doubleClickDelay. */
+    void setDoubleClickDelay(uint16_t doubleClickDelay) {
+      mDoubleClickDelay = doubleClickDelay;
+    }
+
+    /** Set the longPressDelay. */
+    void setLongPressDelay(uint16_t longPressDelay) {
+      mLongPressDelay = longPressDelay;
+    }
+
+    /** Set the repeatPressDelay. */
+    void setRepeatPressDelay(uint16_t repeatPressDelay) {
+      mRepeatPressDelay = repeatPressDelay;
+    }
+
+    /** Set the repeatPressInterval. */
+    void setRepeatPressInterval(uint16_t repeatPressInterval) {
+      mRepeatPressInterval = repeatPressInterval;
     }
 
     // The getClock() and readButton() are external dependencies that normally
@@ -305,24 +335,31 @@ class ButtonConfig {
     }
 
   private:
-    // Disable copy-constructor and assignment operator
-    ButtonConfig(const ButtonConfig&) = delete;
-    ButtonConfig& operator=(const ButtonConfig&) = delete;
-
-    /** The event handler for all buttons associated with this ButtonConfig. */
-    EventHandler mEventHandler;
-
-    /** A bit mask flag that activates certain features. */
-    FeatureFlagType mFeatureFlags;
-
-    /** The timing stats object. */
-    TimingStats* mTimingStats;
-
     /**
      * A single static instance of ButtonConfig provided by default to all
      * AceButton instances.
      */
     static ButtonConfig sSystemButtonConfig;
+
+    // Disable copy-constructor and assignment operator
+    ButtonConfig(const ButtonConfig&) = delete;
+    ButtonConfig& operator=(const ButtonConfig&) = delete;
+
+    /** The event handler for all buttons associated with this ButtonConfig. */
+    EventHandler mEventHandler = nullptr;
+
+    /** A bit mask flag that activates certain features. */
+    FeatureFlagType mFeatureFlags = 0;
+
+    /** The timing stats object. */
+    TimingStats* mTimingStats = nullptr;
+
+    uint16_t mDebounceDelay = kDebounceDelay;
+    uint16_t mClickDelay = kClickDelay;
+    uint16_t mDoubleClickDelay = kDoubleClickDelay;
+    uint16_t mLongPressDelay = kLongPressDelay;
+    uint16_t mRepeatPressDelay = kRepeatPressDelay;
+    uint16_t mRepeatPressInterval = kRepeatPressInterval;
 };
 
 }
