@@ -1,6 +1,7 @@
 /*
- * A copy of HelloWorld where we can measure the size of the AceButton library.
- * Set USE_ACE_BUTTON to 1 to include AceButton, 0 to exclude AceButton.
+ * A copy of HelloWorld which allows us to measure the size of the AceButton
+ * library. Set USE_ACE_BUTTON to 1 to include AceButton, 0 to exclude
+ * AceButton.
  */
 
 #include <AceButton.h>
@@ -11,30 +12,16 @@ using namespace ace_button;
 // figure out how many bytes is consumed by the AceButton library.
 #define USE_ACE_BUTTON 1
 
-// Check for Arduino IDE
-#ifndef AUNITER
-  #define AUNITER_NANO
-  #define AUNITER_LEFT_BUTTON 2
-  #warning Assuming AUNITER_NANO
-#endif
-
-#if defined(AUNITER_NANO)
-  const int BUTTON_PIN = AUNITER_LEFT_BUTTON;
-  const int LED_PIN = LED_BUILTIN;
-  const int LED_ON = HIGH;
-  const int LED_OFF = LOW;
-#elif defined(AUNITER_MICRO)
-  const int BUTTON_PIN = AUNITER_BUTTON;
-  const int LED_PIN = LED_BUILTIN_RX;
-  const int LED_ON = LOW;
-  const int LED_OFF = HIGH;
-#elif defined(AUNITER_ESP32)
-  // Different ESP32 boards use different pins, so just pick one for now
+// Some ESP32 boards have multiple builtin LEDs so don't define LED_BUILTIN.
+#if defined(ESP32)
   const int LED_PIN = 2;
 #else
-  const int BUTTON_PIN = 2; // change this to the button pin
   const int LED_PIN = LED_BUILTIN;
 #endif
+
+const int BUTTON_PIN = 2;
+const int LED_ON = HIGH;
+const int LED_OFF = LOW;
 
 #if USE_ACE_BUTTON == 1
 AceButton button(BUTTON_PIN);
