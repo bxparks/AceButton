@@ -6,30 +6,19 @@
  */
 
 #include <AceButton.h>
+
 using namespace ace_button;
 
-#if !defined(AUNITER)
-  #define AUNITER_MICRO
-  #warning Assuming AUNITER_MICRO
-#endif
-
-#if defined(AUNITER_NANO)
-  const int BUTTON_PIN = AUNITER_RIGHT_BUTTON;
-  const int LED_PIN = LED_BUILTIN;
-  const int LED_ON = HIGH;
-  const int LED_OFF = LOW;
-#elif defined(AUNITER_MICRO)
-  const int BUTTON_PIN = 3;
-  const int LED_PIN = LED_BUILTIN_RX;
-  const int LED_ON = LOW;
-  const int LED_OFF = HIGH;
-#elif defined(AUNITER_ESP32)
-  // Different ESP32 boards use different pins, so just pick one for now
+// Some ESP32 boards have multiple builtin LEDs so don't define LED_BUILTIN.
+#if defined(ESP32)
   const int LED_PIN = 2;
 #else
-  const int BUTTON_PIN = 2; // change this to the button pin
   const int LED_PIN = LED_BUILTIN;
 #endif
+
+const int BUTTON_PIN = 2;
+const int LED_ON = HIGH;
+const int LED_OFF = LOW;
 
 AceButton button(BUTTON_PIN);
 
