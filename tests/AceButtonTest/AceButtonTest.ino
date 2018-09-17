@@ -68,7 +68,6 @@ const uint8_t PIN = 13;
 const uint8_t BUTTON_ID = 1;
 
 ButtonConfig buttonConfig;
-AdjustableButtonConfig adjustableConfig;
 
 TestableButtonConfig testableConfig;
 AceButton button(&testableConfig);
@@ -93,8 +92,6 @@ void setup() {
   Serial.println(sizeof(AceButton));
   Serial.print(F("sizeof(ButtonConfig): "));
   Serial.println(sizeof(ButtonConfig));
-  Serial.print(F("sizeof(AdjustableButtonConfig): "));
-  Serial.println(sizeof(AdjustableButtonConfig));
   Serial.print(F("sizeof(TestableButtonConfig): "));
   Serial.println(sizeof(TestableButtonConfig));
 
@@ -243,25 +240,26 @@ test(testable_config) {
   assertEqual(LOW, button.getButtonConfig()->readButton(0));
 }
 
-// Test that the AdjustableButtonConfig overrides properly.
+// Test that the ButtonConfig parameters are mutable, just like the
+// original AdjustableButtonConfig.
 test(adjustable_config) {
-  adjustableConfig.setDebounceDelay(1);
-  assertEqual((uint16_t)1, adjustableConfig.getDebounceDelay());
+  buttonConfig.setDebounceDelay(1);
+  assertEqual((uint16_t)1, buttonConfig.getDebounceDelay());
 
-  adjustableConfig.setClickDelay(2);
-  assertEqual((uint16_t)2, adjustableConfig.getClickDelay());
+  buttonConfig.setClickDelay(2);
+  assertEqual((uint16_t)2, buttonConfig.getClickDelay());
 
-  adjustableConfig.setDoubleClickDelay(3);
-  assertEqual((uint16_t)3, adjustableConfig.getDoubleClickDelay());
+  buttonConfig.setDoubleClickDelay(3);
+  assertEqual((uint16_t)3, buttonConfig.getDoubleClickDelay());
 
-  adjustableConfig.setLongPressDelay(4);
-  assertEqual((uint16_t)4, adjustableConfig.getLongPressDelay());
+  buttonConfig.setLongPressDelay(4);
+  assertEqual((uint16_t)4, buttonConfig.getLongPressDelay());
 
-  adjustableConfig.setRepeatPressDelay(5);
-  assertEqual((uint16_t)5, adjustableConfig.getRepeatPressDelay());
+  buttonConfig.setRepeatPressDelay(5);
+  assertEqual((uint16_t)5, buttonConfig.getRepeatPressDelay());
 
-  adjustableConfig.setRepeatPressInterval(6);
-  assertEqual((uint16_t)6, adjustableConfig.getRepeatPressInterval());
+  buttonConfig.setRepeatPressInterval(6);
+  assertEqual((uint16_t)6, buttonConfig.getRepeatPressInterval());
 }
 
 // ------------------------------------------------------------------

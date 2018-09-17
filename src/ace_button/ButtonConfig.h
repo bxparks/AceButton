@@ -46,17 +46,8 @@ class TimingStats;
  * Each AceButton instance contains a pointer to an instance of ButtonConfig,
  * and an instance of ButtonConfig will be shared among multiple AceButtons.
  *
- * Most of the parameters are actually hardwired into the various virtual
- * methods below. This has the advantage of reducing memory consumption of even
- * this class. If a parameter needs to be changed, there are 2 options:
- *
- * 1. Use the AdjustableButtonConfig subclass which allows all of these
- *    parameters to be changed at runtime, at the cost of additional static
-      memory usage to hold those parameters.
- * 2. Subclass this ButtonConfig class, then override only the specific
- *    method to modify the specific timing parameter. This has the advantage
- *    of consuming no additional static RAM, at the expense of creating
- *    another class.
+ * Various timing parameters are given default values. They can be
+ * overridden by the user.
  *
  * A single default "System" ButtonConfig instance is created automatically and
  * can be accessed using the ButtConfig::getSystemButtonConfig() static method.
