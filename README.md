@@ -287,9 +287,11 @@ void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 The `pin` must be defined either through the constructor or the `init()` method.
 But the other two parameters may be optional in many cases.
 
-Finally, the `ButtonConfig::check()` method should be called from the `loop()`
-method periodically. Ideally, this should be every 10-20 milliseconds or faster
-so that the various event detection logic can work properly.
+Finally, the `AceButton::check()` method should be called from the `loop()`
+method periodically. Roughly speaking, this should be about 5 times faster than
+the value of `getDebounceDelay()` so that the various event detection logic can
+work properly. (If the debounce delay is 50 ms, `AceButton::check()` should be
+called every 10 ms or faster.)
 
 ```
 void loop() {
@@ -518,7 +520,7 @@ The `EventHandler` function received 3 parameters from the `AceButton`:
 The `aceButton` pointer should be used only to extract information about the
 button that triggered the event. It should **not** be used to modify the
 button's internal variables in any way within the eventHandler. The logic in
-`AceButton.check()` assumes that those internal variable are held constant,
+`AceButton::check()` assumes that those internal variable are held constant,
 and if they are changed by the eventHandler, unpredictable results may occur.
 (I was tempted to make the `aceButton` a pointer to a `const AceButton`
 but this cause too many viral changes to the code which seemed to increase
