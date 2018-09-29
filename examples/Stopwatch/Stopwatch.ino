@@ -19,14 +19,8 @@ using namespace ace_button;
 // The pin number attached to the button.
 const uint8_t BUTTON_PIN = 2;
 
-// Use an instance of AdjustableButtonConfig for demo purposes. We could have
-// just used the default System ButtonConfig since a long press delay of 1000 ms
-// is good enough. But this shows how to configure an AceButton to use a
-// different ButtonConfig.
-AdjustableButtonConfig adjustableButtonConfig;
-
-// Create one button which uses AdjustableButtonConfig.
-AceButton button(&adjustableButtonConfig);
+// Create one button.
+AceButton button;
 
 // counters to determine the duration of a single call to AceButton::check()
 uint16_t innerLoopCounter = 0;
@@ -58,9 +52,10 @@ void setup() {
 
   // Configure the ButtonConfig with the event handler and enable LongPress.
   // SupressAfterLongPress is optional since we don't do anything if we get it.
-  adjustableButtonConfig.setEventHandler(handleEvent);
-  adjustableButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
-  adjustableButtonConfig.setLongPressDelay(2000);
+  ButtonConfig* buttonConfig = button.getButtonConfig();
+  buttonConfig->setEventHandler(handleEvent);
+  buttonConfig->setFeature(ButtonConfig::kFeatureLongPress);
+  buttonConfig->setLongPressDelay(2000);
 
   Serial.println(F("setup(): stopwatch ready"));
 }
@@ -144,16 +139,16 @@ void handleEvent(AceButton* /* button */, uint8_t eventType,
 
 void enableAllEvents() {
   Serial.println(F("enabling high level events"));
-  adjustableButtonConfig.setFeature(ButtonConfig::kFeatureClick);
-  adjustableButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
-  adjustableButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
-  adjustableButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
+  button.getButtonConfig()->setFeature(ButtonConfig::kFeatureClick);
+  button.getButtonConfig()->setFeature(ButtonConfig::kFeatureDoubleClick);
+  button.getButtonConfig()->setFeature(ButtonConfig::kFeatureLongPress);
+  button.getButtonConfig()->setFeature(ButtonConfig::kFeatureRepeatPress);
 }
 
 void disableAllEvents() {
   Serial.println(F("disabling high level events"));
-  adjustableButtonConfig.clearFeature(ButtonConfig::kFeatureClick);
-  adjustableButtonConfig.clearFeature(ButtonConfig::kFeatureDoubleClick);
-  adjustableButtonConfig.clearFeature(ButtonConfig::kFeatureLongPress);
-  adjustableButtonConfig.clearFeature(ButtonConfig::kFeatureRepeatPress);
+  button.getButtonConfig()->clearFeature(ButtonConfig::kFeatureClick);
+  button.getButtonConfig()->clearFeature(ButtonConfig::kFeatureDoubleClick);
+  button.getButtonConfig()->clearFeature(ButtonConfig::kFeatureLongPress);
+  button.getButtonConfig()->clearFeature(ButtonConfig::kFeatureRepeatPress);
 }
