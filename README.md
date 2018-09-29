@@ -64,13 +64,13 @@ Here are the high-level features of the AceButton library:
     * LongPressed
     * RepeatPressed
 * can distinguish between Clicked and DoubleClicked
-* configurations adjustable at runtime or compile-time
+* adjustable configurations at runtime or compile-time
     * timing parameters
     * `digitalRead()` button read function can be overridden
     * `millis()` clock function can be overridden
 * small memory footprint
     * each `AceButton` consumes 14 bytes
-    * each `ButtonConfig` consumes 8 bytes
+    * each `ButtonConfig` consumes 20 bytes
     * one System `ButtonConfig` instance created automatically by the library
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
 * properly handles reboots while the button is pressed
@@ -188,7 +188,6 @@ The following example sketches are provided:
     * same as SingleButton.ino but with an external pull-down resistor
 * [Stopwatch.ino](examples/Stopwatch)
     * measures the speed of `AceButton:check()` with a start/stop/reset button
-    * shows example use of `AdjustableButtonConfig`
     * uses `kFeatureLongPress`
 * [TunerButtons.ino](examples/TunerButtons)
     * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
@@ -363,42 +362,15 @@ _EventHandler Callback_ section.
 
 Here are the methods to retrieve the timing parameters:
 
-* `virtual uint16_t getDebounceDelay();`
-* `virtual uint16_t getClickDelay();`
-* `virtual uint16_t getDoubleClickDelay();`
-* `virtual uint16_t getLongPressDelay();`
-* `virtual uint16_t getRepeatPressDelay();`
-* `virtual uint16_t getRepeatPressInterval();`
+* `uint16_t getDebounceDelay();` (default: 50 ms)
+* `uint16_t getClickDelay();` (default: 200 ms)
+* `uint16_t getDoubleClickDelay();` (default: 400 ms)
+* `uint16_t getLongPressDelay();` (default: 1000 ms)
+* `uint16_t getRepeatPressDelay();` (default: 1000 ms)
+* `uint16_t getRepeatPressInterval();` (default: 200 ms)
 
-The values of these timing parameters are hardwired at compile time. They can be
-changed in two ways:
-
-1. Use a user-defined subclass to override one or more of these `virtual`
-   methods. Normally we avoid virtual methods in an embedded environment. But we
-   wanted the ability to plug in different types of `ButtonConfig` into the
-   `AceButton` class, and this C++ feature solves this problem very well. The
-   cost is 2 extra bytes for the virtual table pointer in each instance of
-   `ButtonConfig`, and some extra CPU overhead during the call to the virtual
-   functions.
-1. Use the `AdjustableButtonConfig` (see below) to configure these parameters at
-   run-time.
-
-An example of a user-defined subclass to override one of these parameters at
-compile-time would look like this:
-
-```
-class MyButtonConfig: public ButtonConfig {
-  public:
-    virtual uint16_t getClickDelay() override { return 250; }
-};
-```
-
-#### AdjustableButtonConfig
-
-The `AdjustableButtonConfig` is a subclass of `ButtonConfig` that allows the
-timing parameters of `ButtonConfig` to be changed at run-time. Everywhere that
-you see a `ButtonConfig` uses, you can substitute an `AdjustableButtonConfig`.
-It provides the following methods to change the timing parameters:
+The default values of each timing parameter can be changed at run-time using
+the following methods:
 
 * `void setDebounceDelay(uint16_t debounceDelay);`
 * `void setClickDelay(uint16_t clickDelay);`
@@ -406,10 +378,6 @@ It provides the following methods to change the timing parameters:
 * `void setLongPressDelay(uint16_t longPressDelay);`
 * `void setRepeatPressDelay(uint16_t repeatPressDelay);`
 * `void setRepeatPressInterval(uint16_t repeatPressInterval);`
-
-The cost of this flexibility is the larger static memory usage of an
-`AdjustableButtonConfig`, taking up 17 bytes of memory compared to 5 bytes for
-a `ButtonConfig`.
 
 #### Hardware Dependencies
 
@@ -916,8 +884,7 @@ Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 (Arduino Uno, Nano, etc):
 
 * sizeof(AceButton): 14
-* sizeof(ButtonConfig): 8
-* sizeof(AdjustableButtonConfig): 20
+* sizeof(ButtonConfig): 20
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
