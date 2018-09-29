@@ -289,8 +289,8 @@ But the other two parameters may be optional in many cases.
 Finally, the `AceButton::check()` method should be called from the `loop()`
 method periodically. Roughly speaking, this should be about 5 times faster than
 the value of `getDebounceDelay()` so that the various event detection logic can
-work properly. (If the debounce delay is 50 ms, `AceButton::check()` should be
-called every 10 ms or faster.)
+work properly. (If the debounce delay is 20 ms, `AceButton::check()` should be
+called every 5 ms or faster.)
 
 ```C++
 void loop() {
@@ -362,7 +362,7 @@ _EventHandler Callback_ section.
 
 Here are the methods to retrieve the timing parameters:
 
-* `uint16_t getDebounceDelay();` (default: 50 ms)
+* `uint16_t getDebounceDelay();` (default: 20 ms)
 * `uint16_t getClickDelay();` (default: 200 ms)
 * `uint16_t getDoubleClickDelay();` (default: 400 ms)
 * `uint16_t getLongPressDelay();` (default: 1000 ms)

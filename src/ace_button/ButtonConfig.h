@@ -74,7 +74,7 @@ class ButtonConfig {
     // time of an 'unsigned long' (i.e. 49.7 days).
 
     /** Default value returned by getDebounceDelay(). */
-    static const uint16_t kDebounceDelay = 50;
+    static const uint16_t kDebounceDelay = 20;
 
     /** Default value returned by getClickDelay(). */
     static const uint16_t kClickDelay = 200;

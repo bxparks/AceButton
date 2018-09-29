@@ -88,6 +88,11 @@ void setup() {
 
   testableConfig.setEventHandler(handleEvent);
 
+  // The default was 50 ms (not the current 20 ms) when these tests were written
+  // and some of the timing delays are hardcoded to assume that, so we have to
+  // revert back to the old value.
+  testableConfig.setDebounceDelay(50);
+
   Serial.print(F("sizeof(AceButton): "));
   Serial.println(sizeof(AceButton));
   Serial.print(F("sizeof(ButtonConfig): "));
