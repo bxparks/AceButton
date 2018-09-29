@@ -896,6 +896,7 @@ to 14.)
 the size of the library. For a single button, the library consumed:
 * flash memory: 1100-1330 bytes
 * static memory: 14-28 bytes
+
 depending on the target board. See the README.md in the above link for more
 details.
 
