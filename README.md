@@ -892,11 +892,12 @@ to 14.)
 
 **Program size:**
 
-On the Arduino Nano (16 MHz ATmega328P):
-
-* `HelloButton` sketch: 1972 bytes flash
-* `HelloButton` sketch without `AceButton`: 622 bytes flash
-* Therefore, the AceButton library: 1350 bytes flash
+[LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine
+the size of the library. For a single button, the library consumed:
+* flash memory: 1100-1330 bytes
+* static memory: 14-28 bytes
+depending on the target board. See the README.md in the above link for more
+details.
 
 **CPU cycles:**
 
@@ -904,20 +905,20 @@ The profiling numbers for `AceButton::check()` can be found in
 [examples/AutoBenchmark](examples/AutoBenchmark).
 
 In summary, the average numbers for various boards are:
-* Arduino Nano: 17-20 microsesconds
-* Teensy 3.2: 4 microseconds
-* ESP8266: 7-8 microseconds
-* ESP32: 3-4 microseconds
+* Arduino Nano: 13-15 microsesconds
+* Teensy 3.2: 3 microseconds
+* ESP8266: 8-9 microseconds
+* ESP32: 2-3 microseconds
 
 ## System Requirements
 
 This library was developed and tested using:
-* [Arduino IDE 1.8.5](https://www.arduino.cc/en/Main/Software)
+* [Arduino IDE 1.8.5 - 1.8.7](https://www.arduino.cc/en/Main/Software)
 * [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
-* [ESP8266 Arduino Core 2.4.1](https://arduino-esp8266.readthedocs.io/en/2.4.1/)
+* [ESP8266 Arduino Core 2.4.1 - 2.4.2](https://arduino-esp8266.readthedocs.io/en/2.4.2/)
 * [arduino-esp32](https://github.com/espressif/arduino-esp32)
 
-I used MacOS 10.13.3 and Ubuntu Linux 17.04 for most of my development.
+I used MacOS 10.13.3 and Ubuntu Linux 17.10 for most of my development.
 
 The library has been verified to work on the following hardware:
 
