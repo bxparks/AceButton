@@ -75,7 +75,7 @@ Here are the high-level features of the AceButton library:
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
-* only 17-20 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
+* only 13-15 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
 * can be instrumented to extract profiling numbers
 * tested on Arduino AVR (UNO, Nano, etc), Teensy ARM (LC
   and 3.2), ESP8266 and ESP32 platforms
@@ -100,7 +100,7 @@ you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
 That said, the [examples/AutoBenchmark](examples/AutoBenchmark) program
-shows that `AceButton::check()` takes between 17-20 microseconds on a 16MHz
+shows that `AceButton::check()` takes between 13-15 microseconds on a 16MHz
 ATmega328P chip on average. Hopefully that is fast enough for the vast
 majority of people.
 
