@@ -110,7 +110,7 @@ Here is a simple program (see `examples/HelloButton.ino`) which controls
 the builtin LED on the Arduino board using a momentary button connected
 to PIN 2.
 
-```
+```C++
 #include <AceButton.h>
 using namespace ace_button;
 
@@ -233,14 +233,14 @@ To prevent name clashes with other libraries that the calling code may use, all
 classes are defined in the `ace_button` namespace. To use the code without
 prepending the `ace_button::` prefix, use the `using` directive:
 
-```
+```C++
 #include <AceButton.h>
 using namespace ace_button;
 ```
 
 If you are dependent on just `AceButton`, the following might be sufficient:
 
-```
+```C++
 #include <AceButton.h>
 using ace_button::AceButton;
 ```
@@ -251,7 +251,7 @@ Each physical button will be handled by an instance of `AceButton`. At a
 minimum, the instance needs to be told the pin number of the button. This can
 be done through the constructor:
 
-```
+```C++
 const uint8_t BUTTON_PIN = 2;
 
 AceButton button(BUTTON_PIN);
@@ -259,7 +259,7 @@ AceButton button(BUTTON_PIN);
 
 Or we can use the `init()` method in the `setup()`:
 
-```
+```C++
 AceButton button;
 
 void setup() {
@@ -270,7 +270,7 @@ void setup() {
 ```
 
 Both the constructor and the `init()` function take 3 optional parameters:
-```
+```C++
 AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 
 void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
@@ -292,7 +292,7 @@ the value of `getDebounceDelay()` so that the various event detection logic can
 work properly. (If the debounce delay is 50 ms, `AceButton::check()` should be
 called every 10 ms or faster.)
 
-```
+```C++
 void loop() {
   ...
   button.check();
@@ -319,7 +319,7 @@ instances using dependency injection through the `AceButton(ButtonConfig&)`
 constructor. If this constructor is used, then the `AceButton::init()` method
 must be used to set the pin number of the button. For example:
 
-```
+```C++
 const uint8_t PIN1 = 2;
 const uint8_t PIN2 = 4;
 
@@ -428,7 +428,7 @@ normally not need to worry about the details.
 
 The event handler has the following signature:
 
-```
+```C++
 typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
     uint8_t buttonState);
 ```
@@ -438,7 +438,7 @@ The event handler is registered with the `ButtonConfig` object, not with the
 `AceButton::setEventHandler()` is provided as a pass-through to the underlying
 `ButtonConfig` (see the _Single Button Simplifications_ section below):
 
-```
+```C++
 ButtonConfig buttonConfig;
 
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
@@ -459,7 +459,7 @@ is only necessary to save that information once, in the `ButtonConfig` object.
 
 **Pro Tip**: Comment out the unused parameter(s) in the `handleEvent()` method
 to avoid the `unused parameter` compiler warning:
-```
+```C++
 void handleEvent(AceButton* /* button */, uint8_t eventType,
     uint8_t /* buttonState */) {
   ...
@@ -468,7 +468,7 @@ void handleEvent(AceButton* /* button */, uint8_t eventType,
 The Arduino sketch compiler can get confused with the parameters commented out,
 so you may need to add a forward declaration for the `handleEvent()` method
 before the `setup()` method:
-```
+```C++
 void handleEvent(AceButton*, uint8_t, uint8_t);
 ```
 
@@ -516,7 +516,7 @@ when most of these would be unused. If the client code really wanted separate
 event handlers, it can be easily emulated by invoking them through the main
 event handler:
 
-```
+```C++
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   switch (eventType) {
     case AceButton:kEventPressed:
@@ -580,13 +580,13 @@ control the behavior of `AceButton` event handling:
 
 These constants are used to set or clear the given flag:
 
-```
+```C++
 ButtonConfig* config = button.getButtonConfig();
 
 config->setFeature(ButtonConfig::kFeatureLongPress);
-...
+
 config->clearFeature(ButtonConfig::kFeatureLongPress);
-...
+
 if (config->isFeature(ButtonConfig::kFeatureLongPress)) {
   ...
 }
@@ -666,7 +666,7 @@ By default, no suppression is performed.
 As an example, to suppress the `Released` event after a `LongPressed` event
 (this is actually often the case), you would do this:
 
-```
+```C++
 ButtonConfig* config = button.getButtonConfig();
 config->setFeature(ButtonConfig::kFeatureSuppressAfterLongPress);
 ```
@@ -674,13 +674,13 @@ config->setFeature(ButtonConfig::kFeatureSuppressAfterLongPress);
 The special convenient constant `kFeatureSuppressAll` is equivalent of using all
 suppression constants:
 
-```
+```C++
 ButtonConfig* config = button.getButtonConfig();
 config->setFeature(ButtonConfig::kFeatureSuppressAll);
 ```
 
 All suppressions can be cleared by using:
-```
+```C++
 ButtonConfig* config = button.getButtonConfig();
 config->clearFeature(ButtonConfig::kFeatureSuppressAll);
 ```
@@ -729,7 +729,7 @@ events to the EventHandler:
 1. `kEventClicked` - at time 600ms (200ms + 400ms)
 
 The `ButtonConfig` configuration looks like this:
-```
+```C++
 ButtonConfig* buttonConfig = button.getButtonConfig();
 buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
 buttonConfig->setFeature(
@@ -754,7 +754,7 @@ user accidentally presses and releases the button to quickly, it generates a
 Clicked event, which will cause the program to do nothing.
 
 The `ButtonConfig` configuration looks like this:
-```
+```C++
 ButtonConfig* buttonConfig = button.getButtonConfig();
 buttonConfig->setEventHandler(handleEvent);
 buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
@@ -770,7 +770,7 @@ Released or a delayed Click is considered to be a "Click". This may be the best
 of both worlds.
 
 The `ButtonConfig` configuration looks like this:
-```
+```C++
 ButtonConfig* buttonConfig = button.getButtonConfig();
 buttonConfig->setEventHandler(handleEvent);
 buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
@@ -803,7 +803,7 @@ to make this simple case easy.
 These simplifying features allow a single button to be configured and used like
 this:
 
-```
+```C++
 AceButton button(BUTTON_PIN);
 
 void setup() {
@@ -824,7 +824,7 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 To configure the System ButtonConfig, you may need to add something like
 this to the `setup()` section:
 
-```
+```C++
   button.getButtonConfig()->setFeature(ButtonConfig::kFeatureLongPress);
 ```
 
