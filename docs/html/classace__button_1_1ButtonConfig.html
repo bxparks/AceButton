@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.2</span>
+   &#160;<span id="projectnumber">1.3</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven (ACE) button library for Arduino.</div>
   </td>
@@ -85,7 +85,7 @@ Inheritance diagram for ace_button::ButtonConfig:</div>
 <div class="dyncontent">
 <div class="center"><img src="classace__button_1_1ButtonConfig__inherit__graph.png" border="0" usemap="#ace__button_1_1ButtonConfig_inherit__map" alt="Inheritance graph"/></div>
 <map name="ace__button_1_1ButtonConfig_inherit__map" id="ace__button_1_1ButtonConfig_inherit__map">
-<area shape="rect" id="node2" href="classace__button_1_1AdjustableButtonConfig.html" title="A subclass of ButtonConfig which allows the user to override the varous timing parameters of ButtonCo..." alt="" coords="5,80,199,121"/>
+<area shape="rect" id="node2" href="classace__button_1_1AdjustableButtonConfig.html" title="Warning: This class is deprecated and replaced with its parent ButtonConfig. " alt="" coords="5,80,199,121"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -103,26 +103,44 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a66924aac157a81cc54a9776fb975893a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a66924aac157a81cc54a9776fb975893a">ButtonConfig</a> ()</td></tr>
 <tr class="memdesc:a66924aac157a81cc54a9776fb975893a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a66924aac157a81cc54a9776fb975893a">More...</a><br /></td></tr>
 <tr class="separator:a66924aac157a81cc54a9776fb975893a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e1959e4499dc4b9cf47ee0db5aca07e"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a8e1959e4499dc4b9cf47ee0db5aca07e">getDebounceDelay</a> ()</td></tr>
-<tr class="memdesc:a8e1959e4499dc4b9cf47ee0db5aca07e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds to wait for debouncing.  <a href="#a8e1959e4499dc4b9cf47ee0db5aca07e">More...</a><br /></td></tr>
-<tr class="separator:a8e1959e4499dc4b9cf47ee0db5aca07e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6293abbbde1dd959fb9edae4203cb58d"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a6293abbbde1dd959fb9edae4203cb58d">getClickDelay</a> ()</td></tr>
-<tr class="memdesc:a6293abbbde1dd959fb9edae4203cb58d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds to wait for a possible click.  <a href="#a6293abbbde1dd959fb9edae4203cb58d">More...</a><br /></td></tr>
-<tr class="separator:a6293abbbde1dd959fb9edae4203cb58d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaaa461efbfb02b973ecaac5ebdf6ca00"><td class="memItemLeft" align="right" valign="top"><a id="aaaa461efbfb02b973ecaac5ebdf6ca00"></a>
-virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aaaa461efbfb02b973ecaac5ebdf6ca00">getDoubleClickDelay</a> ()</td></tr>
-<tr class="memdesc:aaaa461efbfb02b973ecaac5ebdf6ca00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds between the first and second click to register as a double-click. <br /></td></tr>
-<tr class="separator:aaaa461efbfb02b973ecaac5ebdf6ca00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22cb719756787cb19d6799d6236a22a0"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a22cb719756787cb19d6799d6236a22a0">getLongPressDelay</a> ()</td></tr>
-<tr class="memdesc:a22cb719756787cb19d6799d6236a22a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds for a long press event.  <a href="#a22cb719756787cb19d6799d6236a22a0">More...</a><br /></td></tr>
-<tr class="separator:a22cb719756787cb19d6799d6236a22a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11cc4cde6b4f11c6920ac78f759b2422"><td class="memItemLeft" align="right" valign="top">virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a11cc4cde6b4f11c6920ac78f759b2422">getRepeatPressDelay</a> ()</td></tr>
-<tr class="memdesc:a11cc4cde6b4f11c6920ac78f759b2422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed events.  <a href="#a11cc4cde6b4f11c6920ac78f759b2422">More...</a><br /></td></tr>
-<tr class="separator:a11cc4cde6b4f11c6920ac78f759b2422"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2329e8fa28651ed12ccfec355c8e7eab"><td class="memItemLeft" align="right" valign="top"><a id="a2329e8fa28651ed12ccfec355c8e7eab"></a>
-virtual uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a2329e8fa28651ed12ccfec355c8e7eab">getRepeatPressInterval</a> ()</td></tr>
-<tr class="memdesc:a2329e8fa28651ed12ccfec355c8e7eab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds between two successive RepeatPressed events. <br /></td></tr>
-<tr class="separator:a2329e8fa28651ed12ccfec355c8e7eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7be58d0fe0b242f78f15319d201a565"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#ad7be58d0fe0b242f78f15319d201a565">getDebounceDelay</a> ()</td></tr>
+<tr class="memdesc:ad7be58d0fe0b242f78f15319d201a565"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds to wait for debouncing.  <a href="#ad7be58d0fe0b242f78f15319d201a565">More...</a><br /></td></tr>
+<tr class="separator:ad7be58d0fe0b242f78f15319d201a565"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19db203ce87dc2cafb2cab6ba124387a"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a19db203ce87dc2cafb2cab6ba124387a">getClickDelay</a> ()</td></tr>
+<tr class="memdesc:a19db203ce87dc2cafb2cab6ba124387a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds to wait for a possible click.  <a href="#a19db203ce87dc2cafb2cab6ba124387a">More...</a><br /></td></tr>
+<tr class="separator:a19db203ce87dc2cafb2cab6ba124387a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ba500367e03c36f39225a5858e110e6"><td class="memItemLeft" align="right" valign="top"><a id="a5ba500367e03c36f39225a5858e110e6"></a>
+uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a5ba500367e03c36f39225a5858e110e6">getDoubleClickDelay</a> ()</td></tr>
+<tr class="memdesc:a5ba500367e03c36f39225a5858e110e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds between the first and second click to register as a double-click. <br /></td></tr>
+<tr class="separator:a5ba500367e03c36f39225a5858e110e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46d4213a827a94bf82ba99a9c2e59531"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a46d4213a827a94bf82ba99a9c2e59531">getLongPressDelay</a> ()</td></tr>
+<tr class="memdesc:a46d4213a827a94bf82ba99a9c2e59531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds for a long press event.  <a href="#a46d4213a827a94bf82ba99a9c2e59531">More...</a><br /></td></tr>
+<tr class="separator:a46d4213a827a94bf82ba99a9c2e59531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad85c75d2a2dd200552a181fb154d5fd2"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#ad85c75d2a2dd200552a181fb154d5fd2">getRepeatPressDelay</a> ()</td></tr>
+<tr class="memdesc:ad85c75d2a2dd200552a181fb154d5fd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed events.  <a href="#ad85c75d2a2dd200552a181fb154d5fd2">More...</a><br /></td></tr>
+<tr class="separator:ad85c75d2a2dd200552a181fb154d5fd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec4a97a1a1306b9ff12f1cdf44515c43"><td class="memItemLeft" align="right" valign="top"><a id="aec4a97a1a1306b9ff12f1cdf44515c43"></a>
+uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aec4a97a1a1306b9ff12f1cdf44515c43">getRepeatPressInterval</a> ()</td></tr>
+<tr class="memdesc:aec4a97a1a1306b9ff12f1cdf44515c43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds between two successive RepeatPressed events. <br /></td></tr>
+<tr class="separator:aec4a97a1a1306b9ff12f1cdf44515c43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9860d2c8a6ab33d40ea126b02d168cab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a9860d2c8a6ab33d40ea126b02d168cab">setDebounceDelay</a> (uint16_t debounceDelay)</td></tr>
+<tr class="memdesc:a9860d2c8a6ab33d40ea126b02d168cab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the debounceDelay.  <a href="#a9860d2c8a6ab33d40ea126b02d168cab">More...</a><br /></td></tr>
+<tr class="separator:a9860d2c8a6ab33d40ea126b02d168cab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef65e12128997c46bc2754a988b98f14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aef65e12128997c46bc2754a988b98f14">setClickDelay</a> (uint16_t clickDelay)</td></tr>
+<tr class="memdesc:aef65e12128997c46bc2754a988b98f14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the clickDelay.  <a href="#aef65e12128997c46bc2754a988b98f14">More...</a><br /></td></tr>
+<tr class="separator:aef65e12128997c46bc2754a988b98f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a367a809017e1d633a5cf6b117981d579"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a367a809017e1d633a5cf6b117981d579">setDoubleClickDelay</a> (uint16_t doubleClickDelay)</td></tr>
+<tr class="memdesc:a367a809017e1d633a5cf6b117981d579"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the doubleClickDelay.  <a href="#a367a809017e1d633a5cf6b117981d579">More...</a><br /></td></tr>
+<tr class="separator:a367a809017e1d633a5cf6b117981d579"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d90d39aeddacb5abc9d8741611d7c4a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a7d90d39aeddacb5abc9d8741611d7c4a">setLongPressDelay</a> (uint16_t longPressDelay)</td></tr>
+<tr class="memdesc:a7d90d39aeddacb5abc9d8741611d7c4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the longPressDelay.  <a href="#a7d90d39aeddacb5abc9d8741611d7c4a">More...</a><br /></td></tr>
+<tr class="separator:a7d90d39aeddacb5abc9d8741611d7c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af813c969eddd884e9fa83b334a59a0a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#af813c969eddd884e9fa83b334a59a0a5">setRepeatPressDelay</a> (uint16_t repeatPressDelay)</td></tr>
+<tr class="memdesc:af813c969eddd884e9fa83b334a59a0a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the repeatPressDelay.  <a href="#af813c969eddd884e9fa83b334a59a0a5">More...</a><br /></td></tr>
+<tr class="separator:af813c969eddd884e9fa83b334a59a0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1b1217e0042512fc8d9b6544536aed3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aa1b1217e0042512fc8d9b6544536aed3">setRepeatPressInterval</a> (uint16_t repeatPressInterval)</td></tr>
+<tr class="memdesc:aa1b1217e0042512fc8d9b6544536aed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the repeatPressInterval.  <a href="#aa1b1217e0042512fc8d9b6544536aed3">More...</a><br /></td></tr>
+<tr class="separator:aa1b1217e0042512fc8d9b6544536aed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a440271e22d5e7e161cdcb3b73f092111"><td class="memItemLeft" align="right" valign="top">virtual unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a440271e22d5e7e161cdcb3b73f092111">getClock</a> ()</td></tr>
 <tr class="memdesc:a440271e22d5e7e161cdcb3b73f092111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the milliseconds of the internal clock.  <a href="#a440271e22d5e7e161cdcb3b73f092111">More...</a><br /></td></tr>
 <tr class="separator:a440271e22d5e7e161cdcb3b73f092111"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,23 +181,23 @@ static <a class="el" href="classace__button_1_1ButtonConfig.html">ButtonConfig</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a8fbe63588107a1375d05911d27df3ad8"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a8fbe63588107a1375d05911d27df3ad8">kDebounceDelay</a> = 50</td></tr>
-<tr class="memdesc:a8fbe63588107a1375d05911d27df3ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a8e1959e4499dc4b9cf47ee0db5aca07e" title="Milliseconds to wait for debouncing. ">getDebounceDelay()</a>.  <a href="#a8fbe63588107a1375d05911d27df3ad8">More...</a><br /></td></tr>
+<tr class="memitem:a8fbe63588107a1375d05911d27df3ad8"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a8fbe63588107a1375d05911d27df3ad8">kDebounceDelay</a> = 20</td></tr>
+<tr class="memdesc:a8fbe63588107a1375d05911d27df3ad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#ad7be58d0fe0b242f78f15319d201a565" title="Milliseconds to wait for debouncing. ">getDebounceDelay()</a>.  <a href="#a8fbe63588107a1375d05911d27df3ad8">More...</a><br /></td></tr>
 <tr class="separator:a8fbe63588107a1375d05911d27df3ad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5691e38564dae63592d22abf74fb15f3"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a5691e38564dae63592d22abf74fb15f3">kClickDelay</a> = 200</td></tr>
-<tr class="memdesc:a5691e38564dae63592d22abf74fb15f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a6293abbbde1dd959fb9edae4203cb58d" title="Milliseconds to wait for a possible click. ">getClickDelay()</a>.  <a href="#a5691e38564dae63592d22abf74fb15f3">More...</a><br /></td></tr>
+<tr class="memdesc:a5691e38564dae63592d22abf74fb15f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a19db203ce87dc2cafb2cab6ba124387a" title="Milliseconds to wait for a possible click. ">getClickDelay()</a>.  <a href="#a5691e38564dae63592d22abf74fb15f3">More...</a><br /></td></tr>
 <tr class="separator:a5691e38564dae63592d22abf74fb15f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0a0d503f3396acef6a84aca4390fd6a"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#af0a0d503f3396acef6a84aca4390fd6a">kDoubleClickDelay</a> = 400</td></tr>
-<tr class="memdesc:af0a0d503f3396acef6a84aca4390fd6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#aaaa461efbfb02b973ecaac5ebdf6ca00" title="Milliseconds between the first and second click to register as a double-click. ">getDoubleClickDelay()</a>.  <a href="#af0a0d503f3396acef6a84aca4390fd6a">More...</a><br /></td></tr>
+<tr class="memdesc:af0a0d503f3396acef6a84aca4390fd6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a5ba500367e03c36f39225a5858e110e6" title="Milliseconds between the first and second click to register as a double-click. ">getDoubleClickDelay()</a>.  <a href="#af0a0d503f3396acef6a84aca4390fd6a">More...</a><br /></td></tr>
 <tr class="separator:af0a0d503f3396acef6a84aca4390fd6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60bf588a2c067a561887eadf18cedccd"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a60bf588a2c067a561887eadf18cedccd">kLongPressDelay</a> = 1000</td></tr>
-<tr class="memdesc:a60bf588a2c067a561887eadf18cedccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a22cb719756787cb19d6799d6236a22a0" title="Milliseconds for a long press event. ">getLongPressDelay()</a>.  <a href="#a60bf588a2c067a561887eadf18cedccd">More...</a><br /></td></tr>
+<tr class="memdesc:a60bf588a2c067a561887eadf18cedccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a46d4213a827a94bf82ba99a9c2e59531" title="Milliseconds for a long press event. ">getLongPressDelay()</a>.  <a href="#a60bf588a2c067a561887eadf18cedccd">More...</a><br /></td></tr>
 <tr class="separator:a60bf588a2c067a561887eadf18cedccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d20bc5800532085fd046fc64b80ae9f"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a3d20bc5800532085fd046fc64b80ae9f">kRepeatPressDelay</a> = 1000</td></tr>
-<tr class="memdesc:a3d20bc5800532085fd046fc64b80ae9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a11cc4cde6b4f11c6920ac78f759b2422" title="Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed...">getRepeatPressDelay()</a>.  <a href="#a3d20bc5800532085fd046fc64b80ae9f">More...</a><br /></td></tr>
+<tr class="memdesc:a3d20bc5800532085fd046fc64b80ae9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#ad85c75d2a2dd200552a181fb154d5fd2" title="Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed...">getRepeatPressDelay()</a>.  <a href="#a3d20bc5800532085fd046fc64b80ae9f">More...</a><br /></td></tr>
 <tr class="separator:a3d20bc5800532085fd046fc64b80ae9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a218c1aa09b45ea2fe6884e3af3a18310"><td class="memItemLeft" align="right" valign="top">static const uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a218c1aa09b45ea2fe6884e3af3a18310">kRepeatPressInterval</a> = 200</td></tr>
-<tr class="memdesc:a218c1aa09b45ea2fe6884e3af3a18310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a2329e8fa28651ed12ccfec355c8e7eab" title="Milliseconds between two successive RepeatPressed events. ">getRepeatPressInterval()</a>.  <a href="#a218c1aa09b45ea2fe6884e3af3a18310">More...</a><br /></td></tr>
+<tr class="memdesc:a218c1aa09b45ea2fe6884e3af3a18310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#aec4a97a1a1306b9ff12f1cdf44515c43" title="Milliseconds between two successive RepeatPressed events. ">getRepeatPressInterval()</a>.  <a href="#a218c1aa09b45ea2fe6884e3af3a18310">More...</a><br /></td></tr>
 <tr class="separator:a218c1aa09b45ea2fe6884e3af3a18310"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac662555100416c4843c6ee5156699c56"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#ac662555100416c4843c6ee5156699c56">kFeatureClick</a> = 0x01</td></tr>
 <tr class="memdesc:ac662555100416c4843c6ee5156699c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a21797e5e069da3f7bba42b40ab3a7305" title="Button was clicked (Pressed and Released within ButtonConfig::getClickDelay()). ">AceButton::kEventClicked</a> event.  <a href="#ac662555100416c4843c6ee5156699c56">More...</a><br /></td></tr>
@@ -221,14 +239,10 @@ Protected Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that defines the timing parameters and event handler of an <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> or a group of <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> instances. </p>
 <p>It is assumed that in many cases, a group of multiple buttons will need to be assigned the same configuration parameters. For example, various timing delays and the EventHandler. Instead of storing these parameters in each instance of <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> (which consumes static memory), we save space by collecting them into a separate <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> class. Each <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> instance contains a pointer to an instance of <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a>, and an instance of <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> will be shared among multiple AceButtons.</p>
-<p>Most of the parameters are actually hardwired into the various virtual methods below. This has the advantage of reducing memory consumption of even this class. If a parameter needs to be changed, there are 2 options:</p>
-<ol type="1">
-<li>Use the <a class="el" href="classace__button_1_1AdjustableButtonConfig.html" title="A subclass of ButtonConfig which allows the user to override the varous timing parameters of ButtonCo...">AdjustableButtonConfig</a> subclass which allows all of these parameters to be changed at runtime, at the cost of additional static memory usage to hold those parameters.</li>
-<li>Subclass this <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> class, then override only the specific method to modify the specific timing parameter. This has the advantage of consuming no additional static RAM, at the expense of creating another class.</li>
-</ol>
+<p>Various timing parameters are given default values. They can be overridden by the user.</p>
 <p>A single default "System" <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> instance is created automatically and can be accessed using the ButtConfig::getSystemButtonConfig() static method. For convenience and ease of use, every instance of <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> is attached to this "System" <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> by default. The client code can override this association by attaching another <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> instance using the AceButton(ButtonConfig*) constuctor (the recommended solution) or the <a class="el" href="classace__button_1_1AceButton.html#abc9d705d1ca4341cf6f9434962b5b5e7" title="Set the ButtonConfig associated with this Button. ">AceButton::setButtonConfig()</a> method. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00069">69</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00060">60</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a6d9db3c7b221b474c3cfd8fca5f4ba1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d9db3c7b221b474c3cfd8fca5f4ba1e">&#9670;&nbsp;</a></span>EventHandler</h2>
@@ -252,7 +266,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00173">173</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00164">164</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -271,7 +285,7 @@ Protected Member Functions</h2></td></tr>
 <p>Type of the feature flag. </p>
 <p>It used to be a uint8_t but got changed to a uint16_t when more than 8 flags were needed. Let's define a typedef to make it easier to change this in the future. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00110">110</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00101">101</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -281,6 +295,9 @@ Protected Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">ace_button::ButtonConfig::ButtonConfig </td>
@@ -289,11 +306,16 @@ Protected Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8cpp_source.html#l00032">32</a> of file <a class="el" href="ButtonConfig_8cpp_source.html">ButtonConfig.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00168">168</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -324,12 +346,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Disable the given features. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00260">260</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00281">281</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a6293abbbde1dd959fb9edae4203cb58d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6293abbbde1dd959fb9edae4203cb58d">&#9670;&nbsp;</a></span>getClickDelay()</h2>
+<a id="a19db203ce87dc2cafb2cab6ba124387a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19db203ce87dc2cafb2cab6ba124387a">&#9670;&nbsp;</a></span>getClickDelay()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -338,7 +360,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint16_t ace_button::ButtonConfig::getClickDelay </td>
+          <td class="memname">uint16_t ace_button::ButtonConfig::getClickDelay </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -346,16 +368,14 @@ Protected Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Milliseconds to wait for a possible click. </p>
 
-<p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a822ba547aa2ccf2e809b0f69856cbf94">ace_button::AdjustableButtonConfig</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00188">188</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00179">179</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +405,7 @@ Protected Member Functions</h2></td></tr>
 <p>Return the milliseconds of the internal clock. </p>
 <p>Override to use something other than millis(). The return type is 'unsigned long' instead of uint16_t because that's the return type of millis(). </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00229">229</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00250">250</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -415,12 +435,12 @@ Protected Member Functions</h2></td></tr>
 <p>Return the microseconds of the internal clock. </p>
 <p>Can be overridden for testing purposes. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00235">235</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00256">256</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a8e1959e4499dc4b9cf47ee0db5aca07e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e1959e4499dc4b9cf47ee0db5aca07e">&#9670;&nbsp;</a></span>getDebounceDelay()</h2>
+<a id="ad7be58d0fe0b242f78f15319d201a565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7be58d0fe0b242f78f15319d201a565">&#9670;&nbsp;</a></span>getDebounceDelay()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -429,7 +449,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint16_t ace_button::ButtonConfig::getDebounceDelay </td>
+          <td class="memname">uint16_t ace_button::ButtonConfig::getDebounceDelay </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -437,16 +457,14 @@ Protected Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Milliseconds to wait for debouncing. </p>
 
-<p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a57c3f6b7cf167b32d2e2e1acf56d9935">ace_button::AdjustableButtonConfig</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00185">185</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00176">176</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -475,12 +493,12 @@ Protected Member Functions</h2></td></tr>
 
 <p>Return the eventHandler. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00267">267</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00288">288</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a22cb719756787cb19d6799d6236a22a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22cb719756787cb19d6799d6236a22a0">&#9670;&nbsp;</a></span>getLongPressDelay()</h2>
+<a id="a46d4213a827a94bf82ba99a9c2e59531"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46d4213a827a94bf82ba99a9c2e59531">&#9670;&nbsp;</a></span>getLongPressDelay()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -489,7 +507,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint16_t ace_button::ButtonConfig::getLongPressDelay </td>
+          <td class="memname">uint16_t ace_button::ButtonConfig::getLongPressDelay </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -497,21 +515,19 @@ Protected Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Milliseconds for a long press event. </p>
 
-<p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a4e9e74238da047d34b0005bf76eb3787">ace_button::AdjustableButtonConfig</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00199">199</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00190">190</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
-<a id="a11cc4cde6b4f11c6920ac78f759b2422"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11cc4cde6b4f11c6920ac78f759b2422">&#9670;&nbsp;</a></span>getRepeatPressDelay()</h2>
+<a id="ad85c75d2a2dd200552a181fb154d5fd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad85c75d2a2dd200552a181fb154d5fd2">&#9670;&nbsp;</a></span>getRepeatPressDelay()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -520,7 +536,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint16_t ace_button::ButtonConfig::getRepeatPressDelay </td>
+          <td class="memname">uint16_t ace_button::ButtonConfig::getRepeatPressDelay </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -528,17 +544,15 @@ Protected Member Functions</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed events. </p>
-<p>The first event will fire as soon as this delay has passed. Subsequent events will fire after <a class="el" href="classace__button_1_1ButtonConfig.html#a2329e8fa28651ed12ccfec355c8e7eab" title="Milliseconds between two successive RepeatPressed events. ">getRepeatPressInterval()</a> time. </p>
+<p>The first event will fire as soon as this delay has passed. Subsequent events will fire after <a class="el" href="classace__button_1_1ButtonConfig.html#aec4a97a1a1306b9ff12f1cdf44515c43" title="Milliseconds between two successive RepeatPressed events. ">getRepeatPressInterval()</a> time. </p>
 
-<p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a1f239392b2f91f34cc1a5639ae444e31">ace_button::AdjustableButtonConfig</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00209">209</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00200">200</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -568,7 +582,7 @@ Protected Member Functions</h2></td></tr>
 <p>Get the timing stats. </p>
 <p>Can return nullptr. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00287">287</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00308">308</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -598,9 +612,7 @@ Protected Member Functions</h2></td></tr>
 <p>Initialize to its pristine state, except for the EventHandler which is unchanged. </p>
 <p>This is intended mostly for testing purposes. </p>
 
-<p>Reimplemented in <a class="el" href="classace__button_1_1AdjustableButtonConfig.html#a5ec03eb201260aea635e804c874c641d">ace_button::AdjustableButtonConfig</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00302">302</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00323">323</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -630,7 +642,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Check if the given features are enabled. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00250">250</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00271">271</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -661,7 +673,97 @@ Protected Member Functions</h2></td></tr>
 <p>Return the HIGH or LOW state of the button. </p>
 <p>Override to use something other than digitalRead(). The return type is 'int' instead of uint16_t because that's the return type of digitalRead(). </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00242">242</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00263">263</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+
+</div>
+</div>
+<a id="aef65e12128997c46bc2754a988b98f14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef65e12128997c46bc2754a988b98f14">&#9670;&nbsp;</a></span>setClickDelay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ace_button::ButtonConfig::setClickDelay </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>clickDelay</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the clickDelay. </p>
+
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00217">217</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+
+</div>
+</div>
+<a id="a9860d2c8a6ab33d40ea126b02d168cab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9860d2c8a6ab33d40ea126b02d168cab">&#9670;&nbsp;</a></span>setDebounceDelay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ace_button::ButtonConfig::setDebounceDelay </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>debounceDelay</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the debounceDelay. </p>
+
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00212">212</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+
+</div>
+</div>
+<a id="a367a809017e1d633a5cf6b117981d579"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a367a809017e1d633a5cf6b117981d579">&#9670;&nbsp;</a></span>setDoubleClickDelay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ace_button::ButtonConfig::setDoubleClickDelay </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>doubleClickDelay</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the doubleClickDelay. </p>
+
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00222">222</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -692,7 +794,7 @@ Protected Member Functions</h2></td></tr>
 <p>Install the event handler. </p>
 <p>The event handler must be defined for the <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> to be useful. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00275">275</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00296">296</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -722,7 +824,97 @@ Protected Member Functions</h2></td></tr>
 
 <p>Enable the given features. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00255">255</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00276">276</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+
+</div>
+</div>
+<a id="a7d90d39aeddacb5abc9d8741611d7c4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d90d39aeddacb5abc9d8741611d7c4a">&#9670;&nbsp;</a></span>setLongPressDelay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ace_button::ButtonConfig::setLongPressDelay </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>longPressDelay</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the longPressDelay. </p>
+
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00227">227</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+
+</div>
+</div>
+<a id="af813c969eddd884e9fa83b334a59a0a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af813c969eddd884e9fa83b334a59a0a5">&#9670;&nbsp;</a></span>setRepeatPressDelay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ace_button::ButtonConfig::setRepeatPressDelay </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>repeatPressDelay</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the repeatPressDelay. </p>
+
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00232">232</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+
+</div>
+</div>
+<a id="aa1b1217e0042512fc8d9b6544536aed3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1b1217e0042512fc8d9b6544536aed3">&#9670;&nbsp;</a></span>setRepeatPressInterval()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ace_button::ButtonConfig::setRepeatPressInterval </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>repeatPressInterval</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the repeatPressInterval. </p>
+
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00237">237</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -753,7 +945,7 @@ Protected Member Functions</h2></td></tr>
 <p>Set the timing stats object. </p>
 <p>The timingStats can be nullptr. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00282">282</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00303">303</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -778,9 +970,9 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a6293abbbde1dd959fb9edae4203cb58d" title="Milliseconds to wait for a possible click. ">getClickDelay()</a>. </p>
+<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a19db203ce87dc2cafb2cab6ba124387a" title="Milliseconds to wait for a possible click. ">getClickDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00089">89</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00080">80</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -794,7 +986,7 @@ Protected Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const uint16_t ace_button::ButtonConfig::kDebounceDelay = 50</td>
+          <td class="memname">const uint16_t ace_button::ButtonConfig::kDebounceDelay = 20</td>
         </tr>
       </table>
   </td>
@@ -804,9 +996,9 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a8e1959e4499dc4b9cf47ee0db5aca07e" title="Milliseconds to wait for debouncing. ">getDebounceDelay()</a>. </p>
+<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#ad7be58d0fe0b242f78f15319d201a565" title="Milliseconds to wait for debouncing. ">getDebounceDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00086">86</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00077">77</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -830,9 +1022,9 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#aaaa461efbfb02b973ecaac5ebdf6ca00" title="Milliseconds between the first and second click to register as a double-click. ">getDoubleClickDelay()</a>. </p>
+<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a5ba500367e03c36f39225a5858e110e6" title="Milliseconds between the first and second click to register as a double-click. ">getDoubleClickDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00092">92</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00083">83</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -858,7 +1050,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a21797e5e069da3f7bba42b40ab3a7305" title="Button was clicked (Pressed and Released within ButtonConfig::getClickDelay()). ">AceButton::kEventClicked</a> event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00113">113</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00104">104</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -885,7 +1077,7 @@ Protected Member Functions</h2></td></tr>
 <p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a0c63f30106e4688425ba37d8f7a9546b" title="Button was double-clicked. ">AceButton::kEventDoubleClicked</a> event. </p>
 <p>Activating this automatically activates kEventClicked since there is no double-click without a click. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00120">120</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00111">111</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -911,7 +1103,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to activate the AceButton::kEventLongPress event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00123">123</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00114">114</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -937,7 +1129,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to activate the <a class="el" href="classace__button_1_1AceButton.html#a9c4195cb128da40677ea223eb81743c9" title="Button was held down and auto generated multiple presses. ">AceButton::kEventRepeatPressed</a> event. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00126">126</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00117">117</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -963,7 +1155,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to suppress kEventReleased after a kEventClicked. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00129">129</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00120">120</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -990,7 +1182,7 @@ Protected Member Functions</h2></td></tr>
 <p>Flag to suppress kEventReleased after a kEventDoubleClicked. </p>
 <p>A kEventClicked is <em>always</em> suppressed after a kEventDoubleClicked to prevent generating 2 double-clicks if the user performed a triple-click. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00136">136</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00127">127</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1016,7 +1208,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to suppress kEventReleased after a kEventLongPressed. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00139">139</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00130">130</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1042,7 +1234,7 @@ Protected Member Functions</h2></td></tr>
 
 <p>Flag to suppress kEventReleased after a kEventRepeatPressed. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00142">142</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00133">133</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1070,7 +1262,7 @@ Protected Member Functions</h2></td></tr>
 <p>Calling setFeature(kFeatureSuppressAll) suppresses all and clearFeature(kFeatureSuppressAll) clears all suppression. Note however that isFeature(kFeatureSuppressAll) currently means "is ANY feature
 enabled?" not "are ALL features enabled?". </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00159">159</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00150">150</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1095,9 +1287,9 @@ enabled?" not "are ALL features enabled?". </p>
 </div><div class="memdoc">
 
 <p>Flag to suppress kEventClicked before a kEventDoubleClicked. </p>
-<p>This causes the notification of a kEventClicked to be delayed until the delay time of <a class="el" href="classace__button_1_1ButtonConfig.html#aaaa461efbfb02b973ecaac5ebdf6ca00" title="Milliseconds between the first and second click to register as a double-click. ">getDoubleClickDelay()</a> has passed so that we can determine if there was a kEventDoubleClicked. </p>
+<p>This causes the notification of a kEventClicked to be delayed until the delay time of <a class="el" href="classace__button_1_1ButtonConfig.html#a5ba500367e03c36f39225a5858e110e6" title="Milliseconds between the first and second click to register as a double-click. ">getDoubleClickDelay()</a> has passed so that we can determine if there was a kEventDoubleClicked. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00150">150</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00141">141</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1121,9 +1313,9 @@ enabled?" not "are ALL features enabled?". </p>
 </table>
 </div><div class="memdoc">
 
-<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a22cb719756787cb19d6799d6236a22a0" title="Milliseconds for a long press event. ">getLongPressDelay()</a>. </p>
+<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a46d4213a827a94bf82ba99a9c2e59531" title="Milliseconds for a long press event. ">getLongPressDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00095">95</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00086">86</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1147,9 +1339,9 @@ enabled?" not "are ALL features enabled?". </p>
 </table>
 </div><div class="memdoc">
 
-<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a11cc4cde6b4f11c6920ac78f759b2422" title="Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed...">getRepeatPressDelay()</a>. </p>
+<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#ad85c75d2a2dd200552a181fb154d5fd2" title="Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed...">getRepeatPressDelay()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00098">98</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00089">89</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -1173,9 +1365,9 @@ enabled?" not "are ALL features enabled?". </p>
 </table>
 </div><div class="memdoc">
 
-<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#a2329e8fa28651ed12ccfec355c8e7eab" title="Milliseconds between two successive RepeatPressed events. ">getRepeatPressInterval()</a>. </p>
+<p>Default value returned by <a class="el" href="classace__button_1_1ButtonConfig.html#aec4a97a1a1306b9ff12f1cdf44515c43" title="Milliseconds between two successive RepeatPressed events. ">getRepeatPressInterval()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00101">101</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2ButtonConfig_8h_source.html#l00092">92</a> of file <a class="el" href="ace__button_2ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
