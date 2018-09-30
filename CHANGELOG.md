@@ -1,5 +1,7 @@
 # Changelog
 
+* 1.3.1 (2018-09-30)
+    * Fix botched release on GitHub. Same as v1.3.
 * 1.3 (2018-09-30)
     * Merge `AdjustableButtonConfig` into `ButtonConfig` and deprecated
       `AdjustableButtonConfig`. See
