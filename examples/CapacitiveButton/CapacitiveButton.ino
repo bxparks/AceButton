@@ -9,6 +9,10 @@
  * Brian T. Park 2018
  */
 
+#if defined(ESP32) || defined(ESP8266)
+  #error ESP32 or ESP8266 not supported
+#endif
+
 #include <CapacitiveSensor.h>
 #include <AceButton.h>
 using namespace ace_button;

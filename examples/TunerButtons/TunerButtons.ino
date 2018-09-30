@@ -26,13 +26,12 @@ const uint16_t FM_FREQ_MIN = 879; // 87.9 MHz
 const uint16_t FM_FREQ_MAX = 1079; // 107.9 MHz
 const uint16_t FM_FREQ_DELTA = 2; // 0.2 MHz increments in USA
 
-// Preset buttons.
-ButtonConfig presetConfig;
-AceButton presetButton1(&presetConfig);
-AceButton presetButton2(&presetConfig);
-AceButton presetButton3(&presetConfig);
+// Preset buttons use the SystemButtonConfig.
+AceButton presetButton1;
+AceButton presetButton2;
+AceButton presetButton3;
 
-// Tune up or down buttons.
+// Tune up or down buttons use a different ButtonConfig.
 ButtonConfig tuneConfig;
 AceButton tuneDownButton(&tuneConfig);
 AceButton tuneUpButton(&tuneConfig);
@@ -60,9 +59,10 @@ void setup() {
 
   // Configs for the preset buttons. Need Released event to change the station,
   // and LongPressed to memorize the current station. Don't need Clicked.
-  presetConfig.setEventHandler(handlePresetEvent);
-  presetConfig.setFeature(ButtonConfig::kFeatureLongPress);
-  presetConfig.setFeature(ButtonConfig::kFeatureSuppressAfterLongPress);
+  ButtonConfig* presetConfig = ButtonConfig::getSystemButtonConfig();
+  presetConfig->setEventHandler(handlePresetEvent);
+  presetConfig->setFeature(ButtonConfig::kFeatureLongPress);
+  presetConfig->setFeature(ButtonConfig::kFeatureSuppressAfterLongPress);
 
   // Configs for the tune-up and tune-down buttons. Need RepeatPress instead of
   // LongPress.

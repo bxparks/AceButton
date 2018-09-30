@@ -43,8 +43,8 @@ namespace ace_button {
  * - kEventRepeatPressed
  *
  * The check() method should be called from the loop() at least 2-3 times during
- * the debouncing time period. For 50 ms delay, the check() method should be
- * called at a minimum of every 15-20 ms. The execution time of check() on a 16
+ * the debouncing time period. For 20 ms delay, the check() method should be
+ * called at a minimum of every 5 ms. The execution time of check() on a 16
  * MHz Arduino ATmega328P MCU seems to about about 12-14 microseconds.
  */
 class AceButton {
@@ -195,8 +195,8 @@ class AceButton {
 
     /**
      * Check state of button and trigger event processing. This method should be
-     * called from the loop() method in Arduino every 2-3 times during the
-     * getDebounceDelay() time (default 50 ms), so about every 10-20 ms. If this
+     * called from the loop() method in Arduino every 4-5 times during the
+     * getDebounceDelay() time (default 20 ms), so about every 5 ms. If this
      * is called less often than that, the debouncing algorithm may not work
      * correctly, which may cause other event detection algorithms to fail.
      */

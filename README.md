@@ -64,18 +64,18 @@ Here are the high-level features of the AceButton library:
     * LongPressed
     * RepeatPressed
 * can distinguish between Clicked and DoubleClicked
-* configurations adjustable at runtime or compile-time
+* adjustable configurations at runtime or compile-time
     * timing parameters
     * `digitalRead()` button read function can be overridden
     * `millis()` clock function can be overridden
 * small memory footprint
     * each `AceButton` consumes 14 bytes
-    * each `ButtonConfig` consumes 8 bytes
+    * each `ButtonConfig` consumes 20 bytes
     * one System `ButtonConfig` instance created automatically by the library
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
-* only 17-20 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
+* only 13-15 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
 * can be instrumented to extract profiling numbers
 * tested on Arduino AVR (UNO, Nano, etc), Teensy ARM (LC
   and 3.2), ESP8266 and ESP32 platforms
@@ -100,7 +100,7 @@ you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
 That said, the [examples/AutoBenchmark](examples/AutoBenchmark) program
-shows that `AceButton::check()` takes between 17-20 microseconds on a 16MHz
+shows that `AceButton::check()` takes between 13-15 microseconds on a 16MHz
 ATmega328P chip on average. Hopefully that is fast enough for the vast
 majority of people.
 
@@ -110,7 +110,7 @@ Here is a simple program (see `examples/HelloButton.ino`) which controls
 the builtin LED on the Arduino board using a momentary button connected
 to PIN 2.
 
-```
+```C++
 #include <AceButton.h>
 using namespace ace_button;
 
@@ -188,7 +188,6 @@ The following example sketches are provided:
     * same as SingleButton.ino but with an external pull-down resistor
 * [Stopwatch.ino](examples/Stopwatch)
     * measures the speed of `AceButton:check()` with a start/stop/reset button
-    * shows example use of `AdjustableButtonConfig`
     * uses `kFeatureLongPress`
 * [TunerButtons.ino](examples/TunerButtons)
     * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
@@ -234,14 +233,14 @@ To prevent name clashes with other libraries that the calling code may use, all
 classes are defined in the `ace_button` namespace. To use the code without
 prepending the `ace_button::` prefix, use the `using` directive:
 
-```
+```C++
 #include <AceButton.h>
 using namespace ace_button;
 ```
 
 If you are dependent on just `AceButton`, the following might be sufficient:
 
-```
+```C++
 #include <AceButton.h>
 using ace_button::AceButton;
 ```
@@ -252,7 +251,7 @@ Each physical button will be handled by an instance of `AceButton`. At a
 minimum, the instance needs to be told the pin number of the button. This can
 be done through the constructor:
 
-```
+```C++
 const uint8_t BUTTON_PIN = 2;
 
 AceButton button(BUTTON_PIN);
@@ -260,7 +259,7 @@ AceButton button(BUTTON_PIN);
 
 Or we can use the `init()` method in the `setup()`:
 
-```
+```C++
 AceButton button;
 
 void setup() {
@@ -271,7 +270,7 @@ void setup() {
 ```
 
 Both the constructor and the `init()` function take 3 optional parameters:
-```
+```C++
 AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 
 void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
@@ -287,11 +286,13 @@ void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 The `pin` must be defined either through the constructor or the `init()` method.
 But the other two parameters may be optional in many cases.
 
-Finally, the `ButtonConfig::check()` method should be called from the `loop()`
-method periodically. Ideally, this should be every 10-20 milliseconds or faster
-so that the various event detection logic can work properly.
+Finally, the `AceButton::check()` method should be called from the `loop()`
+method periodically. Roughly speaking, this should be about 5 times faster than
+the value of `getDebounceDelay()` so that the various event detection logic can
+work properly. (If the debounce delay is 20 ms, `AceButton::check()` should be
+called every 5 ms or faster.)
 
-```
+```C++
 void loop() {
   ...
   button.check();
@@ -318,7 +319,7 @@ instances using dependency injection through the `AceButton(ButtonConfig&)`
 constructor. If this constructor is used, then the `AceButton::init()` method
 must be used to set the pin number of the button. For example:
 
-```
+```C++
 const uint8_t PIN1 = 2;
 const uint8_t PIN2 = 4;
 
@@ -361,42 +362,15 @@ _EventHandler Callback_ section.
 
 Here are the methods to retrieve the timing parameters:
 
-* `virtual uint16_t getDebounceDelay();`
-* `virtual uint16_t getClickDelay();`
-* `virtual uint16_t getDoubleClickDelay();`
-* `virtual uint16_t getLongPressDelay();`
-* `virtual uint16_t getRepeatPressDelay();`
-* `virtual uint16_t getRepeatPressInterval();`
+* `uint16_t getDebounceDelay();` (default: 20 ms)
+* `uint16_t getClickDelay();` (default: 200 ms)
+* `uint16_t getDoubleClickDelay();` (default: 400 ms)
+* `uint16_t getLongPressDelay();` (default: 1000 ms)
+* `uint16_t getRepeatPressDelay();` (default: 1000 ms)
+* `uint16_t getRepeatPressInterval();` (default: 200 ms)
 
-The values of these timing parameters are hardwired at compile time. They can be
-changed in two ways:
-
-1. Use a user-defined subclass to override one or more of these `virtual`
-   methods. Normally we avoid virtual methods in an embedded environment. But we
-   wanted the ability to plug in different types of `ButtonConfig` into the
-   `AceButton` class, and this C++ feature solves this problem very well. The
-   cost is 2 extra bytes for the virtual table pointer in each instance of
-   `ButtonConfig`, and some extra CPU overhead during the call to the virtual
-   functions.
-1. Use the `AdjustableButtonConfig` (see below) to configure these parameters at
-   run-time.
-
-An example of a user-defined subclass to override one of these parameters at
-compile-time would look like this:
-
-```
-class MyButtonConfig: public ButtonConfig {
-  public:
-    virtual uint16_t getClickDelay() override { return 250; }
-};
-```
-
-#### AdjustableButtonConfig
-
-The `AdjustableButtonConfig` is a subclass of `ButtonConfig` that allows the
-timing parameters of `ButtonConfig` to be changed at run-time. Everywhere that
-you see a `ButtonConfig` uses, you can substitute an `AdjustableButtonConfig`.
-It provides the following methods to change the timing parameters:
+The default values of each timing parameter can be changed at run-time using
+the following methods:
 
 * `void setDebounceDelay(uint16_t debounceDelay);`
 * `void setClickDelay(uint16_t clickDelay);`
@@ -404,10 +378,6 @@ It provides the following methods to change the timing parameters:
 * `void setLongPressDelay(uint16_t longPressDelay);`
 * `void setRepeatPressDelay(uint16_t repeatPressDelay);`
 * `void setRepeatPressInterval(uint16_t repeatPressInterval);`
-
-The cost of this flexibility is the larger static memory usage of an
-`AdjustableButtonConfig`, taking up 17 bytes of memory compared to 5 bytes for
-a `ButtonConfig`.
 
 #### Hardware Dependencies
 
@@ -458,7 +428,7 @@ normally not need to worry about the details.
 
 The event handler has the following signature:
 
-```
+```C++
 typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
     uint8_t buttonState);
 ```
@@ -468,7 +438,7 @@ The event handler is registered with the `ButtonConfig` object, not with the
 `AceButton::setEventHandler()` is provided as a pass-through to the underlying
 `ButtonConfig` (see the _Single Button Simplifications_ section below):
 
-```
+```C++
 ButtonConfig buttonConfig;
 
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
@@ -489,7 +459,7 @@ is only necessary to save that information once, in the `ButtonConfig` object.
 
 **Pro Tip**: Comment out the unused parameter(s) in the `handleEvent()` method
 to avoid the `unused parameter` compiler warning:
-```
+```C++
 void handleEvent(AceButton* /* button */, uint8_t eventType,
     uint8_t /* buttonState */) {
   ...
@@ -498,7 +468,7 @@ void handleEvent(AceButton* /* button */, uint8_t eventType,
 The Arduino sketch compiler can get confused with the parameters commented out,
 so you may need to add a forward declaration for the `handleEvent()` method
 before the `setup()` method:
-```
+```C++
 void handleEvent(AceButton*, uint8_t, uint8_t);
 ```
 
@@ -518,7 +488,7 @@ The `EventHandler` function received 3 parameters from the `AceButton`:
 The `aceButton` pointer should be used only to extract information about the
 button that triggered the event. It should **not** be used to modify the
 button's internal variables in any way within the eventHandler. The logic in
-`AceButton.check()` assumes that those internal variable are held constant,
+`AceButton::check()` assumes that those internal variable are held constant,
 and if they are changed by the eventHandler, unpredictable results may occur.
 (I was tempted to make the `aceButton` a pointer to a `const AceButton`
 but this cause too many viral changes to the code which seemed to increase
@@ -546,7 +516,7 @@ when most of these would be unused. If the client code really wanted separate
 event handlers, it can be easily emulated by invoking them through the main
 event handler:
 
-```
+```C++
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   switch (eventType) {
     case AceButton:kEventPressed:
@@ -610,13 +580,13 @@ control the behavior of `AceButton` event handling:
 
 These constants are used to set or clear the given flag:
 
-```
+```C++
 ButtonConfig* config = button.getButtonConfig();
 
 config->setFeature(ButtonConfig::kFeatureLongPress);
-...
+
 config->clearFeature(ButtonConfig::kFeatureLongPress);
-...
+
 if (config->isFeature(ButtonConfig::kFeatureLongPress)) {
   ...
 }
@@ -696,7 +666,7 @@ By default, no suppression is performed.
 As an example, to suppress the `Released` event after a `LongPressed` event
 (this is actually often the case), you would do this:
 
-```
+```C++
 ButtonConfig* config = button.getButtonConfig();
 config->setFeature(ButtonConfig::kFeatureSuppressAfterLongPress);
 ```
@@ -704,13 +674,13 @@ config->setFeature(ButtonConfig::kFeatureSuppressAfterLongPress);
 The special convenient constant `kFeatureSuppressAll` is equivalent of using all
 suppression constants:
 
-```
+```C++
 ButtonConfig* config = button.getButtonConfig();
 config->setFeature(ButtonConfig::kFeatureSuppressAll);
 ```
 
 All suppressions can be cleared by using:
-```
+```C++
 ButtonConfig* config = button.getButtonConfig();
 config->clearFeature(ButtonConfig::kFeatureSuppressAll);
 ```
@@ -759,7 +729,7 @@ events to the EventHandler:
 1. `kEventClicked` - at time 600ms (200ms + 400ms)
 
 The `ButtonConfig` configuration looks like this:
-```
+```C++
 ButtonConfig* buttonConfig = button.getButtonConfig();
 buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
 buttonConfig->setFeature(
@@ -784,7 +754,7 @@ user accidentally presses and releases the button to quickly, it generates a
 Clicked event, which will cause the program to do nothing.
 
 The `ButtonConfig` configuration looks like this:
-```
+```C++
 ButtonConfig* buttonConfig = button.getButtonConfig();
 buttonConfig->setEventHandler(handleEvent);
 buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
@@ -800,7 +770,7 @@ Released or a delayed Click is considered to be a "Click". This may be the best
 of both worlds.
 
 The `ButtonConfig` configuration looks like this:
-```
+```C++
 ButtonConfig* buttonConfig = button.getButtonConfig();
 buttonConfig->setEventHandler(handleEvent);
 buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
@@ -833,7 +803,7 @@ to make this simple case easy.
 These simplifying features allow a single button to be configured and used like
 this:
 
-```
+```C++
 AceButton button(BUTTON_PIN);
 
 void setup() {
@@ -854,7 +824,7 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 To configure the System ButtonConfig, you may need to add something like
 this to the `setup()` section:
 
-```
+```C++
   button.getButtonConfig()->setFeature(ButtonConfig::kFeatureLongPress);
 ```
 
@@ -914,8 +884,7 @@ Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 (Arduino Uno, Nano, etc):
 
 * sizeof(AceButton): 14
-* sizeof(ButtonConfig): 8
-* sizeof(AdjustableButtonConfig): 20
+* sizeof(ButtonConfig): 20
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
@@ -923,11 +892,13 @@ to 14.)
 
 **Program size:**
 
-On the Arduino Nano (16 MHz ATmega328P):
+[LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine
+the size of the library. For a single button, the library consumed:
+* flash memory: 1100-1330 bytes
+* static memory: 14-28 bytes
 
-* `HelloButton` sketch: 1972 bytes flash
-* `HelloButton` sketch without `AceButton`: 622 bytes flash
-* Therefore, the AceButton library: 1350 bytes flash
+depending on the target board. See the README.md in the above link for more
+details.
 
 **CPU cycles:**
 
@@ -935,20 +906,20 @@ The profiling numbers for `AceButton::check()` can be found in
 [examples/AutoBenchmark](examples/AutoBenchmark).
 
 In summary, the average numbers for various boards are:
-* Arduino Nano: 17-20 microsesconds
-* Teensy 3.2: 4 microseconds
-* ESP8266: 7-8 microseconds
-* ESP32: 3-4 microseconds
+* Arduino Nano: 13-15 microsesconds
+* Teensy 3.2: 3 microseconds
+* ESP8266: 8-9 microseconds
+* ESP32: 2-3 microseconds
 
 ## System Requirements
 
 This library was developed and tested using:
-* [Arduino IDE 1.8.5](https://www.arduino.cc/en/Main/Software)
+* [Arduino IDE 1.8.5 - 1.8.7](https://www.arduino.cc/en/Main/Software)
 * [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
-* [ESP8266 Arduino Core 2.4.1](https://arduino-esp8266.readthedocs.io/en/2.4.1/)
+* [ESP8266 Arduino Core 2.4.1 - 2.4.2](https://arduino-esp8266.readthedocs.io/en/2.4.2/)
 * [arduino-esp32](https://github.com/espressif/arduino-esp32)
 
-I used MacOS 10.13.3 and Ubuntu Linux 17.04 for most of my development.
+I used MacOS 10.13.3 and Ubuntu Linux 17.10 for most of my development.
 
 The library has been verified to work on the following hardware:
 
@@ -997,6 +968,16 @@ See [CHANGELOG.md](CHANGELOG.md).
 I changed to the MIT License starting with version 1.1 because the MIT License
 is so simple to understand. I could not be sure that I understood what the
 Apache License 2.0 meant.
+
+## Feedback and Support
+
+If you have any questions, comments, bug reports, or feature requests, please
+file a GitHub ticket or send me an email. I'd love to hear about how this
+software and its documentation can be improved. Instead of forking the
+repository to modify or add a feature for your own projects, let me have a
+chance to incorporate the change into the main repository so that your external
+dependencies are simpler and so that others can benefit. I can't promise that I
+will incorporate everything, but I will give your ideas serious consideration.
 
 ## Author
 

@@ -33,11 +33,11 @@ All times are in microseconds. The "samples" column is the number of
 ------------------------+-------------+---------+
 button event            | min/avg/max | samples |
 ------------------------+-------------+---------+
-idle                    |  16/ 17/ 24 | 1927    |
-press/release           |   8/ 18/ 28 | 1916    |
-click                   |   8/ 17/ 28 | 1921    |
-double click            |   8/ 17/ 32 | 1918    |
-long press/repeat press |   8/ 20/ 28 | 1917    |
+idle                    |  12/ 13/ 20 | 1934    |
+press/release           |   8/ 14/ 20 | 1925    |
+click                   |   8/ 14/ 24 | 1925    |
+double click            |   8/ 13/ 24 | 1925    |
+long press/repeat press |   8/ 15/ 24 | 1927    |
 ------------------------+-------------+---------+
 ```
 
@@ -49,27 +49,27 @@ long press/repeat press |   8/ 20/ 28 | 1917    |
 ------------------------+-------------+---------+
 button event            | min/avg/max | samples |
 ------------------------+-------------+---------+
-idle                    |  16/ 17/ 28 | 1928    |
-press/release           |   8/ 18/ 28 | 1919    |
-click                   |   8/ 17/ 28 | 1923    |
-double click            |   8/ 17/ 36 | 1920    |
-long press/repeat press |   8/ 20/ 32 | 1918    |
+idle                    |  12/ 13/ 24 | 1935    |
+press/release           |   8/ 14/ 24 | 1928    |
+click                   |   8/ 13/ 24 | 1928    |
+double click            |   8/ 13/ 24 | 1926    |
+long press/repeat press |   8/ 15/ 28 | 1928    |
 ------------------------+-------------+---------+
 ```
 
 ### Teensy 3.2
 
-* 72 MHz ARM Cortex-M4
+* 96 MHz ARM Cortex-M4
 
 ```
 ------------------------+-------------+---------+
 button event            | min/avg/max | samples |
 ------------------------+-------------+---------+
-idle                    |   4/  4/  6 | 1983    |
-press/release           |   1/  4/  7 | 1981    |
-click                   |   1/  4/  7 | 1982    |
-double click            |   1/  4/  8 | 1982    |
-long press/repeat press |   1/  4/  7 | 1980    |
+idle                    |   3/  3/  5 | 1985    |
+press/release           |   1/  3/  6 | 1983    |
+click                   |   1/  3/  6 | 1984    |
+double click            |   1/  3/  6 | 1984    |
+long press/repeat press |   1/  3/  6 | 1983    |
 ------------------------+-------------+---------+
 ```
 
@@ -81,11 +81,11 @@ long press/repeat press |   1/  4/  7 | 1980    |
 ------------------------+-------------+---------+
 button event            | min/avg/max | samples |
 ------------------------+-------------+---------+
-idle                    |   7/  7/ 12 | 1922    |
-press/release           |   5/  7/ 37 | 1921    |
-click                   |   5/  7/ 18 | 1922    |
-double click            |   5/  7/ 50 | 1917    |
-long press/repeat press |   5/  8/ 55 | 1910    |
+idle                    |   7/  8/ 24 | 1922    |
+press/release           |   6/  8/ 53 | 1919    |
+click                   |   6/  8/ 50 | 1920    |
+double click            |   6/  8/ 67 | 1910    |
+long press/repeat press |   6/  9/ 60 | 1894    |
 ------------------------+-------------+---------+
 ```
 
@@ -102,10 +102,10 @@ click" and "long press" samples are taken, causing the extra latency.
 ------------------------+-------------+---------+
 button event            | min/avg/max | samples |
 ------------------------+-------------+---------+
-idle                    |   4/  4/  4 | 2002    |
-press/release           |   3/  3/ 10 | 2002    |
-click                   |   3/  3/  9 | 2002    |
-double click            |   3/  3/  7 | 2002    |
-long press/repeat press |   3/  3/  4 | 2002    |
+idle                    |   3/  3/  3 | 2002    |
+press/release           |   2/  2/  8 | 2002    |
+click                   |   2/  2/  7 | 2002    |
+double click            |   2/  2/  4 | 2002    |
+long press/repeat press |   2/  2/  4 | 2002    |
 ------------------------+-------------+---------+
 ```

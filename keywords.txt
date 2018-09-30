@@ -9,7 +9,6 @@
 AceButton	KEYWORD1
 EventHandler	KEYWORD1
 ButtonConfig	KEYWORD1
-AdjustableButtonConfig	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
