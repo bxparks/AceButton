@@ -30,15 +30,15 @@ SOFTWARE.
 namespace ace_button {
 
 /**
- * Warning: This class is deprecated and replaced with its parent ButtonConfig.
- * class. You can just use ButtonConfig everywhere you previously used
- * AdjustableButtonConfig.
- *
  * A subclass of ButtonConfig which allows the user to override the varous
  * timing parameters of ButtonConfig at runtime. Each timing parameter
  * is stored in a member variable, so an instance of AdjustableButtonConfig
  * consumes far more static RAM than ButtonConfig. In return, this class allows
  * these parameters to be changed at runtime by the user.
+ *
+ * Warning: This class is deprecated and replaced with its parent ButtonConfig
+ * class. You can just use ButtonConfig everywhere you previously used
+ * AdjustableButtonConfig.
  */
 class AdjustableButtonConfig: public ButtonConfig {
 };

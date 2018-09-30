@@ -1,5 +1,23 @@
 # Changelog
 
+* 1.3 (2018-09-30)
+    * Merge `AdjustableButtonConfig` into `ButtonConfig` and deprecated
+      `AdjustableButtonConfig`. See
+      [Issue #13](https://github.com/bxparks/AceButton/issues/13) for
+      benchmarks which show that the theoretical increase of static RAM
+      consumption does not often happen in practice because of compiler
+      optimization.
+    * Reduce default value of `getDebounceDelay()` from 50 ms to 20 ms
+      to improve perceived responsiveness of buttons when they are rapidly
+      pressed on and off. See
+      [Issue #14](https://github.com/bxparks/AceButton/issues/14)
+      for details.
+    * Update `tests/auniter.ini` and `Jenkinsfile` for compatibility with
+      AUniter v1.7. Add `CapacitiveSensor` to the exclude list for
+      `env:esp8266` and `env:esp32` because it doesn't compile under those
+      environments.
+    * Remove leading zero in `ACE_BUTTON_VERSION` because that I forgot that it
+      means an octal number.
 * 1.2 (2018-08-14)
     * Add `AceButton(ButtonConfig*)` constructor to support constructor
       dependency injection. Recommended over `setButtonConfig()`.
