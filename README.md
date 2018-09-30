@@ -2,16 +2,16 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.2 (2018-08-14)
+Version: 1.3 (2018-09-30)
 
 [![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
 
 ## Summary
 
 This library provides classes which accept inputs from a mechanical button
-connected to a digital input pin on the Arduino. The library is able to handle
-momentary buttons, maintained buttons, and switches. For sake of simplicity, we
-will refer to all of these as "buttons" from now on.
+connected to a digital input pin on the Arduino. The library should be able to
+handle momentary buttons, maintained buttons, and switches, but it was designed
+primarily for momentary buttons.
 
 The library is called the ACE Button Library (or AceButton Library) because:
 
