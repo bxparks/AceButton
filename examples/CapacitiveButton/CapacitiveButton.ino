@@ -35,7 +35,7 @@ class CapacitiveConfig: public ButtonConfig {
     // The threshold value which is considered to be a "touch" on the switch.
     static const long kTouchThreshold = 100;
 
-    virtual int readButton(uint8_t /*pin*/) override {
+    int readButton(uint8_t /*pin*/) override {
       long total =  mSensor.capacitiveSensor(kSamples);
       return (total > kTouchThreshold) ? LOW : HIGH;
     }

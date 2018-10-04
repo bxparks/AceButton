@@ -16,12 +16,12 @@ class ProfilingButtonConfig: public ButtonConfig {
     ProfilingButtonConfig():
         mButtonState(HIGH) {}
 
-    virtual void init() override {
+    void init() override {
       ButtonConfig::init();
       mButtonState = HIGH;
     }
 
-    virtual int readButton(uint8_t /* pin */) override { return mButtonState; }
+    int readButton(uint8_t /* pin */) override { return mButtonState; }
 
     /** Set the state of the fake physical button. */
     void setButtonState(int buttonState) { mButtonState = buttonState; }

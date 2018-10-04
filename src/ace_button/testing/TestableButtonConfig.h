@@ -48,17 +48,17 @@ class TestableButtonConfig: public ButtonConfig {
      * way to reinitialize this object to its pristine state just after
      * construction.
      */
-    virtual void init() override {
+    void init() override {
       ButtonConfig::init();
       mMillis = 0;
       mButtonState = HIGH;
     }
 
     /** Read the time of the fake clock. */
-    virtual unsigned long getClock() override { return mMillis; }
+    unsigned long getClock() override { return mMillis; }
 
     /** Read the fake physical button. */
-    virtual int readButton(uint8_t /* pin */) override { return mButtonState; }
+    int readButton(uint8_t /* pin */) override { return mButtonState; }
 
     /** Set the time of the fake clock. */
     void setClock(unsigned long millis) { mMillis = millis; }
