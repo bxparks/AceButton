@@ -315,7 +315,7 @@ button (`AceButton`) from its configuration (`ButtonConfig`).
   and the clock (`getClock()`). This ability allows unit tests to be written.
 
 The `ButtonConfig` can be created and assigned to one or more `AceButton`
-instances using dependency injection through the `AceButton(ButtonConfig&)`
+instances using dependency injection through the `AceButton(ButtonConfig*)`
 constructor. If this constructor is used, then the `AceButton::init()` method
 must be used to set the pin number of the button. For example:
 
@@ -474,7 +474,7 @@ void handleEvent(AceButton*, uint8_t, uint8_t);
 
 #### EventHandler Parameters
 
-The `EventHandler` function received 3 parameters from the `AceButton`:
+The `EventHandler` function receives 3 parameters from the `AceButton`:
 
 * `aceButton`
     * pointer to the `AceButton` instance that generated this event
