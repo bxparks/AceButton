@@ -1,5 +1,10 @@
 # Changelog
 
+* 1.3.2 (2018-12-30)
+    * Year-end maintenance release. No functional change.
+    * Fix minor spelling and grammar mistakes in README.md.
+    * Remove `virtual` when using `override` per C++ core style guide.
+    * Update auniter.ini for compatibility with latest ESP32 and Sparkfun cores.
 * 1.3.1 (2018-09-30)
     * Fix botched release on GitHub. Same as v1.3.
 * 1.3 (2018-09-30)

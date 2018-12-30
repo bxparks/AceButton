@@ -2,7 +2,7 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.3.1 (2018-09-30)
+Version: 1.3.2 (2018-12-30)
 
 [![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
 
@@ -287,7 +287,7 @@ The `pin` must be defined either through the constructor or the `init()` method.
 But the other two parameters may be optional in many cases.
 
 Finally, the `AceButton::check()` method should be called from the `loop()`
-method periodically. Roughly speaking, this should be about 5 times faster than
+method periodically. Roughly speaking, this should be about 4 times faster than
 the value of `getDebounceDelay()` so that the various event detection logic can
 work properly. (If the debounce delay is 20 ms, `AceButton::check()` should be
 called every 5 ms or faster.)
@@ -315,7 +315,7 @@ button (`AceButton`) from its configuration (`ButtonConfig`).
   and the clock (`getClock()`). This ability allows unit tests to be written.
 
 The `ButtonConfig` can be created and assigned to one or more `AceButton`
-instances using dependency injection through the `AceButton(ButtonConfig&)`
+instances using dependency injection through the `AceButton(ButtonConfig*)`
 constructor. If this constructor is used, then the `AceButton::init()` method
 must be used to set the pin number of the button. For example:
 
@@ -474,7 +474,7 @@ void handleEvent(AceButton*, uint8_t, uint8_t);
 
 #### EventHandler Parameters
 
-The `EventHandler` function received 3 parameters from the `AceButton`:
+The `EventHandler` function receives 3 parameters from the `AceButton`:
 
 * `aceButton`
     * pointer to the `AceButton` instance that generated this event
@@ -537,8 +537,8 @@ called in the middle of the `AceButton::check()` method, in the same thread as
 the `check()` method. It is therefore important to write the `EventHandler`
 code to run somewhat quickly, so that the delay doesn't negatively impact the
 logic of the `AceButton::check()` algorithm. Since `AceButton::check()` should
-run approximately every 10-20 ms, the user-provided `EventHandler` should run
-somewhat faster than 10-20 ms. Given a choice, it is probably better to use the
+run approximately every 5 ms, the user-provided `EventHandler` should run
+somewhat faster than 5 ms. Given a choice, it is probably better to use the
 `EventHandler` to set some flags or variables and return quickly, then do
 additional processing from the `loop()` method.
 
@@ -564,7 +564,7 @@ be enabled by using a Feature flag described below.
 
 ### ButtonConfig Feature Flags
 
-There are 9 flags defined in `ButtonConfig` which can be used to
+There are 9 flags defined in `ButtonConfig` which can
 control the behavior of `AceButton` event handling:
 
 * `ButtonConfig::kFeatureClick`
@@ -843,7 +843,7 @@ See the example sketch `TunerButtons.ino` to see how to use multiple
 
 ### Events After Reboot
 
-A number of edge cases occur when the the microcontroller is rebooted:
+A number of edge cases occur when the microcontroller is rebooted:
 
 * if the button is held down, should the Pressed event be triggered?
 * if the button is in its natural Released state, should the Released event
