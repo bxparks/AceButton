@@ -54,7 +54,7 @@ requested.)
 Here are the high-level features of the AceButton library:
 
 * debounces the mechanical contact
-* handles both pull-up and pull-down wiring
+* supports both pull-up and pull-down wiring
 * event-driven through a user-defined `EventHandler` callback funcition
 * supports 6 event types:
     * Pressed
@@ -245,6 +245,38 @@ If you are dependent on just `AceButton`, the following might be sufficient:
 using ace_button::AceButton;
 ```
 
+### Pin Wiring and Initialization
+
+An Arduino microcontroller pin can be in an `OUTPUT` mode, an `INPUT` mode, or
+an `INPUT_PULLUP` mode. This mode is controlled by the `pinMode()` method.
+
+By default upon boot, the pin is set to the `INPUT` mode. However, this `INPUT`
+mode puts the pin into a high impedance state, which means that if there is no
+wire connected to the pin, the voltage on the pin is indeterminant. When the
+input pin is read (using `digitalRead()`), the boolean value will be a random
+value. If you are using the pin in `INPUT` mode, you *must* connect an external
+pull-up resistor (connected to Vcc) or pull-down resistor (connected to ground)
+so that the voltage level of the pin is defined when there is nothing connected
+to the pin (i.e. when the button is not pressed).
+
+The `INPUT_PULLUP` mode is a special `INPUT` mode which tells the
+microcontroller to connect an internal pull-up resistor to the pin. It is
+activated by calling `pintMode(pin, INPUT_PULLUP)` on the given `pin`. This mode
+is very convenient because it eliminates the external resistor, making the
+wiring simpler.
+
+The AceButton library itself does *not* call the `pinMode()` function. The
+calling application is responsible for calling `pinMode()`. Normally, this
+happens in the global `setup()` method but the call can happen somewhere else if
+the application requires it. The reason for decoupling the hardware
+configuration from the AceButton library is mostly because the library does not
+actually care about the specific hardware wiring of the button. It does not care
+whether an external resistor is used, or the internal resistor is used. It only
+cares about whether the resistor is a pull-up or a pull-down.
+
+See https://www.arduino.cc/en/Tutorial/DigitalPins for additional information
+about the I/O pins on an Arduino.
+
 ### AceButton Class
 
 Each physical button will be handled by an instance of `AceButton`. At a
@@ -255,6 +287,11 @@ be done through the constructor:
 const uint8_t BUTTON_PIN = 2;
 
 AceButton button(BUTTON_PIN);
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  ...
+}
 ```
 
 Or we can use the `init()` method in the `setup()`:
