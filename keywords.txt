@@ -25,6 +25,7 @@ getDefaultReleasedState	KEYWORD2
 getLastButtonState	KEYWORD2
 check	KEYWORD2
 isReleased	KEYWORD2
+isPressedRaw	KEYWORD2
 
 # methods from ButtonConfig.h
 getDebounceDelay	KEYWORD2
