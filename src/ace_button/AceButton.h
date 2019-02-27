@@ -214,11 +214,22 @@ class AceButton {
      * physical wiring.
      *
      * Normally, the eventType given to the EventHandler should be sufficient
-     * because the value of the evenType already encodes this information.
+     * because the value of the eventType already encodes this information.
      * This method is provided just in case.
      */
     bool isReleased(uint8_t buttonState) ACE_BUTTON_INLINE {
       return buttonState == getDefaultReleasedState();
+    }
+
+    /**
+     * Read the button state directly using ButtonConfig and return true if the
+     * button is in the Pressed state. This method is intended to be used in the
+     * global setup() to determine if the button was pressed while the device
+     * was booted. This method does not use the check() method, does not perform
+     * any debouncing, and does not dispatch events to the EventHandler.
+     */
+    bool isPressedRaw() ACE_BUTTON_INLINE {
+      return !isReleased(mButtonConfig->readButton(mPin));
     }
 
   // Some of these private methods may be useful to the calling client but I

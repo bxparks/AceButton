@@ -895,6 +895,13 @@ human-initiated change in state. The AceButton library implements this logic.
 (It might be useful to make this configurable using a `ButtonConfig` feature
 flag but that is not implemented.)
 
+On the other hand, it is sometimes useful to perform some special action if a
+button is pressed while the device is rebooted. To support this use-case, call
+the `AceButton::isPressedRaw()` in the global `setup()` method (after the
+button is configured). It will directly call the `digitalRead()` method
+associated with the button pin and return `true` if the button is in the
+Released state.
+
 ### Orphaned Clicks
 
 When a Clicked event is generated, the `AceButton` class looks for a
