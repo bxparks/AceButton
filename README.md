@@ -900,7 +900,7 @@ button is pressed while the device is rebooted. To support this use-case, call
 the `AceButton::isPressedRaw()` in the global `setup()` method (after the
 button is configured). It will directly call the `digitalRead()` method
 associated with the button pin and return `true` if the button is in the
-Released state.
+Pressed state.
 
 ### Orphaned Clicks
 
