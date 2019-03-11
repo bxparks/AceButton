@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 1.3.3 (2019-03-10)
     * Add blurb about using `pinMode()` and button wiring configurations in
       README.md based on feedback from
       [Issue #19](https://github.com/bxparks/AceButton/issues/19).
