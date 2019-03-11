@@ -22,9 +22,9 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.3.2</span>
+   &#160;<span id="projectnumber">1.3.3</span>
    </div>
-   <div id="projectbrief">An adjustable, compact, event-driven (ACE) button library for Arduino.</div>
+   <div id="projectbrief">An adjustable, compact, event-driven button library for Arduino.</div>
   </td>
  </tr>
  </tbody>
@@ -116,6 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa3cbb3fb16076cfe9255e0f70cc6aa72"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1AceButton.html#aa3cbb3fb16076cfe9255e0f70cc6aa72">isReleased</a> (uint8_t buttonState) ACE_BUTTON_INLINE</td></tr>
 <tr class="memdesc:aa3cbb3fb16076cfe9255e0f70cc6aa72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the given buttonState represents a 'Released' state for the button.  <a href="#aa3cbb3fb16076cfe9255e0f70cc6aa72">More...</a><br /></td></tr>
 <tr class="separator:aa3cbb3fb16076cfe9255e0f70cc6aa72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af80a2bd19d929bff5dcce54a3db6fb0a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1AceButton.html#af80a2bd19d929bff5dcce54a3db6fb0a">isPressedRaw</a> () ACE_BUTTON_INLINE</td></tr>
+<tr class="memdesc:af80a2bd19d929bff5dcce54a3db6fb0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the button state directly using <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> and return true if the button is in the Pressed state.  <a href="#af80a2bd19d929bff5dcce54a3db6fb0a">More...</a><br /></td></tr>
+<tr class="separator:af80a2bd19d929bff5dcce54a3db6fb0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -446,6 +449,36 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 </div>
 </div>
+<a id="af80a2bd19d929bff5dcce54a3db6fb0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af80a2bd19d929bff5dcce54a3db6fb0a">&#9670;&nbsp;</a></span>isPressedRaw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool ace_button::AceButton::isPressedRaw </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read the button state directly using <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> and return true if the button is in the Pressed state. </p>
+<p>This method is intended to be used in the global setup() to determine if the button was pressed while the device was booted. This method does not use the <a class="el" href="classace__button_1_1AceButton.html#af710048a654fa5d5e45405661282a7b1" title="Check state of button and trigger event processing. ">check()</a> method, does not perform any debouncing, and does not dispatch events to the EventHandler. </p>
+
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00231">231</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+
+</div>
+</div>
 <a id="aa3cbb3fb16076cfe9255e0f70cc6aa72"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3cbb3fb16076cfe9255e0f70cc6aa72">&#9670;&nbsp;</a></span>isReleased()</h2>
 
@@ -473,7 +506,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Returns true if the given buttonState represents a 'Released' state for the button. </p>
 <p>Returns false if the buttonState is 'Pressed' or kButtonStateUnknown.</p>
 <p>The HIGH or LOW logical value of buttonState represents different a button position depending on whether the button is wired with a pull-up or a pull-down resistor. This method translates the logical level to the physical position which allows the client code to be independent of the physical wiring.</p>
-<p>Normally, the eventType given to the EventHandler should be sufficient because the value of the evenType already encodes this information. This method is provided just in case. </p>
+<p>Normally, the eventType given to the EventHandler should be sufficient because the value of the eventType already encodes this information. This method is provided just in case. </p>
 
 <p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00220">220</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 

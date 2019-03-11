@@ -7,6 +7,7 @@
  * - suppresses lower-level events when higher-level events are detected
  *   (e.g. Clicked suppressed Released, DoubleClicked suppresses the
  *   second Clicked, LongPressed suppressed the Released, etc.)
+ * - setup() determines if a button was pressed during reboot
  */
 
 #include <AceButton.h>
@@ -54,12 +55,17 @@ void setup() {
   buttonConfig->setFeature(ButtonConfig::kFeatureLongPress);
   buttonConfig->setFeature(ButtonConfig::kFeatureRepeatPress);
 
+  // Check if the button was pressed while booting
+  if (button.isPressedRaw()) {
+    Serial.println(F("setup(): button was pressed while booting"));
+  }
+
   Serial.println(F("setup(): ready"));
 }
 
 void loop() {
-  // Should be called every 20ms or faster for the default debouncing time
-  // of ~50ms.
+  // Should be called every 4-5ms or faster, for the default debouncing time
+  // of ~20ms.
   button.check();
 }
 

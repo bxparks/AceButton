@@ -267,6 +267,19 @@ test(adjustable_config) {
   assertEqual((uint16_t)6, buttonConfig.getRepeatPressInterval());
 }
 
+// Detect if a button is pressed while the device is booted.
+test(is_released_raw) {
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  button.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.init();
+
+  testableConfig.setButtonState(HIGH);
+  assertFalse(button.isPressedRaw());
+
+  testableConfig.setButtonState(LOW);
+  assertTrue(button.isPressedRaw());
+}
+
 // ------------------------------------------------------------------
 // Press and Release tests
 // ------------------------------------------------------------------
