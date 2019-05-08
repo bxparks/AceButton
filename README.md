@@ -191,8 +191,7 @@ The following example sketches are provided:
     * uses `kFeatureLongPress`
 * [TunerButtons.ino](examples/TunerButtons)
     * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
-    * shows multiple `ButtonConfig` instances
-    * shows multiple `EventHandler`s
+    * shows multiple `ButtonConfig` and `EventHandler` instances
     * shows an example of how to use `getId()`
     * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
       `kFeatureSuppressAfterLongPress`, and `kFeatureSuppressAfterRepeatPress`
@@ -211,6 +210,9 @@ The following example sketches are provided:
     * reads a capacitive button using the
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
       library
+* [ArrayButtons](examples/ArrayButtons)
+    * shows how to define an array of `AceButton` and initialize them using
+      the `init()` method in a loop
 * [AutoBenchmark.ino](examples/AutoBenchmark)
     * generates the timing stats (min/average/max) for the `AceButton::check()`
       method for various types of events (idle, press/release, click,

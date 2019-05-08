@@ -1,6 +1,9 @@
 # Changelog
 
 * Unreleased
+    * Add `examples/ArrayButtons` to show how to define and initialize an array
+      of AceButton instances.
+    * Fix fqbn of ESP8266 after updating to ESP8266/Arduino Core 2.5.0.
 * 1.3.3 (2019-03-10)
     * Add blurb about using `pinMode()` and button wiring configurations in
       README.md based on feedback from
