@@ -106,9 +106,9 @@ majority of people.
 
 ### HelloButton
 
-Here is a simple program (see `examples/HelloButton.ino`) which controls
-the builtin LED on the Arduino board using a momentary button connected
-to PIN 2.
+Here is a simple program (see [examples/HelloButton](examples/HelloButton))
+which controls the builtin LED on the Arduino board using a momentary button
+connected to PIN 2.
 
 ```C++
 #include <AceButton.h>
