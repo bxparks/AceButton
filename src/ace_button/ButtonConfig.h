@@ -27,10 +27,6 @@ SOFTWARE.
 
 #include <Arduino.h>
 
-// TODO: Verify if this is actually needed. The program size seems to be
-// identical with or without it on the Arduino IDE (which uses gcc).
-#define ACE_BUTTON_INLINE __attribute__((always_inline))
-
 namespace ace_button {
 
 class AceButton;
@@ -268,24 +264,24 @@ class ButtonConfig {
     // functionality of the AceButton.
 
     /** Check if the given features are enabled. */
-    bool isFeature(FeatureFlagType features) ACE_BUTTON_INLINE {
+    bool isFeature(FeatureFlagType features) {
       return mFeatureFlags & features;
     }
 
     /** Enable the given features. */
-    void setFeature(FeatureFlagType features) ACE_BUTTON_INLINE {
+    void setFeature(FeatureFlagType features) {
       mFeatureFlags |= features;
     }
 
     /** Disable the given features. */
-    void clearFeature(FeatureFlagType features) ACE_BUTTON_INLINE {
+    void clearFeature(FeatureFlagType features) {
       mFeatureFlags &= ~features;
     }
 
     // EventHandler
 
     /** Return the eventHandler. */
-    EventHandler getEventHandler() ACE_BUTTON_INLINE {
+    EventHandler getEventHandler() {
       return mEventHandler;
     }
 
@@ -293,7 +289,7 @@ class ButtonConfig {
      * Install the event handler. The event handler must be defined for the
      * AceButton to be useful.
      */
-    void setEventHandler(EventHandler eventHandler) ACE_BUTTON_INLINE {
+    void setEventHandler(EventHandler eventHandler) {
       mEventHandler = eventHandler;
     }
 
@@ -311,7 +307,7 @@ class ButtonConfig {
      * Return a pointer to the singleton instance of the ButtonConfig
      * which is attached to all AceButton instances by default.
      */
-    static ButtonConfig* getSystemButtonConfig() ACE_BUTTON_INLINE {
+    static ButtonConfig* getSystemButtonConfig() {
       return &sSystemButtonConfig;
     }
 

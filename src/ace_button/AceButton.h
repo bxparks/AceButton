@@ -140,7 +140,7 @@ class AceButton {
         uint8_t id = 0);
 
     /** Get the ButtonConfig associated with this Button. */
-    ButtonConfig* getButtonConfig() ACE_BUTTON_INLINE {
+    ButtonConfig* getButtonConfig() {
       return mButtonConfig;
     }
 
@@ -149,7 +149,7 @@ class AceButton {
      * the AceButton(ButtonConfig*) constructor is used instead to make the
      * dependency to ButtonConfig more explicit.
      */
-    void setButtonConfig(ButtonConfig* buttonConfig) ACE_BUTTON_INLINE {
+    void setButtonConfig(ButtonConfig* buttonConfig) {
       mButtonConfig = buttonConfig;
     }
 
@@ -162,16 +162,15 @@ class AceButton {
      * ButtonConfig::setEventHandler() method on those objects directly, instead
      * of using this method.
      */
-    void setEventHandler(ButtonConfig::EventHandler eventHandler)
-        ACE_BUTTON_INLINE {
+    void setEventHandler(ButtonConfig::EventHandler eventHandler) {
       mButtonConfig->setEventHandler(eventHandler);
     }
 
     /** Get the button's pin number. */
-    uint8_t getPin() ACE_BUTTON_INLINE { return mPin; }
+    uint8_t getPin() { return mPin; }
 
     /** Get the custom identifier of the button. */
-    uint8_t getId() ACE_BUTTON_INLINE { return mId; }
+    uint8_t getId() { return mId; }
 
     /** Get the initial released state of the button, HIGH or LOW. */
     uint8_t getDefaultReleasedState();
@@ -189,7 +188,7 @@ class AceButton {
      * from the value of buttonState provided to the event handler. In other
      * words, there is a race-condition.
      */
-    uint8_t getLastButtonState() ACE_BUTTON_INLINE {
+    uint8_t getLastButtonState() {
       return mLastButtonState;
     }
 
@@ -217,7 +216,7 @@ class AceButton {
      * because the value of the eventType already encodes this information.
      * This method is provided just in case.
      */
-    bool isReleased(uint8_t buttonState) ACE_BUTTON_INLINE {
+    bool isReleased(uint8_t buttonState) {
       return buttonState == getDefaultReleasedState();
     }
 
@@ -228,7 +227,7 @@ class AceButton {
      * was booted. This method does not use the check() method, does not perform
      * any debouncing, and does not dispatch events to the EventHandler.
      */
-    bool isPressedRaw() ACE_BUTTON_INLINE {
+    bool isPressedRaw() {
       return !isReleased(mButtonConfig->readButton(mPin));
     }
 
@@ -244,7 +243,7 @@ class AceButton {
     AceButton& operator=(const AceButton&) = delete;
 
     /** Set the pin number of the button. */
-    void setPin(uint8_t pin) ACE_BUTTON_INLINE { mPin = pin; }
+    void setPin(uint8_t pin) { mPin = pin; }
 
     /**
      * Set the initial released state of the button.
@@ -256,7 +255,7 @@ class AceButton {
     void setDefaultReleasedState(uint8_t state);
 
     /** Set the identifier of the button. */
-    void setId(uint8_t id) ACE_BUTTON_INLINE { mId = id; }
+    void setId(uint8_t id) { mId = id; }
 
     // Various bit masks to store a boolean flag in the 'mFlags' field.
     // We use bit masks to save static RAM. If we had used a 'bool' type, each
@@ -274,94 +273,94 @@ class AceButton {
     // I don't expect these to be useful to the outside world.
 
     // If this is set, then mLastDebounceTime is valid.
-    bool isDebouncing() ACE_BUTTON_INLINE {
+    bool isDebouncing() {
       return mFlags & kFlagDebouncing;
     }
 
-    void setDebouncing() ACE_BUTTON_INLINE {
+    void setDebouncing() {
       mFlags |= kFlagDebouncing;
     }
 
-    void clearDebouncing() ACE_BUTTON_INLINE {
+    void clearDebouncing() {
       mFlags &= ~kFlagDebouncing;
     }
 
     // If this is set, then mLastPressTime is valid.
-    bool isPressed() ACE_BUTTON_INLINE {
+    bool isPressed() {
       return mFlags & kFlagPressed;
     }
 
-    void setPressed() ACE_BUTTON_INLINE {
+    void setPressed() {
       mFlags |= kFlagPressed;
     }
 
-    void clearPressed() ACE_BUTTON_INLINE {
+    void clearPressed() {
       mFlags &= ~kFlagPressed;
     }
 
     // If this is set, then mLastClickTime is valid.
-    bool isClicked() ACE_BUTTON_INLINE {
+    bool isClicked() {
       return mFlags & kFlagClicked;
     }
 
-    void setClicked() ACE_BUTTON_INLINE {
+    void setClicked() {
       mFlags |= kFlagClicked;
     }
 
-    void clearClicked() ACE_BUTTON_INLINE {
+    void clearClicked() {
       mFlags &= ~kFlagClicked;
     }
 
     // A double click was detected. No need to store the last double-clicked
     // time because we don't support a triple-click event (yet).
-    bool isDoubleClicked() ACE_BUTTON_INLINE {
+    bool isDoubleClicked() {
       return mFlags & kFlagDoubleClicked;
     }
 
-    void setDoubleClicked() ACE_BUTTON_INLINE {
+    void setDoubleClicked() {
       mFlags |= kFlagDoubleClicked;
     }
 
-    void clearDoubleClicked() ACE_BUTTON_INLINE {
+    void clearDoubleClicked() {
       mFlags &= ~kFlagDoubleClicked;
     }
 
     // If this is set, then mLastPressTime can be treated as the start
     // of a long press.
-    bool isLongPressed() ACE_BUTTON_INLINE {
+    bool isLongPressed() {
       return mFlags & kFlagLongPressed;
     }
 
-    void setLongPressed() ACE_BUTTON_INLINE {
+    void setLongPressed() {
       mFlags |= kFlagLongPressed;
     }
 
-    void clearLongPressed() ACE_BUTTON_INLINE {
+    void clearLongPressed() {
       mFlags &= ~kFlagLongPressed;
     }
 
     // If this is set, then mLastRepeatPressTime is valid.
-    bool isRepeatPressed() ACE_BUTTON_INLINE {
+    bool isRepeatPressed() {
       return mFlags & kFlagRepeatPressed;
     }
 
-    void setRepeatPressed() ACE_BUTTON_INLINE {
+    void setRepeatPressed() {
       mFlags |= kFlagRepeatPressed;
     }
 
-    void clearRepeatPressed() ACE_BUTTON_INLINE {
+    void clearRepeatPressed() {
       mFlags &= ~kFlagRepeatPressed;
     }
 
-    bool isClickPostponed() ACE_BUTTON_INLINE {
+    bool isClickPostponed() {
       return mFlags & kFlagClickPostponed;
     }
 
-    void setClickPostponed() ACE_BUTTON_INLINE {
+    void setClickPostponed() {
       mFlags |= kFlagClickPostponed;
     }
 
-    void clearClickPostponed() ACE_BUTTON_INLINE {
+    void clearClickPostponed() {
       mFlags &= ~kFlagClickPostponed;
     }
 
