@@ -85,9 +85,11 @@ class AceButton {
 
     /**
      * Button state is unknown. This is a third state (different from LOW or
-     * HIGH) used when the class is first initialized upon reboot.
+     * HIGH) used when the class is first initialized upon reboot. No longer
+     * able to use '2' because the new PinStatus enum API contains 'CHANGE'
+     * which has a value of 2.
      */
-    static const uint8_t kButtonStateUnknown = 2;
+    static const uint8_t kButtonStateUnknown = 127;
 
     /**
      * Constructor defines parameters of the button that changes from button to
