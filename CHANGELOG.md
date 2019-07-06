@@ -1,6 +1,11 @@
 # Changelog
 
 * Unreleased
+    * Update compile-time checks for `HIGH` and `LOW` for compatibility with
+      new megaAVR (e.g. Nano Every) boards which use enums instead of `#define`
+      macros. Change value of `kButtonStatusUnknown` to 127 to avoid conflict
+      with `PinStatus` enums.
+    * Remove `ACE_BUTTON_INLINE` macros, was not doing anything.
     * Add `examples/ArrayButtons` to show how to define and initialize an array
       of AceButton instances.
     * Fix fqbn of ESP8266 after updating to ESP8266/Arduino Core 2.5.0.
