@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 1.3.4 (2019-07-06)
     * Update compile-time checks for `HIGH` and `LOW` for compatibility with
       new megaAVR (e.g. Nano Every) boards which use enums instead of `#define`
       macros. Change value of `kButtonStatusUnknown` to 127 to avoid conflict
