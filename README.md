@@ -2,7 +2,7 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.3.3 (2019-03-10)
+Version: 1.3.4 (2019-07-06)
 
 [![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
 
@@ -106,9 +106,9 @@ majority of people.
 
 ### HelloButton
 
-Here is a simple program (see `examples/HelloButton.ino`) which controls
-the builtin LED on the Arduino board using a momentary button connected
-to PIN 2.
+Here is a simple program (see [examples/HelloButton](examples/HelloButton))
+which controls the builtin LED on the Arduino board using a momentary button
+connected to PIN 2.
 
 ```C++
 #include <AceButton.h>
@@ -191,8 +191,7 @@ The following example sketches are provided:
     * uses `kFeatureLongPress`
 * [TunerButtons.ino](examples/TunerButtons)
     * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
-    * shows multiple `ButtonConfig` instances
-    * shows multiple `EventHandler`s
+    * shows multiple `ButtonConfig` and `EventHandler` instances
     * shows an example of how to use `getId()`
     * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
       `kFeatureSuppressAfterLongPress`, and `kFeatureSuppressAfterRepeatPress`
@@ -211,6 +210,9 @@ The following example sketches are provided:
     * reads a capacitive button using the
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
       library
+* [ArrayButtons](examples/ArrayButtons)
+    * shows how to define an array of `AceButton` and initialize them using
+      the `init()` method in a loop
 * [AutoBenchmark.ino](examples/AutoBenchmark)
     * generates the timing stats (min/average/max) for the `AceButton::check()`
       method for various types of events (idle, press/release, click,
@@ -958,10 +960,11 @@ In summary, the average numbers for various boards are:
 ## System Requirements
 
 This library was developed and tested using:
-* [Arduino IDE 1.8.5 - 1.8.7](https://www.arduino.cc/en/Main/Software)
+* [Arduino IDE 1.8.9](https://www.arduino.cc/en/Main/Software)
+* [AVR Core 1.6.23](https://github.com/arduino/ArduinoCore-avr)
+* [ESP8266 Arduino Core 2.5.2](https://github.com/esp8266/Arduino)
+* [ESP32 Arduino Core 1.0.2](https://github.com/espressif/arduino-esp32)
 * [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
-* [ESP8266 Arduino Core 2.4.1 - 2.4.2](https://arduino-esp8266.readthedocs.io/en/2.4.2/)
-* [arduino-esp32](https://github.com/espressif/arduino-esp32)
 
 I used MacOS 10.13.3 and Ubuntu Linux 17.10 for most of my development.
 
@@ -1016,12 +1019,11 @@ Apache License 2.0 meant.
 ## Feedback and Support
 
 If you have any questions, comments, bug reports, or feature requests, please
-file a GitHub ticket or send me an email. I'd love to hear about how this
-software and its documentation can be improved. Instead of forking the
-repository to modify or add a feature for your own projects, let me have a
-chance to incorporate the change into the main repository so that your external
-dependencies are simpler and so that others can benefit. I can't promise that I
-will incorporate everything, but I will give your ideas serious consideration.
+file a GitHub ticket instead of emailing me unless the content is sensitive.
+(The problem with email is that I cannot reference the email conversation when
+other people ask similar questions later.) I'd love to hear about how this
+software and its documentation can be improved. I can't promise that I will
+incorporate everything, but I will give your ideas serious consideration.
 
 ## Author
 

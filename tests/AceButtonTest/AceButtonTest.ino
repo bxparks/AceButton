@@ -82,7 +82,9 @@ void handleEvent(AceButton* /* button */, uint8_t eventType,
 }
 
 void setup() {
+#ifdef ARDUINO
   delay(1000); // Wait for stability on some boards, otherwise garage on Serial
+#endif
   Serial.begin(115200); // ESP8266 default 74880 not supported on Linux
   while (!Serial); // for the Arduino Leonardo/Micro only
 
