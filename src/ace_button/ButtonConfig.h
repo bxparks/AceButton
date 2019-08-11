@@ -335,11 +335,11 @@ class ButtonConfig {
     /** The event handler for all buttons associated with this ButtonConfig. */
     EventHandler mEventHandler = nullptr;
 
-    /** A bit mask flag that activates certain features. */
-    FeatureFlagType mFeatureFlags = 0;
-
     /** The timing stats object. */
     TimingStats* mTimingStats = nullptr;
+
+    /** A bit mask flag that activates certain features. */
+    FeatureFlagType mFeatureFlags = 0;
 
     uint16_t mDebounceDelay = kDebounceDelay;
     uint16_t mClickDelay = kClickDelay;

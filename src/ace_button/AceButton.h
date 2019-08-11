@@ -475,16 +475,11 @@ class AceButton {
      */
     void handleEvent(uint8_t eventType);
 
-    uint8_t mPin; // button pin number
-    uint8_t mId; // identifier, e.g. an index into an array
+    /** button pin number */
+    uint8_t mPin;
 
-    // Internal states of the button debouncing and event handling.
-    // NOTE: We don't keep track of the lastDoubleClickTime, because we
-    // don't support a TripleClicked event. That may change in the future.
-    uint16_t mLastDebounceTime; // ms
-    uint16_t mLastClickTime; // ms
-    uint16_t mLastPressTime; // ms
-    uint16_t mLastRepeatPressTime; // ms
+    /** identifier, e.g. an index into an array */
+    uint8_t mId;
 
     /** Internal flags. Bit masks are defined by the kFlag* constants. */
     uint8_t mFlags;
@@ -497,6 +492,14 @@ class AceButton {
 
     /** ButtonConfig associated with this button. */
     ButtonConfig* mButtonConfig;
+
+    // Internal states of the button debouncing and event handling.
+    // NOTE: We don't keep track of the lastDoubleClickTime, because we
+    // don't support a TripleClicked event. That may change in the future.
+    uint16_t mLastDebounceTime; // ms
+    uint16_t mLastClickTime; // ms
+    uint16_t mLastPressTime; // ms
+    uint16_t mLastRepeatPressTime; // ms
 };
 
 }
