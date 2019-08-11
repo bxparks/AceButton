@@ -69,16 +69,16 @@ Here are the high-level features of the AceButton library:
     * `digitalRead()` button read function can be overridden
     * `millis()` clock function can be overridden
 * small memory footprint
-    * each `AceButton` consumes 14 bytes
-    * each `ButtonConfig` consumes 20 bytes
+    * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
+    * each `ButtonConfig` consumes 20 bytes (8-bit) or 28 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
 * only 13-15 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
 * can be instrumented to extract profiling numbers
-* tested on Arduino AVR (UNO, Nano, etc), Teensy ARM (LC
-  and 3.2), ESP8266 and ESP32 platforms
+* tested on Arduino AVR (UNO, Nano, Micro etc), Teensy ARM (LC
+  and 3.2), SAMD21 (Arduino Zero compatible), ESP8266 and ESP32
 
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
@@ -934,6 +934,11 @@ Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 * sizeof(AceButton): 14
 * sizeof(ButtonConfig): 20
 
+and 32-bit microcontrollers:
+
+* sizeof(AceButton): 16
+* sizeof(ButtonConfig): 28
+
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
 to 14.)
@@ -955,30 +960,49 @@ The profiling numbers for `AceButton::check()` can be found in
 
 In summary, the average numbers for various boards are:
 * Arduino Nano: 13-15 microsesconds
-* Teensy 3.2: 3 microseconds
+* SAMD21: 7-8 microseconds
 * ESP8266: 8-9 microseconds
 * ESP32: 2-3 microseconds
+* Teensy 3.2: 3 microseconds
 
 ## System Requirements
 
+### Tool Chain
+
 This library was developed and tested using:
+
 * [Arduino IDE 1.8.9](https://www.arduino.cc/en/Main/Software)
-* [AVR Core 1.6.23](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino AVR Boards 1.6.23](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino SAMD Boards 1.8.3](https://github.com/arduino/ArduinoCore-samd)
+* [SparkFun AVR Boards 1.1.12](https://github.com/sparkfun/Arduino_Boards)
+* [SparkFun SAMD Boards 1.6.2](https://github.com/sparkfun/Arduino_Boards)
 * [ESP8266 Arduino Core 2.5.2](https://github.com/esp8266/Arduino)
 * [ESP32 Arduino Core 1.0.2](https://github.com/espressif/arduino-esp32)
 * [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
 
-I used MacOS 10.13.3 and Ubuntu Linux 17.10 for most of my development.
+It should work with [PlatformIO](https://platformio.org/) but I have
+not tested it.
 
-The library has been verified to work on the following hardware:
+### Operating System
+
+I used MacOS 10.13.3 and Ubuntu Linux 18.04 for most of my development.
+
+### Hardware
+
+The library has been extensively tested on the following boards:
 
 * Arduino Nano clone (16 MHz ATmega328P)
 * Arduino UNO R3 clone (16 MHz ATmega328P)
 * Arduino Pro Micro clone (16 MHz ATmega32U4)
-* Teensy LC (48 MHz ARM Cortex-M0+)
-* Teensy 3.2 (72 MHz ARM Cortex-M4)
+* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
+* Teensy 3.2 (72 MHz ARM Cortex-M4)
+
+I will occasionally test on the following boards as a sanity check:
+
+* Teensy LC (48 MHz ARM Cortex-M0+)
+* Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 
 ## Background Motivation
 
