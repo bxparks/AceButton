@@ -38,7 +38,7 @@ This is the Doxygen documentation for the
 #include "ace_button/AceButton.h"
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_BUTTON_VERSION 10304
-#define ACE_BUTTON_VERSION_STRING "1.3.4"
+#define ACE_BUTTON_VERSION 10305
+#define ACE_BUTTON_VERSION_STRING "1.3.5"
 
 #endif

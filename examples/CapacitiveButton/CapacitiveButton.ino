@@ -7,8 +7,8 @@
  * Prompted by questions from Gaston Loos.
  *
  * ESP8266 and ESP32 requires the development version of
- * https://github.com/PaulStoffregen/CapacitiveSensor, not the released version
- * (as of 2019-08-11).
+ * https://github.com/PaulStoffregen/CapacitiveSensor (directly from GitHub)
+ * because the fixes for those boards have not been released as of 2019-08-11.
  *
  * Brian T. Park 2018
  */
@@ -18,9 +18,9 @@
 using namespace ace_button;
 
 /**
- * A subclass of ButtonConfig that emulates a mechanical switch connected to a
- * pull-up resistor on the input pin. A "touch" sends a LOW signal, just like a
- * mechnical switch.
+ * A subclass of ButtonConfig that allows a CapacitiveSensor to emulate a
+ * mechanical switch connected to a pull-up resistor on the input pin. A "touch"
+ * sends a LOW signal, just like a mechnical switch.
  */
 class CapacitiveConfig: public ButtonConfig {
   public:
