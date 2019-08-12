@@ -2,7 +2,7 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.3.4 (2019-07-06)
+Version: 1.3.5 (2019-08-11)
 
 [![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
 
@@ -173,9 +173,9 @@ The source files are organized as follows:
 
 ### Docs
 
-Besides this README.md file, the [docs/](docs/) directory contains the
-[Doxygen docs published on GitHub Pages](https://bxparks.github.io/AceButton/html/).
-It can help you navigate an unfamiliar code base.
+Besides this README.md file, the [docs/](docs/) directory contains the [Doxygen
+docs](https://bxparks.github.io/AceButton/html/) published on GitHub Pages. It
+can help you navigate an unfamiliar code base.
 
 ### Examples
 

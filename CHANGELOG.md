@@ -1,6 +1,12 @@
 # Changelog
 
 * Unreleased
+* 1.3.5 (2019-08-11)
+    * Verify library works on SAMD21 (Arduino Zero compatible) boards.
+    * Reenable examples/CapacitiveButton on ESP8266 and ESP32.
+      Looks like the development branch of the
+      [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
+      library added support for ESP32 in Dec 2018 but has not been released.
 * 1.3.4 (2019-07-06)
     * Update compile-time checks for `HIGH` and `LOW` for compatibility with
       new megaAVR (e.g. Nano Every) boards which use enums instead of `#define`
