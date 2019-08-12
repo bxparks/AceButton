@@ -7,6 +7,10 @@
 #include "ProfilingButtonConfig.h"
 using namespace ace_button;
 
+#if defined(ESP32) && !defined(SERIAL_PORT_MONITOR)
+#define SERIAL_PORT_MONITOR Serial
+#endif
+
 // The pin number attached to the button.
 const int BUTTON_PIN = 2;
 
@@ -16,7 +20,6 @@ ProfilingButtonConfig buttonConfig;
 AceButton button(&buttonConfig);
 
 const unsigned long STATS_PRINT_INTERVAL = 2000;
-unsigned long lastStatsPrintedTime;
 TimingStats stats;
 
 const uint8_t LOOP_MODE_START = 0;
@@ -33,9 +36,16 @@ void handleEvent(AceButton*, uint8_t, uint8_t);
 
 void setup() {
   delay(1000); // some microcontrollers reboot twice
-  Serial.begin(115200);
-  while (!Serial); // for Leonardo/Micro
-  Serial.println(F("setup(): begin"));
+  SERIAL_PORT_MONITOR.begin(115200);
+  while (!SERIAL_PORT_MONITOR); // wait until ready - Leonardo/Micro
+  SERIAL_PORT_MONITOR.println(F("setup(): begin"));
+
+  // Print sizeof various classes
+  SERIAL_PORT_MONITOR.print(F("sizeof(AceButton): "));
+  SERIAL_PORT_MONITOR.println(sizeof(AceButton));
+
+  SERIAL_PORT_MONITOR.print(F("sizeof(ButtonConfig): "));
+  SERIAL_PORT_MONITOR.println(sizeof(ButtonConfig));
 
   // Button uses the built-in pull up register.
   pinMode(BUTTON_PIN, INPUT_PULLUP);
@@ -51,11 +61,10 @@ void setup() {
   buttonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
   buttonConfig.setTimingStats(&stats);
 
-  lastStatsPrintedTime = millis();
   loopMode = LOOP_MODE_START;
   loopEventType = AceButton::kEventPressed;
 
-  Serial.println(F("setup(): end"));
+  SERIAL_PORT_MONITOR.println(F("setup(): end"));
 }
 
 void loop() {
@@ -92,15 +101,19 @@ void loopStart() {
 
   // Wait one iteration for things to cool down.
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    Serial.println(F("------------------------+-------------+---------+"));
-    Serial.println(F("button event            | min/avg/max | samples |"));
-    Serial.println(F("------------------------+-------------+---------+"));
+    SERIAL_PORT_MONITOR.println(
+        F("------------------------+-------------+---------+"));
+    SERIAL_PORT_MONITOR.println(
+        F("button event            | min/avg/max | samples |"));
+    SERIAL_PORT_MONITOR.println(
+        F("------------------------+-------------+---------+"));
     nextMode();
   }
 }
 
 void loopEnd() {
-  Serial.println(F("------------------------+-------------+---------+"));
+  SERIAL_PORT_MONITOR.println(
+      F("------------------------+-------------+---------+"));
   nextMode();
 }
 
@@ -108,9 +121,9 @@ void loopIdle() {
   static unsigned long start = millis();
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    Serial.print(F("idle                    | "));
+    SERIAL_PORT_MONITOR.print(F("idle                    | "));
     printStats();
-    Serial.println(F("    |"));
+    SERIAL_PORT_MONITOR.println(F("    |"));
     nextMode();
   }
 }
@@ -125,9 +138,9 @@ void loopPressRelease() {
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
     if (loopEventType == AceButton::kEventReleased) {
-      Serial.print(F("press/release           | "));
+      SERIAL_PORT_MONITOR.print(F("press/release           | "));
       printStats();
-      Serial.println(F("    |"));
+      SERIAL_PORT_MONITOR.println(F("    |"));
     }
     nextMode();
   }
@@ -143,9 +156,9 @@ void loopClick() {
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
     if (loopEventType == AceButton::kEventClicked) {
-      Serial.print(F("click                   | "));
+      SERIAL_PORT_MONITOR.print(F("click                   | "));
       printStats();
-      Serial.println(F("    |"));
+      SERIAL_PORT_MONITOR.println(F("    |"));
     }
     nextMode();
   }
@@ -163,9 +176,9 @@ void loopDoubleClick() {
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
     if (loopEventType == AceButton::kEventDoubleClicked) {
-      Serial.print(F("double click            | "));
+      SERIAL_PORT_MONITOR.print(F("double click            | "));
       printStats();
-      Serial.println(F("    |"));
+      SERIAL_PORT_MONITOR.println(F("    |"));
     }
     nextMode();
   }
@@ -180,9 +193,9 @@ void loopLongPress() {
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
     if (loopEventType == AceButton::kEventRepeatPressed) {
-      Serial.print(F("long press/repeat press | "));
+      SERIAL_PORT_MONITOR.print(F("long press/repeat press | "));
       printStats();
-      Serial.println(F("    |"));
+      SERIAL_PORT_MONITOR.println(F("    |"));
     }
     nextMode();
   }
@@ -196,19 +209,19 @@ void nextMode() {
 
 void printStats() {
   printInt(stats.getMin());
-  Serial.print('/');
+  SERIAL_PORT_MONITOR.print('/');
   printInt(stats.getAvg());
-  Serial.print('/');
+  SERIAL_PORT_MONITOR.print('/');
   printInt(stats.getMax());
-  Serial.print(F(" | "));
+  SERIAL_PORT_MONITOR.print(F(" | "));
   printInt(stats.getCount());
 }
 
 // print integer within 3 characters, padded on left with spaces
 void printInt(uint16_t i) {
-  if (i < 100) Serial.print(' ');
-  if (i < 10) Serial.print(' ');
-  Serial.print(i);
+  if (i < 100) SERIAL_PORT_MONITOR.print(' ');
+  if (i < 10) SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(i);
 }
 
 // An empty event handler.

@@ -6,12 +6,12 @@
  *
  * Prompted by questions from Gaston Loos.
  *
+ * ESP8266 and ESP32 requires the development version of
+ * https://github.com/PaulStoffregen/CapacitiveSensor, not the released version
+ * (as of 2019-08-11).
+ *
  * Brian T. Park 2018
  */
-
-#if defined(ESP32) || defined(ESP8266)
-  #error ESP32 or ESP8266 not supported
-#endif
 
 #include <CapacitiveSensor.h>
 #include <AceButton.h>

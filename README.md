@@ -69,16 +69,16 @@ Here are the high-level features of the AceButton library:
     * `digitalRead()` button read function can be overridden
     * `millis()` clock function can be overridden
 * small memory footprint
-    * each `AceButton` consumes 14 bytes
-    * each `ButtonConfig` consumes 20 bytes
+    * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
+    * each `ButtonConfig` consumes 20 bytes (8-bit) or 28 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
 * only 13-15 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
 * can be instrumented to extract profiling numbers
-* tested on Arduino AVR (UNO, Nano, etc), Teensy ARM (LC
-  and 3.2), ESP8266 and ESP32 platforms
+* tested on Arduino AVR (UNO, Nano, Micro etc), Teensy ARM (LC
+  and 3.2), SAMD21 (Arduino Zero compatible), ESP8266 and ESP32
 
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
@@ -99,10 +99,12 @@ memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
 you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
-That said, the [examples/AutoBenchmark](examples/AutoBenchmark) program
-shows that `AceButton::check()` takes between 13-15 microseconds on a 16MHz
-ATmega328P chip on average. Hopefully that is fast enough for the vast
-majority of people.
+That said, [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) shows that the
+library consumes about 1100 bytes of flash memory, and
+[AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
+between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
+ESP32. Hopefully that is small enough and fast enough for the vast majority of
+people.
 
 ### HelloButton
 
@@ -132,8 +134,8 @@ void loop() {
   button.check();
 }
 
-void handleEvent(AceButton* /* button */, uint8_t eventType,
-    uint8_t /* buttonState */) {
+void handleEvent(AceButton* /*button*/, uint8_t eventType,
+    uint8_t /*buttonState*/) {
   switch (eventType) {
     case AceButton::kEventPressed:
       digitalWrite(LED_BUILTIN, LED_ON);
@@ -499,8 +501,8 @@ is only necessary to save that information once, in the `ButtonConfig` object.
 **Pro Tip**: Comment out the unused parameter(s) in the `handleEvent()` method
 to avoid the `unused parameter` compiler warning:
 ```C++
-void handleEvent(AceButton* /* button */, uint8_t eventType,
-    uint8_t /* buttonState */) {
+void handleEvent(AceButton* /*button*/, uint8_t eventType,
+    uint8_t /*buttonState*/) {
   ...
 }
 ```
@@ -515,7 +517,7 @@ void handleEvent(AceButton*, uint8_t, uint8_t);
 
 The `EventHandler` function receives 3 parameters from the `AceButton`:
 
-* `aceButton`
+* `button`
     * pointer to the `AceButton` instance that generated this event
     * can be used to retrieve the `getPin()` or the `getId()`
 * `eventType`
@@ -524,25 +526,25 @@ The `EventHandler` function receives 3 parameters from the `AceButton`:
 * `buttonState`
     * the `HIGH` or `LOW` button state that generated this event
 
-The `aceButton` pointer should be used only to extract information about the
+The `button` pointer should be used only to extract information about the
 button that triggered the event. It should **not** be used to modify the
 button's internal variables in any way within the eventHandler. The logic in
 `AceButton::check()` assumes that those internal variable are held constant,
 and if they are changed by the eventHandler, unpredictable results may occur.
-(I was tempted to make the `aceButton` a pointer to a `const AceButton`
-but this cause too many viral changes to the code which seemed to increase
-the complexity without too much benefit.)
+(I should have made the `button` be a `const AceButton*` but by the time I
+realized this, there were too many users of the library already, and I did not
+want to make a breaking change to the API.)
 
 If you are using only a single button, then you should need to check
 only the `eventType`.
 
 It is not expected that `buttonState` will be needed very often. It should be
-sufficient to examine just the `eventType` to determine the action that needs
-to be performed. Part of the difficulty with this parameter is that it has the
-value of `LOW` or `HIGH`, but the physical interpretation of those values depends
-on whether the button was wired with a pull-up or pull-down resistor. The helper
-function `AceButton::isReleased(uint8_t buttonState)` is provided to make this
-determination if you need it.
+sufficient to examine just the `eventType` to determine the action that needs to
+be performed. Part of the difficulty with this parameter is that it has the
+value of `LOW` or `HIGH`, but the physical interpretation of those values
+depends on whether the button was wired with a pull-up or pull-down resistor.
+Use the helper function `button->isReleased(buttonState)` to translate the raw
+`buttonState` into a more meaningful determination if you need it.
 
 #### One EventHandler
 
@@ -789,7 +791,7 @@ event.
 
 The disadvantage of this method is that the Clicked event must be be ignored
 (because of the spurious Clicked event generated by the DoubleClicked). If the
-user accidentally presses and releases the button to quickly, it generates a
+user accidentally presses and releases the button too quickly, it generates a
 Clicked event, which will cause the program to do nothing.
 
 The `ButtonConfig` configuration looks like this:
@@ -932,6 +934,11 @@ Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 * sizeof(AceButton): 14
 * sizeof(ButtonConfig): 20
 
+and 32-bit microcontrollers:
+
+* sizeof(AceButton): 16
+* sizeof(ButtonConfig): 28
+
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
 to 14.)
@@ -953,30 +960,49 @@ The profiling numbers for `AceButton::check()` can be found in
 
 In summary, the average numbers for various boards are:
 * Arduino Nano: 13-15 microsesconds
-* Teensy 3.2: 3 microseconds
+* SAMD21: 7-8 microseconds
 * ESP8266: 8-9 microseconds
 * ESP32: 2-3 microseconds
+* Teensy 3.2: 3 microseconds
 
 ## System Requirements
 
+### Tool Chain
+
 This library was developed and tested using:
+
 * [Arduino IDE 1.8.9](https://www.arduino.cc/en/Main/Software)
-* [AVR Core 1.6.23](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino AVR Boards 1.6.23](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino SAMD Boards 1.8.3](https://github.com/arduino/ArduinoCore-samd)
+* [SparkFun AVR Boards 1.1.12](https://github.com/sparkfun/Arduino_Boards)
+* [SparkFun SAMD Boards 1.6.2](https://github.com/sparkfun/Arduino_Boards)
 * [ESP8266 Arduino Core 2.5.2](https://github.com/esp8266/Arduino)
 * [ESP32 Arduino Core 1.0.2](https://github.com/espressif/arduino-esp32)
 * [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
 
-I used MacOS 10.13.3 and Ubuntu Linux 17.10 for most of my development.
+It should work with [PlatformIO](https://platformio.org/) but I have
+not tested it.
 
-The library has been verified to work on the following hardware:
+### Operating System
+
+I used MacOS 10.13.3 and Ubuntu Linux 18.04 for most of my development.
+
+### Hardware
+
+The library has been extensively tested on the following boards:
 
 * Arduino Nano clone (16 MHz ATmega328P)
 * Arduino UNO R3 clone (16 MHz ATmega328P)
 * Arduino Pro Micro clone (16 MHz ATmega32U4)
-* Teensy LC (48 MHz ARM Cortex-M0+)
-* Teensy 3.2 (72 MHz ARM Cortex-M4)
+* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
+* Teensy 3.2 (72 MHz ARM Cortex-M4)
+
+I will occasionally test on the following boards as a sanity check:
+
+* Teensy LC (48 MHz ARM Cortex-M0+)
+* Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 
 ## Background Motivation
 
