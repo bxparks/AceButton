@@ -265,7 +265,7 @@ to the pin (i.e. when the button is not pressed).
 
 The `INPUT_PULLUP` mode is a special `INPUT` mode which tells the
 microcontroller to connect an internal pull-up resistor to the pin. It is
-activated by calling `pintMode(pin, INPUT_PULLUP)` on the given `pin`. This mode
+activated by calling `pinMode(pin, INPUT_PULLUP)` on the given `pin`. This mode
 is very convenient because it eliminates the external resistor, making the
 wiring simpler.
 
@@ -560,7 +560,7 @@ event handler:
 ```C++
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   switch (eventType) {
-    case AceButton:kEventPressed:
+    case AceButton::kEventPressed:
       handleEventPressed(button, eventType, buttonState);
       break;
     case AceButton::kEventReleased:
