@@ -879,8 +879,94 @@ assigned to the System ButtonConfig. All subsequent instances of `AceButton`
 will also be associated with this event handler, unless another `ButtonConfig`
 is explicitly assigned.
 
-See the example sketch `TunerButtons.ino` to see how to use multiple
-`ButtonConfig` instances with multiple `AceButton` instances.
+There are at least 2 ways you can configure multiple buttons.
+
+**Option 1: Multiple ButtonConfigs**
+
+```C++
+#include <AceButton.h>
+using namespace ace_button;
+
+ButtonConfig config1;
+AceButton button1(&config1);
+ButtonConfig config2;
+AceButton button2(&config2);
+
+void button1Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.println("button1");
+}
+
+void button2Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.println("button2");
+}
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(6, INPUT_PULLUP);
+  pinMode(7, INPUT_PULLUP);
+  config1.setEventHandler(button1Handler);
+  config2.setEventHandler(button2Handler);
+  button1.init(6);
+  button2.init(7);
+}
+
+void loop() {
+  button1.check();
+  button2.check();
+}
+```
+
+See the example sketch [TunerButtons.ino](examples/TunerButtons) to see how
+multiple `ButtonConfig` instances are used with multiple `AceButton` instances.
+
+**Option 2: Multiple Button Discriminators**
+
+Another technique keeps the single system `ButtonConfig` and the single
+`EventHandler`, but use the `AceButton::getPin()` to discriminate between the
+multiple buttons:
+
+```C++
+#include <AceButton.h>
+using namespace ace_button;
+
+AceButton button1(6);
+AceButton button2(7);
+
+void button1Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.println("button1");
+}
+
+void button2Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.println("button2");
+}
+
+void buttonHandler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  switch (button->getPin()) {
+    case 6:
+      button1Handler(button, eventType, buttonState);
+      break;
+    case 7:
+      button2Handler(button, eventType, buttonState);
+      break;
+  }
+}
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(6, INPUT_PULLUP);
+  pinMode(7, INPUT_PULLUP);
+  ButtonConfig* config = ButtonConfig::getSystemButtonConfig();
+  config->setEventHandler(buttonHandler);
+}
+
+void loop() {
+  button1.check();
+  button2.check();
+}
+```
+
+You can also use this technique with `AceButton::getId()` method,
+as demonstrated in the [ArrayButtons.ino](examples/ArrayButtons) sketch.
 
 ### Events After Reboot
 
