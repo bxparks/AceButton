@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+    * Add better explanation and examples of multiple buttons to the README.md.
 * 1.3.5 (2019-08-11)
     * Verify library works on SAMD21 (Arduino Zero compatible) boards.
     * Reenable examples/CapacitiveButton on ESP8266 and ESP32.
