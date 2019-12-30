@@ -355,25 +355,25 @@ button (`AceButton`) from its configuration (`ButtonConfig`).
   ability to override the default methods for reading the pin (`readButton()`)
   and the clock (`getClock()`). This ability allows unit tests to be written.
 
-The `ButtonConfig` can be created and assigned to one or more `AceButton`
-instances using dependency injection through the `AceButton(ButtonConfig*)`
-constructor. If this constructor is used, then the `AceButton::init()` method
-must be used to set the pin number of the button. For example:
+The `ButtonConfig` (or a customized subclass) can be created and assigned to one
+or more `AceButton` instances using dependency injection through the
+`AceButton(ButtonConfig*)` constructor. This constructor also accepts the same
+`(pin, defaultReleasedState, id)` parameters as `init(pin, defaultReleasedState,
+id)` method. Sometimes it's easier to set all the parameters in one place using
+the constructor. Other times, the parameters are not known until the
+`AceButton::init()` method can be called from the global `setup()` method.
 
 ```C++
 const uint8_t PIN1 = 2;
 const uint8_t PIN2 = 4;
 
 ButtonConfig buttonConfig;
-AceButton button1(&buttonConfig);
-AceButton button2(&buttonConfig);
+AceButton button1(&buttonConfig, PIN1);
+AceButton button2(&buttonConfig, PIN2);
 
 void setup() {
   pinMode(PIN1, INPUT_PULLUP);
-  button1.init(PIN1);
-
   pinMode(PIN2, INPUT_PULLUP);
-  button2.init(PIN2);
   ...
 }
 ```
