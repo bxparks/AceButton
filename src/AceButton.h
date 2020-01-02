@@ -35,6 +35,8 @@ This is the Doxygen documentation for the
 #include "ace_button/TimingStats.h"
 #include "ace_button/ButtonConfig.h"
 #include "ace_button/AdjustableButtonConfig.h"
+#include "ace_button/Encoded8To3ButtonConfig.h"
+#include "ace_button/Encoded4To2ButtonConfig.h"
 #include "ace_button/AceButton.h"
 
 // Version format: xxyyzz == "xx.yy.zz"
