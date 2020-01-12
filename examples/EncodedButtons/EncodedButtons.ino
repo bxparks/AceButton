@@ -7,7 +7,7 @@
 using namespace ace_button;
 
 // Select 3 to use Encoded4To2ButtonConfig or 7 to use Encoded8To3ButtonConfig.
-#define NUM_BUTTONS 3
+#define NUM_BUTTONS 7
 
 #ifdef ESP32
   // Different ESP32 boards use different pins

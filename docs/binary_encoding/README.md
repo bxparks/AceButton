@@ -40,7 +40,7 @@ hardware.
 This is the simplest example of binary encoding. Using 2 pins, we can support 3
 buttons with 2 diodes. Here is the circuit diagram:
 
-![4-to-2 Encoded Buttons](encoded_4to2_buttons.png)
+![4-to-2 Encoded Buttons](encoded_4to2_diodes.png)
 
 Of the 4 possible states of 2 pins, the `00` state corresponding to S0 is used
 to indicate "no button pressed". Therefore, we can support 3 buttons
@@ -122,7 +122,11 @@ If we use 3 pins, we can support 7 buttons (8 possible states of 3 pins, with
 one state representing "no button" pressed). The binary encoding can be achieved
 using 9 diodes, as shown in the following circuit:
 
-![8-to-3 Encoded Buttons](encoded_8to3_buttons.png)
+![8-to-3 Encoding using Diodes](encoded_8to3_diodes.png)
+
+The same encoding can be implemented using the [74LS148](https://www.ti.com/product/SN74LS148) chip like this:
+
+![8-to-3 Encoding using 74LS148](encoded_8to3_74ls148.png)
 
 Of the 8 possible states of 3 pins, the `000` state corresponding to S0 is used
 to indicate "no button pressed". Therefore, we can support 7 buttons
@@ -271,12 +275,9 @@ work.
 
 ## Example Program
 
-The program at [examples/EncodedButtons](../../examples/EncodedButtons)
-is a working example of the `Encoded4To2ButtonConfig` and
-`Encoded8To3ButtonConfig` classes. It was tested using 7 buttons on a
-breadboard:
-
-![7 Encoded Buttons](breadboard-8-to-3-buttons.jpg)
+See [examples/EncodedButtons](../../examples/EncodedButtons) for an example
+of how to use the the `Encoded4To2ButtonConfig` and
+`Encoded8To3ButtonConfig` classes.
 
 ## Appendix
 
