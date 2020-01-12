@@ -30,26 +30,26 @@ SOFTWARE.
 namespace ace_button {
 
 /**
- * A ButtonConfig that handles an 8-to-3 binary encoder which converts 8 inputs
- * into 3 outputs. In practice, this means that 7 buttons can be handled with 3
- * pins, because the 8th button is used to represent "no button pressed". One
- * easy way to perform the 8-to-3 encoding is to use 9 diodes with 7 switches,
- * so that each switch translates into a 3-bit binary number:
+ * A ButtonConfig that handles an 4-to-2 binary encoder which converts 4 inputs
+ * into 2 outputs. In practice, this means that 3 buttons can be handled with 2
+ * pins, because the 0th button is used to represent "no button pressed". One
+ * easy way to perform the 4-to-2 encoding is to use 2 diodes with 3 switches,
+ * so that each switch translates into a 2-bit binary number:
  *
- *  * S0 = 000 [unavailable, see below]
- *  * S1 = 001
- *  * S2 = 010
- *  * S3 = 011
+ *  * S0 = 00 = 0 [unavailable, see below]
+ *  * S1 = 01 = 1
+ *  * S2 = 10 = 2
+ *  * S3 = 11 = 3
  *
- * Button S0 cannot be used because the code 000 is used to indicate that no
+ * Button S0 cannot be used because the code 00 is used to indicate that no
  * button was pressed.
  */
 class Encoded4To2ButtonConfig : public ButtonConfig {
   public:
 
     /**
-     * @param pin0 bit0 of the binary encoder
-     * @param pin1 bit1 of the binary encoder
+     * @param pin0 the pin number representing bit0 of the binary encoder
+     * @param pin1 the pin number representing bit1 of the binary encoder
      * @param defaultReleasedState state of the encoder bit when the button
      * is in the released state. For a pull-up wiring, the state of the pin is
      * HIGH when the button is released. This value is used to configure wiring
