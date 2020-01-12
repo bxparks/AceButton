@@ -72,6 +72,8 @@ Here are the high-level features of the AceButton library:
     * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
     * each `ButtonConfig` consumes 20 bytes (8-bit) or 28 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
+* supports binary encoded buttons (3 buttons using 2 pins, 7 buttons using 3
+* pins)
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
@@ -215,6 +217,9 @@ The following example sketches are provided:
 * [ArrayButtons](examples/ArrayButtons)
     * shows how to define an array of `AceButton` and initialize them using
       the `init()` method in a loop
+* [EncodedButtons](examples/EncodedButtons)
+    * demo of `Encoded4To2ButtonConfig` and `Encoded8To3Buttonconfig` classes
+      which handle binary encoded buttons
 * [AutoBenchmark.ino](examples/AutoBenchmark)
     * generates the timing stats (min/average/max) for the `AceButton::check()`
       method for various types of events (idle, press/release, click,
@@ -1018,10 +1023,11 @@ would still need logic to take care of orphaned Clicked events.
 
 Instead of allocating one pin for each button, we can use
 [Binary Encoding](http://www.learnabout-electronics.org/Digital/dig44.php) to
-support large number of buttons with only a few pins. The circuit might look
-like this:
+support large number of buttons with only a few pins. The circuit can be
+implemented using a [74LS148](https://www.ti.com/product/SN74LS148) chip, or
+simple diodes like this:
 
-![8 To 3 Encoding](docs/binary_encoding/encoded_8to3_buttons.png)
+![8 To 3 Encoding](docs/binary_encoding/encoded_8to3_diodes.png)
 
 See [docs/binary_encoding/README.md](docs/binary_encoding/README.md) for
 information on how to use the `Encoded4To2ButtonConfig` and
