@@ -1,6 +1,6 @@
 # Binary Encoding
 
-When each button is connected to a single button, the number of pins increases
+When each button is connected to a single pin, the number of pins increases
 linearly with the number of buttons. If we have a limited number of pins,
 we can support a larger number of buttons by using an encoding scheme.
 
