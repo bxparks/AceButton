@@ -968,6 +968,8 @@ void loop() {
 You can also use this technique with `AceButton::getId()` method,
 as demonstrated in the [ArrayButtons.ino](examples/ArrayButtons) sketch.
 
+## Advanced Topics
+
 ### Events After Reboot
 
 A number of edge cases occur when the microcontroller is rebooted:
@@ -1011,6 +1013,20 @@ Note that even if the `AceButton` class uses an `unsigned long` type (a 32-bit
 integer on the Arduino), the overflow problem would still occur after `2^32`
 milliseconds (i.e. 49.7 days). To be strictly correct, the `AceButton` class
 would still need logic to take care of orphaned Clicked events.
+
+### Binary Encoding
+
+Instead of allocating one pin for each button, we can use
+[Binary Encoding](http://www.learnabout-electronics.org/Digital/dig44.php) to
+support large number of buttons with only a few pins. The circuit might look
+like this:
+
+![8 To 3 Encoding](docs/binary_encoding/encoded_8to3_buttons.png)
+
+See
+[BinaryEncoding](docs/binary_encoding/README.md) for information on
+how to use the `Encoded4To2ButtonConfig` and `Encoded8To3ButtonConfig` classes
+to handle buttons in circuits like this.
 
 ## Resource Consumption
 

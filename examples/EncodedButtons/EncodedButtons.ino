@@ -1,12 +1,12 @@
 /*
- * A demo of how 7 buttons can be detected using only 3 pins using binary
- * encoding of the 7 buttons into 3 outputs.
+ * A demo of Encoded4To2ButtonConfig to detect 3 buttons using 2 pins;
+ * and Encoded8To3ButtonConfig to detect 7 buttons using 3 pins.
  */
 
 #include <AceButton.h>
 using namespace ace_button;
 
-// Select 7 (8-to-3 encoder) or 3 buttons (4-to-2 encoder).
+// Select 3 to use Encoded4To2ButtonConfig or 7 to use Encoded8To3ButtonConfig.
 #define NUM_BUTTONS 3
 
 #ifdef ESP32
