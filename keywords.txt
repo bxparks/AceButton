@@ -9,6 +9,8 @@
 AceButton	KEYWORD1
 EventHandler	KEYWORD1
 ButtonConfig	KEYWORD1
+Encoded4To2ButtonConfig	KEYWORD1
+Encoded8To3ButtonConfig	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)

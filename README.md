@@ -2,7 +2,7 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.3.5 (2019-08-11)
+Version: 1.4 (2020-01-12)
 
 [![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
 
@@ -72,6 +72,8 @@ Here are the high-level features of the AceButton library:
     * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
     * each `ButtonConfig` consumes 20 bytes (8-bit) or 28 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
+* supports binary encoded buttons (3 buttons using 2 pins, 7 buttons using 3
+* pins)
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
@@ -215,6 +217,9 @@ The following example sketches are provided:
 * [ArrayButtons](examples/ArrayButtons)
     * shows how to define an array of `AceButton` and initialize them using
       the `init()` method in a loop
+* [EncodedButtons](examples/EncodedButtons)
+    * demo of `Encoded4To2ButtonConfig` and `Encoded8To3Buttonconfig` classes
+      which handle binary encoded buttons
 * [AutoBenchmark.ino](examples/AutoBenchmark)
     * generates the timing stats (min/average/max) for the `AceButton::check()`
       method for various types of events (idle, press/release, click,
@@ -265,7 +270,7 @@ to the pin (i.e. when the button is not pressed).
 
 The `INPUT_PULLUP` mode is a special `INPUT` mode which tells the
 microcontroller to connect an internal pull-up resistor to the pin. It is
-activated by calling `pintMode(pin, INPUT_PULLUP)` on the given `pin`. This mode
+activated by calling `pinMode(pin, INPUT_PULLUP)` on the given `pin`. This mode
 is very convenient because it eliminates the external resistor, making the
 wiring simpler.
 
@@ -355,25 +360,25 @@ button (`AceButton`) from its configuration (`ButtonConfig`).
   ability to override the default methods for reading the pin (`readButton()`)
   and the clock (`getClock()`). This ability allows unit tests to be written.
 
-The `ButtonConfig` can be created and assigned to one or more `AceButton`
-instances using dependency injection through the `AceButton(ButtonConfig*)`
-constructor. If this constructor is used, then the `AceButton::init()` method
-must be used to set the pin number of the button. For example:
+The `ButtonConfig` (or a customized subclass) can be created and assigned to one
+or more `AceButton` instances using dependency injection through the
+`AceButton(ButtonConfig*)` constructor. This constructor also accepts the same
+`(pin, defaultReleasedState, id)` parameters as `init(pin, defaultReleasedState,
+id)` method. Sometimes it's easier to set all the parameters in one place using
+the constructor. Other times, the parameters are not known until the
+`AceButton::init()` method can be called from the global `setup()` method.
 
 ```C++
 const uint8_t PIN1 = 2;
 const uint8_t PIN2 = 4;
 
 ButtonConfig buttonConfig;
-AceButton button1(&buttonConfig);
-AceButton button2(&buttonConfig);
+AceButton button1(&buttonConfig, PIN1);
+AceButton button2(&buttonConfig, PIN2);
 
 void setup() {
   pinMode(PIN1, INPUT_PULLUP);
-  button1.init(PIN1);
-
   pinMode(PIN2, INPUT_PULLUP);
-  button2.init(PIN2);
   ...
 }
 ```
@@ -560,7 +565,7 @@ event handler:
 ```C++
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   switch (eventType) {
-    case AceButton:kEventPressed:
+    case AceButton::kEventPressed:
       handleEventPressed(button, eventType, buttonState);
       break;
     case AceButton::kEventReleased:
@@ -730,6 +735,152 @@ Note, however, that the `isFeature(ButtonConfig::kFeatureSuppressAll)` currently
 means "isAnyFeature() implemented?" not "areAllFeatures() implemented?" We don't
 expect `isFeature()` to be used often (or at all) for `kFeatureSuppressAll`.
 
+### Single Button Simplifications
+
+Although the AceButton library is designed to shine for multiple buttons, you
+may want to use it to handle just one button. The library provides some features
+to make this simple case easy.
+
+1. The library automatically creates one instance of `ButtonConfig`
+   called a "System ButtonConfig". This System ButtonConfig can be retrieved
+   using the class static method `ButtonConfig::getSystemButtonConfig()`.
+1. Every instance of `AceButton` is assigned an instance of the System
+   ButtonConfig by default (which can be overridden manually).
+1. A convenience method allows the `EventHandler` for the System
+   ButtonConfig to be set easily through `AceButton` itself, instead of having
+   to get the System ButtonConfig first, then set the event handler. In other
+   words, `button.setEventHandler(handleEvent)` is a synonym for
+   `button.getButtonConfig()->setEventHandler(handleEvent)`.
+
+These simplifying features allow a single button to be configured and used like
+this:
+
+```C++
+AceButton button(BUTTON_PIN);
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  button.setEventHandler(handleEvent);
+  ...
+}
+
+void loop() {
+  button.check();
+}
+
+void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  ...
+}
+```
+
+To configure the System ButtonConfig, you may need to add something like
+this to the `setup()` section:
+
+```C++
+  button.getButtonConfig()->setFeature(ButtonConfig::kFeatureLongPress);
+```
+
+### Multiple Buttons
+
+When transitioning from a single button to multiple buttons, it's important to
+remember what's happening underneath the convenience methods. The single
+`AceButton` button is assigned to the System ButtonConfig that was created
+automatically. When an `EventHandler` is assigned to the button, it is actually
+assigned to the System ButtonConfig. All subsequent instances of `AceButton`
+will also be associated with this event handler, unless another `ButtonConfig`
+is explicitly assigned.
+
+There are at least 2 ways you can configure multiple buttons.
+
+**Option 1: Multiple ButtonConfigs**
+
+```C++
+#include <AceButton.h>
+using namespace ace_button;
+
+ButtonConfig config1;
+AceButton button1(&config1);
+ButtonConfig config2;
+AceButton button2(&config2);
+
+void button1Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.println("button1");
+}
+
+void button2Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.println("button2");
+}
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(6, INPUT_PULLUP);
+  pinMode(7, INPUT_PULLUP);
+  config1.setEventHandler(button1Handler);
+  config2.setEventHandler(button2Handler);
+  button1.init(6);
+  button2.init(7);
+}
+
+void loop() {
+  button1.check();
+  button2.check();
+}
+```
+
+See the example sketch [TunerButtons.ino](examples/TunerButtons) to see how
+multiple `ButtonConfig` instances are used with multiple `AceButton` instances.
+
+**Option 2: Multiple Button Discriminators**
+
+Another technique keeps the single system `ButtonConfig` and the single
+`EventHandler`, but use the `AceButton::getPin()` to discriminate between the
+multiple buttons:
+
+```C++
+#include <AceButton.h>
+using namespace ace_button;
+
+AceButton button1(6);
+AceButton button2(7);
+
+void button1Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.println("button1");
+}
+
+void button2Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.println("button2");
+}
+
+void buttonHandler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  switch (button->getPin()) {
+    case 6:
+      button1Handler(button, eventType, buttonState);
+      break;
+    case 7:
+      button2Handler(button, eventType, buttonState);
+      break;
+  }
+}
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(6, INPUT_PULLUP);
+  pinMode(7, INPUT_PULLUP);
+  ButtonConfig* config = ButtonConfig::getSystemButtonConfig();
+  config->setEventHandler(buttonHandler);
+}
+
+void loop() {
+  button1.check();
+  button2.check();
+}
+```
+
+You can also use this technique with `AceButton::getId()` method,
+as demonstrated in the [ArrayButtons.ino](examples/ArrayButtons) sketch.
+
+## Advanced Topics
+
 ### Distinguishing Between a Clicked and DoubleClicked
 
 On a project using only a small number of buttons (due to physical limits or the
@@ -824,64 +975,6 @@ buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
 See the example code at
 `examples/ClickVersusDoubleClickUsingBoth/`.
 
-### Single Button Simplifications
-
-Although the AceButton library is designed to shine for multiple buttons, you
-may want to use it to handle just one button. The library provides some features
-to make this simple case easy.
-
-1. The library automatically creates one instance of `ButtonConfig`
-   called a "System ButtonConfig". This System ButtonConfig can be retrieved
-   using the class static method `ButtonConfig::getSystemButtonConfig()`.
-1. Every instance of `AceButton` is assigned an instance of the System
-   ButtonConfig by default (which can be overridden manually).
-1. A convenience method allows the `EventHandler` for the System
-   ButtonConfig to be set easily through `AceButton` itself, instead of having
-   to get the System ButtonConfig first, then set the event handler. In other
-   words, `button.setEventHandler(handleEvent)` is a synonym for
-   `button.getButtonConfig()->setEventHandler(handleEvent)`.
-
-These simplifying features allow a single button to be configured and used like
-this:
-
-```C++
-AceButton button(BUTTON_PIN);
-
-void setup() {
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
-  button.setEventHandler(handleEvent);
-  ...
-}
-
-void loop() {
-  button.check();
-}
-
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
-  ...
-}
-```
-
-To configure the System ButtonConfig, you may need to add something like
-this to the `setup()` section:
-
-```C++
-  button.getButtonConfig()->setFeature(ButtonConfig::kFeatureLongPress);
-```
-
-### Multiple Buttons
-
-When transitioning from a single button to multiple buttons, it's important to
-remember what's happening underneath the convenience methods. The single
-`AceButton` button is assigned to the System ButtonConfig that was created
-automatically. When an `EventHandler` is assigned to the button, it is actually
-assigned to the System ButtonConfig. All subsequent instances of `AceButton`
-will also be associated with this event handler, unless another `ButtonConfig`
-is explicitly assigned.
-
-See the example sketch `TunerButtons.ino` to see how to use multiple
-`ButtonConfig` instances with multiple `AceButton` instances.
-
 ### Events After Reboot
 
 A number of edge cases occur when the microcontroller is rebooted:
@@ -925,6 +1018,20 @@ Note that even if the `AceButton` class uses an `unsigned long` type (a 32-bit
 integer on the Arduino), the overflow problem would still occur after `2^32`
 milliseconds (i.e. 49.7 days). To be strictly correct, the `AceButton` class
 would still need logic to take care of orphaned Clicked events.
+
+### Binary Encoding
+
+Instead of allocating one pin for each button, we can use
+[Binary Encoding](http://www.learnabout-electronics.org/Digital/dig44.php) to
+support large number of buttons with only a few pins. The circuit can be
+implemented using a [74LS148](https://www.ti.com/product/SN74LS148) chip, or
+simple diodes like this:
+
+![8 To 3 Encoding](docs/binary_encoding/encoded_8to3_diodes.png)
+
+See [docs/binary_encoding/README.md](docs/binary_encoding/README.md) for
+information on how to use the `Encoded4To2ButtonConfig` and
+`Encoded8To3ButtonConfig` classes to handle buttons in circuits like this.
 
 ## Resource Consumption
 

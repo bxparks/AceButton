@@ -127,11 +127,16 @@ class AceButton {
         uint8_t id = 0);
 
     /**
-     * Constructor that accepts a ButtonConfig as a dependency. Dependency
-     * injection using this constructor is now recommended over using the
-     * setButtonConfig() method because it makes the dependency more clear.
+     * Constructor that accepts a ButtonConfig as a dependency. The
+     * pin, defaultReleasedState, and id parameters have default values,
+     * so do not need to be explicitly set. Dependency injection of ButtonConfig
+     * using this constructor is now recommended over using the
+     * setButtonConfig() method because it makes the dependency more clear. If
+     * this constructor is used to set the pin, defaultReleasedState, and id,
+     * then the init() method does not need to be called in the setup().
      */
-    explicit AceButton(ButtonConfig* buttonConfig);
+    explicit AceButton(ButtonConfig* buttonConfig, uint8_t pin = 0,
+        uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 
     /**
      * Reset the button to the initial constructed state. In particular,
@@ -140,6 +145,15 @@ class AceButton {
      */
     void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
         uint8_t id = 0);
+
+    /**
+     * Similar to init(uint8_t, uint8_t, uint8_t) but takes a (ButtonConfig*) as
+     * the first parameter. Sometimes it is more convenient to initialize the
+     * button in the global setup() function using this method instead of using
+     * the constructor.
+     */
+    void init(ButtonConfig* buttonConfig, uint8_t pin = 0,
+        uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 
     /** Get the ButtonConfig associated with this Button. */
     ButtonConfig* getButtonConfig() {
@@ -475,6 +489,9 @@ class AceButton {
      */
     void handleEvent(uint8_t eventType);
 
+    /** ButtonConfig associated with this button. */
+    ButtonConfig* mButtonConfig;
+
     /** button pin number */
     uint8_t mPin;
 
@@ -489,9 +506,6 @@ class AceButton {
      * kButtonStateUnknown.
      */
     uint8_t mLastButtonState;
-
-    /** ButtonConfig associated with this button. */
-    ButtonConfig* mButtonConfig;
 
     // Internal states of the button debouncing and event handling.
     // NOTE: We don't keep track of the lastDoubleClickTime, because we
