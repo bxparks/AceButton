@@ -63,7 +63,7 @@ void EncodedButtonConfig::checkButtons() const {
 
 uint8_t EncodedButtonConfig::getVirtualPin() const {
   uint8_t virtualPin = 0;
-  for (uint8_t i = 0; i < mPins; i++) {
+  for (uint8_t i = 0; i < mNumPins; i++) {
     uint8_t pin = mPins[i];
     int s = digitalRead(pin);
     virtualPin |= (s == mPressedState) << i;

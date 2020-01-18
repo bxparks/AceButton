@@ -105,17 +105,18 @@ class EncodedButtonConfig : public ButtonConfig {
      */
     void checkButtons() const;
 
-  private:
-    // Disable copy-constructor and assignment operator
-    EncodedButtonConfig(const EncodedButtonConfig&) = delete;
-    EncodedButtonConfig& operator=(const EncodedButtonConfig&) = delete;
-
+  protected:
     /**
      * Return the virtual pin number corresponding to the combinatorial states
      * of the actual pins. Returns a number between 1 and (2^{numPins} - 1). 0
      * means "no button" pressed.
      */
-    uint8_t getVirtualPin() const;
+    virtual uint8_t getVirtualPin() const;
+
+  private:
+    // Disable copy-constructor and assignment operator
+    EncodedButtonConfig(const EncodedButtonConfig&) = delete;
+    EncodedButtonConfig& operator=(const EncodedButtonConfig&) = delete;
 
   private:
     uint8_t const mNumPins;
