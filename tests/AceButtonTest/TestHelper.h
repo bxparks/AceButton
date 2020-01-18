@@ -26,8 +26,8 @@ SOFTWARE.
 #define ACE_BUTTON_TEST_HELPER_H
 
 #include <AceButton.h>
-#include "TestableButtonConfig.h"
-#include "EventTracker.h"
+#include <ace_button/testing/TestableButtonConfig.h>
+#include <ace_button/testing/EventTracker.h>
 
 namespace ace_button {
 namespace testing {

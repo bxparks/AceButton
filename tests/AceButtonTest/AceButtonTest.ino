@@ -59,7 +59,7 @@ SOFTWARE.
 #include <AceButton.h>
 #include <ace_button/testing/TestableButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
-#include <ace_button/testing/TestHelper.h>
+#include "TestHelper.h"
 
 using namespace ace_button;
 using namespace ace_button::testing;
