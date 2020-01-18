@@ -119,6 +119,18 @@ void AceButton::check() {
   }
 }
 
+void AceButton::checkState(uint8_t buttonState) {
+  uint16_t now = mButtonConfig->getClock();
+
+  // debounce the button
+  if (checkDebounced(now, buttonState)) {
+    // check if the button was initialized (i.e. UNKNOWN state)
+    if (checkInitialized(buttonState)) {
+      checkEvent(now, buttonState);
+    }
+  }
+}
+
 void AceButton::checkEvent(uint16_t now, uint8_t buttonState) {
   // We need to remove orphaned clicks even if just Click is enabled. It is not
   // sufficient to do this for just DoubleClick. That's because it's possible
