@@ -1,6 +1,7 @@
 /*
  * A demo of EncodedButtonConfig which can support (almost) arbitrary number of
- * buttons.
+ * buttons. This particular example shows how to handle 15 buttons using 4 GPIO
+ * pins.
  */
 
 #include <AceButton.h>
