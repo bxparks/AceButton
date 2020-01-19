@@ -72,12 +72,13 @@ Here are the high-level features of the AceButton library:
     * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
     * each `ButtonConfig` consumes 20 bytes (8-bit) or 28 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
-* supports binary encoded buttons (3 buttons using 2 pins, 7 buttons using 3
-* pins)
+* supports [binary encoded buttons](docs/binary_encoding/README.md)
+  (e.g. 3 buttons using 2 pins; 7 buttons using 3 pins)
 * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
 * properly handles reboots while the button is pressed
 * properly handles orphaned clicks, to prevent spurious double-clicks
-* only 13-15 microseconds (on 16MHz ATmega328P) per polling call to `AceButton::check()`
+* only 13-15 microseconds (on 16MHz ATmega328P) per polling call to
+  `AceButton::check()`
 * can be instrumented to extract profiling numbers
 * tested on Arduino AVR (UNO, Nano, Micro etc), Teensy ARM (LC
   and 3.2), SAMD21 (Arduino Zero compatible), ESP8266 and ESP32
@@ -433,7 +434,8 @@ hardware dependencies:
 * `virtual unsigned long getClock();`
 * `virtual int readButton(uint8_t pin);`
 
-By default these are mapped to the underlying Arduino system functions respectively:
+By default these are mapped to the underlying Arduino system functions
+respectively:
 
 * `millis()`
 * `digitalRead()`
@@ -1142,7 +1144,8 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-* Versions 1.0 to 1.0.6: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+* Versions 1.0 to 1.0.6:
+  [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 * Versions 1.1 and above: [MIT License](https://opensource.org/licenses/MIT)
 
 I changed to the MIT License starting with version 1.1 because the MIT License
