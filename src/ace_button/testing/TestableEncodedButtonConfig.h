@@ -22,24 +22,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ACE_BUTTON_TESTABLE_BUTTON_CONFIG_H
-#define ACE_BUTTON_TESTABLE_BUTTON_CONFIG_H
+#ifndef ACE_BUTTON_TESTABLE_ENCODED_BUTTON_CONFIG_H
+#define ACE_BUTTON_TESTABLE_ENCODED_BUTTON_CONFIG_H
 
-#include "../ButtonConfig.h"
+#include "../EncodedButtonConfig.h"
 
 namespace ace_button {
 namespace testing {
 
 /**
- * A subclass of ButtonConfig which overrides getClock() and readButton() so
- * that their values can be controlled manually. This is intended to be used for
- * unit testing.
+ * A subclass of EncodedButtonConfig which overrides getClock() and
+ * getVirtualPin() so that their values can be controlled manually. This is
+ * intended to be used for unit testing.
  */
-class TestableButtonConfig: public ButtonConfig {
+class TestableEncodedButtonConfig: public EncodedButtonConfig {
   public:
-    TestableButtonConfig():
-        mMillis(0),
-        mButtonState(HIGH) {}
+    TestableEncodedButtonConfig(uint8_t numPins, uint8_t const pins[],
+        uint8_t numButtons, AceButton* const buttons[],
+        uint8_t defaultReleasedState = HIGH):
+      EncodedButtonConfig(numPins, pins, numButtons, buttons,
+        defaultReleasedState),
+      mMillis(0),
+      mVirtualPin(0) {}
 
     /**
      * Initialize to its pristine state. This method is needed because AUnit
@@ -48,28 +52,28 @@ class TestableButtonConfig: public ButtonConfig {
      * reinitialize this object to its pristine state just after construction.
      */
     void init() override {
-      ButtonConfig::init();
       mMillis = 0;
-      mButtonState = HIGH;
+      mVirtualPin = 0;
     }
 
     unsigned long getClock() override { return mMillis; }
 
-    int readButton(uint8_t /* pin */) override { return mButtonState; }
+    uint8_t getVirtualPin() const override { return mVirtualPin; }
 
     /** Set the time of the fake clock. */
     void setClock(unsigned long millis) { mMillis = millis; }
 
-    /** Set the state of the fake physical button. */
-    void setButtonState(int buttonState) { mButtonState = buttonState; }
+    /** Set the virtual pin number. 0 means "no button pressed". */
+    void setVirtualPin(uint8_t pin) { mVirtualPin = pin; }
 
   private:
     // Disable copy-constructor and assignment operator
-    TestableButtonConfig(const TestableButtonConfig&) = delete;
-    TestableButtonConfig& operator=(const TestableButtonConfig&) = delete;
+    TestableEncodedButtonConfig(const TestableEncodedButtonConfig&) = delete;
+    TestableEncodedButtonConfig& operator=(const TestableEncodedButtonConfig&)
+      = delete;
 
     unsigned long mMillis;
-    int mButtonState;
+    uint8_t mVirtualPin;
 };
 
 }

@@ -47,7 +47,7 @@ int EncodedButtonConfig::readButton(uint8_t pin) {
 }
 
 void EncodedButtonConfig::checkButtons() const {
-  int8_t virtualPin = getVirtualPin();
+  uint8_t virtualPin = getVirtualPin();
   for (uint8_t i = 0; i < mNumButtons; i++) {
     AceButton* button = mButtons[i];
     if (button == nullptr) continue;

@@ -67,6 +67,7 @@ class EncodedButtonConfig : public ButtonConfig {
   public:
 
     /**
+     * Constructor.
      * @param numPins number of pins used to encode the switches
      *        (corresponding to the M)
      * @param pins an array of actual pin numbers (e.g. [2, 4, 5])

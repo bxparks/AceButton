@@ -19,28 +19,28 @@ static const int LED_OFF = LOW;
 
 // Create an array of actual pins used.
 static const uint8_t NUM_PINS = 4;
-static uint8_t PINS[] = {2, 3, 4, 5};
+static const uint8_t PINS[] = {2, 3, 4, 5};
 
 // Create 15 AceButton objects.
 // Note: we could use an array of AceButton BUTTONS[15], and use a lop to
 // initialize these arrays, but this is more explicit and easier to understand
 // as an example code.
 static const uint8_t NUM_BUTTONS = 15;
-AceButton b01(1);
-AceButton b02(2);
-AceButton b03(3);
-AceButton b04(4);
-AceButton b05(5);
-AceButton b06(6);
-AceButton b07(7);
-AceButton b08(8);
-AceButton b09(9);
-AceButton b10(10);
-AceButton b11(11);
-AceButton b12(12);
-AceButton b13(13);
-AceButton b14(14);
-AceButton b15(15);
+static AceButton b01(1);
+static AceButton b02(2);
+static AceButton b03(3);
+static AceButton b04(4);
+static AceButton b05(5);
+static AceButton b06(6);
+static AceButton b07(7);
+static AceButton b08(8);
+static AceButton b09(9);
+static AceButton b10(10);
+static AceButton b11(11);
+static AceButton b12(12);
+static AceButton b13(13);
+static AceButton b14(14);
+static AceButton b15(15);
 static AceButton* const BUTTONS[] = {
     &b01, &b02, &b03, &b04, &b05, &b06, &b07,
     &b08, &b09, &b10, &b11, &b12, &b13, &b14, &b15,
@@ -48,7 +48,7 @@ static AceButton* const BUTTONS[] = {
 
 // The EncodedButtonConfig constructor binds the AceButton to the
 // EncodedButtonConfig.
-EncodedButtonConfig buttonConfig(NUM_PINS, PINS, NUM_BUTTONS, BUTTONS);
+static EncodedButtonConfig buttonConfig(NUM_PINS, PINS, NUM_BUTTONS, BUTTONS);
 
 void handleEvent(AceButton*, uint8_t, uint8_t);
 
