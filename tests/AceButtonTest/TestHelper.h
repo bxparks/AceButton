@@ -33,7 +33,7 @@ namespace ace_button {
 namespace testing {
 
 /**
- * A wrapper class that sends emulated button presses and released to the the
+ * A wrapper class that sends emulated button presses and released to the
  * underlying AceButton class, and captures the resulting events in the
  * provided EventTracker.
  */
