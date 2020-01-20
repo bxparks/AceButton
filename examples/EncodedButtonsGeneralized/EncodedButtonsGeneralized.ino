@@ -23,7 +23,7 @@ static const uint8_t NUM_PINS = 4;
 static const uint8_t PINS[] = {2, 3, 4, 5};
 
 // Create 15 AceButton objects.
-// Note: we could use an array of AceButton BUTTONS[15], and use a lop to
+// Note: we could use an array of AceButton BUTTONS[15], and use a loop to
 // initialize these arrays, but this is more explicit and easier to understand
 // as an example code.
 static const uint8_t NUM_BUTTONS = 15;

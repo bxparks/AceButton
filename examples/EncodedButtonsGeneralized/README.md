@@ -36,7 +36,9 @@ Here is the breadboard that implements this circuit:
 
 ## Sample Output
 
-The sample output looks like this (blank lines added for reaability):
+The sample output looks where each button was Pressed then Released, then was
+Pressed/Released quickly to generate a Clicked event. Blank lines were added for
+readability:
 
 ```
 handleEvent(): virtualPin: 1; eventType: 0; buttonState: 0

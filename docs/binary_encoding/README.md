@@ -27,10 +27,16 @@ that it is no longer possible to detect multiple buttons being pressed at the
 same time.
 
 I created 2 special subclasses of `ButtonConfig` to support a 4-to-2 binary
-encoding and an 8-to-3 binary encoding.
+encoding and an 8-to-3 binary encoding:
 
 * `Encoded4To2ButtonConfig`
 * `Encoded8To3ButtonConfig`
+
+and I created a more general class to handle `N >= 4` pins:
+
+* `EncodedButtonConfig`
+
+(although it could be used for `N = 2` and `N = 3`).
 
 The software does not care how the binary encoding is actually implemented in
 hardware.
@@ -218,66 +224,108 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 ```
 
-## 16-to-4 Encoding
+## M-to-N Binary Encoding Generalized
 
-With 4 pins, we could theoretically support 15 buttons. If we used diodes to
-implement this encoding, we would need 28 diodes (assuming I've counted the
-diodes correctly).
-
-An easier alternative might be to use 2 x
-[74LS148](https://www.ti.com/product/SN74LS148) chips and chain them together as
-indicated in the datasheet:
+As noted above, with `N` pins, we could theoretically support `M = 2^N - 1`
+buttons. If we used diodes to implement this encoding for `N >= 4`, we would
+quickly need an unreasonable number of diodes. For example, for `N = 4`, we
+would 28 diodes (assuming I've counted the diodes correctly). An easier
+alternative might be to use 2 x [74LS148](https://www.ti.com/product/SN74LS148)
+chips and chain them together as indicated in the datasheet:
 
 ![Dual 74LS148](encoded_16to4_74ls148.png)
 
-We would also need to create an `Encoded16To4ButtonConfig` class, which would
-be a simple extension of the `Encoded8To3ButtonConfig` class. I have not created
-this class, mostly because I am worried about the following inefficiency:
+Instead of creating an `Encoded16To4ButtonConfig` class, I created a general
+`EncodedButtonConfig` class that accepts an arbitrary number of pins and an
+arbitrary number of buttons. A naive generalization of `Encoded8To3ButtonConfig`
+class contains an inefficiency when extended to `N >= 4`. Such a class would
+call the `digitalRead()` for each of the `N` pins, then call them again for the
+`M` buttons when the `AceButton::check()` method is called. For `N = 4`, the
+`digitalRead()` function would be called `N * (2^N - 1) = 60` times.
+Unfortunately, the `digitalRead()` method on an Arduino platform is known to be
+suboptimal in terms of CPU cycles.
 
-Each `AceButton.check()` method called in the `loop()` function causes a call to
-`Encoded16To4ButtonConfig.readButton()` method, which in turn performs a
-`digitalRead()` on each of the 4 pins, like this:
+To workaround this inefficiency, we invert the dependency between the
+`EncodedButtonConfig` and the `AceButton` class. Instead of calling
+`AceButton::check()` in the global `loop()` method for each of the `M` buttons,
+we instead call the `EncodedButtonConfig::checkButtons()` method, which calls
+the `digitalRead()` function just `N` times, then reuses those values when
+calling the `AceButton::checkState()` methods for the `M` buttons. Instead of
+making `N * (2^N - 1)` calls to `digitalRead()`, we make only `N` calls.
+
+The usage looks like this:
 
 ```C++
-int readButton(uint8_t pin) override {
-  int s0 = digitalRead(mPin0);
-  int s1 = digitalRead(mPin1);
-  int s2 = digitalRead(mPin2);
-  int s3 = digitalRead(mPin2);
+#include <AceButton.h>
+using namespace ace_button;
 
-  [...]
+static const uint8_t NUM_PINS = 4;
+static const uint8_t PINS[] = {2, 3, 4, 5};
+
+static const uint8_t NUM_BUTTONS = 15;
+static AceButton b01(1);
+static AceButton b02(2);
+static AceButton b03(3);
+static AceButton b04(4);
+static AceButton b05(5);
+static AceButton b06(6);
+static AceButton b07(7);
+static AceButton b08(8);
+static AceButton b09(9);
+static AceButton b10(10);
+static AceButton b11(11);
+static AceButton b12(12);
+static AceButton b13(13);
+static AceButton b14(14);
+static AceButton b15(15);
+static AceButton* const BUTTONS[] = {
+    &b01, &b02, &b03, &b04, &b05, &b06, &b07,
+    &b08, &b09, &b10, &b11, &b12, &b13, &b14, &b15,
+};
+
+static EncodedButtonConfig buttonConfig(NUM_PINS, PINS, NUM_BUTTONS, BUTTONS);
+
+void handleEvent(AceButton*, uint8_t, uint8_t);
+
+void setup() {
+  delay(1000);
+  Serial.begin(115200);
+  while (! Serial);
+
+  for (uint8_t i = 0; i < NUM_PINS; i++) {
+    pinMode(PINS[i], INPUT_PULLUP);
+  }
+
+  buttonConfig.setEventHandler(handleEvent);
+  buttonConfig.setFeature(ButtonConfig::kFeatureClick);
+  buttonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+  buttonConfig.setFeature(ButtonConfig::kFeatureLongPress);
+  buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
 }
-```
 
-There would be 15 buttons in the `loop()` function, like this:
-```C++
 void loop() {
-  b1.check();
-  b2.check();
-  ...
-  b14.check();
-  b15.check();
+  buttonConfig.checkButtons();
+}
+
+void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  Serial.print(F("handleEvent(): "));
+  Serial.print(F("virtualPin: "));
+  Serial.print(button->getPin());
+  Serial.print(F("; eventType: "));
+  Serial.print(eventType);
+  Serial.print(F("; buttonState: "));
+  Serial.println(buttonState);
 }
 ```
 
-Therefore, in each iteration of `loop()`, the `digitalRead()` method would get
-called `15 * 4 = 60` times. The `digitalRead()` method on an Arduino platform is
-known to be suboptimal in terms of CPU cycles. I need to perform some
-benchmarking before I would be comfortable using `digitalRead()` 60 times in a
-single iteration.
+## Example Programs
 
-A possible work-around is to recognize that it is not necessary to read in the 4
-data pins repeatedly for each of the 15 buttons. It is sufficient to make the 4
-`digitalRead()` calls for the first `b1.check()` call, then cache this result
-and re-use those values for the other 14 buttons (`b2` to `b15`). However,
-implementing this optimization probably requires some non-trivial amount of
-work.
-
-## Example Program
-
-See [examples/EncodedButtons](../../examples/EncodedButtons) for an example
-of how to use the the `Encoded4To2ButtonConfig` and
-`Encoded8To3ButtonConfig` classes.
+* [examples/EncodedButtons](../../examples/EncodedButtons) shows
+  how to use the `Encoded4To2ButtonConfig` and `Encoded8To3ButtonConfig`
+  classes
+* [examples/EncodedButtonsGeneralized](../../examples/EncodedButtonsGeneralized)
+  shows how to use the `EncodedButtonConfig` class to handle `N` pins and a
+  maximum of `M = 2^N - 1` buttons
 
 ## Appendix
 
