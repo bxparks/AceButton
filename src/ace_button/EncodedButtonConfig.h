@@ -125,11 +125,12 @@ class EncodedButtonConfig : public ButtonConfig {
     EncodedButtonConfig& operator=(const EncodedButtonConfig&) = delete;
 
   private:
+    // Arranged for efficient packing on 32-bit processors
     uint8_t const mNumPins;
-    const uint8_t* const mPins;
     uint8_t const mNumButtons;
-    AceButton* const* const mButtons;
     uint8_t const mPressedState;
+    const uint8_t* const mPins;
+    AceButton* const* const mButtons;
 };
 
 }
