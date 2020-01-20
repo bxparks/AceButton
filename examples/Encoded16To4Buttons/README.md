@@ -1,20 +1,13 @@
-# Encoded Buttons Generalized
+# Binary Encoded 16-to-4 Buttons
 
-The `EncodedButtonsGeneralized.ino` is a sample code for `EncodedButtonConfig`
-which is a generalization of `Encoded4To2ButtonConfig` and
-`Encoded8To3ButtonConfig`. These classes implement the
-[BinaryEncoding](../../docs/binary_encoding/README.md) wiring.
+The `Encoded16To4Buttons.ino` is a sample code for `EncodedButtonConfig`
+(which is a generalization of `Encoded4To2ButtonConfig` and
+`Encoded8To3ButtonConfig`) to show how it can be used to handle
+15 buttons with 4 pins. These classes are described in detail in
+[BinaryEncoding](../../docs/binary_encoding/README.md).
 
-The number of buttons that can be supported by `EncodedButtonConfig` is limited
-by the amount of memory required for the instances of AceButton, but more
-realistically, by the CPU time needed to execute
-`EncodedButtonConfig.checkButtons()` which internally calls the
-`AceButton.checkState()` for all the buttons. The amount of CPU time for the
-`checkButtons()` call must be smaller than about 4-5ms to allow debouncing and
-event detection to work.
-
-This program is a demonstration of 16-to-4 encoding to support 15 buttons on a
-breadboard using
+This program demonstrates 16-to-4 encoding to support 15 buttons using 4 pins
+using:
 
 * 2 x [74LS148](https://www.ti.com/product/SN74LS148) 8-line to 3-line
   priority encoder
@@ -23,14 +16,12 @@ breadboard using
 * 1 x SparkFun Pro Micro (clone)
 * 4 x push buttons
 
-For demonstration purposes, instead of wiring up all 15 buttons, I
-enabled only pins 1, 7, 8, and 15.
-
-The schematic is:
+A partial schematic is:
 
 ![Schematic 74LS148](../../docs/binary_encoding/encoded_16to4_74ls148.png)
 
-Here is the breadboard that implements this circuit:
+Here is the breadboard that implements this circuit, but with only pins 1, 7, 8,
+and 15 for demonstration purposes:
 
 ![Breadboard 74LS148](breadboard_16to4_74ls148_small.jpg)
 

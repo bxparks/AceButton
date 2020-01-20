@@ -218,9 +218,12 @@ The following example sketches are provided:
 * [ArrayButtons](examples/ArrayButtons)
     * shows how to define an array of `AceButton` and initialize them using
       the `init()` method in a loop
-* [EncodedButtons](examples/EncodedButtons)
+* [Encoded8To3Buttons](examples/Encoded8To3Buttons)
     * demo of `Encoded4To2ButtonConfig` and `Encoded8To3Buttonconfig` classes
-      which handle binary encoded buttons
+      to decode `M=3` buttons with `N=2` pins, or `M=7` buttons with `N=3` pins
+* [Encoded16To4Buttons](examples/Encoded16To4Buttons)
+    * demo of general M-to-N `EncodedButtonConfig` class to handle `M=15`
+      buttons with `N=4` pins
 * [AutoBenchmark.ino](examples/AutoBenchmark)
     * generates the timing stats (min/average/max) for the `AceButton::check()`
       method for various types of events (idle, press/release, click,

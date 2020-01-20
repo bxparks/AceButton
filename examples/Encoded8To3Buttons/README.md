@@ -1,6 +1,6 @@
-# Encoded Buttons
+# Encoded 4To2 and 8To3 Buttons
 
-The `EncodedButtons.ino` implements the
+The `Encoded8To3Buttons.ino` implements the
 [BinaryEncoding](../../docs/binary_encoding/README.md) wiring and decodes the
 buttons using the `Encoded4To2ButtonConfig` and `Encoded8To3ButtonConfig`
 classes. It was tested using 7 buttons on a breadboard using both diodes and the

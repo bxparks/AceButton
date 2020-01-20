@@ -245,13 +245,21 @@ call the `digitalRead()` for each of the `N` pins, then call them again for the
 Unfortunately, the `digitalRead()` method on an Arduino platform is known to be
 suboptimal in terms of CPU cycles.
 
-To workaround this inefficiency, we invert the dependency between the
-`EncodedButtonConfig` and the `AceButton` class. Instead of calling
+To workaround this inefficiency, I inverted the dependency between the
+`EncodedButtonConfig` and the `AceButton` classes. Instead of calling
 `AceButton::check()` in the global `loop()` method for each of the `M` buttons,
 we instead call the `EncodedButtonConfig::checkButtons()` method, which calls
 the `digitalRead()` function just `N` times, then reuses those values when
 calling the `AceButton::checkState()` methods for the `M` buttons. Instead of
 making `N * (2^N - 1)` calls to `digitalRead()`, we make only `N` calls.
+
+The number of buttons that can be supported by `EncodedButtonConfig` is limited
+by the amount of memory required for the instances of AceButton, but more
+realistically, by the CPU time needed to execute
+`EncodedButtonConfig::checkButtons()` which internally calls the
+`AceButton::checkState()` for all the buttons. The amount of CPU time for the
+`checkButtons()` call must be smaller than about 4-5ms to allow the debouncing
+and event detection algorithms to work.
 
 The usage looks like this:
 
@@ -320,12 +328,13 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 
 ## Example Programs
 
-* [examples/EncodedButtons](../../examples/EncodedButtons) shows
+* [examples/Encoded8To3Buttons](../../examples/Encoded8To3Buttons) shows
   how to use the `Encoded4To2ButtonConfig` and `Encoded8To3ButtonConfig`
   classes
-* [examples/EncodedButtonsGeneralized](../../examples/EncodedButtonsGeneralized)
-  shows how to use the `EncodedButtonConfig` class to handle `N` pins and a
-  maximum of `M = 2^N - 1` buttons
+* [examples/Encoded16To4Buttons](../../examples/Encoded16To4Buttons)
+  shows how to apply the general `EncodedButtonConfig` class (which can handle
+  `N` pins and a maximum of `M = 2^N - 1` buttons) to handle a specific wiring
+  of `N = 4` pins and `M = 2^N - 1 = 15` buttons
 
 ## Appendix
 
