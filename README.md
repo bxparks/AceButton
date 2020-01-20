@@ -2,7 +2,7 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.4 (2020-01-12)
+Version: 1.4.1 (2020-01-20)
 
 [![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
 

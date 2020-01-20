@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 1.4.1 (2020-01-20)
     * Implement generalized `EncodedButtonConfig` which can handle
       `M=2^N-1` buttons using `N` pins using an optimization that makes
       only `N` calls to `digitalRead()` instead of `M * N` calls. Add
