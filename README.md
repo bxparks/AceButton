@@ -1034,9 +1034,15 @@ simple diodes like this:
 
 ![8 To 3 Encoding](docs/binary_encoding/encoded_8to3_diodes.png)
 
+Three subclasses of `ButtonConfig` are provided to handle binary encoded
+buttons:
+
+* `Encoded4To2ButtonConfig`: 3 buttons with 2 pins
+* `Encoded8To3ButtonConfig`: 7 buttons with 3 pins
+* `EncodedButtonConfig`: `M=2^N-1` buttons with `N` pins
+
 See [docs/binary_encoding/README.md](docs/binary_encoding/README.md) for
-information on how to use the `Encoded4To2ButtonConfig` and
-`Encoded8To3ButtonConfig` classes to handle buttons in circuits like this.
+information on how to use these classes.
 
 ## Resource Consumption
 
@@ -1045,11 +1051,17 @@ Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 
 * sizeof(AceButton): 14
 * sizeof(ButtonConfig): 20
+* sizeof(Encoded4To2ButtonConfig): 23
+* sizeof(Encoded8To3ButtonConfig): 24
+* sizeof(EncodedButtonConfig): 27
 
 and 32-bit microcontrollers:
 
 * sizeof(AceButton): 16
 * sizeof(ButtonConfig): 28
+* sizeof(Encoded4To2ButtonConfig): 32
+* sizeof(Encoded8To3ButtonConfig): 32
+* sizeof(EncodedButtonConfig): 40
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
