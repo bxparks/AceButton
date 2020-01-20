@@ -46,7 +46,8 @@ pipeline {
                     verify \
                     --sketchbook $WORKSPACE \
                     $BOARDS \
-                    libraries/AceButton/tests/AceButtonTest"
+                    libraries/AceButton/tests/AceButtonTest
+                    libraries/AceButton/tests/EncodedButtonConfigTest"
             }
         }
         stage('Test') {
@@ -57,7 +58,8 @@ pipeline {
                     --skip_missing_port \
                     --sketchbook $WORKSPACE \
                     $BOARDS \
-                    libraries/AceButton/tests/AceButtonTest"
+                    libraries/AceButton/tests/AceButtonTest
+                    libraries/AceButton/tests/EncodedButtonConfigTest"
             }
         }
     }
