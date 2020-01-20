@@ -35,7 +35,8 @@ class AceButton;
  * A ButtonConfig that handles an N-to-M binary encoder where N = 2^M. This is a
  * generalized version of Encoded4To2ButtonConfig and Encoded8To3ButtonConfig.
  *
- * Usage example:
+ * Here is an example of how to make `EncodedButtonConfig` act like an
+ * `Encoded8To3ButtonConfig`:
  *
  * @code
  * static const uint8_t PINS[] = {2, 4, 5};
@@ -49,10 +50,14 @@ class AceButton;
  *
  * static EncodedButtonConfig buttonConfig(3, PINS, 5, BUTTONS);
  *
+ * void handleEvent(AceButton*, uint8_t, uint8_t);
+ *
  * void setup() {
  *   pinMode(2, INPUT_PULLUP);
  *   pinMode(4, INPUT_PULLUP);
  *   pinMode(5, INPUT_PULLUP);
+ *
+ *   buttonConfig.setEventHandler(handleEvent);
  *   ...
  * }
  *
