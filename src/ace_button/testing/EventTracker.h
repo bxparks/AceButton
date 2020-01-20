@@ -34,26 +34,33 @@ namespace testing {
 class EventRecord {
   public:
     EventRecord():
+        mPin(0),
         mEventType(0),
         mButtonState(LOW) {}
 
-    EventRecord(uint8_t eventType, uint8_t buttonState):
+    EventRecord(uint8_t pin, uint8_t eventType, uint8_t buttonState):
+        mPin(pin),
         mEventType(eventType),
         mButtonState(buttonState) {}
 
-    uint8_t getEventType() {
+    uint8_t getPin() const {
+      return mPin;
+    }
+
+    uint8_t getEventType() const {
       return mEventType;
     }
 
-    uint8_t getButtonState() {
+    uint8_t getButtonState() const {
       return mButtonState;
     }
 
-  private:
     // Accept the default copy-constructor and assignment operator.
-    //EventRecord(const EventRecord&) = delete;
-    //EventRecord& operator=(const EventRecord&) = delete;
+    EventRecord(const EventRecord&) = default;
+    EventRecord& operator=(const EventRecord&) = default;
 
+  private:
+    uint8_t mPin;
     uint8_t mEventType;
     uint8_t mButtonState;
 };
@@ -69,9 +76,9 @@ class EventTracker {
         mNumEvents(0) {}
       
     /** Add event to a buffer of records, stopping when the buffer fills up. */
-    void addEvent(uint8_t eventType, uint8_t buttonState) {
+    void addEvent(uint8_t pin, uint8_t eventType, uint8_t buttonState) {
       if (mNumEvents < kMaxEvents) {
-        mRecords[mNumEvents] = EventRecord(eventType, buttonState);
+        mRecords[mNumEvents] = EventRecord(pin, eventType, buttonState);
         mNumEvents++;
       }
     }

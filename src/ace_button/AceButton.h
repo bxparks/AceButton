@@ -218,6 +218,12 @@ class AceButton {
     void check();
 
     /**
+     * Version of check() used by EncodedButtonConfig. NOT for public
+     * consumption.
+     */
+    void checkState(uint8_t buttonState);
+
+    /**
      * Returns true if the given buttonState represents a 'Released' state for
      * the button. Returns false if the buttonState is 'Pressed' or
      * kButtonStateUnknown.
