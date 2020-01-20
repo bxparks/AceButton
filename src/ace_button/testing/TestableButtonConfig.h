@@ -42,11 +42,10 @@ class TestableButtonConfig: public ButtonConfig {
         mButtonState(HIGH) {}
 
     /**
-     * Initialize to its pristine state. This method is needed because
-     * ArduinoUnit does not create a new instance of the Test class for each
-     * test case, so we have to reuse objects between test cases, so we need a
-     * way to reinitialize this object to its pristine state just after
-     * construction.
+     * Initialize to its pristine state. This method is needed because AUnit
+     * does not create a new instance of the Test class for each test case, so
+     * we have to reuse objects between test cases, so we need a way to
+     * reinitialize this object to its pristine state just after construction.
      */
     void init() override {
       ButtonConfig::init();
@@ -54,10 +53,8 @@ class TestableButtonConfig: public ButtonConfig {
       mButtonState = HIGH;
     }
 
-    /** Read the time of the fake clock. */
     unsigned long getClock() override { return mMillis; }
 
-    /** Read the fake physical button. */
     int readButton(uint8_t /* pin */) override { return mButtonState; }
 
     /** Set the time of the fake clock. */

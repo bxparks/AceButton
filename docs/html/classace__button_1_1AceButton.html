@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.4</span>
+   &#160;<span id="projectnumber">1.4.1</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven button library for Arduino.</div>
   </td>
@@ -116,6 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af710048a654fa5d5e45405661282a7b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1AceButton.html#af710048a654fa5d5e45405661282a7b1">check</a> ()</td></tr>
 <tr class="memdesc:af710048a654fa5d5e45405661282a7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check state of button and trigger event processing.  <a href="#af710048a654fa5d5e45405661282a7b1">More...</a><br /></td></tr>
 <tr class="separator:af710048a654fa5d5e45405661282a7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a510c8e84a6bd79157489534a117814e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1AceButton.html#a510c8e84a6bd79157489534a117814e3">checkState</a> (uint8_t buttonState)</td></tr>
+<tr class="memdesc:a510c8e84a6bd79157489534a117814e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Version of <a class="el" href="classace__button_1_1AceButton.html#af710048a654fa5d5e45405661282a7b1" title="Check state of button and trigger event processing. ">check()</a> used by <a class="el" href="classace__button_1_1EncodedButtonConfig.html" title="A ButtonConfig that handles an N-to-M binary encoder where N = 2^M. ">EncodedButtonConfig</a>.  <a href="#a510c8e84a6bd79157489534a117814e3">More...</a><br /></td></tr>
+<tr class="separator:a510c8e84a6bd79157489534a117814e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff39f5dff72b48718aed7052ab8e04af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1AceButton.html#aff39f5dff72b48718aed7052ab8e04af">isReleased</a> (uint8_t buttonState)</td></tr>
 <tr class="memdesc:aff39f5dff72b48718aed7052ab8e04af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the given buttonState represents a 'Released' state for the button.  <a href="#aff39f5dff72b48718aed7052ab8e04af">More...</a><br /></td></tr>
 <tr class="separator:aff39f5dff72b48718aed7052ab8e04af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -293,6 +296,29 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>This method should be called from the loop() method in Arduino every 4-5 times during the getDebounceDelay() time (default 20 ms), so about every 5 ms. If this is called less often than that, the debouncing algorithm may not work correctly, which may cause other event detection algorithms to fail. </p>
 
 <p class="definition">Definition at line <a class="el" href="AceButton_8cpp_source.html#l00095">95</a> of file <a class="el" href="AceButton_8cpp_source.html">AceButton.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a510c8e84a6bd79157489534a117814e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a510c8e84a6bd79157489534a117814e3">&#9670;&nbsp;</a></span>checkState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ace_button::AceButton::checkState </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>buttonState</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Version of <a class="el" href="classace__button_1_1AceButton.html#af710048a654fa5d5e45405661282a7b1" title="Check state of button and trigger event processing. ">check()</a> used by <a class="el" href="classace__button_1_1EncodedButtonConfig.html" title="A ButtonConfig that handles an N-to-M binary encoder where N = 2^M. ">EncodedButtonConfig</a>. </p>
+<p>NOT for public consumption. </p>
+
+<p class="definition">Definition at line <a class="el" href="AceButton_8cpp_source.html#l00122">122</a> of file <a class="el" href="AceButton_8cpp_source.html">AceButton.cpp</a>.</p>
 
 </div>
 </div>
@@ -545,7 +571,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Read the button state directly using <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> and return true if the button is in the Pressed state. </p>
 <p>This method is intended to be used in the global setup() to determine if the button was pressed while the device was booted. This method does not use the <a class="el" href="classace__button_1_1AceButton.html#af710048a654fa5d5e45405661282a7b1" title="Check state of button and trigger event processing. ">check()</a> method, does not perform any debouncing, and does not dispatch events to the EventHandler. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00246">246</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00252">252</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>
@@ -578,7 +604,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>The HIGH or LOW logical value of buttonState represents different a button position depending on whether the button is wired with a pull-up or a pull-down resistor. This method translates the logical level to the physical position which allows the client code to be independent of the physical wiring.</p>
 <p>Normally, the eventType given to the EventHandler should be sufficient because the value of the eventType already encodes this information. This method is provided just in case. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00235">235</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00241">241</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>

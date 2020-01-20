@@ -47,6 +47,15 @@ void setup() {
   SERIAL_PORT_MONITOR.print(F("sizeof(ButtonConfig): "));
   SERIAL_PORT_MONITOR.println(sizeof(ButtonConfig));
 
+  SERIAL_PORT_MONITOR.print(F("sizeof(Encoded4To2ButtonConfig): "));
+  SERIAL_PORT_MONITOR.println(sizeof(Encoded4To2ButtonConfig));
+
+  SERIAL_PORT_MONITOR.print(F("sizeof(Encoded8To3ButtonConfig): "));
+  SERIAL_PORT_MONITOR.println(sizeof(Encoded8To3ButtonConfig));
+
+  SERIAL_PORT_MONITOR.print(F("sizeof(EncodedButtonConfig): "));
+  SERIAL_PORT_MONITOR.println(sizeof(EncodedButtonConfig));
+
   // Button uses the built-in pull up register.
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   button.init(BUTTON_PIN);

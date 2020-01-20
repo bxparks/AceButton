@@ -1,6 +1,12 @@
 # Changelog
 
 * Unreleased
+* 1.4.1 (2020-01-20)
+    * Implement generalized `EncodedButtonConfig` which can handle
+      `M=2^N-1` buttons using `N` pins using an optimization that makes
+      only `N` calls to `digitalRead()` instead of `M * N` calls. Add
+      `examples/Encoded16To4Buttons` example; rename `examples/EncodedButtons`
+      to `examples/Encoded8To3Buttons`.
 * 1.4 (2020-01-12)
     * Add better explanation and examples of multiple buttons to the README.md.
     * Add `Encoded8To3ButtonConfig` and ` Encoded4To2ButtonConfig` classes to

@@ -18,5 +18,6 @@ var searchData=
   ['getrepeatpressdelay',['getRepeatPressDelay',['../classace__button_1_1ButtonConfig.html#ad85c75d2a2dd200552a181fb154d5fd2',1,'ace_button::ButtonConfig']]],
   ['getrepeatpressinterval',['getRepeatPressInterval',['../classace__button_1_1ButtonConfig.html#aec4a97a1a1306b9ff12f1cdf44515c43',1,'ace_button::ButtonConfig']]],
   ['getsystembuttonconfig',['getSystemButtonConfig',['../classace__button_1_1ButtonConfig.html#a585353712d2c76d91c10e67102cb614d',1,'ace_button::ButtonConfig']]],
-  ['gettimingstats',['getTimingStats',['../classace__button_1_1ButtonConfig.html#aff7101f2fe0f0c3bba67924b01e9d493',1,'ace_button::ButtonConfig']]]
+  ['gettimingstats',['getTimingStats',['../classace__button_1_1ButtonConfig.html#aff7101f2fe0f0c3bba67924b01e9d493',1,'ace_button::ButtonConfig']]],
+  ['getvirtualpin',['getVirtualPin',['../classace__button_1_1EncodedButtonConfig.html#ae92e77f9b6e8f5a18cc4f0cf17406724',1,'ace_button::EncodedButtonConfig']]]
 ];

@@ -59,10 +59,12 @@ SOFTWARE.
 #include <AceButton.h>
 #include <ace_button/testing/TestableButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
-#include <ace_button/testing/TestHelper.h>
+#include "TestHelper.h"
 
 using namespace ace_button;
 using namespace ace_button::testing;
+
+// --------------------------------------------------------------------------
 
 const uint8_t PIN = 13;
 const uint8_t BUTTON_ID = 1;
@@ -74,15 +76,15 @@ AceButton button(&testableConfig);
 EventTracker eventTracker;
 TestHelper helper(&testableConfig, &button, &eventTracker);
 
-// The event handler takes the arguments sent with the event and stored them
-// into the EventTracker circular buffer.
-void handleEvent(AceButton* /* button */, uint8_t eventType,
+// Store the arguments passed into the event handler into the EventTracker
+// for assertion later.
+void handleEvent(AceButton* button, uint8_t eventType,
     uint8_t buttonState) {
-  eventTracker.addEvent(eventType, buttonState);
+  eventTracker.addEvent(button->getPin(), eventType, buttonState);
 }
 
 void setup() {
-#ifdef ARDUINO
+#if ! defined(UNIX_HOST_DUINO)
   delay(1000); // Wait for stability on some boards, otherwise garage on Serial
 #endif
   Serial.begin(115200); // ESP8266 default 74880 not supported on Linux
@@ -117,6 +119,48 @@ void loop() {
 }
 
 // ------------------------------------------------------------------
+// ButtonConfig tests
+// ------------------------------------------------------------------
+
+test(feature_flags_off_by_default) {
+  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureClick));
+  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureDoubleClick));
+  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureLongPress));
+  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureRepeatPress));
+
+  assertFalse(buttonConfig.isFeature(
+      ButtonConfig::kFeatureSuppressAfterClick));
+  assertFalse(buttonConfig.isFeature(
+      ButtonConfig::kFeatureSuppressAfterDoubleClick));
+  assertFalse(buttonConfig.isFeature(
+      ButtonConfig::kFeatureSuppressAfterLongPress));
+  assertFalse(buttonConfig.isFeature(
+      ButtonConfig::kFeatureSuppressAfterRepeatPress));
+}
+
+// Test that the ButtonConfig parameters are mutable, just like the
+// original AdjustableButtonConfig.
+test(adjustable_config) {
+  buttonConfig.setDebounceDelay(1);
+  assertEqual((uint16_t)1, buttonConfig.getDebounceDelay());
+
+  buttonConfig.setClickDelay(2);
+  assertEqual((uint16_t)2, buttonConfig.getClickDelay());
+
+  buttonConfig.setDoubleClickDelay(3);
+  assertEqual((uint16_t)3, buttonConfig.getDoubleClickDelay());
+
+  buttonConfig.setLongPressDelay(4);
+  assertEqual((uint16_t)4, buttonConfig.getLongPressDelay());
+
+  buttonConfig.setRepeatPressDelay(5);
+  assertEqual((uint16_t)5, buttonConfig.getRepeatPressDelay());
+
+  buttonConfig.setRepeatPressInterval(6);
+  assertEqual((uint16_t)6, buttonConfig.getRepeatPressInterval());
+}
+
+// ------------------------------------------------------------------
 // Basic tests
 // ------------------------------------------------------------------
 
@@ -146,22 +190,6 @@ test(button_state_unknown) {
 
   uint8_t expected = AceButton::kButtonStateUnknown;
   assertEqual(expected, button.getLastButtonState());
-}
-
-test(feature_flags_off_by_default) {
-  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureClick));
-  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureDoubleClick));
-  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureLongPress));
-  assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureRepeatPress));
-
-  assertFalse(buttonConfig.isFeature(
-      ButtonConfig::kFeatureSuppressAfterClick));
-  assertFalse(buttonConfig.isFeature(
-      ButtonConfig::kFeatureSuppressAfterDoubleClick));
-  assertFalse(buttonConfig.isFeature(
-      ButtonConfig::kFeatureSuppressAfterLongPress));
-  assertFalse(buttonConfig.isFeature(
-      ButtonConfig::kFeatureSuppressAfterRepeatPress));
 }
 
 // Test that the button transitions out of the kButtonStateUnknown after
@@ -245,28 +273,6 @@ test(testable_config) {
 
   testableConfig.setButtonState(LOW);
   assertEqual(LOW, button.getButtonConfig()->readButton(0));
-}
-
-// Test that the ButtonConfig parameters are mutable, just like the
-// original AdjustableButtonConfig.
-test(adjustable_config) {
-  buttonConfig.setDebounceDelay(1);
-  assertEqual((uint16_t)1, buttonConfig.getDebounceDelay());
-
-  buttonConfig.setClickDelay(2);
-  assertEqual((uint16_t)2, buttonConfig.getClickDelay());
-
-  buttonConfig.setDoubleClickDelay(3);
-  assertEqual((uint16_t)3, buttonConfig.getDoubleClickDelay());
-
-  buttonConfig.setLongPressDelay(4);
-  assertEqual((uint16_t)4, buttonConfig.getLongPressDelay());
-
-  buttonConfig.setRepeatPressDelay(5);
-  assertEqual((uint16_t)5, buttonConfig.getRepeatPressDelay());
-
-  buttonConfig.setRepeatPressInterval(6);
-  assertEqual((uint16_t)6, buttonConfig.getRepeatPressInterval());
 }
 
 // Detect if a button is pressed while the device is booted.
