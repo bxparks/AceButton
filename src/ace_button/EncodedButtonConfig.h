@@ -89,7 +89,7 @@ class EncodedButtonConfig : public ButtonConfig {
      *        wiring of the physical buttons. The LS74148 encoder uses a pull-up
      *        wiring, so this should be set HIGH. The default value is HIGH.
      */
-    EncodedButtonConfig(uint8_t numPins, uint8_t const pins[],
+    EncodedButtonConfig(uint8_t numPins, const uint8_t pins[],
         uint8_t numButtons, AceButton* const buttons[],
         uint8_t defaultReleasedState = HIGH);
 

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.4.1</span>
+   &#160;<span id="projectnumber">1.4.2</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven button library for Arduino.</div>
   </td>
@@ -82,6 +82,7 @@ Inheritance diagram for ace_button::EncodedButtonConfig:</div>
 <div class="dyncontent">
 <div class="center"><img src="classace__button_1_1EncodedButtonConfig__inherit__graph.png" border="0" usemap="#ace__button_1_1EncodedButtonConfig_inherit__map" alt="Inheritance graph"/></div>
 <map name="ace__button_1_1EncodedButtonConfig_inherit__map" id="ace__button_1_1EncodedButtonConfig_inherit__map">
+<area shape="rect" id="node2" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in..." alt="" coords="11,5,182,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -89,14 +90,15 @@ Collaboration diagram for ace_button::EncodedButtonConfig:</div>
 <div class="dyncontent">
 <div class="center"><img src="classace__button_1_1EncodedButtonConfig__coll__graph.png" border="0" usemap="#ace__button_1_1EncodedButtonConfig_coll__map" alt="Collaboration graph"/></div>
 <map name="ace__button_1_1EncodedButtonConfig_coll__map" id="ace__button_1_1EncodedButtonConfig_coll__map">
+<area shape="rect" id="node2" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in..." alt="" coords="11,5,182,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5a0cebd1a867ef53619afa8526341e3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1EncodedButtonConfig.html#a5a0cebd1a867ef53619afa8526341e3f">EncodedButtonConfig</a> (uint8_t numPins, uint8_t const pins[], uint8_t numButtons, <a class="el" href="classace__button_1_1AceButton.html">AceButton</a> *const buttons[], uint8_t defaultReleasedState=HIGH)</td></tr>
-<tr class="memdesc:a5a0cebd1a867ef53619afa8526341e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a5a0cebd1a867ef53619afa8526341e3f">More...</a><br /></td></tr>
-<tr class="separator:a5a0cebd1a867ef53619afa8526341e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5538117156240cf8ee188a974db43586"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1EncodedButtonConfig.html#a5538117156240cf8ee188a974db43586">EncodedButtonConfig</a> (uint8_t numPins, const uint8_t pins[], uint8_t numButtons, <a class="el" href="classace__button_1_1AceButton.html">AceButton</a> *const buttons[], uint8_t defaultReleasedState=HIGH)</td></tr>
+<tr class="memdesc:a5538117156240cf8ee188a974db43586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a5538117156240cf8ee188a974db43586">More...</a><br /></td></tr>
+<tr class="separator:a5538117156240cf8ee188a974db43586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16c46caeb76f48bcc572df4483b25549"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1EncodedButtonConfig.html#a16c46caeb76f48bcc572df4483b25549">readButton</a> (uint8_t pin) override</td></tr>
 <tr class="memdesc:a16c46caeb76f48bcc572df4483b25549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return state of the encoded 'pin' number, corresponding to the pull-down states of the actual pins.  <a href="#a16c46caeb76f48bcc572df4483b25549">More...</a><br /></td></tr>
 <tr class="separator:a16c46caeb76f48bcc572df4483b25549"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -251,11 +253,11 @@ static <a class="el" href="classace__button_1_1ButtonConfig.html">ButtonConfig</
 <div class="textblock"><p>A <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> that handles an N-to-M binary encoder where N = 2^M. </p>
 <p>This is a generalized version of <a class="el" href="classace__button_1_1Encoded4To2ButtonConfig.html" title="A ButtonConfig that handles an 4-to-2 binary encoder which converts 4 inputs into 2 outputs...">Encoded4To2ButtonConfig</a> and <a class="el" href="classace__button_1_1Encoded8To3ButtonConfig.html" title="A ButtonConfig that handles an 8-to-3 binary encoder which converts 8 inputs into 3 outputs...">Encoded8To3ButtonConfig</a>.</p>
 <p>Here is an example of how to make <code><a class="el" href="classace__button_1_1EncodedButtonConfig.html" title="A ButtonConfig that handles an N-to-M binary encoder where N = 2^M. ">EncodedButtonConfig</a></code> act like an <code><a class="el" href="classace__button_1_1Encoded8To3ButtonConfig.html" title="A ButtonConfig that handles an 8-to-3 binary encoder which converts 8 inputs into 3 outputs...">Encoded8To3ButtonConfig</a></code>:</p>
-<div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> uint8_t PINS[] = {2, 4, 5};</div><div class="line"></div><div class="line"><span class="keyword">static</span> AceButton b1(1);</div><div class="line"><span class="keyword">static</span> AceButton b2(2);</div><div class="line"><span class="keyword">static</span> AceButton b3(3);</div><div class="line"><span class="keyword">static</span> AceButton b5(5);</div><div class="line"><span class="keyword">static</span> AceButton b6(6);</div><div class="line"><span class="keyword">static</span> AceButton* <span class="keyword">const</span> BUTTONS[] = {&amp;b1, &amp;b2, &amp;b3, &amp;b5, &amp;b6};</div><div class="line"></div><div class="line"><span class="keyword">static</span> <a class="code" href="classace__button_1_1EncodedButtonConfig.html#a5a0cebd1a867ef53619afa8526341e3f">EncodedButtonConfig</a> buttonConfig(3, PINS, 5, BUTTONS);</div><div class="line"></div><div class="line"><span class="keywordtype">void</span> handleEvent(AceButton*, uint8_t, uint8_t);</div><div class="line"></div><div class="line"><span class="keywordtype">void</span> setup() {</div><div class="line">  pinMode(2, INPUT_PULLUP);</div><div class="line">  pinMode(4, INPUT_PULLUP);</div><div class="line">  pinMode(5, INPUT_PULLUP);</div><div class="line"></div><div class="line">  buttonConfig.setEventHandler(handleEvent);</div><div class="line">  ...</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keywordtype">void</span> loop() {</div><div class="line">  buttonConfig.checkButtons();</div><div class="line">  ...</div><div class="line">}</div></div><!-- fragment --> 
+<div class="fragment"><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> uint8_t PINS[] = {2, 4, 5};</div><div class="line"></div><div class="line"><span class="keyword">static</span> AceButton b1(1);</div><div class="line"><span class="keyword">static</span> AceButton b2(2);</div><div class="line"><span class="keyword">static</span> AceButton b3(3);</div><div class="line"><span class="keyword">static</span> AceButton b5(5);</div><div class="line"><span class="keyword">static</span> AceButton b6(6);</div><div class="line"><span class="keyword">static</span> AceButton* <span class="keyword">const</span> BUTTONS[] = {&amp;b1, &amp;b2, &amp;b3, &amp;b5, &amp;b6};</div><div class="line"></div><div class="line"><span class="keyword">static</span> <a class="code" href="classace__button_1_1EncodedButtonConfig.html#a5538117156240cf8ee188a974db43586">EncodedButtonConfig</a> buttonConfig(3, PINS, 5, BUTTONS);</div><div class="line"></div><div class="line"><span class="keywordtype">void</span> handleEvent(AceButton*, uint8_t, uint8_t);</div><div class="line"></div><div class="line"><span class="keywordtype">void</span> setup() {</div><div class="line">  pinMode(2, INPUT_PULLUP);</div><div class="line">  pinMode(4, INPUT_PULLUP);</div><div class="line">  pinMode(5, INPUT_PULLUP);</div><div class="line"></div><div class="line">  buttonConfig.setEventHandler(handleEvent);</div><div class="line">  ...</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keywordtype">void</span> loop() {</div><div class="line">  buttonConfig.checkButtons();</div><div class="line">  ...</div><div class="line">}</div></div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="EncodedButtonConfig_8h_source.html#l00071">71</a> of file <a class="el" href="EncodedButtonConfig_8h_source.html">EncodedButtonConfig.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5a0cebd1a867ef53619afa8526341e3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a0cebd1a867ef53619afa8526341e3f">&#9670;&nbsp;</a></span>EncodedButtonConfig()</h2>
+<a id="a5538117156240cf8ee188a974db43586"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5538117156240cf8ee188a974db43586">&#9670;&nbsp;</a></span>EncodedButtonConfig()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -269,7 +271,7 @@ static <a class="el" href="classace__button_1_1ButtonConfig.html">ButtonConfig</
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t const&#160;</td>
+          <td class="paramtype">const uint8_t&#160;</td>
           <td class="paramname"><em>pins</em>[], </td>
         </tr>
         <tr>
@@ -309,6 +311,8 @@ static <a class="el" href="classace__button_1_1ButtonConfig.html">ButtonConfig</
   </table>
   </dd>
 </dl>
+
+<p class="definition">Definition at line <a class="el" href="EncodedButtonConfig_8cpp_source.html#l00030">30</a> of file <a class="el" href="EncodedButtonConfig_8cpp_source.html">EncodedButtonConfig.cpp</a>.</p>
 
 </div>
 </div>

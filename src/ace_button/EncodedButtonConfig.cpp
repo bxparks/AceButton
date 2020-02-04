@@ -31,10 +31,10 @@ EncodedButtonConfig::EncodedButtonConfig(
       uint8_t numPins, const uint8_t pins[], uint8_t numButtons,
       AceButton* const buttons[], uint8_t defaultReleasedState):
     mNumPins(numPins),
-    mPins(pins),
     mNumButtons(numButtons),
-    mButtons(buttons),
-    mPressedState(defaultReleasedState ^ 0x1) {
+    mPressedState(defaultReleasedState ^ 0x1),
+    mPins(pins),
+    mButtons(buttons) {
   for (uint8_t i = 0; i < mNumButtons; i++) {
     AceButton* button = mButtons[i];
     button->setButtonConfig(this);
