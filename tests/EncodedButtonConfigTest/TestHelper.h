@@ -75,7 +75,7 @@ class TestHelper {
     /**
      * Simply move the time forward and check the button.
      */
-    void checkTime(unsigned long time, uint8_t virtualPin) {
+    void checkTime(unsigned long time) {
       mTestableConfig->setClock(time);
       mEventTracker->clear();
       mTestableConfig->checkButtons();
