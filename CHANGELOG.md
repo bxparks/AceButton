@@ -1,6 +1,9 @@
 # Changelog
 
 * Unreleased
+* 1.4.2 (2020-02-03)
+    * Fix compiler warnings.
+    * Fix broken automated tests.
 * 1.4.1 (2020-01-20)
     * Implement generalized `EncodedButtonConfig` which can handle
       `M=2^N-1` buttons using `N` pins using an optimization that makes
