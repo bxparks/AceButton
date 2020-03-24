@@ -292,6 +292,43 @@ about the I/O pins on an Arduino.
 
 ### AceButton Class
 
+The `AceButton` class looks like this (not all public methods are shown):
+```C++
+namespace ace_button {
+
+class AceButton {
+  public:
+    static const uint8_t kEventPressed = 0;
+    static const uint8_t kEventReleased = 1;
+    static const uint8_t kEventClicked = 2;
+    static const uint8_t kEventDoubleClicked = 3;
+    static const uint8_t kEventLongPressed = 4;
+    static const uint8_t kEventRepeatPressed = 5;
+    static const uint8_t kButtonStateUnknown = 127;
+
+    explicit AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
+        uint8_t id = 0);
+    explicit AceButton(ButtonConfig* buttonConfig, uint8_t pin = 0,
+        uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
+    void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
+        uint8_t id = 0);
+    void init(ButtonConfig* buttonConfig, uint8_t pin = 0,
+        uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
+
+    ButtonConfig* getButtonConfig();
+    void setButtonConfig(ButtonConfig* buttonConfig);
+    void setEventHandler(ButtonConfig::EventHandler eventHandler);
+
+    uint8_t getPin();
+    uint8_t getDefaultReleasedState();
+    uint8_t getId();
+
+    void check();
+};
+
+}
+```
+
 Each physical button will be handled by an instance of `AceButton`. At a
 minimum, the instance needs to be told the pin number of the button. This can
 be done through the constructor:
@@ -319,12 +356,8 @@ void setup() {
 }
 ```
 
-Both the constructor and the `init()` function take 3 optional parameters:
-```C++
-AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
-
-void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
-```
+Both the constructor and the `init()` function take 3 optional parameters as
+shown above:
 
 * `pin`: the I/O pin number assigned to the button
 * `defaultReleasedState`: the logical value of the button when it is in its
@@ -350,6 +383,24 @@ void loop() {
 }
 ```
 
+**Warning**:
+
+If you attempt to use Pin 0 in the `AceButton()` constructor:
+```C++
+AceButton button(0);
+```
+you may encounter a compile-time error such as this:
+```
+error: call of overloaded 'AceButton(int)' is ambiguous
+```
+
+The solution is to explicitly cast the `0` to a `uint8_t` type, like this:
+```C++
+AceButton button((uint8_t) 0);
+```
+See [Issue #40](https://github.com/bxparks/AceButton/issues/40) for details.
+
+
 ### ButtonConfig Class
 
 The core concept of the AceButton library is the separation of the
@@ -363,6 +414,71 @@ button (`AceButton`) from its configuration (`ButtonConfig`).
   how much time is needed to detect certain events. This class also has the
   ability to override the default methods for reading the pin (`readButton()`)
   and the clock (`getClock()`). This ability allows unit tests to be written.
+
+The class looks like this (not all public methods are shown):
+```C++
+namespace ace_button {
+
+class ButtonConfig {
+  public:
+    static const uint16_t kDebounceDelay = 20;
+    static const uint16_t kClickDelay = 200;
+    static const uint16_t kDoubleClickDelay = 400;
+    static const uint16_t kLongPressDelay = 1000;
+    static const uint16_t kRepeatPressDelay = 1000;
+    static const uint16_t kRepeatPressInterval = 200;
+
+    typedef uint16_t FeatureFlagType;
+    static const FeatureFlagType kFeatureClick = 0x01;
+    static const FeatureFlagType kFeatureDoubleClick = 0x02;
+    static const FeatureFlagType kFeatureLongPress = 0x04;
+    static const FeatureFlagType kFeatureRepeatPress = 0x08;
+    static const FeatureFlagType kFeatureSuppressAfterClick = 0x10;
+    static const FeatureFlagType kFeatureSuppressAfterDoubleClick = 0x20;
+    static const FeatureFlagType kFeatureSuppressAfterLongPress = 0x40;
+    static const FeatureFlagType kFeatureSuppressAfterRepeatPress = 0x80;
+    static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
+    static const FeatureFlagType kFeatureSuppressAll =
+        (kFeatureSuppressAfterClick |
+        kFeatureSuppressAfterDoubleClick |
+        kFeatureSuppressAfterLongPress |
+        kFeatureSuppressAfterRepeatPress |
+        kFeatureSuppressClickBeforeDoubleClick);
+
+    typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
+        uint8_t buttonState);
+
+    ButtonConfig() {}
+
+    uint16_t getDebounceDelay();
+    uint16_t getClickDelay();
+    uint16_t getDoubleClickDelay();
+    uint16_t getLongPressDelay();
+    uint16_t getRepeatPressDelay();
+    uint16_t getRepeatPressInterval();
+
+    void setDebounceDelay(uint16_t debounceDelay);
+    void setClickDelay(uint16_t clickDelay) {
+    void setDoubleClickDelay(uint16_t doubleClickDelay);
+    void setLongPressDelay(uint16_t longPressDelay);
+    void setRepeatPressDelay(uint16_t repeatPressDelay);
+    void setRepeatPressInterval(uint16_t repeatPressInterval);
+
+    virtual unsigned long getClock();
+    virtual int readButton(uint8_t pin);
+
+    bool isFeature(FeatureFlagType features);
+    void setFeature(FeatureFlagType features);
+    void clearFeature(FeatureFlagType features);
+
+    EventHandler getEventHandler();
+    void setEventHandler(EventHandler eventHandler);
+
+    static ButtonConfig* getSystemButtonConfig();
+};
+
+}
+```
 
 The `ButtonConfig` (or a customized subclass) can be created and assigned to one
 or more `AceButton` instances using dependency injection through the
@@ -406,7 +522,7 @@ used internally by the `AceButton` class. The one method which is expected
 to be used by the calling client code is `setEventHandler()` which
 assigns the user-defined `EventHandler` callback function to the `ButtonConfig`
 instance. This is explained in more detail below in the
-_EventHandler Callback_ section.
+**EventHandler** section below.
 
 #### Timing Parameters
 
@@ -477,11 +593,16 @@ normally not need to worry about the details.
 
 #### EventHandler Signature
 
-The event handler has the following signature:
+The event handler is defined in the `ButtonConfig` class and has the following
+signature:
 
 ```C++
-typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
-    uint8_t buttonState);
+class ButtonConfig {
+  public:
+    typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
+        uint8_t buttonState);
+    ...
+};
 ```
 
 The event handler is registered with the `ButtonConfig` object, not with the
@@ -556,7 +677,7 @@ depends on whether the button was wired with a pull-up or pull-down resistor.
 Use the helper function `button->isReleased(buttonState)` to translate the raw
 `buttonState` into a more meaningful determination if you need it.
 
-#### One EventHandler
+#### One EventHandler Per ButtonConfig
 
 Only a single `EventHandler` per `ButtonConfig` is supported. An alternative
 would have been to register a separate event handler for each of the 6
