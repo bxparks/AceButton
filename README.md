@@ -394,9 +394,16 @@ you may encounter a compile-time error such as this:
 error: call of overloaded 'AceButton(int)' is ambiguous
 ```
 
-The solution is to explicitly cast the `0` to a `uint8_t` type, like this:
+The solution is to explicitly cast the `0` to a `uint8_t` type, or to
+assign it explicitly to a `uint8_t` const, like this:
 ```C++
+// Explicit cast
 AceButton button((uint8_t) 0);
+
+// Or assign to a const first.
+static const uint8_t PIN = 0;
+AceButton button(PIN);
+
 ```
 See [Issue #40](https://github.com/bxparks/AceButton/issues/40) for details.
 
