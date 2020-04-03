@@ -362,7 +362,7 @@ shown above:
 * `pin`: the I/O pin number assigned to the button
 * `defaultReleasedState`: the logical value of the button when it is in its
   default "released" state (`HIGH` using a pull-up resistor,
-  `LOW` for a pull-down pull-down resistor)
+  `LOW` for a pull-down resistor)
 * `id`: an optional, user-defined identifier for the the button,
   for example, an index into an array with additional information
 
