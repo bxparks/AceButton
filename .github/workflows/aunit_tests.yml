@@ -16,6 +16,10 @@ jobs:
         git clone https://github.com/bxparks/UnixHostDuino
         git clone https://github.com/bxparks/AUnit
 
+    - name: Verify examples
+      run: |
+        make -C examples
+
     - name: Run tests
       run: |
         make -C tests
