@@ -32,77 +32,27 @@ const uint8_t LOOP_MODE_END = 6;
 uint8_t loopMode;
 uint8_t loopEventType;
 
-void handleEvent(AceButton*, uint8_t, uint8_t);
-
-void setup() {
-  delay(1000); // some microcontrollers reboot twice
-  SERIAL_PORT_MONITOR.begin(115200);
-  while (!SERIAL_PORT_MONITOR); // wait until ready - Leonardo/Micro
-  SERIAL_PORT_MONITOR.println(F("setup(): begin"));
-
-  // Print sizeof various classes
-  SERIAL_PORT_MONITOR.print(F("sizeof(AceButton): "));
-  SERIAL_PORT_MONITOR.println(sizeof(AceButton));
-
-  SERIAL_PORT_MONITOR.print(F("sizeof(ButtonConfig): "));
-  SERIAL_PORT_MONITOR.println(sizeof(ButtonConfig));
-
-  SERIAL_PORT_MONITOR.print(F("sizeof(Encoded4To2ButtonConfig): "));
-  SERIAL_PORT_MONITOR.println(sizeof(Encoded4To2ButtonConfig));
-
-  SERIAL_PORT_MONITOR.print(F("sizeof(Encoded8To3ButtonConfig): "));
-  SERIAL_PORT_MONITOR.println(sizeof(Encoded8To3ButtonConfig));
-
-  SERIAL_PORT_MONITOR.print(F("sizeof(EncodedButtonConfig): "));
-  SERIAL_PORT_MONITOR.println(sizeof(EncodedButtonConfig));
-
-  // Button uses the built-in pull up register.
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
-  button.init(BUTTON_PIN);
-
-  // Configure the ButtonConfig with the event handler, and enable all higher
-  // level events.
-  buttonConfig.setEventHandler(handleEvent);
-  buttonConfig.setFeature(ButtonConfig::kFeatureClick);
-  buttonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
-  buttonConfig.setFeature(ButtonConfig::kFeatureLongPress);
-  buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
-  buttonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
-  buttonConfig.setTimingStats(&stats);
-
-  loopMode = LOOP_MODE_START;
-  loopEventType = AceButton::kEventPressed;
-
-  SERIAL_PORT_MONITOR.println(F("setup(): end"));
+// print integer within 3 characters, padded on left with spaces
+void printInt(uint16_t i) {
+  if (i < 100) SERIAL_PORT_MONITOR.print(' ');
+  if (i < 10) SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(i);
 }
 
-void loop() {
-  delay(1); // Decrease sampling frequency to about 1000 Hz
-  button.check();
+void printStats() {
+  printInt(stats.getMin());
+  SERIAL_PORT_MONITOR.print('/');
+  printInt(stats.getAvg());
+  SERIAL_PORT_MONITOR.print('/');
+  printInt(stats.getMax());
+  SERIAL_PORT_MONITOR.print(F(" | "));
+  printInt(stats.getCount());
+}
 
-  switch (loopMode) {
-    case LOOP_MODE_START:
-      loopStart();
-      break;
-    case LOOP_MODE_IDLE:
-      loopIdle();
-      break;
-    case LOOP_MODE_PRESS_RELEASE:
-      loopPressRelease();
-      break;
-    case LOOP_MODE_CLICK:
-      loopClick();
-      break;
-    case LOOP_MODE_DOUBLE_CLICK:
-      loopDoubleClick();
-      break;
-    case LOOP_MODE_LONG_PRESS:
-      loopLongPress();
-      break;
-    case LOOP_MODE_END:
-      loopEnd();
-      break;
-  }
+void nextMode() {
+  stats.reset();
+  buttonConfig.setButtonState(HIGH);
+  loopMode++;
 }
 
 void loopStart() {
@@ -210,31 +160,80 @@ void loopLongPress() {
   }
 }
 
-void nextMode() {
-  stats.reset();
-  buttonConfig.setButtonState(HIGH);
-  loopMode++;
-}
-
-void printStats() {
-  printInt(stats.getMin());
-  SERIAL_PORT_MONITOR.print('/');
-  printInt(stats.getAvg());
-  SERIAL_PORT_MONITOR.print('/');
-  printInt(stats.getMax());
-  SERIAL_PORT_MONITOR.print(F(" | "));
-  printInt(stats.getCount());
-}
-
-// print integer within 3 characters, padded on left with spaces
-void printInt(uint16_t i) {
-  if (i < 100) SERIAL_PORT_MONITOR.print(' ');
-  if (i < 10) SERIAL_PORT_MONITOR.print(' ');
-  SERIAL_PORT_MONITOR.print(i);
-}
-
 // An empty event handler.
 void handleEvent(AceButton* /* button */, uint8_t eventType,
     uint8_t /* buttonState */) {
   loopEventType = eventType;
 }
+
+void setup() {
+  delay(1000); // some microcontrollers reboot twice
+  SERIAL_PORT_MONITOR.begin(115200);
+  while (!SERIAL_PORT_MONITOR); // wait until ready - Leonardo/Micro
+  SERIAL_PORT_MONITOR.println(F("setup(): begin"));
+
+  // Print sizeof various classes
+  SERIAL_PORT_MONITOR.print(F("sizeof(AceButton): "));
+  SERIAL_PORT_MONITOR.println(sizeof(AceButton));
+
+  SERIAL_PORT_MONITOR.print(F("sizeof(ButtonConfig): "));
+  SERIAL_PORT_MONITOR.println(sizeof(ButtonConfig));
+
+  SERIAL_PORT_MONITOR.print(F("sizeof(Encoded4To2ButtonConfig): "));
+  SERIAL_PORT_MONITOR.println(sizeof(Encoded4To2ButtonConfig));
+
+  SERIAL_PORT_MONITOR.print(F("sizeof(Encoded8To3ButtonConfig): "));
+  SERIAL_PORT_MONITOR.println(sizeof(Encoded8To3ButtonConfig));
+
+  SERIAL_PORT_MONITOR.print(F("sizeof(EncodedButtonConfig): "));
+  SERIAL_PORT_MONITOR.println(sizeof(EncodedButtonConfig));
+
+  // Button uses the built-in pull up register.
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  button.init(BUTTON_PIN);
+
+  // Configure the ButtonConfig with the event handler, and enable all higher
+  // level events.
+  buttonConfig.setEventHandler(handleEvent);
+  buttonConfig.setFeature(ButtonConfig::kFeatureClick);
+  buttonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+  buttonConfig.setFeature(ButtonConfig::kFeatureLongPress);
+  buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
+  buttonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
+  buttonConfig.setTimingStats(&stats);
+
+  loopMode = LOOP_MODE_START;
+  loopEventType = AceButton::kEventPressed;
+
+  SERIAL_PORT_MONITOR.println(F("setup(): end"));
+}
+
+void loop() {
+  delay(1); // Decrease sampling frequency to about 1000 Hz
+  button.check();
+
+  switch (loopMode) {
+    case LOOP_MODE_START:
+      loopStart();
+      break;
+    case LOOP_MODE_IDLE:
+      loopIdle();
+      break;
+    case LOOP_MODE_PRESS_RELEASE:
+      loopPressRelease();
+      break;
+    case LOOP_MODE_CLICK:
+      loopClick();
+      break;
+    case LOOP_MODE_DOUBLE_CLICK:
+      loopDoubleClick();
+      break;
+    case LOOP_MODE_LONG_PRESS:
+      loopLongPress();
+      break;
+    case LOOP_MODE_END:
+      loopEnd();
+      break;
+  }
+}
+

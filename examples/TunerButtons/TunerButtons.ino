@@ -51,6 +51,88 @@ uint16_t currentStation = FM_FREQ_MIN;
 void handlePresetEvent(AceButton*, uint8_t, uint8_t);
 void handleTuneEvent(AceButton*, uint8_t, uint8_t);
 
+void initStations() {
+  for (int i = 0; i < NUM_PRESETS; i++) {
+    stations[i] = FM_FREQ_MIN;
+  }
+}
+
+void printStation(uint16_t frequency) {
+  Serial.print(F("station: "));
+  Serial.print(frequency / 10);
+  Serial.print('.');
+  Serial.println(frequency % 10);
+}
+
+void retrievePreset(uint8_t id) {
+  if (id < NUM_PRESETS) {
+    currentStation = stations[id];
+    Serial.print(F("memory "));
+    Serial.print(id + 1);
+    Serial.print(F(": "));
+    printStation(currentStation);
+  }
+}
+
+void setPreset(uint8_t id) {
+  if (id < NUM_PRESETS) {
+    stations[id] = currentStation;
+
+    Serial.print(F("memory "));
+    Serial.print(id + 1);
+    Serial.print(F(" set: "));
+    printStation(currentStation);
+  }
+}
+
+void tuneUp() {
+  currentStation += FM_FREQ_DELTA;
+  if (currentStation > FM_FREQ_MAX) {
+    currentStation = FM_FREQ_MIN;
+  }
+  printStation(currentStation);
+}
+
+void tuneDown() {
+  currentStation -= FM_FREQ_DELTA;
+  if (currentStation < FM_FREQ_MIN) {
+    currentStation = FM_FREQ_MAX;
+  }
+  printStation(currentStation);
+}
+
+void handlePresetEvent(AceButton* button, uint8_t eventType,
+    uint8_t /* buttonState */) {
+  switch (eventType) {
+    case AceButton::kEventReleased:
+      // We trigger on the Released event not the Pressed event to distinguish
+      // this event from the LongPressed event.
+      retrievePreset(button->getId());
+      break;
+    case AceButton::kEventLongPressed:
+      setPreset(button->getId());
+      break;
+  }
+}
+
+void handleTuneEvent(AceButton* button, uint8_t eventType,
+    uint8_t /* buttonState */) {
+  switch (eventType) {
+    case AceButton::kEventPressed:
+    case AceButton::kEventRepeatPressed: {
+      uint8_t pin = button->getPin();
+      switch (pin) {
+        case TUNE_UP_PIN:
+          tuneUp();
+          break;
+        case TUNE_DOWN_PIN:
+          tuneDown();
+          break;
+      }
+    }
+  }
+}
+
 void setup() {
   delay(1000); // some boards reboot twice
   Serial.begin(115200);
@@ -106,86 +188,4 @@ void loop() {
   presetButton3.check();
   tuneUpButton.check();
   tuneDownButton.check();
-}
-
-void initStations() {
-  for (int i = 0; i < NUM_PRESETS; i++) {
-    stations[i] = FM_FREQ_MIN;
-  }
-}
-
-void printStation(uint16_t frequency) {
-  Serial.print(F("station: "));
-  Serial.print(frequency / 10);
-  Serial.print('.');
-  Serial.println(frequency % 10);
-}
-
-void handlePresetEvent(AceButton* button, uint8_t eventType,
-    uint8_t /* buttonState */) {
-  switch (eventType) {
-    case AceButton::kEventReleased:
-      // We trigger on the Released event not the Pressed event to distinguish
-      // this event from the LongPressed event.
-      retrievePreset(button->getId());
-      break;
-    case AceButton::kEventLongPressed:
-      setPreset(button->getId());
-      break;
-  }
-}
-
-void handleTuneEvent(AceButton* button, uint8_t eventType,
-    uint8_t /* buttonState */) {
-  switch (eventType) {
-    case AceButton::kEventPressed:
-    case AceButton::kEventRepeatPressed: {
-      uint8_t pin = button->getPin();
-      switch (pin) {
-        case TUNE_UP_PIN:
-          tuneUp();
-          break;
-        case TUNE_DOWN_PIN:
-          tuneDown();
-          break;
-      }
-    }
-  }
-}
-
-void retrievePreset(uint8_t id) {
-  if (id < NUM_PRESETS) {
-    currentStation = stations[id];
-    Serial.print(F("memory "));
-    Serial.print(id + 1);
-    Serial.print(F(": "));
-    printStation(currentStation);
-  }
-}
-
-void setPreset(uint8_t id) {
-  if (id < NUM_PRESETS) {
-    stations[id] = currentStation;
-
-    Serial.print(F("memory "));
-    Serial.print(id + 1);
-    Serial.print(F(" set: "));
-    printStation(currentStation);
-  }
-}
-
-void tuneUp() {
-  currentStation += FM_FREQ_DELTA;
-  if (currentStation > FM_FREQ_MAX) {
-    currentStation = FM_FREQ_MIN;
-  }
-  printStation(currentStation);
-}
-
-void tuneDown() {
-  currentStation -= FM_FREQ_DELTA;
-  if (currentStation < FM_FREQ_MIN) {
-    currentStation = FM_FREQ_MAX;
-  }
-  printStation(currentStation);
 }
