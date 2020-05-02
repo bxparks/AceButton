@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 1.4.3 (2020-05-02)
     * Update README.md to disambiguate overloaded constructors for
       `AceButton(0)`
       [Issue #40](https://github.com/bxparks/AceButton/issues/40).
