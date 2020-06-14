@@ -34,7 +34,7 @@ namespace testing {
 
 /**
  * A wrapper class that sends emulated button presses and released to the
-  underlying AceButton class, and captures the resulting events in the
+ * underlying AceButton class, and captures the resulting events in the
  * provided EventTracker.
  */
 class TestHelper {
