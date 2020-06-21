@@ -57,7 +57,6 @@ int LadderButtonConfig::readButton(uint8_t pin) {
 
 void LadderButtonConfig::checkButtons() const {
   uint8_t virtualPin = getVirtualPin();
-  if (virtualPin == getNoButtonPin()) return;
 
   for (uint8_t i = 0; i < mNumButtons; i++) {
     AceButton* button = mButtons[i];
