@@ -8,7 +8,7 @@ using namespace ace_button;
 
 #define MODE_CALIBRATE 1
 #define MODE_READ_BUTTONS 2
-#define MODE MODE_CALIBRATE
+#define MODE MODE_READ_BUTTONS
 
 #ifdef ESP32
   // Different ESP32 boards use different pins
@@ -83,7 +83,6 @@ void loop() {
 #if MODE == MODE_CALIBRATE
   uint16_t val = analogRead(BUTTON_PIN);
   Serial.println(val);
-  delay(500);
 #else
   // Should be called every 4-5ms or faster, for the default debouncing time
   // of ~20ms.
