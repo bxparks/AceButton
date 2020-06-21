@@ -82,7 +82,7 @@ void setup() {
 void loop() {
 #if MODE == MODE_CALIBRATE
   uint16_t val = analogRead(BUTTON_PIN);
-  Serial.print(val);
+  Serial.println(val);
   delay(500);
 #else
   // Should be called every 4-5ms or faster, for the default debouncing time
