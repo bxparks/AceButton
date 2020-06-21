@@ -25,6 +25,10 @@ SOFTWARE.
 #ifndef ACE_BUTTON_EVENT_TRACKER_H
 #define ACE_BUTTON_EVENT_TRACKER_H
 
+#include <Arduino.h> // LOW
+
+class Print;
+
 namespace ace_button {
 namespace testing {
 
@@ -54,6 +58,8 @@ class EventRecord {
     uint8_t getButtonState() const {
       return mButtonState;
     }
+
+    void printTo(Print& printer) const;
 
     // Accept the default copy-constructor and assignment operator.
     EventRecord(const EventRecord&) = default;
@@ -88,6 +94,8 @@ class EventTracker {
     int getNumEvents() { return mNumEvents; }
 
     EventRecord& getRecord(int i) { return mRecords[i]; }
+
+    void printTo(Print& printer) const;
 
   private:
     // Disable copy-constructor and assignment operator
