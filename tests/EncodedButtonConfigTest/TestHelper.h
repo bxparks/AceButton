@@ -67,7 +67,7 @@ class TestHelper {
      */
     void releaseButton(unsigned long time) {
       mTestableConfig->setClock(time);
-      mTestableConfig->setVirtualPin(0);
+      mTestableConfig->setVirtualPin(mTestableConfig->getNoButtonPin());
       mEventTracker->clear();
       mTestableConfig->checkButtons();
     }

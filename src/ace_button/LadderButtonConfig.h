@@ -74,6 +74,11 @@ class LadderButtonConfig : public ButtonConfig {
      */
     void checkButtons() const;
 
+    /** The virtual button pin number corresponding to "no button" pressed. */
+    uint8_t getNoButtonPin() const {
+      return mNumLevels - 1;
+    }
+
   protected:
     /**
      * Return the virtual pin number corresponding to current state of the ADC.
@@ -86,11 +91,6 @@ class LadderButtonConfig : public ButtonConfig {
     // Disable copy-constructor and assignment operator
     LadderButtonConfig(const LadderButtonConfig&) = delete;
     LadderButtonConfig& operator=(const LadderButtonConfig&) = delete;
-
-    /** The virtual button pin number corresponding to "no button" pressed. */
-    uint8_t getNoButtonPin() const {
-      return mNumLevels - 1;
-    }
 
   private:
     // Arranged for efficient packing on 32-bit processors
