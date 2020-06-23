@@ -2,7 +2,7 @@
 #define PROFILING_BUTTON_CONFIG_H
 
 #include <Arduino.h> // LOW, HIGH
-#include <ButtonConfig.h>
+#include <AceButton.h>
 
 namespace ace_button {
 
