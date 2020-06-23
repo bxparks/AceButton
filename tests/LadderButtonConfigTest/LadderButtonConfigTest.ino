@@ -70,6 +70,19 @@ void loop() {
 // LadderButtonConfig
 // --------------------------------------------------------------------------
 
+test(LadderButtonConfig, extractIndex) {
+  assertEqual(0, LadderButtonConfig::extractIndex(NUM_LEVELS, LEVELS, 0));
+  assertEqual(0, LadderButtonConfig::extractIndex(NUM_LEVELS, LEVELS, 162));
+
+  assertEqual(1, LadderButtonConfig::extractIndex(NUM_LEVELS, LEVELS, 163));
+  assertEqual(1, LadderButtonConfig::extractIndex(NUM_LEVELS, LEVELS, 418));
+
+  assertEqual(2, LadderButtonConfig::extractIndex(NUM_LEVELS, LEVELS, 419));
+
+  assertEqual(4, LadderButtonConfig::extractIndex(NUM_LEVELS, LEVELS, 933));
+  assertEqual(4, LadderButtonConfig::extractIndex(NUM_LEVELS, LEVELS, 1023 + 1));
+}
+
 test(LadderButtonConfig, press_and_release_pullup) {
   const unsigned long BASE_TIME = 65500; // rolls over in 36 milliseconds
   helper.init();

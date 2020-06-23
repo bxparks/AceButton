@@ -27,6 +27,9 @@ SOFTWARE.
 
 #include "ButtonConfig.h"
 
+// Unit test
+class LadderButtonConfig_extractIndex;
+
 namespace ace_button {
 
 class AceButton;
@@ -91,9 +94,19 @@ class LadderButtonConfig : public ButtonConfig {
     virtual uint8_t getVirtualPin() const;
 
   private:
+    // Allow unit test to access extractIndex().
+    friend class ::LadderButtonConfig_extractIndex;
+
     // Disable copy-constructor and assignment operator
     LadderButtonConfig(const LadderButtonConfig&) = delete;
     LadderButtonConfig& operator=(const LadderButtonConfig&) = delete;
+
+    /**
+     * Return the index of 'levels[]' which matches the given 'level'. Extracted
+     * as a static function for unit testing.
+     */
+    static uint8_t extractIndex(uint8_t numLevels, uint16_t const levels[],
+        uint16_t level);
 
   private:
     // Arranged for efficient packing on 32-bit processors

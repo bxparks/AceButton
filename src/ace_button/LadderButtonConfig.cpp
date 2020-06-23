@@ -73,20 +73,27 @@ void LadderButtonConfig::checkButtons() const {
 
 uint8_t LadderButtonConfig::getVirtualPin() const {
   uint16_t level = analogRead(mPin);
+  return extractIndex(mNumLevels, mLevels, level);
+}
+
+uint8_t LadderButtonConfig::extractIndex(uint8_t numLevels,
+    uint16_t const levels[], uint16_t level) {
 
   uint8_t i;
-  for (i = 0; i < mNumLevels - 1; i++) {
+  for (i = 0; i < numLevels - 1; i++) {
+
     // NOTE(brian): This will overflow a 16-bit ADC. If we need to support that,
     // a possible formula that avoids uint32_t instructions might be something
     // like:
-    //
-    //    threshold = mLevels[i]/2 + mLevels[i+1]/2
-    //        + (((mLevels[i] & 0x1) + (mLevels[i+1] & 0x1)) / 2)
-    uint16_t threshold = (mLevels[i] + mLevels[i+1]) / 2;
+    //    threshold = levels[i]/2 + levels[i+1]/2
+    //        + (((levels[i] & 0x1) + (levels[i+1] & 0x1)) / 2)
+    uint16_t threshold = (levels[i] + levels[i+1]) / 2;
+
     if (level < threshold) return i;
   }
 
-  // Return the index of the last mLevel, to indicate "nothing found".
+  // Return the index of the last level (i.e. numLevels - 1), to indicate
+  // "nothing found".
   return i;
 }
 
