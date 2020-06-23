@@ -1,6 +1,12 @@
 # Changelog
 
 * Unreleased
+    * Add `LadderButtonConfig` class to support multiple buttons on a single
+      analog pin using `analogRead()`. Add documentation in
+      [docs/resistor_ladder](docs/resistor_ladder).
+      Resolves [Issue #43](https://github.com/bxparks/AceButton/issues/43).
+    * Remove `src/AdjustableButtonConfig.h` and `src/ButtonConfig.h` files
+      which were deprecated 2 years ago, and contained nothing.
 * 1.4.3 (2020-05-02)
     * Update README.md to disambiguate overloaded constructors for
       `AceButton(0)`
