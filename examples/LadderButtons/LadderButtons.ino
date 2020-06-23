@@ -8,7 +8,7 @@ using namespace ace_button;
 
 #define MODE_CALIBRATE 1
 #define MODE_READ_BUTTONS 2
-#define MODE MODE_READ_BUTTONS
+#define MODE MODE_CALIBRATE
 
 #ifdef ESP32
   // Different ESP32 boards use different pins

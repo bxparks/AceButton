@@ -42,12 +42,15 @@ class LadderButtonConfig : public ButtonConfig {
      * @param pin the analog pin where the buttons and resistors are connected
      * @param numLevels number of voltage levels from the ADC, must be greater
      *        than numButtons
-     * @param levels an array of expected outputs of the ADC at each level,
-     *        level[0] will probably be 0, corresponding to button[0] pulling
-     *        down to 0V, and level[numLevels-1] is the maximum value of the
-     *        ADC, corresponding to no-button pressed
+     * @param levels an array of expected outputs of the ADC at each level.
+     *        These values must be monotonically increasing. level[0] will
+     *        probably be 0, corresponding to button[0] pulling down to 0V, and
+     *        level[numLevels-1] is the maximum value of the ADC, corresponding
+     *        to no-button pressed. It will be 1023 for a 10-bit ADC, and
+     *        4095 for a 12-bit ADC.
      * @param numButtons number buttons on the ladder
-     * @param buttons array of buttons attached to the ladder
+     * @param buttons array of AceButton instances which are attached to the
+     *        ladder
      * @param defaultReleasedState state of the encoder bit when the button
      *        is in the released state. For a pull-up wiring, the state of the
      *        pin is HIGH when the button is released.

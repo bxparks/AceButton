@@ -17,37 +17,42 @@ single analog line.
 
 ## Circuits
 
-I know at least 3 different ways to wire up the resistor ladder.
+There are at least 3 different ways to wire up the resistor ladder. The
+`LadderButtonConfig` does not care which wiring is used, so long as the correct
+expected voltage levels are given to the class. As explained below, my
+recommended circuit is Circuit 3.
 
 ### Circuit 1: Active Voltage Divider
 
-The following circuit is the easiest to understand, but I would not recommend
-it as explained below. I call it the "active voltage divider" because
-there is current flowing through the circuit even if no buttons are pressed:
+The following circuit is the easiest to understand, but it seems to have
+a disadvantage that I describe below. I'm not sure if this circuit has a
+well-known name, so I will call it the "active voltage divider".
 
 ![Active Voltage Divider](resistor_ladder_active.png)
 
-Here we have 4 identical resistors, each 4.7 kOhm. They don't have to be 4.7
-kOhm, they could be 10 kOhm each. The 4 identical resistor divides the voltage
-equally into 4. Each button connects the `A0` pin to the various voltages: 0V,
-1.25V, 2.5V, and 3.75V. When no buttons are pressed, the `A0` pin reads 5V
-through the 100 kOhm registor. This resistor value is high enough that it does
-not significantly change the effective resistance when the various buttons are
-pressed.
+Here we have 4 identical resistors, `R1` to `R4`, each 4.7 kOhm. The 4 identical
+resistor divides the voltage equally, 0, 0.25, 0.5, 0.75. Each button connects
+the `A0` pin to the various voltages: 0V, 1.25V, 2.5V, and 3.75V. When no
+buttons are pressed, the `A0` pin reads 5V through the 100 kOhm pull-up registor
+`Rp`. This resistor value is high enough that it does not significantly change
+the effective resistance when the various buttons are pressed.
 
-The 220 Ohm registor labeled Rc is a current limiting registor for safety. It is
-not strictly necessary, it could be replaced with a straight wire and the
+The 220 Ohm registor labeled `Rc` is a current limiting registor for safety. It
+is not strictly necessary, it could be replaced with a straight wire and the
 circuit would still work. However, it prevents accidental damage to the
-microcontroller if the `A0` pin was accidentally switches to `OUTPUT` mode and
-set to HIGH. If the `S0` button is pressed in this state, the pin would be
+microcontroller if the `A0` pin was accidentally switched to `OUTPUT` mode and
+set to `HIGH`. If the `S0` button is pressed in this state, the pin would be
 shorted to ground, and the amount of current flowing through the `A0` would
-destroy the microcontroller.
+destroy the microcontroller. The maximum current for an ATmega328 (e.g. Arduino
+UNO R3) is 40mA. The maximum current for an ATmega32u4 (e.g. Sparkfun Micro) is
+20mA. The current limiting resistor should be adjusted to be below these limits.
 
-The reason I don't recomend this circuit is that there is a steady 266 microamp
-(5V / 19kOhm) of current that flows through resistors even if no button is
-pressed. If your device is powered through the USB, this amount of current is
-probably ok. But if the microcontroller is battery powered, this power drainage
-is unnecessary and easily avoided by using one of the circuits described below.
+It should be evident that the `R1` to `R4` resistors do not need to be 4.7
+kOhm. They could be 10 kOhm each, or maybe 22 kOhm. However, notice that there
+will always some small amount of current flowing through the circuit, even if no
+buttons are pressed. If your device is powered through the USB, this current is
+probably negligle. But if the microcontroller is battery powered, this power
+drainage could shorten the battery life of your device significantly.
 
 ### Circuit 2: Series Resistor Ladder
 
@@ -57,10 +62,10 @@ There are many examples on the web showing a circuit like this:
 
 When no buttons are pressed, the `R0` resistor pulls the voltage up to 5V.
 Since the `A0` is a high-impedance input, there is no current flowing in the
-system when there are no buttons pressed. Pressing switch `S0` brings the
+system when there are no buttons pressed. Pressing button `S0` brings the
 voltage down to almost 0V, through the same current limiting resistor `Rc` that
-we described above. Each succesive switch `S1` to `S3` adds progressively more
-resistance to the voltage divider.
+we described in Circuit 1. Each succesive button `S1` to `S3` adds progressively
+more resistance to the voltage divider.
 
 Each resistor is a different value, so it is slightly more difficult to
 calculate the expected voltage at the input pin:
@@ -73,15 +78,15 @@ V3/Vcc = (R1 + R2 + R3) / (R0 + R1 + R2 + R3) = 0.86
 ```
 
 The difficulty with this circuit is calculating the required resistor values for
-the number of switches that you want for a given pin. Suppose you want 8
-switches, instead of the 4 shown above. Ideally, you want the voltages to be
-spaced roughly equally apart. How would you calculate the required resistor
-values?
+the number of buttons that you want for a given pin. Suppose you want 8
+buttons, instead of the 4 shown above. Ideally, you want the voltages to be
+spaced in equal voltage increments. With a little bit of algebra, it is
+possible to come up with a formula to calculate the resistor values for
+`N` buttons which are spaced in increments of `1/N` voltage levels apart.
 
-With a little bit of algebra, it is possible to come up with a formula. Let `N`
-be the number of switches and resistors (in this case, N=8). Let `R0` be the
-top-most resistor, in this case R0 = 10 kOhm. The recurrence formula turns out
-to be the following:
+Let `N` be the number of buttons and resistors (as a concrete example, let
+`N=8`). Let `R0` be the top-most resistor, for example, 10 kOhm. The recurrence
+formula to calculate each `R(i+1)` from `R(0)` turns out to be the following:
 
 ```
 R1/R0 = 1/(N-1) = 1/7
@@ -96,33 +101,39 @@ R7/R6 = (N-6+1)/(N-6-1) = 3/1
 The general formula is:
 ```
 R(1)/R(0) = 1/(N-1),
+
 R(i+1)/R(i) = (N-i+1)/(N-i-1),  for i = 1 to N-2
 ```
 
-We need resistors of values:
+From this formula, we discover that we need resistors at the values of:
 ```
 10k, 1.4k, 1.9k, 2.2k, 3.3k, 5.5k, 11.1k, 33k
 ```
 
 This leads to the second problem with this circuit. Resistors normally come in
-certain series of values, and it is very difficult to get resistors for
-arbitrary values. The common values for resistors follow the [E series of
+certain series of values, and it is can be difficult to get values which don't
+fall within the series. The common values for resistors follow the [E series of
 preferred numbers](https://en.wikipedia.org/wiki/E_series_of_preferred_numbers).
-For the E3 series, the common values are: 1, 2.2, 4.7, which explains the
-resistors of 1k, 2.2k and 4.7k ohms. The E6 consists of: 1.0, 1.5, 2.2, 3.3,
-4.7, 6.8. These values are not sufficient for our needs. We need to go to the
-E12 series which include values of: 1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7,
-5.6, 6.8, 8.2. These resistors become progressively harder to obtain.
+
+* The E3 series include: 1, 2.2, 4.7
+* The E6 series include: 1.0, 1.5, 2.2, 3.3, 4.7, 6.8
+* The E12 series include: 1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 
+  6.8, 8.2
+
+If we subsitute a specific resistor with another value, this circuit has the
+problem that the substituted resistor affects the voltage levels of all other
+resistors down the line. Recaculating and validating those resistor values can
+be a bit of a chore.
+
+These issues with Circuit 2 lead me to recommend Circuit 3 instead.
 
 ### Circuit 3: Parallel Resistor Ladder (Recommended)
 
-The following circuit is my recommendation. It avoids the complexity of the
-previous circuit, while having the same benefit of having no current when no
-buttons are pressed:
+The following circuit attaches a separate resistor for each button, like this:
 
 ![Parallel Registor Ladder](resistor_ladder_parallel.png)
 
-Each button creates a simple voltage divider, where the value at pin `A0` 
+Each button creates a simple voltage divider, where the value at pin `A0`
 is simply the ratio of 2 resistors:
 
 ```
@@ -131,11 +142,11 @@ V(n)/Vcc = Rp / (R(n) + Rp)
 
 The `R0` resistor serves the same function as the current limiting `Rc`
 resistors in the previous circuits. The `R0` could be 0 ohms, i.e. a straight
-wire, but it is safer to be 220 ohms to limit the current, just in case.
+wire, but it is safer to be 220 ohms (or 330 ohms) to limit the current in
+case of a mis-wiring.
 
-The expected voltage levels for commonly available resistors can be calculated
-with a simple spreadsheet. For example, for the E12 series of resistor values,
-the expected voltages (`r(n) = R(n) / Rp`) are:
+The expected voltage levels for commonly available resistors in the E6 series
+can be calculated with a simple spreadsheet:
 
 ```
 r(n)  v(n)
@@ -157,7 +168,7 @@ r(n)  v(n)
 infinity 1.00
 ```
 
-Let's say we want 4 switches, which means we want the voltage levels to be
+Let's say we want 4 buttons, which means we want the voltage levels to be
 spaces at 0.25 intervals: 0.0, 0.25, 0.5, 0.75. Using `Rp = 10 kOhm`, we can see
 from the table that the closest values for r(n) are: 0k, 3.3k, 10k, 33k. But in
 many resistor boxes (including my own), the 3.3 kOhm resistors are harder to
@@ -165,7 +176,21 @@ find than 4.7 kOhm resistors. So if we replaced them with 4.7 kOhm and 47kOhm
 resistors, we get voltage levels of: 0.0, 0.32, 0.50, 0.82. These are close
 enough to the desired voltage levels that we are probably ok.
 
+There several things about this circuit that I like:
+
+* The circuit is easy to undersatnd, the voltage levels are easy to calculate.
+* Subsitution of one resistor with another value does *not* affect the voltage
+  levels of the other buttons.
+* If no buttons are pressed, there is no current flowing through the circuit,
+  so this circuit is friendly to battery powered applications.
+* The number of resistors required is `N+1`, where `N` is the number of buttons.
+  This is the same number as Circuit 2, and smaller than Circuit 1.
+
+For these reasons, Circuit 3 is the one that I would recommend.
+
 ## LadderButtonConfig
+
+### Public Methods
 
 The public API for `LadderButtonConfig` looks something like this:
 
@@ -184,13 +209,32 @@ class LadderButtonConfig : public ButtonConfig {
 };
 ```
 
-The constructor takes a list of voltage levels expected for each button, and the
-list of `AceButton` instances which should respond to those buttons. Each
-`AceButton` should be given a "virtual" pin number (in other words, a synthetic
-in number) which corresponds to each button on the analog pin.
+### Constructor
 
-The example code [LadderButtons](../../examples/LadderButtons/) shows how
-to use this:
+The constructor takes a number of parameters:
+
+* a list of voltage levels `levels[]` expected for each button, given as
+  as integer values returned by the `analogRead()` function,
+* the list of `AceButton` instances `buttons[]` which should respond to those
+  buttons
+* the ADC `pin` number where the resistors and buttons are attached
+
+Each `AceButton` should be given a "virtual" pin number (in other words, a
+synthetic in number) which corresponds to each button on the analog pin.
+These virtual pin numbers will range from `0` to `N-1`.
+
+The `levels[]` array **must** contain monotonically increasing values of
+voltage levels. The number of elements in this array is equal to `N+1`, where
+`N` is the maximum number of buttons.
+
+The last value of the `levels[]` array should be the largest number that is
+expected to be returned by the `analogRead()` method. For a 10-bit ADC, this
+value is `2^10 - 1 = 1023`. For a 12-bit ADC, the value is `2^12 - 1 = 4095`.
+
+## LadderButtons Example
+
+The example code [LadderButtons](../../examples/LadderButtons/) looks something
+like this:
 
 ```C++
 #include <AceButton.h>
@@ -264,40 +308,68 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 ```
 
-### Level Matching Tolerance
+When the program is executed on a Arduino board, pressing each of the buttons
+`S0` to `S3` should produce something like the following on the Serial monitor:
 
-The voltage levels given in the `levels[]` array can be obtains from theoretical
-calcuations or from actual measurements. In either case, the actual readings
-from the `analogRead()` function will likely not match those values exactly, for
-many reasons:
+```
+setup(): begin
+setup(): ready
+handleEvent(): virtualPin: 0; eventType: 0; buttonState: 0
+handleEvent(): virtualPin: 0; eventType: 2; buttonState: 1
+handleEvent(): virtualPin: 0; eventType: 1; buttonState: 1
+
+handleEvent(): virtualPin: 1; eventType: 0; buttonState: 0
+handleEvent(): virtualPin: 1; eventType: 2; buttonState: 1
+handleEvent(): virtualPin: 1; eventType: 1; buttonState: 1
+
+handleEvent(): virtualPin: 2; eventType: 0; buttonState: 0
+handleEvent(): virtualPin: 2; eventType: 2; buttonState: 1
+handleEvent(): virtualPin: 2; eventType: 1; buttonState: 1
+
+handleEvent(): virtualPin: 3; eventType: 0; buttonState: 0
+handleEvent(): virtualPin: 3; eventType: 2; buttonState: 1
+handleEvent(): virtualPin: 3; eventType: 1; buttonState: 1
+```
+
+## Level Matching Tolerance Range
+
+The voltage levels given in the `levels[]` array can be calculated from
+formulas, or they can be obtained from experimental measurements. In either
+case, the actual readings from the `analogRead()` function will most likely
+*not* match those values, for many reasons:
 
 * Resistor tolerance. The actual resistance of a given resistor may have a
-  tolerance of 5%, 10% or even 20%. The actual resistance may change over time,
-  depending on temperature.
+  tolerance of 5%, 10% or even 20%. Also, the actual resistance may change over
+  time, depending on temperature.
 * ADC conversion variance. The Analog to Digital conversion process may have
-  significant error range. It also may change over time, depending on
-  temperature for example.
-  
-When `LadderButtonConfig` looks for a voltage level match, it matches a band of
-values that extends from the mid-point of the level below the current level, to
-the mid-point of the level above the current level. To be concrete, let's
-consider a `levels[]` array with 5 values, appropriate for 4 switches:
+  significant error range. It may also change over time, for example, depending
+  on temperature.
+
+To deal with these slight mismatches, the `LadderButtonConfig` class uses a
+fuzzy matching algorithm. Instead of looking for an exact match, it looks for a
+match against a band of values that extends from the mid-point of the level
+below the current level, to the mid-point of the level above the current level.
+To be concrete, let's consider a `levels[]` array with 5 values, appropriate for
+4 buttons, as given in the `LadderButtons.ino` example. The 5 values are: 0,
+327, 512, 844 and 1023.
 
 ```
-index ADC   mid     assignment pin
------ ---   ---     -------------
-                <-.
-0     0           | level 0
-            163 <-+
-1     327         | level 1
-            419 <-+
-2     512         | level 2
-            678 <-+
-3     844         | level 3     
-            933 <-+
-4     1023        | level 4
-                <-'
+index ADC  midpoint inferred button
+----- ---  -------- ---------------
+               <--.
+0     0           | button 0
+           163 <--+
+1     327         | button 1
+           419 <--+
+2     512         | button 2
+           678 <--+
+3     844         | button 3
+           933 <--+
+4     1023        | button 4 (aka "no button")
+               <--'
 ```
+
+The matching algorithm is the following:
 
 * Readings below 163 are assigned to be Button 0.
 * Readings between 163 and 419 are assigned to be Button 1
@@ -310,10 +382,6 @@ fluctuations and variations of the resistor values and ADC conversion details.
 The size of the gap determines how many resistors can be supported by a single
 pin. I don't know exactly what the realistic maximum may be, but I suspect it is
 somewhere between 6-10 buttons, using 5% resistors.
-
-The last value of the `levels[]` array should be the largest number that is
-expected to be returned by the `analogRead()` method. For a 10-bit ADC, this
-value is `2^10 - 1 = 1023`. For a 12-bit ADC, the value is `2^12 - 1 = 4095`.
 
 ## LadderButtons Calibration
 
@@ -329,6 +397,46 @@ In calibration mode, the program prints the value of the `analogRead()` method
 as fast as possible on the `Serial` port. You can press each of the buttons and
 determine the actual ADC values for each button. These values can be fed back
 into the `levels[]` array for better accuracy.
+
+As each button is pressed, the output will look something like this:
+
+```
+1023
+1023
+1023
+1023
+...
+23
+24
+23
+23
+23
+...
+332
+333
+332
+333
+333
+...
+513
+514
+514
+515
+514
+514
+...
+842
+843
+843
+842
+843
+...
+```
+
+These values can be compared with the values of the `levels[]` array which were
+calculated using theoretical formulas. If the circuit was wired correctly and
+resistors were chosen properly, the theoretical and actual values should be
+close to each other.
 
 ## Appendix
 
