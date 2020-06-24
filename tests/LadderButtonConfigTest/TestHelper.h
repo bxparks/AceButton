@@ -26,7 +26,7 @@ SOFTWARE.
 #define ACE_BUTTON_TEST_HELPER_H
 
 #include <AceButton.h>
-#include <ace_button/testing/TestableEncodedButtonConfig.h>
+#include <ace_button/testing/TestableLadderButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
 
 namespace ace_button {
@@ -40,7 +40,7 @@ namespace testing {
 class TestHelper {
   public:
     TestHelper(
-        TestableEncodedButtonConfig* testableConfig,
+        TestableLadderButtonConfig* testableConfig,
         EventTracker* eventTracker):
       mTestableConfig(testableConfig),
       mEventTracker(eventTracker) {}
@@ -86,7 +86,7 @@ class TestHelper {
     TestHelper(const TestHelper&) = delete;
     TestHelper& operator=(const TestHelper&) = delete;
 
-    TestableEncodedButtonConfig* mTestableConfig;
+    TestableLadderButtonConfig* mTestableConfig;
     EventTracker* mEventTracker;
 };
 

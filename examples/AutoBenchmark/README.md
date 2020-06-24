@@ -36,6 +36,7 @@ sizeof(ButtonConfig): 20
 sizeof(Encoded4To2ButtonConfig): 23
 sizeof(Encoded8To3ButtonConfig): 24
 sizeof(EncodedButtonConfig): 27
+sizeof(LadderButtonConfig): 28
 ```
 
 **CPU**
@@ -62,6 +63,7 @@ sizeof(ButtonConfig): 28
 sizeof(Encoded4To2ButtonConfig): 32
 sizeof(Encoded8To3ButtonConfig): 32
 sizeof(EncodedButtonConfig): 40
+sizeof(LadderButtonConfig): 40
 ```
 
 **CPU**
@@ -88,6 +90,7 @@ sizeof(ButtonConfig): 28
 sizeof(Encoded4To2ButtonConfig): 32
 sizeof(Encoded8To3ButtonConfig): 32
 sizeof(EncodedButtonConfig): 40
+sizeof(LadderButtonConfig): 40
 ```
 
 **CPU**
@@ -120,6 +123,7 @@ sizeof(ButtonConfig): 28
 sizeof(Encoded4To2ButtonConfig): 32
 sizeof(Encoded8To3ButtonConfig): 32
 sizeof(EncodedButtonConfig): 40
+sizeof(LadderButtonConfig): 40
 ```
 
 **CPU**
