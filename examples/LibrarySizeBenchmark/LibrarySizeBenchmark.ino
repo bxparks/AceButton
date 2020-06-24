@@ -10,7 +10,7 @@ using namespace ace_button;
 
 // Set this to 0 to disable the AceButton code, so that we can
 // figure out how many bytes is consumed by the AceButton library.
-#define USE_ACE_BUTTON 1
+#define USE_ACE_BUTTON 0
 
 // Some ESP32 boards have multiple builtin LEDs so don't define LED_BUILTIN.
 #if defined(ESP32)
