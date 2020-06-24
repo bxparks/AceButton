@@ -30,7 +30,6 @@ SOFTWARE.
 namespace ace_button {
 
 class AceButton;
-class TimingStats;
 
 /**
  * Class that defines the timing parameters and event handler of an AceButton or
@@ -293,16 +292,6 @@ class ButtonConfig {
       mEventHandler = eventHandler;
     }
 
-    // TimingStats
-
-    /** Set the timing stats object. The timingStats can be nullptr. */
-    void setTimingStats(TimingStats* timingStats) {
-      mTimingStats = timingStats;
-    }
-
-    /** Get the timing stats. Can return nullptr. */
-    TimingStats* getTimingStats() { return mTimingStats; }
-
     /**
      * Return a pointer to the singleton instance of the ButtonConfig
      * which is attached to all AceButton instances by default.
@@ -318,7 +307,6 @@ class ButtonConfig {
      */
     virtual void init() {
       mFeatureFlags = 0;
-      mTimingStats = nullptr;
     }
 
   private:
@@ -334,9 +322,6 @@ class ButtonConfig {
 
     /** The event handler for all buttons associated with this ButtonConfig. */
     EventHandler mEventHandler = nullptr;
-
-    /** The timing stats object. */
-    TimingStats* mTimingStats = nullptr;
 
     /** A bit mask flag that activates certain features. */
     FeatureFlagType mFeatureFlags = 0;

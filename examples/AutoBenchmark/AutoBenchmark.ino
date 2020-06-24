@@ -203,7 +203,6 @@ void setup() {
   buttonConfig.setFeature(ButtonConfig::kFeatureLongPress);
   buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   buttonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
-  buttonConfig.setTimingStats(&stats);
 
   loopMode = LOOP_MODE_START;
   loopEventType = AceButton::kEventPressed;
@@ -213,7 +212,12 @@ void setup() {
 
 void loop() {
   delay(1); // Decrease sampling frequency to about 1000 Hz
+
+  // Measure how long the AceButton.check() takes
+  uint16_t startMicros = micros();
   button.check();
+  uint16_t elapsedMicros = micros() - startMicros;
+  stats.update(elapsedMicros);
 
   switch (loopMode) {
     case LOOP_MODE_START:
