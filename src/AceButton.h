@@ -32,7 +32,6 @@ This is the Doxygen documentation for the
 #ifndef ACE_BUTTON_H
 #define ACE_BUTTON_H
 
-#include "ace_button/TimingStats.h"
 #include "ace_button/ButtonConfig.h"
 #include "ace_button/AdjustableButtonConfig.h"
 #include "ace_button/Encoded8To3ButtonConfig.h"

@@ -4,8 +4,10 @@
  */
 
 #include <AceButton.h>
+#include <ace_button/testing/TimingStats.h>
 #include "ProfilingButtonConfig.h"
 using namespace ace_button;
+using namespace ace_button::testing;
 
 #if defined(ESP32) && !defined(SERIAL_PORT_MONITOR)
 #define SERIAL_PORT_MONITOR Serial
@@ -241,6 +243,10 @@ void loop() {
     case LOOP_MODE_END:
       loopEnd();
       break;
+    default:
+      #ifdef UNIX_HOST_DUINO
+        exit(1);
+      #endif
   }
 }
 

@@ -7,6 +7,12 @@
       Resolves [Issue #43](https://github.com/bxparks/AceButton/issues/43).
     * Remove `src/AdjustableButtonConfig.h` and `src/ButtonConfig.h` files
       which were deprecated 2 years ago, and contained nothing.
+    * Remove `TimingStats` from `ButtonConfig` and `AceButton`. Remove
+      `ButtonConfig::setTimingStats()` and
+      `ButtonConfig::getTimingStats()`. Reduces the code size by 13% (~150 out
+      of ~1150 bytes).
+    * Move `TimingStats.h` file into `src/ace_button/testing` and move
+      into `ace_button::testing` namespace.
 * 1.4.3 (2020-05-02)
     * Update README.md to disambiguate overloaded constructors for
       `AceButton(0)`

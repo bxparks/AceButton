@@ -28,6 +28,7 @@ SOFTWARE.
 #include <stdint.h>
 
 namespace ace_button {
+namespace testing {
 
 class TimingStats {
   public:
@@ -85,6 +86,7 @@ class TimingStats {
     uint16_t mCounter;
 };
 
+}
 }
 
 #endif
