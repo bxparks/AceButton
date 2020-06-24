@@ -40,8 +40,10 @@ The supported events are:
 * `AceButton::kEventLongPressed`
 * `AceButton::kEventRepeatPressed`
 
-Two subclasses of `ButtonConfig` are provided to support multiple buttons on
-limited number of pins:
+The basic `ButtonConfig` class assumes that each button is connected to a single
+digital input pin. In some situations, the number of buttons that we want is
+greater than the number of input pins available. This library provides
+2 subclasses of `ButtonConfig` which may be useful:
 
 * `EncodedButtonConfig`
     * Supports binary encoded buttons, to read `2^N - 1` buttons using `N`
@@ -51,8 +53,8 @@ limited number of pins:
       resistor ladder. The `analogRead()` method is used to read the different
       voltage levels corresponding to each button.
 
-All events (e.g. Clicked and DoubleClicked) are supported by
-`EncodedButtonConfig` and `LadderButtonConfig`.
+Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
+above (e.g. Clicked and DoubleClicked).
 
 Version: 1.4.3 (2020-05-02)
 
@@ -280,6 +282,13 @@ using ace_button::AceButton;
 
 ### Pin Wiring and Initialization
 
+The `ButtonConfig` class supports the simplest wiring. Each button is connected
+to a single digital input pin, as shown below. In the example below, 3 buttons
+labeled `S0`, `S1` and `S2` are connected to digital input pins `D2`, `D3`, and
+`D4`:
+
+![Direct Digital](docs/direct_digital/direct_digital.png)
+
 An Arduino microcontroller pin can be in an `OUTPUT` mode, an `INPUT` mode, or
 an `INPUT_PULLUP` mode. This mode is controlled by the `pinMode()` method.
 
@@ -297,6 +306,17 @@ microcontroller to connect an internal pull-up resistor to the pin. It is
 activated by calling `pinMode(pin, INPUT_PULLUP)` on the given `pin`. This mode
 is very convenient because it eliminates the external resistor, making the
 wiring simpler.
+
+The 3 resistors `Rc1`, `Rc2` andc `Rc3` are optional current limiting resistors.
+They help protect the microcontroller in the case of misconfiguration. If the
+pins are accidentally set to `OUTPUT` mode, then pressing one of the buttons
+would connect the output pin directly to ground, causing a large amount of
+current to flow that could permenantly damage the microcontroller. The
+resistance value of 220 ohms (or maybe 330 ohms) is high enough to keep the
+current within safety limits, but low enough compared to the internal pullup
+resistor that it is able to pull the digital pin to a logical 0 level. These
+current limiting resistors are good safety measures, but I admit that I often
+get lazy and don't use them when doing quick experiments.
 
 The AceButton library itself does *not* call the `pinMode()` function. The
 calling application is responsible for calling `pinMode()`. Normally, this
