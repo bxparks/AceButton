@@ -92,24 +92,15 @@ uint8_t AceButton::getDefaultReleasedState() {
 // NOTE: It would be interesting to rewrite the check() method using a Finite
 // State Machine.
 void AceButton::check() {
-  // Retrieve the current time just once and use that in the various checkXxx()
-  // functions below. This provides some robustness of the various timing
-  // algorithms even if any of the event handlers takes more time than the
-  // threshold time limits such as 'debounceDelay' or longPressDelay'.
-  uint16_t now = mButtonConfig->getClock();
-
   uint8_t buttonState = mButtonConfig->readButton(mPin);
-
-  // debounce the button
-  if (checkDebounced(now, buttonState)) {
-    // check if the button was initialized (i.e. UNKNOWN state)
-    if (checkInitialized(buttonState)) {
-      checkEvent(now, buttonState);
-    }
-  }
+  checkState(buttonState);
 }
 
 void AceButton::checkState(uint8_t buttonState) {
+  // Retrieve the current time just once and use that in the various checkXxx()
+  // functions below. This provides some robustness of the various timing
+  // algorithms even if one of the event handlers takes more time than the
+  // threshold time limits such as 'debounceDelay' or longPressDelay'.
   uint16_t now = mButtonConfig->getClock();
 
   // debounce the button
