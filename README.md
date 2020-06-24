@@ -117,7 +117,7 @@ you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
 That said, [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) shows that the
-library consumes about 1100 bytes of flash memory, and
+library consumes about 1000 bytes of flash memory, and
 [AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
 between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
 ESP32. Hopefully that is small enough and fast enough for the vast majority of
@@ -1253,12 +1253,10 @@ to 14.)
 **Program size:**
 
 [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine
-the size of the library. For a single button, the library consumed:
-* flash memory: 1100-1330 bytes
-* static memory: 14-28 bytes
+the size of the library. In summary, for a single button, the library consumes:
 
-depending on the target board. See the README.md in the above link for more
-details.
+* flash memory: 840-1600 bytes (depending on the microcontroller)
+* static memory: 14-28 bytes
 
 **CPU cycles:**
 
