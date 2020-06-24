@@ -78,16 +78,36 @@ V3/Vcc = (R1 + R2 + R3) / (R0 + R1 + R2 + R3) = 0.86
 ```
 
 The difficulty with this circuit is calculating the required resistor values for
-the number of buttons that you want for a given pin. Suppose you want 8
-buttons, instead of the 4 shown above. Ideally, you want the voltages to be
-spaced in equal voltage increments. With a little bit of algebra, it is
-possible to come up with a formula to calculate the resistor values for
-`N` buttons which are spaced in increments of `1/N` voltage levels apart.
+the number of buttons that you want for a given pin. Let `N` be the number of
+buttons and resistors (as a concrete example, let `N=8`). Let `R0` be the
+top-most resistor, for example, 10 kOhm. Ideally, we want the voltages to be
+spaced in equal voltage increments of `1/N`. With a little bit of algebra, we
+can derive a formula for the resistor values.
 
-Let `N` be the number of buttons and resistors (as a concrete example, let
-`N=8`). Let `R0` be the top-most resistor, for example, 10 kOhm. The recurrence
-formula to calculate each `R(i+1)` from `R(0)` turns out to be the following:
+For the `R(1)` resistor, the formula is:
+```
+R(1)      1
+---- = -------
+R(0)    (N-1)
+```
 
+For the `R(2)` to `R(N-1)` resistors, the formula is:
+```
+R(i)      i           (i - 1)
+---- = -------  -  ------------- , for i = 2 to N-1
+R(0)   (N - i)     (N - (i - 1))
+```
+
+which can be simplified down to:
+
+```
+R(i+1)    (N-i+1)
+------ =  ------- , for i = 1 to N-2
+ R(i)     (N-i-1)
+```
+
+To make this concrete, let's suppose we want 8 buttons, for `N = 8`. The 8
+resistors can be calculated using the following pattern:
 ```
 R1/R0 = 1/(N-1) = 1/7
 R2/R1 = (N-1+1)/(N-1-1) = 8/6
@@ -98,14 +118,7 @@ R6/R5 = (N-5+1)/(N-5-1) = 4/2
 R7/R6 = (N-6+1)/(N-6-1) = 3/1
 ```
 
-The general formula is:
-```
-R(1)/R(0) = 1/(N-1),
-
-R(i+1)/R(i) = (N-i+1)/(N-i-1),  for i = 1 to N-2
-```
-
-From this formula, we discover that we need resistors at the values of:
+This means that we need resistors of values:
 ```
 10k, 1.4k, 1.9k, 2.2k, 3.3k, 5.5k, 11.1k, 33k
 ```
@@ -117,7 +130,7 @@ preferred numbers](https://en.wikipedia.org/wiki/E_series_of_preferred_numbers).
 
 * The E3 series include: 1, 2.2, 4.7
 * The E6 series include: 1.0, 1.5, 2.2, 3.3, 4.7, 6.8
-* The E12 series include: 1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 
+* The E12 series include: 1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6,
   6.8, 8.2
 
 If we subsitute a specific resistor with another value, this circuit has the
@@ -137,7 +150,7 @@ Each button creates a simple voltage divider, where the value at pin `A0`
 is simply the ratio of 2 resistors:
 
 ```
-V(n)/Vcc = Rp / (R(n) + Rp)
+V(i)/Vcc = Rp / (R(i) + Rp), for i = 0 to N-1
 ```
 
 The `R0` resistor serves the same function as the current limiting `Rc`
@@ -149,7 +162,7 @@ The expected voltage levels for commonly available resistors in the E6 series
 can be calculated with a simple spreadsheet:
 
 ```
-r(n)  v(n)
+r(i)  v(i)
 ----  ----
 0.00  0.00
 0.10  0.09
@@ -168,19 +181,26 @@ r(n)  v(n)
 infinity 1.00
 ```
 
-Let's say we want 4 buttons, which means we want the voltage levels to be
-spaces at 0.25 intervals: 0.0, 0.25, 0.5, 0.75. Using `Rp = 10 kOhm`, we can see
-from the table that the closest values for r(n) are: 0k, 3.3k, 10k, 33k. But in
-many resistor boxes (including my own), the 3.3 kOhm resistors are harder to
-find than 4.7 kOhm resistors. So if we replaced them with 4.7 kOhm and 47kOhm
+where
+```
+r(i) = R(i) / Rp
+v(i) = V(i) / Vcc
+```
+
+Let's say we want 4 buttons, which means we want the voltage levels to be spaces
+at 0.25 intervals: 0.0, 0.25, 0.5, 0.75. Using `Rp = 10 kOhm`, we can see from
+the table that the closest values for r(i) are: 0k, 3.3k, 10k, 33k. But in many
+resistor boxes (including my own), the 3.3 kOhm resistors are harder to find
+than 4.7 kOhm resistors. So if we replaced them with 4.7 kOhm and 47kOhm
 resistors, we get voltage levels of: 0.0, 0.32, 0.50, 0.82. These are close
 enough to the desired voltage levels that we are probably ok.
 
 There several things about this circuit that I like:
 
-* The circuit is easy to undersatnd, the voltage levels are easy to calculate.
-* Subsitution of one resistor with another value does *not* affect the voltage
-  levels of the other buttons.
+* The circuit is easy to undersatnd, and the voltage levels are easy to
+  calculate.
+* Subsitution of one resistor of one button with another value does *not* affect
+  the voltage levels of the other buttons.
 * If no buttons are pressed, there is no current flowing through the circuit,
   so this circuit is friendly to battery powered applications.
 * The number of resistors required is `N+1`, where `N` is the number of buttons.
