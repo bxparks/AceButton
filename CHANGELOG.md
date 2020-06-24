@@ -14,6 +14,7 @@
       of ~1150 bytes).
     * **Breaking Change**: Move `TimingStats.h` file into
       `src/ace_button/testing` and move into `ace_button::testing` namespace.
+    * **Breaking Change**: Remove unused `ButtonConfig::getClockMicros()`.
 * 1.4.3 (2020-05-02)
     * Update README.md to disambiguate overloaded constructors for
       `AceButton(0)`

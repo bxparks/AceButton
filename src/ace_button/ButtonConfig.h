@@ -245,12 +245,6 @@ class ButtonConfig {
     virtual unsigned long getClock() { return millis(); }
 
     /**
-     * Return the microseconds of the internal clock. Can be overridden
-     * for testing purposes.
-     */
-    virtual unsigned long getClockMicros() { return micros(); }
-
-    /**
      * Return the HIGH or LOW state of the button. Override to use something
      * other than digitalRead(). The return type is 'int' instead of uint16_t
      * because that's the return type of digitalRead().
