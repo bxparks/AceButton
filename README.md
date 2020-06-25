@@ -81,7 +81,7 @@ Here are the high-level features of the AceButton library:
     * `millis()` clock function can be overridden
 * small memory footprint
     * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
-    * each `ButtonConfig` consumes 20 bytes (8-bit) or 28 bytes (32-bit)
+    * each `ButtonConfig` consumes 18 bytes (8-bit) or 24 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
 * supports multiple buttons on shared pins
     * [Binary Encoded buttons](docs/binary_encoding/README.md)
@@ -117,7 +117,7 @@ you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
 That said, [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) shows that the
-library consumes about 1000 bytes of flash memory, and
+library consumes between 840-1250  bytes of flash memory, and
 [AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
 between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
 ESP32. Hopefully that is small enough and fast enough for the vast majority of
@@ -1231,20 +1231,20 @@ Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 (Arduino Uno, Nano, etc):
 
 * sizeof(AceButton): 14
-* sizeof(ButtonConfig): 20
-* sizeof(Encoded4To2ButtonConfig): 23
-* sizeof(Encoded8To3ButtonConfig): 24
-* sizeof(EncodedButtonConfig): 27
-* sizeof(LadderButtonConfig): 28
+* sizeof(ButtonConfig): 18
+* sizeof(Encoded4To2ButtonConfig): 21
+* sizeof(Encoded8To3ButtonConfig): 22
+* sizeof(EncodedButtonConfig): 25
+* sizeof(LadderButtonConfig): 26
 
 and 32-bit microcontrollers:
 
 * sizeof(AceButton): 16
-* sizeof(ButtonConfig): 28
-* sizeof(Encoded4To2ButtonConfig): 32
-* sizeof(Encoded8To3ButtonConfig): 32
-* sizeof(EncodedButtonConfig): 40
-* sizeof(LadderButtonConfig): 40
+* sizeof(ButtonConfig): 24
+* sizeof(Encoded4To2ButtonConfig): 28
+* sizeof(Encoded8To3ButtonConfig): 28
+* sizeof(EncodedButtonConfig): 36
+* sizeof(LadderButtonConfig): 36
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
@@ -1255,7 +1255,7 @@ to 14.)
 [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine
 the size of the library. In summary, for a single button, the library consumes:
 
-* flash memory: 840-1600 bytes (depending on the microcontroller)
+* flash memory: 840-1250 bytes (depending on the microcontroller)
 * static memory: 14-28 bytes
 
 **CPU cycles:**

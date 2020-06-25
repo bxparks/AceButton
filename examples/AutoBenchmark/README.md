@@ -32,11 +32,11 @@ All times are in microseconds. The "samples" column is the number of
 **Memory**
 ```
 sizeof(AceButton): 14
-sizeof(ButtonConfig): 20
-sizeof(Encoded4To2ButtonConfig): 23
-sizeof(Encoded8To3ButtonConfig): 24
-sizeof(EncodedButtonConfig): 27
-sizeof(LadderButtonConfig): 28
+sizeof(ButtonConfig): 18
+sizeof(Encoded4To2ButtonConfig): 22
+sizeof(Encoded8To3ButtonConfig): 22
+sizeof(EncodedButtonConfig): 25
+sizeof(LadderButtonConfig): 26
 ```
 
 **CPU**
@@ -59,11 +59,11 @@ long press/repeat press |   8/ 15/ 24 | 1926    |
 **Memory**
 ```
 sizeof(AceButton): 16
-sizeof(ButtonConfig): 28
-sizeof(Encoded4To2ButtonConfig): 32
-sizeof(Encoded8To3ButtonConfig): 32
-sizeof(EncodedButtonConfig): 40
-sizeof(LadderButtonConfig): 40
+sizeof(ButtonConfig): 24
+sizeof(Encoded4To2ButtonConfig): 28
+sizeof(Encoded8To3ButtonConfig): 28
+sizeof(EncodedButtonConfig): 36
+sizeof(LadderButtonConfig): 36
 ```
 
 **CPU**
@@ -86,11 +86,11 @@ long press/repeat press |   4/  8/ 11 | 2002    |
 **Memory**
 ```
 sizeof(AceButton): 16
-sizeof(ButtonConfig): 28
-sizeof(Encoded4To2ButtonConfig): 32
-sizeof(Encoded8To3ButtonConfig): 32
-sizeof(EncodedButtonConfig): 40
-sizeof(LadderButtonConfig): 40
+sizeof(ButtonConfig): 24
+sizeof(Encoded4To2ButtonConfig): 28
+sizeof(Encoded8To3ButtonConfig): 28
+sizeof(EncodedButtonConfig): 36
+sizeof(LadderButtonConfig): 36
 ```
 
 **CPU**
@@ -119,11 +119,11 @@ click" and "long press" samples are taken, causing the extra latency.
 **Memory**
 ```
 sizeof(AceButton): 16
-sizeof(ButtonConfig): 28
-sizeof(Encoded4To2ButtonConfig): 32
-sizeof(Encoded8To3ButtonConfig): 32
-sizeof(EncodedButtonConfig): 40
-sizeof(LadderButtonConfig): 40
+sizeof(ButtonConfig): 24
+sizeof(Encoded4To2ButtonConfig): 28
+sizeof(Encoded8To3ButtonConfig): 28
+sizeof(EncodedButtonConfig): 36
+sizeof(LadderButtonConfig): 36
 ```
 
 **CPU**
@@ -146,10 +146,11 @@ long press/repeat press |   2/  2/  3 | 2002    |
 **Memory**
 ```
 sizeof(AceButton): 16
-sizeof(ButtonConfig): 28
-sizeof(Encoded4To2ButtonConfig): 32
-sizeof(Encoded8To3ButtonConfig): 32
-sizeof(EncodedButtonConfig): 40
+sizeof(ButtonConfig): 24
+sizeof(Encoded4To2ButtonConfig): 28
+sizeof(Encoded8To3ButtonConfig): 28
+sizeof(EncodedButtonConfig): 36
+sizeof(LadderButtonConfig): 36
 ```
 
 **CPU**

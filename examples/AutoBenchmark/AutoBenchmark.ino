@@ -247,6 +247,7 @@ void loop() {
       #ifdef UNIX_HOST_DUINO
         exit(1);
       #endif
+      break;
   }
 }
 
