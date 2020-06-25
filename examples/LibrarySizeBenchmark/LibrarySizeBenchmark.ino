@@ -5,39 +5,32 @@
  */
 
 #include <AceButton.h>
-
 using namespace ace_button;
 
 // Set this to 0 to disable the AceButton code, so that we can
 // figure out how many bytes is consumed by the AceButton library.
 #define USE_ACE_BUTTON 0
 
-// Some ESP32 boards have multiple builtin LEDs so don't define LED_BUILTIN.
-#if defined(ESP32)
-  const int LED_PIN = 2;
-#else
-  const int LED_PIN = LED_BUILTIN;
-#endif
-
 const int BUTTON_PIN = 2;
-const int LED_ON = HIGH;
-const int LED_OFF = LOW;
+
+// A volatile integer to prevent the compiler from optimizing away the entire
+// program.
+volatile int disableCompilerOptimization = 0;
 
 #if USE_ACE_BUTTON == 1
 AceButton button(BUTTON_PIN);
+#endif
 
-void handleEvent(AceButton*, uint8_t, uint8_t);
+#if USE_ACE_BUTTON == 1
+void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
+    uint8_t /* buttonState */) {
+  disableCompilerOptimization++;
+}
 #endif
 
 void setup() {
   delay(2000);
 
-#if defined(ARDUINO_AVR_LEONARDO)
-  RXLED0; // LED off
-  TXLED0; // LED off
-#endif
-
-  pinMode(LED_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
 
 #if USE_ACE_BUTTON == 1
@@ -50,17 +43,3 @@ void loop() {
   button.check();
 #endif
 }
-
-#if USE_ACE_BUTTON == 1
-void handleEvent(AceButton* /* button */, uint8_t eventType,
-    uint8_t /* buttonState */) {
-  switch (eventType) {
-    case AceButton::kEventPressed:
-      digitalWrite(LED_PIN, LED_ON);
-      break;
-    case AceButton::kEventReleased:
-      digitalWrite(LED_PIN, LED_OFF);
-      break;
-  }
-}
-#endif
