@@ -16,10 +16,46 @@ using namespace ace_button::testing;
 // The pin number attached to the button.
 const int BUTTON_PIN = 2;
 
+// Create one button wired using the ProfilingButtonConfig, which is the same as
+// ButtonConfig except readButton() is overridden for profiling purposes.
 ProfilingButtonConfig buttonConfig;
+AceButton simpleButton(&buttonConfig);
 
-// One button wired using the ProfilingButtonConfig.
-AceButton button(&buttonConfig);
+// Create an array of 7 buttons wired to use the EncodedButtonConfig using
+// 4 digital pins.
+static const uint8_t NUM_PINS = 3;
+static const uint8_t PINS[] = {2, 3, 4};
+static const uint8_t NUM_BUTTONS = 7;
+static AceButton b01(1);
+static AceButton b02(2);
+static AceButton b03(3);
+static AceButton b04(4);
+static AceButton b05(5);
+static AceButton b06(6);
+static AceButton b07(7);
+static AceButton* const BUTTONS[NUM_BUTTONS] = {
+    &b01, &b02, &b03, &b04, &b05, &b06, &b07,
+};
+static EncodedButtonConfig encodedButtonConfig(
+  NUM_PINS, PINS, NUM_BUTTONS, BUTTONS
+);
+
+// Create a LadderButtonConfig with 8 levels for 7 buttons.
+static const int ANALOG_BUTTON_PIN = A0;
+static const uint8_t NUM_LEVELS = NUM_BUTTONS + 1;
+static const uint16_t LEVELS[NUM_LEVELS] = {
+  0   /* 0%, short to ground */,
+  133 /* 13%, 1.5 kohm */,
+  327 /* 32%, 4.7 kohm */,
+  512 /* 50%, 10 kohm */,
+  614 /* 60%, 15 kohm */,
+  788 /* 77%, 33 kohm */,
+  930 /* 91%, 100 kohm */,
+  1023 /* 100%, open circuit */,
+};
+static LadderButtonConfig ladderButtonConfig(
+  ANALOG_BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, BUTTONS
+);
 
 const unsigned long STATS_PRINT_INTERVAL = 2000;
 TimingStats stats;
@@ -30,7 +66,9 @@ const uint8_t LOOP_MODE_PRESS_RELEASE = 2;
 const uint8_t LOOP_MODE_CLICK = 3;
 const uint8_t LOOP_MODE_DOUBLE_CLICK = 4;
 const uint8_t LOOP_MODE_LONG_PRESS = 5;
-const uint8_t LOOP_MODE_END = 6;
+const uint8_t LOOP_MODE_ENCODED_BUTTON_CONFIG = 6;
+const uint8_t LOOP_MODE_LADDER_BUTTON_CONFIG = 7;
+const uint8_t LOOP_MODE_END = 8;
 uint8_t loopMode;
 uint8_t loopEventType;
 
@@ -57,6 +95,34 @@ void nextMode() {
   loopMode++;
 }
 
+// An empty event handler.
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t /* buttonState */) {
+  loopEventType = eventType;
+}
+
+// Measure how long the AceButton.check() takes
+void checkSimpleButton() {
+  uint16_t startMicros = micros();
+  simpleButton.check();
+  uint16_t elapsedMicros = micros() - startMicros;
+  stats.update(elapsedMicros);
+}
+
+void checkEncodedButtons() {
+  uint16_t startMicros = micros();
+  encodedButtonConfig.checkButtons();
+  uint16_t elapsedMicros = micros() - startMicros;
+  stats.update(elapsedMicros);
+}
+
+void checkLadderButtons() {
+  uint16_t startMicros = micros();
+  ladderButtonConfig.checkButtons();
+  uint16_t elapsedMicros = micros() - startMicros;
+  stats.update(elapsedMicros);
+}
+
 void loopStart() {
   static unsigned long start = millis();
 
@@ -81,6 +147,8 @@ void loopEnd() {
 void loopIdle() {
   static unsigned long start = millis();
 
+  checkSimpleButton();
+
   if (millis() - start > STATS_PRINT_INTERVAL) {
     SERIAL_PORT_MONITOR.print(F("idle                    | "));
     printStats();
@@ -91,6 +159,8 @@ void loopIdle() {
 
 void loopPressRelease() {
   static unsigned long start = millis();
+
+  checkSimpleButton();
 
   unsigned long now = millis();
   unsigned long elapsed = now - start;
@@ -110,6 +180,8 @@ void loopPressRelease() {
 void loopClick() {
   static unsigned long start = millis();
 
+  checkSimpleButton();
+
   unsigned long now = millis();
   unsigned long elapsed = now - start;
   if (100 <= elapsed && elapsed < 200) buttonConfig.setButtonState(LOW);
@@ -127,6 +199,8 @@ void loopClick() {
 
 void loopDoubleClick() {
   static unsigned long start = millis();
+
+  checkSimpleButton();
 
   unsigned long now = millis();
   unsigned long elapsed = now - start;
@@ -148,6 +222,8 @@ void loopDoubleClick() {
 void loopLongPress() {
   static unsigned long start = millis();
 
+  checkSimpleButton();
+
   unsigned long now = millis();
   unsigned long elapsed = now - start;
   if (100 <= elapsed) buttonConfig.setButtonState(LOW);
@@ -162,10 +238,30 @@ void loopLongPress() {
   }
 }
 
-// An empty event handler.
-void handleEvent(AceButton* /* button */, uint8_t eventType,
-    uint8_t /* buttonState */) {
-  loopEventType = eventType;
+void loopEncodedButtonConfig() {
+  static unsigned long start = millis();
+
+  checkEncodedButtons();
+
+  if (millis() - start > STATS_PRINT_INTERVAL) {
+    SERIAL_PORT_MONITOR.print(F("EncodeButtonConfig      | "));
+    printStats();
+    SERIAL_PORT_MONITOR.println(F("    |"));
+    nextMode();
+  }
+}
+
+void loopLadderButtonConfig() {
+  static unsigned long start = millis();
+
+  checkLadderButtons();
+
+  if (millis() - start > STATS_PRINT_INTERVAL) {
+    SERIAL_PORT_MONITOR.print(F("LadderButtonConfig      | "));
+    printStats();
+    SERIAL_PORT_MONITOR.println(F("    |"));
+    nextMode();
+  }
 }
 
 void setup() {
@@ -195,7 +291,7 @@ void setup() {
 
   // Button uses the built-in pull up register.
   pinMode(BUTTON_PIN, INPUT_PULLUP);
-  button.init(BUTTON_PIN);
+  simpleButton.init(BUTTON_PIN);
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
@@ -215,12 +311,6 @@ void setup() {
 void loop() {
   delay(1); // Decrease sampling frequency to about 1000 Hz
 
-  // Measure how long the AceButton.check() takes
-  uint16_t startMicros = micros();
-  button.check();
-  uint16_t elapsedMicros = micros() - startMicros;
-  stats.update(elapsedMicros);
-
   switch (loopMode) {
     case LOOP_MODE_START:
       loopStart();
@@ -239,6 +329,12 @@ void loop() {
       break;
     case LOOP_MODE_LONG_PRESS:
       loopLongPress();
+      break;
+    case LOOP_MODE_ENCODED_BUTTON_CONFIG:
+      loopEncodedButtonConfig();
+      break;
+    case LOOP_MODE_LADDER_BUTTON_CONFIG:
+      loopLadderButtonConfig();
       break;
     case LOOP_MODE_END:
       loopEnd();
