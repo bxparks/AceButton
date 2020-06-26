@@ -21,23 +21,43 @@ const int BUTTON_PIN = 2;
 ProfilingButtonConfig buttonConfig;
 AceButton simpleButton(&buttonConfig);
 
+// Create 3 buttons for Encoded4To2ButtonConfig
+static const uint8_t BUTTON_PIN0 = 2;
+static const uint8_t BUTTON_PIN1 = 3;
+static const uint8_t BUTTON_PIN2 = 4;
+Encoded4To2ButtonConfig encoded4To2ButtonConfig(BUTTON_PIN0, BUTTON_PIN1);
+AceButton four1(&encoded4To2ButtonConfig, 1);
+AceButton four2(&encoded4To2ButtonConfig, 2);
+AceButton four3(&encoded4To2ButtonConfig, 3);
+
+// Create 7 buttons for Encoded8To3ButtonConfig
+Encoded8To3ButtonConfig encoded8To3ButtonConfig(
+    BUTTON_PIN0, BUTTON_PIN1, BUTTON_PIN2);
+AceButton eight1(&encoded8To3ButtonConfig, 1);
+AceButton eight2(&encoded8To3ButtonConfig, 2);
+AceButton eight3(&encoded8To3ButtonConfig, 3);
+AceButton eight4(&encoded8To3ButtonConfig, 4);
+AceButton eight5(&encoded8To3ButtonConfig, 5);
+AceButton eight6(&encoded8To3ButtonConfig, 6);
+AceButton eight7(&encoded8To3ButtonConfig, 7);
+
 // Create an array of 7 buttons wired to use the EncodedButtonConfig using
 // 4 digital pins.
 static const uint8_t NUM_PINS = 3;
 static const uint8_t PINS[] = {2, 3, 4};
 static const uint8_t NUM_BUTTONS = 7;
-static AceButton b01(1);
-static AceButton b02(2);
-static AceButton b03(3);
-static AceButton b04(4);
-static AceButton b05(5);
-static AceButton b06(6);
-static AceButton b07(7);
-static AceButton* const BUTTONS[NUM_BUTTONS] = {
-    &b01, &b02, &b03, &b04, &b05, &b06, &b07,
+static AceButton e01(1);
+static AceButton e02(2);
+static AceButton e03(3);
+static AceButton e04(4);
+static AceButton e05(5);
+static AceButton e06(6);
+static AceButton e07(7);
+static AceButton* const ENCODED_BUTTONS[NUM_BUTTONS] = {
+    &e01, &e02, &e03, &e04, &e05, &e06, &e07,
 };
 static EncodedButtonConfig encodedButtonConfig(
-  NUM_PINS, PINS, NUM_BUTTONS, BUTTONS
+  NUM_PINS, PINS, NUM_BUTTONS, ENCODED_BUTTONS
 );
 
 // Create a LadderButtonConfig with 8 levels for 7 buttons.
@@ -53,8 +73,18 @@ static const uint16_t LEVELS[NUM_LEVELS] = {
   930 /* 91%, 100 kohm */,
   1023 /* 100%, open circuit */,
 };
+static AceButton r01(1);
+static AceButton r02(2);
+static AceButton r03(3);
+static AceButton r04(4);
+static AceButton r05(5);
+static AceButton r06(6);
+static AceButton r07(7);
+static AceButton* const LADDER_BUTTONS[NUM_BUTTONS] = {
+    &r01, &r02, &r03, &r04, &r05, &r06, &r07,
+};
 static LadderButtonConfig ladderButtonConfig(
-  ANALOG_BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, BUTTONS
+  ANALOG_BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, LADDER_BUTTONS
 );
 
 const unsigned long STATS_PRINT_INTERVAL = 2000;
@@ -66,9 +96,11 @@ const uint8_t LOOP_MODE_PRESS_RELEASE = 2;
 const uint8_t LOOP_MODE_CLICK = 3;
 const uint8_t LOOP_MODE_DOUBLE_CLICK = 4;
 const uint8_t LOOP_MODE_LONG_PRESS = 5;
-const uint8_t LOOP_MODE_ENCODED_BUTTON_CONFIG = 6;
-const uint8_t LOOP_MODE_LADDER_BUTTON_CONFIG = 7;
-const uint8_t LOOP_MODE_END = 8;
+const uint8_t LOOP_MODE_ENCODED_4TO2_BUTTON_CONFIG = 6;
+const uint8_t LOOP_MODE_ENCODED_8TO3_BUTTON_CONFIG = 7;
+const uint8_t LOOP_MODE_ENCODED_BUTTON_CONFIG = 8;
+const uint8_t LOOP_MODE_LADDER_BUTTON_CONFIG = 9;
+const uint8_t LOOP_MODE_END = 10;
 uint8_t loopMode;
 uint8_t loopEventType;
 
@@ -105,6 +137,28 @@ void handleEvent(AceButton* /* button */, uint8_t eventType,
 void checkSimpleButton() {
   uint16_t startMicros = micros();
   simpleButton.check();
+  uint16_t elapsedMicros = micros() - startMicros;
+  stats.update(elapsedMicros);
+}
+
+void checkEncoded4To2Buttons() {
+  uint16_t startMicros = micros();
+  four1.check();
+  four2.check();
+  four3.check();
+  uint16_t elapsedMicros = micros() - startMicros;
+  stats.update(elapsedMicros);
+}
+
+void checkEncoded8To3Buttons() {
+  uint16_t startMicros = micros();
+  eight1.check();
+  eight2.check();
+  eight3.check();
+  eight4.check();
+  eight5.check();
+  eight6.check();
+  eight7.check();
   uint16_t elapsedMicros = micros() - startMicros;
   stats.update(elapsedMicros);
 }
@@ -238,6 +292,32 @@ void loopLongPress() {
   }
 }
 
+void loopEncoded4To2ButtonConfig() {
+  static unsigned long start = millis();
+
+  checkEncoded4To2Buttons();
+
+  if (millis() - start > STATS_PRINT_INTERVAL) {
+    SERIAL_PORT_MONITOR.print(F("Encode4To2ButtonConfig  | "));
+    printStats();
+    SERIAL_PORT_MONITOR.println(F("    |"));
+    nextMode();
+  }
+}
+
+void loopEncoded8To3ButtonConfig() {
+  static unsigned long start = millis();
+
+  checkEncoded8To3Buttons();
+
+  if (millis() - start > STATS_PRINT_INTERVAL) {
+    SERIAL_PORT_MONITOR.print(F("Encode8To3ButtonConfig  | "));
+    printStats();
+    SERIAL_PORT_MONITOR.println(F("    |"));
+    nextMode();
+  }
+}
+
 void loopEncodedButtonConfig() {
   static unsigned long start = millis();
 
@@ -302,6 +382,34 @@ void setup() {
   buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   buttonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
 
+  encoded4To2ButtonConfig.setEventHandler(handleEvent);
+  encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureClick);
+  encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+  encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
+  encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
+  encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
+
+  encoded8To3ButtonConfig.setEventHandler(handleEvent);
+  encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureClick);
+  encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+  encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
+  encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
+  encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
+
+  encodedButtonConfig.setEventHandler(handleEvent);
+  encodedButtonConfig.setFeature(ButtonConfig::kFeatureClick);
+  encodedButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+  encodedButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
+  encodedButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
+  encodedButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
+
+  ladderButtonConfig.setEventHandler(handleEvent);
+  ladderButtonConfig.setFeature(ButtonConfig::kFeatureClick);
+  ladderButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+  ladderButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
+  ladderButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
+  ladderButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
+
   loopMode = LOOP_MODE_START;
   loopEventType = AceButton::kEventPressed;
 
@@ -329,6 +437,12 @@ void loop() {
       break;
     case LOOP_MODE_LONG_PRESS:
       loopLongPress();
+      break;
+    case LOOP_MODE_ENCODED_4TO2_BUTTON_CONFIG:
+      loopEncoded4To2ButtonConfig();
+      break;
+    case LOOP_MODE_ENCODED_8TO3_BUTTON_CONFIG:
+      loopEncoded8To3ButtonConfig();
       break;
     case LOOP_MODE_ENCODED_BUTTON_CONFIG:
       loopEncodedButtonConfig();
