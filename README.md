@@ -117,7 +117,7 @@ you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
 That said, [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) shows that the
-library consumes between 840-1250  bytes of flash memory, and
+library consumes between 860-1268  bytes of flash memory, and
 [AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
 between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
 ESP32. Hopefully that is small enough and fast enough for the vast majority of
@@ -1252,11 +1252,26 @@ to 14.)
 
 **Program size:**
 
-[LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine
-the size of the library. In summary, for a single button, the library consumes:
+[LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine the
+size of the library for various microcontrollers (Arduino Nano to ESP32). Here
+are some ranges of number to give a rough estimate of how much flash and static
+memory are consumed for various button configurations:
 
-* flash memory: 840-1250 bytes (depending on the microcontroller)
-* static memory: 14-28 bytes
+* one button using the default system `ButtonConfig`
+  * flash memory: 860-1268 bytes
+  * static memory: 14-28 bytes
+* 3 buttons using one `Encoded4To2ButtonConfig`
+  * flash memory: 1020-1476 bytes
+  * static memory: 59-64 bytes
+* 7 buttons using one `Encoded8To3ButtonConfig`
+  * flash memory: 1080-1540 bytes
+  * static memory: 74-84 bytes
+* 7 buttons using one `EncodedButtonConfig`
+  * flash memory: 1248-1760 bytes
+  * static memory: 151-188 bytes
+* 7 buttons using one `LadderButtonConfig`
+  * flash memory: 1500-2904 bytes
+  * static memory: 152-200 bytes
 
 **CPU cycles:**
 
