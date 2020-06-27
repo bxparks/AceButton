@@ -40,13 +40,13 @@ $ ./generate_table.awk < nano.txt
 +--------------------------------------------------------------+
 | functionality                   |    flash/ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |    972/   39 |     0/    0 |
+| Baseline                        |    962/   37 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1970/   53 |   998/   14 |
-| Encoded4To2ButtonConfig         |   2164/  112 |  1192/   73 |
-| Encoded8To3ButtonConfig         |   2432/  169 |  1460/  130 |
-| EncodedButtonConfig             |   2504/  192 |  1532/  153 |
-| LadderButtonConfig              |   2502/  205 |  1530/  166 |
+| ButtonConfig                    |   1960/   51 |   998/   14 |
+| Encoded4To2ButtonConfig         |   2152/  108 |  1190/   71 |
+| Encoded8To3ButtonConfig         |   2420/  165 |  1458/  128 |
+| EncodedButtonConfig             |   2492/  188 |  1530/  151 |
+| LadderButtonConfig              |   2490/  201 |  1528/  164 |
 +--------------------------------------------------------------+
 ```
 
@@ -60,13 +60,13 @@ $ ./generate_table.awk < nano.txt
 +--------------------------------------------------------------+
 | functionality                   |    flash/ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |   3968/  179 |     0/    0 |
+| Baseline                        |   3958/  177 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   4974/  193 |  1006/   14 |
-| Encoded4To2ButtonConfig         |   5170/  252 |  1202/   73 |
-| Encoded8To3ButtonConfig         |   5438/  309 |  1470/  130 |
-| EncodedButtonConfig             |   5524/  330 |  1556/  151 |
-| LadderButtonConfig              |   5570/  345 |  1602/  166 |
+| ButtonConfig                    |   4964/  191 |  1006/   14 |
+| Encoded4To2ButtonConfig         |   5158/  248 |  1200/   71 |
+| Encoded8To3ButtonConfig         |   5426/  305 |  1468/  128 |
+| EncodedButtonConfig             |   5512/  326 |  1554/  149 |
+| LadderButtonConfig              |   5558/  341 |  1600/  164 |
 +--------------------------------------------------------------+
 ```
 
@@ -80,13 +80,13 @@ $ ./generate_table.awk < nano.txt
 +--------------------------------------------------------------+
 | functionality                   |    flash/ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |  11240/ 2404 |     0/    0 |
+| Baseline                        |  11228/ 2404 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12100/ 2424 |   860/   20 |
-| Encoded4To2ButtonConfig         |  12288/ 2484 |  1048/   80 |
-| Encoded8To3ButtonConfig         |  12432/ 2548 |  1192/  144 |
-| EncodedButtonConfig             |  12488/ 2556 |  1248/  152 |
-| LadderButtonConfig              |  12740/ 2556 |  1500/  152 |
+| ButtonConfig                    |  12088/ 2424 |   860/   20 |
+| Encoded4To2ButtonConfig         |  12272/ 2484 |  1044/   80 |
+| Encoded8To3ButtonConfig         |  12416/ 2548 |  1188/  144 |
+| EncodedButtonConfig             |  12472/ 2556 |  1244/  152 |
+| LadderButtonConfig              |  12724/ 2556 |  1496/  152 |
 +--------------------------------------------------------------+
 ```
 
@@ -104,10 +104,10 @@ $ ./generate_table.awk < nano.txt
 | Baseline                        | 257052/26824 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    | 258320/26852 |  1268/   28 |
-| Encoded4To2ButtonConfig         | 258612/26920 |  1560/   96 |
-| Encoded8To3ButtonConfig         | 258756/26984 |  1704/  160 |
-| EncodedButtonConfig             | 258884/27024 |  1832/  200 |
-| LadderButtonConfig              | 258928/27036 |  1876/  212 |
+| Encoded4To2ButtonConfig         | 258596/26920 |  1544/   96 |
+| Encoded8To3ButtonConfig         | 258740/26984 |  1688/  160 |
+| EncodedButtonConfig             | 258852/27024 |  1800/  200 |
+| LadderButtonConfig              | 258896/27036 |  1844/  212 |
 +--------------------------------------------------------------+
 ```
 
@@ -122,13 +122,13 @@ $ ./generate_table.awk < nano.txt
 +--------------------------------------------------------------+
 | functionality                   |    flash/ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        | 208789/15292 |     0/    0 |
+| Baseline                        | 208773/15292 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 209873/15308 |  1084/   16 |
-| Encoded4To2ButtonConfig         | 210169/15372 |  1380/   80 |
-| Encoded8To3ButtonConfig         | 210297/15436 |  1508/  144 |
-| EncodedButtonConfig             | 210381/15444 |  1592/  152 |
-| LadderButtonConfig              | 211769/15452 |  2980/  160 |
+| ButtonConfig                    | 209857/15308 |  1084/   16 |
+| Encoded4To2ButtonConfig         | 210149/15372 |  1376/   80 |
+| Encoded8To3ButtonConfig         | 210277/15436 |  1504/  144 |
+| EncodedButtonConfig             | 210361/15444 |  1588/  152 |
+| LadderButtonConfig              | 211749/15452 |  2976/  160 |
 +--------------------------------------------------------------+
 ```
 
@@ -142,12 +142,12 @@ $ ./generate_table.awk < nano.txt
 +--------------------------------------------------------------+
 | functionality                   |    flash/ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |  11248/ 4180 |     0/    0 |
+| Baseline                        |  11236/ 4180 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12340/ 4200 |  1092/   20 |
-| Encoded4To2ButtonConfig         |  12548/ 4260 |  1300/   80 |
-| Encoded8To3ButtonConfig         |  12696/ 4324 |  1448/  144 |
-| EncodedButtonConfig             |  12720/ 4332 |  1472/  152 |
-| LadderButtonConfig              |  13368/ 4336 |  2120/  156 |
+| ButtonConfig                    |  12328/ 4200 |  1092/   20 |
+| Encoded4To2ButtonConfig         |  12532/ 4260 |  1296/   80 |
+| Encoded8To3ButtonConfig         |  12680/ 4324 |  1444/  144 |
+| EncodedButtonConfig             |  12704/ 4332 |  1468/  152 |
+| LadderButtonConfig              |  13352/ 4336 |  2116/  156 |
 +--------------------------------------------------------------+
 ```
