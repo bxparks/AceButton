@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.4.3</span>
+   &#160;<span id="projectnumber">1.5</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven button library for Arduino.</div>
   </td>
@@ -82,6 +82,7 @@ Inheritance diagram for ace_button::EncodedButtonConfig:</div>
 <div class="dyncontent">
 <div class="center"><img src="classace__button_1_1EncodedButtonConfig__inherit__graph.png" border="0" usemap="#ace__button_1_1EncodedButtonConfig_inherit__map" alt="Inheritance graph"/></div>
 <map name="ace__button_1_1EncodedButtonConfig_inherit__map" id="ace__button_1_1EncodedButtonConfig_inherit__map">
+<area shape="rect" id="node2" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in..." alt="" coords="11,5,182,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -89,6 +90,7 @@ Collaboration diagram for ace_button::EncodedButtonConfig:</div>
 <div class="dyncontent">
 <div class="center"><img src="classace__button_1_1EncodedButtonConfig__coll__graph.png" border="0" usemap="#ace__button_1_1EncodedButtonConfig_coll__map" alt="Collaboration graph"/></div>
 <map name="ace__button_1_1EncodedButtonConfig_coll__map" id="ace__button_1_1EncodedButtonConfig_coll__map">
+<area shape="rect" id="node2" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in..." alt="" coords="11,5,182,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -98,15 +100,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a5538117156240cf8ee188a974db43586"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a5538117156240cf8ee188a974db43586">More...</a><br /></td></tr>
 <tr class="separator:a5538117156240cf8ee188a974db43586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16c46caeb76f48bcc572df4483b25549"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1EncodedButtonConfig.html#a16c46caeb76f48bcc572df4483b25549">readButton</a> (uint8_t pin) override</td></tr>
-<tr class="memdesc:a16c46caeb76f48bcc572df4483b25549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return state of the encoded 'pin' number, corresponding to the pull-down states of the actual pins.  <a href="#a16c46caeb76f48bcc572df4483b25549">More...</a><br /></td></tr>
+<tr class="memdesc:a16c46caeb76f48bcc572df4483b25549"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return state of the virtual (i.e.  <a href="#a16c46caeb76f48bcc572df4483b25549">More...</a><br /></td></tr>
 <tr class="separator:a16c46caeb76f48bcc572df4483b25549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f5856eed51f6de01f346c2f46e08dc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1EncodedButtonConfig.html#a9f5856eed51f6de01f346c2f46e08dc6">checkButtons</a> () const</td></tr>
 <tr class="memdesc:a9f5856eed51f6de01f346c2f46e08dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the pins once, obtain the virtual pin number, then call each button's checkState() method to trigger any events.  <a href="#a9f5856eed51f6de01f346c2f46e08dc6">More...</a><br /></td></tr>
 <tr class="separator:a9f5856eed51f6de01f346c2f46e08dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba96c8f8d55666fb413195407ec5770a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1EncodedButtonConfig.html#aba96c8f8d55666fb413195407ec5770a">getNoButtonPin</a> () const</td></tr>
+<tr class="memdesc:aba96c8f8d55666fb413195407ec5770a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The virtual button pin number corresponding to "no button" pressed.  <a href="#aba96c8f8d55666fb413195407ec5770a">More...</a><br /></td></tr>
+<tr class="separator:aba96c8f8d55666fb413195407ec5770a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classace__button_1_1ButtonConfig"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classace__button_1_1ButtonConfig')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classace__button_1_1ButtonConfig.html">ace_button::ButtonConfig</a></td></tr>
-<tr class="memitem:a66924aac157a81cc54a9776fb975893a inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a66924aac157a81cc54a9776fb975893a">ButtonConfig</a> ()</td></tr>
-<tr class="memdesc:a66924aac157a81cc54a9776fb975893a inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classace__button_1_1ButtonConfig.html#a66924aac157a81cc54a9776fb975893a">More...</a><br /></td></tr>
-<tr class="separator:a66924aac157a81cc54a9776fb975893a inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa81d236e4030f4abc48eb01ae9ade202 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aa81d236e4030f4abc48eb01ae9ade202">ButtonConfig</a> ()=default</td></tr>
+<tr class="memdesc:aa81d236e4030f4abc48eb01ae9ade202 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="classace__button_1_1ButtonConfig.html#aa81d236e4030f4abc48eb01ae9ade202">More...</a><br /></td></tr>
+<tr class="separator:aa81d236e4030f4abc48eb01ae9ade202 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7be58d0fe0b242f78f15319d201a565 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#ad7be58d0fe0b242f78f15319d201a565">getDebounceDelay</a> ()</td></tr>
 <tr class="memdesc:ad7be58d0fe0b242f78f15319d201a565 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds to wait for debouncing.  <a href="classace__button_1_1ButtonConfig.html#ad7be58d0fe0b242f78f15319d201a565">More...</a><br /></td></tr>
 <tr class="separator:ad7be58d0fe0b242f78f15319d201a565 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,9 +153,6 @@ uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memitem:a440271e22d5e7e161cdcb3b73f092111 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">virtual unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a440271e22d5e7e161cdcb3b73f092111">getClock</a> ()</td></tr>
 <tr class="memdesc:a440271e22d5e7e161cdcb3b73f092111 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the milliseconds of the internal clock.  <a href="classace__button_1_1ButtonConfig.html#a440271e22d5e7e161cdcb3b73f092111">More...</a><br /></td></tr>
 <tr class="separator:a440271e22d5e7e161cdcb3b73f092111 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a74d1a1c082bfb0e4ddf55e67d3ac2d inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">virtual unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a8a74d1a1c082bfb0e4ddf55e67d3ac2d">getClockMicros</a> ()</td></tr>
-<tr class="memdesc:a8a74d1a1c082bfb0e4ddf55e67d3ac2d inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the microseconds of the internal clock.  <a href="classace__button_1_1ButtonConfig.html#a8a74d1a1c082bfb0e4ddf55e67d3ac2d">More...</a><br /></td></tr>
-<tr class="separator:a8a74d1a1c082bfb0e4ddf55e67d3ac2d inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23ca62772029a755b083ff4c34a27958 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a23ca62772029a755b083ff4c34a27958">isFeature</a> (<a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> features)</td></tr>
 <tr class="memdesc:a23ca62772029a755b083ff4c34a27958 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the given features are enabled.  <a href="classace__button_1_1ButtonConfig.html#a23ca62772029a755b083ff4c34a27958">More...</a><br /></td></tr>
 <tr class="separator:a23ca62772029a755b083ff4c34a27958 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,28 +162,21 @@ uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memitem:a30a6c6c13148081da4746e50eae21873 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a30a6c6c13148081da4746e50eae21873">clearFeature</a> (<a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> features)</td></tr>
 <tr class="memdesc:a30a6c6c13148081da4746e50eae21873 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable the given features.  <a href="classace__button_1_1ButtonConfig.html#a30a6c6c13148081da4746e50eae21873">More...</a><br /></td></tr>
 <tr class="separator:a30a6c6c13148081da4746e50eae21873 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af947cc369000a9c3619ac16b417db8b7 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#af947cc369000a9c3619ac16b417db8b7">resetFeatures</a> ()</td></tr>
+<tr class="memdesc:af947cc369000a9c3619ac16b417db8b7 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable all features.  <a href="classace__button_1_1ButtonConfig.html#af947cc369000a9c3619ac16b417db8b7">More...</a><br /></td></tr>
+<tr class="separator:af947cc369000a9c3619ac16b417db8b7 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af54641e72e5624be0eb57a012c5372bd inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classace__button_1_1ButtonConfig.html#a6d9db3c7b221b474c3cfd8fca5f4ba1e">EventHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#af54641e72e5624be0eb57a012c5372bd">getEventHandler</a> ()</td></tr>
 <tr class="memdesc:af54641e72e5624be0eb57a012c5372bd inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the eventHandler.  <a href="classace__button_1_1ButtonConfig.html#af54641e72e5624be0eb57a012c5372bd">More...</a><br /></td></tr>
 <tr class="separator:af54641e72e5624be0eb57a012c5372bd inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af916ea5ae0194afeac3a6fd6e25a13d1 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#af916ea5ae0194afeac3a6fd6e25a13d1">setEventHandler</a> (<a class="el" href="classace__button_1_1ButtonConfig.html#a6d9db3c7b221b474c3cfd8fca5f4ba1e">EventHandler</a> eventHandler)</td></tr>
 <tr class="memdesc:af916ea5ae0194afeac3a6fd6e25a13d1 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Install the event handler.  <a href="classace__button_1_1ButtonConfig.html#af916ea5ae0194afeac3a6fd6e25a13d1">More...</a><br /></td></tr>
 <tr class="separator:af916ea5ae0194afeac3a6fd6e25a13d1 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16d7dbbe1bb075018378e463cd8106de inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a16d7dbbe1bb075018378e463cd8106de">setTimingStats</a> (<a class="el" href="classace__button_1_1TimingStats.html">TimingStats</a> *timingStats)</td></tr>
-<tr class="memdesc:a16d7dbbe1bb075018378e463cd8106de inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the timing stats object.  <a href="classace__button_1_1ButtonConfig.html#a16d7dbbe1bb075018378e463cd8106de">More...</a><br /></td></tr>
-<tr class="separator:a16d7dbbe1bb075018378e463cd8106de inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff7101f2fe0f0c3bba67924b01e9d493 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classace__button_1_1TimingStats.html">TimingStats</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aff7101f2fe0f0c3bba67924b01e9d493">getTimingStats</a> ()</td></tr>
-<tr class="memdesc:aff7101f2fe0f0c3bba67924b01e9d493 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the timing stats.  <a href="classace__button_1_1ButtonConfig.html#aff7101f2fe0f0c3bba67924b01e9d493">More...</a><br /></td></tr>
-<tr class="separator:aff7101f2fe0f0c3bba67924b01e9d493 inherit pub_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ae92e77f9b6e8f5a18cc4f0cf17406724"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1EncodedButtonConfig.html#ae92e77f9b6e8f5a18cc4f0cf17406724">getVirtualPin</a> () const</td></tr>
 <tr class="memdesc:ae92e77f9b6e8f5a18cc4f0cf17406724"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the virtual pin number corresponding to the combinatorial states of the actual pins.  <a href="#ae92e77f9b6e8f5a18cc4f0cf17406724">More...</a><br /></td></tr>
 <tr class="separator:ae92e77f9b6e8f5a18cc4f0cf17406724"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_classace__button_1_1ButtonConfig"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classace__button_1_1ButtonConfig')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classace__button_1_1ButtonConfig.html">ace_button::ButtonConfig</a></td></tr>
-<tr class="memitem:a86f8f6b62825258e477e0a41846e0223 inherit pro_methods_classace__button_1_1ButtonConfig"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a86f8f6b62825258e477e0a41846e0223">init</a> ()</td></tr>
-<tr class="memdesc:a86f8f6b62825258e477e0a41846e0223 inherit pro_methods_classace__button_1_1ButtonConfig"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize to its pristine state, except for the EventHandler which is unchanged.  <a href="classace__button_1_1ButtonConfig.html#a86f8f6b62825258e477e0a41846e0223">More...</a><br /></td></tr>
-<tr class="separator:a86f8f6b62825258e477e0a41846e0223 inherit pro_methods_classace__button_1_1ButtonConfig"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -337,6 +332,35 @@ static <a class="el" href="classace__button_1_1ButtonConfig.html">ButtonConfig</
 
 </div>
 </div>
+<a id="aba96c8f8d55666fb413195407ec5770a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba96c8f8d55666fb413195407ec5770a">&#9670;&nbsp;</a></span>getNoButtonPin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t ace_button::EncodedButtonConfig::getNoButtonPin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The virtual button pin number corresponding to "no button" pressed. </p>
+
+<p class="definition">Definition at line <a class="el" href="EncodedButtonConfig_8h_source.html#l00115">115</a> of file <a class="el" href="EncodedButtonConfig_8h_source.html">EncodedButtonConfig.h</a>.</p>
+
+</div>
+</div>
 <a id="ae92e77f9b6e8f5a18cc4f0cf17406724"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae92e77f9b6e8f5a18cc4f0cf17406724">&#9670;&nbsp;</a></span>getVirtualPin()</h2>
 
@@ -391,8 +415,8 @@ static <a class="el" href="classace__button_1_1ButtonConfig.html">ButtonConfig</
 </table>
 </div><div class="memdoc">
 
-<p>Return state of the encoded 'pin' number, corresponding to the pull-down states of the actual pins. </p>
-<p>LOW means that the corresponding encoded virtual pin was pushed.</p>
+<p>Return state of the virtual (i.e. </p>
+<p>encoded) 'pin' number, corresponding to the pull-down states of the actual pins. LOW means that the corresponding encoded virtual pin was pushed.</p>
 <p>This method is not expected to be used. Use the <a class="el" href="classace__button_1_1EncodedButtonConfig.html#a9f5856eed51f6de01f346c2f46e08dc6" title="Read the pins once, obtain the virtual pin number, then call each button&#39;s checkState() method to tri...">checkButtons()</a> method instead for this class. </p>
 
 <p>Reimplemented from <a class="el" href="classace__button_1_1ButtonConfig.html#a5dab877bf124bfdf5a5eb703ca123027">ace_button::ButtonConfig</a>.</p>
