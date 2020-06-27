@@ -162,4 +162,34 @@ LadderButtonConfig      |  22/ 23/ 78 | 2002    |
 ### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* [I am unable to upload to my Teensy 3.2, so no data is available]
+* AceButton 1.5
+* Arduino IDE 1.8.13
+* Teensyduino 1.53.beta
+* Compiler options: "Faster"
+
+**Memory**
+```
+sizeof(AceButton): 16
+sizeof(ButtonConfig): 24
+sizeof(Encoded4To2ButtonConfig): 28
+sizeof(Encoded8To3ButtonConfig): 28
+sizeof(EncodedButtonConfig): 36
+sizeof(LadderButtonConfig): 36
+```
+
+**CPU**
+```
+------------------------+-------------+---------+
+button event            | min/avg/max | samples |
+------------------------+-------------+---------+
+idle                    |   2/  3/  5 | 1988    |
+press/release           |   2/  3/  6 | 1988    |
+click                   |   2/  3/  6 | 1988    |
+double click            |   2/  3/  6 | 1988    |
+long press/repeat press |   2/  3/  6 | 1987    |
+Encode4To2ButtonConfig  |   6/ 11/ 14 | 1972    |
+Encode8To3ButtonConfig  |  16/ 27/ 30 | 1942    |
+EncodeButtonConfig      |   8/ 20/ 22 | 1957    |
+LadderButtonConfig      |  16/ 25/ 33 | 1945    |
+------------------------+-------------+---------+
+```
