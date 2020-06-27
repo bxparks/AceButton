@@ -56,7 +56,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
 above (e.g. Clicked and DoubleClicked).
 
-Version: 1.4.3 (2020-05-02)
+Version: 1.5 (2020-06-27)
 
 [![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
 
@@ -74,7 +74,6 @@ Here are the high-level features of the AceButton library:
     * DoubleClicked
     * LongPressed
     * RepeatPressed
-* can distinguish between Clicked and DoubleClicked
 * adjustable configurations at runtime or compile-time
     * timing parameters
     * `digitalRead()` button read function can be overridden
@@ -83,14 +82,13 @@ Here are the high-level features of the AceButton library:
     * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
     * each `ButtonConfig` consumes 18 bytes (8-bit) or 24 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
-* supports multiple buttons on shared pins
+    * 970-2180 bytes of flash memory for the simple case of 1 AceButton and 1
+      ButtonConfig, depending on 8-bit or 32-bit processors
+* supports multiple buttons on shared pins using various circuits
     * [Binary Encoded buttons](docs/binary_encoding/README.md)
-      (e.g. 3 buttons using 2 pins, or 7 buttons using 3 pins)
+      (e.g. 7 buttons using 3 pins)
     * [Resistor Ladder buttons](docs/resistor_ladder/README.md) (e.g. 5 buttons
       on a single analog pin)
-* properly handles tricky edge cases
-    * reboots while the button is pressed
-    * orphaned clicks, to prevent spurious double-clicks
 * only 13-15 microseconds (on 16MHz ATmega328P) per polling call to
   `AceButton::check()`
 * extensive testing
@@ -105,7 +103,7 @@ features of the AceButton library are:
 * able to distinguish between Clicked and DoubleClicked
 * small memory usage
 * thorough unit testing
-* supports Binary Encoded buttons or Resistor Ladder buttons
+* support for multiple buttons using Binary Encoding or a Resistor Ladder
 
 ### Non-goals
 
@@ -507,7 +505,7 @@ class ButtonConfig {
     typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
         uint8_t buttonState);
 
-    ButtonConfig() {}
+    ButtonConfig() = default;
 
     uint16_t getDebounceDelay();
     uint16_t getClickDelay();

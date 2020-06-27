@@ -1,28 +1,35 @@
 # Changelog
 
 * Unreleased
+* 1.5 (2020-06-27)
     * Add `LadderButtonConfig` class to support multiple buttons on a single
       analog pin using `analogRead()`. Add documentation in
       [docs/resistor_ladder](docs/resistor_ladder).
-      See [Issue #43](https://github.com/bxparks/AceButton/issues/43).
+      Fixes [Issue #43](https://github.com/bxparks/AceButton/issues/43).
     * Add a virtual destructor for `ButtonConfig`, but *only* on the ESP8266 and
       ESP32, to allow polymorphic objects to be created and deleted on the heap.
-      See [Issue #46](https://github.com/bxparks/AceButton/issues/46). No
+      Fixes [Issue #46](https://github.com/bxparks/AceButton/issues/46). No
       virtual destructor on 8-bit processors because it causes the flash memory
       code size to increase by 600 bytes.
-    * Add `ButtonConfig::resetFeatures()` to clear all feature flags at once.
+    * Use `ButtonConfig() = default` constructor implementation instead of
+      explicit empty body, saving 40-80 bytes.
     * **Potential Breaking Change**: Remove `src/AdjustableButtonConfig.h` and
       `src/ButtonConfig.h` files which were deprecated 2 years ago, and
       contained nothing.
     * **Breaking Change**: Remove protected virtual method
-      `ButtonConfig::init()`, replaced with public `resetFeatures()`.
+      `ButtonConfig::init()`, replaced with public `resetFeatures()`, saving
+      a few dozen bytes of flash.
     * **Breaking Change**: Remove `TimingStats` from `ButtonConfig` and
       `AceButton`. Remove `ButtonConfig::setTimingStats()` and
       `ButtonConfig::getTimingStats()`. Reduces the code size by 13% (~150 out
       of ~1150 bytes).
     * **Breaking Change**: Move `TimingStats.h` file into
       `src/ace_button/testing` and move into `ace_button::testing` namespace.
-    * **Breaking Change**: Remove unused `ButtonConfig::getClockMicros()`.
+    * **Breaking Change**: Remove unused `ButtonConfig::getClockMicros()` saving
+      a few dozen bytes.
+    * All these changes result in reducing the code size by 350 bytes on a
+      SparkFun Pro Micro for a real-world app with 2 AceButtons and 1
+      ButtonConfig.
 * 1.4.3 (2020-05-02)
     * Update README.md to disambiguate overloaded constructors for
       `AceButton(0)`

@@ -45,6 +45,7 @@ readButton	KEYWORD2
 isFeature	KEYWORD2
 setFeature	KEYWORD2
 clearFeature	KEYWORD2
+resetFeatures	KEYWORD2
 #
 getEventHandler	KEYWORD2
 setEventHandler	KEYWORD2
