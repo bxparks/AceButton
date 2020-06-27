@@ -116,8 +116,8 @@ test(EncodedButtonConfig, press_and_release_pullup) {
 
 test(EncodedButtonConfig, click) {
   const unsigned long BASE_TIME = 65500; // rolls over in 36 milliseconds
-  testableConfig.setFeature(ButtonConfig::kFeatureClick);
   helper.init();
+  testableConfig.setFeature(ButtonConfig::kFeatureClick);
 
   // Start the AceButton.check().
   helper.releaseButton(BASE_TIME);

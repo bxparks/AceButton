@@ -10,9 +10,12 @@
       See [Issue #46](https://github.com/bxparks/AceButton/issues/46). No
       virtual destructor on 8-bit processors because it causes the flash memory
       code size to increase by 600 bytes.
+    * Add `ButtonConfig::resetFeatures()` to clear all feature flags at once.
     * **Potential Breaking Change**: Remove `src/AdjustableButtonConfig.h` and
       `src/ButtonConfig.h` files which were deprecated 2 years ago, and
       contained nothing.
+    * **Breaking Change**: Remove protected virtual method
+      `ButtonConfig::init()`, replaced with public `resetFeatures()`.
     * **Breaking Change**: Remove `TimingStats` from `ButtonConfig` and
       `AceButton`. Remove `ButtonConfig::setTimingStats()` and
       `ButtonConfig::getTimingStats()`. Reduces the code size by 13% (~150 out

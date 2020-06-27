@@ -47,6 +47,7 @@ class TestHelper {
 
     /** Reinitilize to its pristine state. */
     void init() {
+      mEventTracker->clear();
       mTestableConfig->init();
     }
 

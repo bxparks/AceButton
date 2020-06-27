@@ -47,8 +47,8 @@ class TestableButtonConfig: public ButtonConfig {
      * we have to reuse objects between test cases, so we need a way to
      * reinitialize this object to its pristine state just after construction.
      */
-    void init() override {
-      ButtonConfig::init();
+    void init() {
+      resetFeatures();
       mMillis = 0;
       mButtonState = HIGH;
     }

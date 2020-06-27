@@ -51,7 +51,8 @@ class TestableEncodedButtonConfig: public EncodedButtonConfig {
      * we have to reuse objects between test cases, so we need a way to
      * reinitialize this object to its pristine state just after construction.
      */
-    void init() override {
+    void init() {
+      resetFeatures();
       mMillis = 0;
       mVirtualPin = 0;
     }

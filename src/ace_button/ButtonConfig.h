@@ -269,7 +269,7 @@ class ButtonConfig {
       return digitalRead(pin);
     }
 
-    // These methods return the various feature flags that control the
+    // These methods provide access to various feature flags that control the
     // functionality of the AceButton.
 
     /** Check if the given features are enabled. */
@@ -285,6 +285,14 @@ class ButtonConfig {
     /** Disable the given features. */
     void clearFeature(FeatureFlagType features) {
       mFeatureFlags &= ~features;
+    }
+
+    /**
+     * Disable all features. Useful when the ButtonConfig is reused in different
+     * configurations. Also useful for testing.
+     */
+    void resetFeatures() {
+      mFeatureFlags = 0;
     }
 
     // EventHandler
@@ -308,15 +316,6 @@ class ButtonConfig {
      */
     static ButtonConfig* getSystemButtonConfig() {
       return &sSystemButtonConfig;
-    }
-
-  protected:
-    /**
-     * Initialize to its pristine state, except for the EventHandler which is
-     * unchanged. This is intended mostly for testing purposes.
-     */
-    virtual void init() {
-      mFeatureFlags = 0;
     }
 
   private:

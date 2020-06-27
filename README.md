@@ -529,6 +529,7 @@ class ButtonConfig {
     bool isFeature(FeatureFlagType features);
     void setFeature(FeatureFlagType features);
     void clearFeature(FeatureFlagType features);
+    void resetFeatures();
 
     EventHandler getEventHandler();
     void setEventHandler(EventHandler eventHandler);
@@ -812,15 +813,22 @@ control the behavior of `AceButton` event handling:
 These constants are used to set or clear the given flag:
 
 ```C++
+// Get the current config.
 ButtonConfig* config = button.getButtonConfig();
 
+// Set a specific feature
 config->setFeature(ButtonConfig::kFeatureLongPress);
 
+// Clear a specific feature
 config->clearFeature(ButtonConfig::kFeatureLongPress);
 
+// Test for a specific feature
 if (config->isFeature(ButtonConfig::kFeatureLongPress)) {
   ...
 }
+
+// Clear all features
+config->resetFeatures()
 ```
 
 The meaning of these flags are described below.
@@ -919,6 +927,14 @@ config->clearFeature(ButtonConfig::kFeatureSuppressAll);
 Note, however, that the `isFeature(ButtonConfig::kFeatureSuppressAll)` currently
 means "isAnyFeature() implemented?" not "areAllFeatures() implemented?" We don't
 expect `isFeature()` to be used often (or at all) for `kFeatureSuppressAll`.
+
+You can clear all feature at once using:
+```C++
+ButtonConfig* config = button.getButtonConfig();
+config->resetFeatures();
+```
+This is useful if you want to reuse a `ButtonConfig` instance and you want to
+reset its feature flags to its initial state.
 
 ### Single Button Simplifications
 
