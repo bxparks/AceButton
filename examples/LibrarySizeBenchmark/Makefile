@@ -5,7 +5,7 @@ APP_NAME := LibrarySizeBenchmark
 ARDUINO_LIBS := AceButton
 include ../../../UnixHostDuino/UnixHostDuino.mk
 
-TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy.txt
+TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy32.txt
 
 # Type 'make benchmarks' to regenerate the benchmark files.
 benchmarks: $(TARGETS)
@@ -27,8 +27,8 @@ esp8266.txt:
 esp32.txt:
 	./collect.sh esp32 $@
 
-teensy.txt:
-	@echo 'Must collect teensy.txt manually'
+teensy32.txt:
+	./collect.sh teensy32 $@
 
 more_clean:
 	rm -f $(TARGETS)
