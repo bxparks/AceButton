@@ -31,6 +31,7 @@ volatile int disableCompilerOptimization = 0;
 
   AceButton b1(&buttonConfig, 1);
   AceButton b2(&buttonConfig, 2);
+  AceButton b3(&buttonConfig, 3);
 #elif FEATURE == 3
   static const uint8_t BUTTON_PIN0 = 2;
   static const uint8_t BUTTON_PIN1 = 3;
@@ -40,6 +41,10 @@ volatile int disableCompilerOptimization = 0;
   AceButton b1(&buttonConfig, 1);
   AceButton b2(&buttonConfig, 2);
   AceButton b3(&buttonConfig, 3);
+  AceButton b4(&buttonConfig, 4);
+  AceButton b5(&buttonConfig, 5);
+  AceButton b6(&buttonConfig, 6);
+  AceButton b7(&buttonConfig, 7);
 #elif FEATURE == 4
   static const uint8_t NUM_PINS = 3;
   static const uint8_t PINS[] = {2, 3, 4};
@@ -138,10 +143,15 @@ void loop() {
 #elif FEATURE == 2
   b1.check();
   b2.check();
+  b3.check();
 #elif FEATURE == 3
   b1.check();
   b2.check();
   b3.check();
+  b4.check();
+  b5.check();
+  b6.check();
+  b7.check();
 #elif FEATURE == 4
   buttonConfig.checkButtons();
 #elif FEATURE == 5
