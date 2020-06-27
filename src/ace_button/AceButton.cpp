@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "TimingStats.h"
 #include "AceButton.h"
 
 namespace ace_button {
@@ -93,33 +92,15 @@ uint8_t AceButton::getDefaultReleasedState() {
 // NOTE: It would be interesting to rewrite the check() method using a Finite
 // State Machine.
 void AceButton::check() {
-  // Get the micros.
-  uint16_t nowMicros = mButtonConfig->getClockMicros();
-
-  // Retrieve the current time just once and use that in the various checkXxx()
-  // functions below. This provides some robustness of the various timing
-  // algorithms even if any of the event handlers takes more time than the
-  // threshold time limits such as 'debounceDelay' or longPressDelay'.
-  uint16_t now = mButtonConfig->getClock();
-
   uint8_t buttonState = mButtonConfig->readButton(mPin);
-
-  // debounce the button
-  if (checkDebounced(now, buttonState)) {
-    // check if the button was initialized (i.e. UNKNOWN state)
-    if (checkInitialized(buttonState)) {
-      checkEvent(now, buttonState);
-    }
-  }
-
-  TimingStats* stats = mButtonConfig->getTimingStats();
-  if (stats != nullptr) {
-    uint16_t elapsedMicros = mButtonConfig->getClockMicros() - nowMicros;
-    stats->update(elapsedMicros);
-  }
+  checkState(buttonState);
 }
 
 void AceButton::checkState(uint8_t buttonState) {
+  // Retrieve the current time just once and use that in the various checkXxx()
+  // functions below. This provides some robustness of the various timing
+  // algorithms even if one of the event handlers takes more time than the
+  // threshold time limits such as 'debounceDelay' or longPressDelay'.
   uint16_t now = mButtonConfig->getClock();
 
   // debounce the button

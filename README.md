@@ -2,12 +2,6 @@
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
-Version: 1.4.3 (2020-05-02)
-
-[![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
-
-## Summary
-
 This library provides classes which accept inputs from a mechanical button
 connected to a digital input pin on the Arduino. The library should be able to
 handle momentary buttons, maintained buttons, and switches, but it was designed
@@ -46,10 +40,27 @@ The supported events are:
 * `AceButton::kEventLongPressed`
 * `AceButton::kEventRepeatPressed`
 
-(TripleClicked is not supported but can be easily added to the library if
-requested.)
+The basic `ButtonConfig` class assumes that each button is connected to a single
+digital input pin. In some situations, the number of buttons that we want is
+greater than the number of input pins available. This library provides
+2 subclasses of `ButtonConfig` which may be useful:
 
-### Features
+* `EncodedButtonConfig`
+    * Supports binary encoded buttons, to read `2^N - 1` buttons using `N`
+      pins (e.g. 7 buttons using 3 digital pins).
+* `LadderButtonConfig`
+    * Supports 5-8 buttons (maybe more) on a single analog pin through a
+      resistor ladder. The `analogRead()` method is used to read the different
+      voltage levels corresponding to each button.
+
+Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
+above (e.g. Clicked and DoubleClicked).
+
+Version: 1.5 (2020-06-27)
+
+[![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
+
+## Features
 
 Here are the high-level features of the AceButton library:
 
@@ -63,25 +74,27 @@ Here are the high-level features of the AceButton library:
     * DoubleClicked
     * LongPressed
     * RepeatPressed
-* can distinguish between Clicked and DoubleClicked
 * adjustable configurations at runtime or compile-time
     * timing parameters
     * `digitalRead()` button read function can be overridden
     * `millis()` clock function can be overridden
 * small memory footprint
     * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
-    * each `ButtonConfig` consumes 20 bytes (8-bit) or 28 bytes (32-bit)
+    * each `ButtonConfig` consumes 18 bytes (8-bit) or 24 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
-* supports [binary encoded buttons](docs/binary_encoding/README.md)
-  (e.g. 3 buttons using 2 pins; 7 buttons using 3 pins)
-* thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
-* properly handles reboots while the button is pressed
-* properly handles orphaned clicks, to prevent spurious double-clicks
+    * 970-2180 bytes of flash memory for the simple case of 1 AceButton and 1
+      ButtonConfig, depending on 8-bit or 32-bit processors
+* supports multiple buttons on shared pins using various circuits
+    * [Binary Encoded buttons](docs/binary_encoding/README.md)
+      (e.g. 7 buttons using 3 pins)
+    * [Resistor Ladder buttons](docs/resistor_ladder/README.md) (e.g. 5 buttons
+      on a single analog pin)
 * only 13-15 microseconds (on 16MHz ATmega328P) per polling call to
   `AceButton::check()`
-* can be instrumented to extract profiling numbers
-* tested on Arduino AVR (UNO, Nano, Micro etc), Teensy ARM (LC
-  and 3.2), SAMD21 (Arduino Zero compatible), ESP8266 and ESP32
+* extensive testing
+    * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
+    * tested on Arduino AVR (UNO, Nano, Micro etc), Teensy ARM (LC and 3.2),
+      SAMD21 (Arduino Zero compatible), ESP8266 and ESP32
 
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
@@ -90,8 +103,7 @@ features of the AceButton library are:
 * able to distinguish between Clicked and DoubleClicked
 * small memory usage
 * thorough unit testing
-* proper handling of orphaned clicks
-* proper handling of a reboot while button is pressed
+* support for multiple buttons using Binary Encoding or a Resistor Ladder
 
 ### Non-goals
 
@@ -103,7 +115,7 @@ you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
 That said, [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) shows that the
-library consumes about 1100 bytes of flash memory, and
+library consumes between 970-2180  bytes of flash memory, and
 [AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
 between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
 ESP32. Hopefully that is small enough and fast enough for the vast majority of
@@ -194,40 +206,54 @@ The following example sketches are provided:
 * [Stopwatch.ino](examples/Stopwatch)
     * measures the speed of `AceButton:check()` with a start/stop/reset button
     * uses `kFeatureLongPress`
-* [TunerButtons.ino](examples/TunerButtons)
-    * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
-    * shows multiple `ButtonConfig` and `EventHandler` instances
-    * shows an example of how to use `getId()`
-    * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
-      `kFeatureSuppressAfterLongPress`, and `kFeatureSuppressAfterRepeatPress`
-* [ClickVersusDoubleClickUsingReleased.ino](examples/ClickVersusDoubleClickUsingReleased)
-    * a way to distinguish between a `kEventClicked` from a
-      `kEventDoubleClicked` using a `kEventReleased` instead
-* [ClickVersusDoubleClickUsingSuppression.ino](examples/ClickVersusDoubleClickUsingSuppression)
-    * another way to dstinguish between a `kEventClicked` from a
-      `kEventDoubleClicked` using the `kFeatureSuppressClickBeforeDoubleClick`
-      flag at the cost of increasing the response time of the `kEventClicked`
-      event
-* [ClickVersusDoubleClickUsingBoth.ino](examples/ClickVersusDoubleClickUsingBoth)
-    * an example that combines both the "UsingPressed" and "UsingSuppression"
-      techniques
+* Multiple Buttons
+    * [TunerButtons.ino](examples/TunerButtons)
+        * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
+        * shows multiple `ButtonConfig` and `EventHandler` instances
+        * shows an example of how to use `getId()`
+        * uses `kFeatureLongPress`, `kFeatureRepeatPress`,
+          `kFeatureSuppressAfterLongPress`, and
+          `kFeatureSuppressAfterRepeatPress`
+    * [ArrayButtons](examples/ArrayButtons)
+        * shows how to define an array of `AceButton` and initialize them using
+          the `init()` method in a loop
+* distinguishing Click versus Double-Click
+    * [ClickVersusDoubleClickUsingReleased.ino](examples/ClickVersusDoubleClickUsingReleased)
+        * a way to distinguish between a `kEventClicked` from a
+          `kEventDoubleClicked` using a `kEventReleased` instead
+    * [ClickVersusDoubleClickUsingSuppression.ino](examples/ClickVersusDoubleClickUsingSuppression)
+        * another way to dstinguish between a `kEventClicked` from a
+          `kEventDoubleClicked` using the
+          `kFeatureSuppressClickBeforeDoubleClick` flag at the cost of
+          increasing the response time of the `kEventClicked` event
+    * [ClickVersusDoubleClickUsingBoth.ino](examples/ClickVersusDoubleClickUsingBoth)
+        * an example that combines both the "UsingPressed" and
+          "UsingSuppression" techniques
 * [CapacitiveButton](examples/CapacitiveButton)
     * reads a capacitive button using the
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
       library
-* [ArrayButtons](examples/ArrayButtons)
-    * shows how to define an array of `AceButton` and initialize them using
-      the `init()` method in a loop
-* [Encoded8To3Buttons](examples/Encoded8To3Buttons)
-    * demo of `Encoded4To2ButtonConfig` and `Encoded8To3Buttonconfig` classes
-      to decode `M=3` buttons with `N=2` pins, or `M=7` buttons with `N=3` pins
-* [Encoded16To4Buttons](examples/Encoded16To4Buttons)
-    * demo of general M-to-N `EncodedButtonConfig` class to handle `M=15`
-      buttons with `N=4` pins
-* [AutoBenchmark.ino](examples/AutoBenchmark)
-    * generates the timing stats (min/average/max) for the `AceButton::check()`
-      method for various types of events (idle, press/release, click,
-      double-click, and long-press)
+* Binary Encoded Buttons
+    * [Encoded8To3Buttons](examples/Encoded8To3Buttons)
+        * demo of `Encoded4To2ButtonConfig` and `Encoded8To3Buttonconfig`
+          classes to decode `M=3` buttons with `N=2` pins, or `M=7` buttons with
+          `N=3` pins
+    * [Encoded16To4Buttons](examples/Encoded16To4Buttons)
+        * demo of general M-to-N `EncodedButtonConfig` class to handle `M=15`
+          buttons with `N=4` pins
+* Resistor Ladder Buttons
+    * [LadderButtons](examples/LadderButtons)
+        * demo of 4 buttons on a single analog pin using `analogRead()`
+* Benchmarks
+    * These are internal benchmark programs. They were not written as examples
+      of how to use the library.
+    * [AutoBenchmark.ino](examples/AutoBenchmark)
+        * generates the timing stats (min/average/max) for the
+          `AceButton::check()` method for various types of events (idle,
+          press/release, click, double-click, and long-press)
+    * [LibrarySizeBenchmark.ino](examples/LibrarySizeBenchmark/)
+        * determines the amount of flash memory consumes by various objects and
+          features of the library
 
 ## Usage
 
@@ -236,6 +262,12 @@ There are 2 classes and one typedef that a user will normally interact with:
 * `AceButton` (class)
 * `ButtonConfig` (class)
 * `EventHandler` (typedef)
+
+Advanced usage is supported by:
+
+* `EncodedButtonConfig` - binary encoded buttons supporting `2^N-1` buttons on
+  `N` digital pins
+* `LadderButtonConfig` - resistor ladder buttons using analog pins
 
 We explain how to use these below.
 
@@ -260,6 +292,13 @@ using ace_button::AceButton;
 
 ### Pin Wiring and Initialization
 
+The `ButtonConfig` class supports the simplest wiring. Each button is connected
+to a single digital input pin, as shown below. In the example below, 3 buttons
+labeled `S0`, `S1` and `S2` are connected to digital input pins `D2`, `D3`, and
+`D4`:
+
+![Direct Digital](docs/direct_digital/direct_digital.png)
+
 An Arduino microcontroller pin can be in an `OUTPUT` mode, an `INPUT` mode, or
 an `INPUT_PULLUP` mode. This mode is controlled by the `pinMode()` method.
 
@@ -277,6 +316,17 @@ microcontroller to connect an internal pull-up resistor to the pin. It is
 activated by calling `pinMode(pin, INPUT_PULLUP)` on the given `pin`. This mode
 is very convenient because it eliminates the external resistor, making the
 wiring simpler.
+
+The 3 resistors `Rc1`, `Rc2` andc `Rc3` are optional current limiting resistors.
+They help protect the microcontroller in the case of misconfiguration. If the
+pins are accidentally set to `OUTPUT` mode, then pressing one of the buttons
+would connect the output pin directly to ground, causing a large amount of
+current to flow that could permenantly damage the microcontroller. The
+resistance value of 220 ohms (or maybe 330 ohms) is high enough to keep the
+current within safety limits, but low enough compared to the internal pullup
+resistor that it is able to pull the digital pin to a logical 0 level. These
+current limiting resistors are good safety measures, but I admit that I often
+get lazy and don't use them when doing quick experiments.
 
 The AceButton library itself does *not* call the `pinMode()` function. The
 calling application is responsible for calling `pinMode()`. Normally, this
@@ -455,7 +505,7 @@ class ButtonConfig {
     typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
         uint8_t buttonState);
 
-    ButtonConfig() {}
+    ButtonConfig() = default;
 
     uint16_t getDebounceDelay();
     uint16_t getClickDelay();
@@ -477,6 +527,7 @@ class ButtonConfig {
     bool isFeature(FeatureFlagType features);
     void setFeature(FeatureFlagType features);
     void clearFeature(FeatureFlagType features);
+    void resetFeatures();
 
     EventHandler getEventHandler();
     void setEventHandler(EventHandler eventHandler);
@@ -760,15 +811,22 @@ control the behavior of `AceButton` event handling:
 These constants are used to set or clear the given flag:
 
 ```C++
+// Get the current config.
 ButtonConfig* config = button.getButtonConfig();
 
+// Set a specific feature
 config->setFeature(ButtonConfig::kFeatureLongPress);
 
+// Clear a specific feature
 config->clearFeature(ButtonConfig::kFeatureLongPress);
 
+// Test for a specific feature
 if (config->isFeature(ButtonConfig::kFeatureLongPress)) {
   ...
 }
+
+// Clear all features
+config->resetFeatures()
 ```
 
 The meaning of these flags are described below.
@@ -867,6 +925,14 @@ config->clearFeature(ButtonConfig::kFeatureSuppressAll);
 Note, however, that the `isFeature(ButtonConfig::kFeatureSuppressAll)` currently
 means "isAnyFeature() implemented?" not "areAllFeatures() implemented?" We don't
 expect `isFeature()` to be used often (or at all) for `kFeatureSuppressAll`.
+
+You can clear all feature at once using:
+```C++
+ButtonConfig* config = button.getButtonConfig();
+config->resetFeatures();
+```
+This is useful if you want to reuse a `ButtonConfig` instance and you want to
+reset its feature flags to its initial state.
 
 ### Single Button Simplifications
 
@@ -1172,24 +1238,78 @@ buttons:
 See [docs/binary_encoding/README.md](docs/binary_encoding/README.md) for
 information on how to use these classes.
 
+### Resistor Ladder
+
+It is possible to attach 5-8 (maybe more) buttons on a single analog pin through
+a resistor ladder, and use the `analogRead()` to read the different voltages
+generated by each button. An example circuit looks like this:
+
+![Parallel Registor Ladder](docs/resistor_ladder/resistor_ladder_parallel.png)
+
+The `LadderButtonConfig` class handles this configuration.
+
+See [docs/resistor_ladder/README.md](docs/resistor_ladder/README.md) for
+information on how to use this class.
+
+### Dynamic Allocation on the Heap
+
+All classes in this library were originally designed to be created statically at
+startup time and never deleted during the lifetime of the application. Since
+they were never meant to be deleted through the pointer, I did not include the
+virtual destructor for polymorphic classes (i.e. `ButtonConfig` and its
+subclasses). The `AceButton` class is not polymorphic and does not need a
+virtual destructor.
+
+Most 8-bit processors have limited flash and static memory (for example,
+32 kB flash and 2 KB static for the Nano or UNO). Adding a virtual destructor
+causes **600** additional bytes of flash memory to be consumed. I suspect this
+is due to the virtual destructor pulling the `malloc()` and `free()`
+functions which are needed to implement the `new` and `delete` operators. For a
+library that consumes only about 1200 bytes on an 8-bit processor, this increase
+in flash memory size did not seem acceptable.
+
+For 32-bit processors (e.g. ESP8266, ESP32) which have far more flash memory
+(e.g. 1 MB) and static memory (e.g. 80 kB), it seems reasonable to allow
+`AceButton` and `ButtonConfig` to be created and deleted from the heap.
+(See [Issue #46](https://github.com/bxparks/AceButton/issues/46) for the
+motivation.) Therefore, with v1.5, I have added a virtual destructor for the
+`ButtonConfig` and its subclasses which is conditionally compiled for the
+following 32-bit processors:
+
+* ESP8266
+* ESP32
+
+Testing shows that the virtual destructor adds only about 60-120 bytes of flash
+memory for these microcontrollers, which is a trivial amount of flash memory
+compared to the ~1 MB flash memory available on an ESP8266.
+
+Even for 32-bit processors, I still recommend avoiding the creation and deletion
+of objects from the heap, to avoid the risk of heap fragmentation. If a variable
+number of buttons is needed, try to design the application so that all
+buttons which will ever be needed is predefined in a global pool. Even if some
+of the `AceButton` and `ButtonConfig` instances are unused, the overhead is
+probably smaller than the overhead of wasted space due to heap fragmentation.
+
 ## Resource Consumption
 
 Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 (Arduino Uno, Nano, etc):
 
 * sizeof(AceButton): 14
-* sizeof(ButtonConfig): 20
-* sizeof(Encoded4To2ButtonConfig): 23
-* sizeof(Encoded8To3ButtonConfig): 24
-* sizeof(EncodedButtonConfig): 27
+* sizeof(ButtonConfig): 18
+* sizeof(Encoded4To2ButtonConfig): 21
+* sizeof(Encoded8To3ButtonConfig): 22
+* sizeof(EncodedButtonConfig): 25
+* sizeof(LadderButtonConfig): 26
 
 and 32-bit microcontrollers:
 
 * sizeof(AceButton): 16
-* sizeof(ButtonConfig): 28
-* sizeof(Encoded4To2ButtonConfig): 32
-* sizeof(Encoded8To3ButtonConfig): 32
-* sizeof(EncodedButtonConfig): 40
+* sizeof(ButtonConfig): 24
+* sizeof(Encoded4To2ButtonConfig): 28
+* sizeof(Encoded8To3ButtonConfig): 28
+* sizeof(EncodedButtonConfig): 36
+* sizeof(LadderButtonConfig): 36
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
@@ -1197,25 +1317,52 @@ to 14.)
 
 **Program size:**
 
-[LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine
-the size of the library. For a single button, the library consumed:
-* flash memory: 1100-1330 bytes
-* static memory: 14-28 bytes
+[LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine the
+size of the library for various microcontrollers (Arduino Nano to ESP32). Here
+are some ranges of number to give a rough estimate of how much flash and static
+memory are consumed for various button configurations:
 
-depending on the target board. See the README.md in the above link for more
-details.
+* one button using the default system `ButtonConfig`
+  * flash memory: 970-2180 bytes
+  * static memory: 40-680 bytes
+* 3 buttons using one `Encoded4To2ButtonConfig`
+  * flash memory: 1100-2400 bytes
+  * static memory: 70-720 bytes
+* 7 buttons using one `Encoded8To3ButtonConfig`
+  * flash memory: 1250-2500 bytes
+  * static memory: 130-780 bytes
+* 7 buttons using one `EncodedButtonConfig`
+  * flash memory: 1350-2700 bytes
+  * static memory: 180-820 bytes
+* 7 buttons using one `LadderButtonConfig`
+  * flash memory: 1600-4100 bytes
+  * static memory: 190-820 bytes
 
 **CPU cycles:**
 
-The profiling numbers for `AceButton::check()` can be found in
-[examples/AutoBenchmark](examples/AutoBenchmark).
+The profiling numbers for `AceButton::check()` using a simple `ButtonConfig` can
+be found in [examples/AutoBenchmark](examples/AutoBenchmark).
 
 In summary, the average numbers for various boards are:
+
 * Arduino Nano: 13-15 microsesconds
 * SAMD21: 7-8 microseconds
 * ESP8266: 8-9 microseconds
 * ESP32: 2-3 microseconds
-* Teensy 3.2: 3 microseconds
+* Teensy 3.2: 2-3 microseconds
+
+If you use the more advanced `EncodedButtonConfig` or `LadderButtonConfig`
+to check more buttons, each iteration through all the buttons takes longer.
+As a rough summary, to check 7 buttons:
+
+* Arduino Nano: 80-180 microseconds
+* SAMD21: 26-50 microseconds (EncodedButtonConfig), 850 microseconds
+  (LadderButtonConfig). It seems like the `analogRead()` function on a SAMD21 is
+  particularly slow. I recommend double-checking these numbers if you use the
+  SAMD21.
+* ESP8266: 43-133 microseconds
+* ESP32: 13-22 microseconds
+* Teensy 3.2: 8-16 microseconds
 
 ## System Requirements
 
@@ -1223,28 +1370,26 @@ In summary, the average numbers for various boards are:
 
 This library was developed and tested using:
 
-* [Arduino IDE 1.8.9](https://www.arduino.cc/en/Main/Software)
-* [Arduino AVR Boards 1.6.23](https://github.com/arduino/ArduinoCore-avr)
-* [Arduino SAMD Boards 1.8.3](https://github.com/arduino/ArduinoCore-samd)
-* [SparkFun AVR Boards 1.1.12](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.6.2](https://github.com/sparkfun/Arduino_Boards)
-* [ESP8266 Arduino Core 2.5.2](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino Core 1.0.2](https://github.com/espressif/arduino-esp32)
-* [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
+* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
+* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino SAMD Boards 1.8.6](https://github.com/arduino/ArduinoCore-samd)
+* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
+* [ESP8266 Arduino Core 2.7.1](https://github.com/esp8266/Arduino)
+* [ESP32 Arduino Core 1.0.4](https://github.com/espressif/arduino-esp32)
+* [Teensyduino 1.53.beta](https://www.pjrc.com/teensy/td_download.html)
 
 It should work with [PlatformIO](https://platformio.org/) but I have
 not tested it.
 
 ### Operating System
 
-I used MacOS 10.13.3 and Ubuntu Linux 18.04 for most of my development.
+I use Ubuntu Linux 18.04 for most of my development.
 
 ### Hardware
 
 The library has been extensively tested on the following boards:
 
 * Arduino Nano clone (16 MHz ATmega328P)
-* Arduino UNO R3 clone (16 MHz ATmega328P)
 * Arduino Pro Micro clone (16 MHz ATmega32U4)
 * SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
@@ -1255,6 +1400,7 @@ I will occasionally test on the following boards as a sanity check:
 
 * Teensy LC (48 MHz ARM Cortex-M0+)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
+* Arduino UNO R3 clone (16 MHz ATmega328P)
 
 ## Background Motivation
 

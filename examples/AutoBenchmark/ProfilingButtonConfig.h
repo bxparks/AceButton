@@ -2,7 +2,7 @@
 #define PROFILING_BUTTON_CONFIG_H
 
 #include <Arduino.h> // LOW, HIGH
-#include <ButtonConfig.h>
+#include <AceButton.h>
 
 namespace ace_button {
 
@@ -15,11 +15,6 @@ class ProfilingButtonConfig: public ButtonConfig {
   public:
     ProfilingButtonConfig():
         mButtonState(HIGH) {}
-
-    void init() override {
-      ButtonConfig::init();
-      mButtonState = HIGH;
-    }
 
     int readButton(uint8_t /* pin */) override { return mButtonState; }
 

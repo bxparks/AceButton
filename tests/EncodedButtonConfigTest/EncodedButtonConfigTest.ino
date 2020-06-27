@@ -93,7 +93,7 @@ test(EncodedButtonConfig, press_and_release_pullup) {
   helper.pressButton(BASE_TIME + 130, 1);
   assertEqual(1, eventTracker.getNumEvents());
   {
-    EventRecord& record = eventTracker.getRecord(0);
+    const EventRecord& record = eventTracker.getRecord(0);
     assertEqual(AceButton::kEventPressed, record.getEventType());
     assertEqual(1, record.getPin());
     assertEqual(LOW, record.getButtonState());
@@ -107,7 +107,7 @@ test(EncodedButtonConfig, press_and_release_pullup) {
   helper.releaseButton(BASE_TIME + 1030);
   assertEqual(1, eventTracker.getNumEvents());
   {
-    EventRecord& record = eventTracker.getRecord(0);
+    const EventRecord& record = eventTracker.getRecord(0);
     assertEqual(AceButton::kEventReleased, record.getEventType());
     assertEqual(1, record.getPin());
     assertEqual(HIGH, record.getButtonState());
@@ -116,8 +116,8 @@ test(EncodedButtonConfig, press_and_release_pullup) {
 
 test(EncodedButtonConfig, click) {
   const unsigned long BASE_TIME = 65500; // rolls over in 36 milliseconds
-  testableConfig.setFeature(ButtonConfig::kFeatureClick);
   helper.init();
+  testableConfig.setFeature(ButtonConfig::kFeatureClick);
 
   // Start the AceButton.check().
   helper.releaseButton(BASE_TIME);
@@ -137,7 +137,7 @@ test(EncodedButtonConfig, click) {
   helper.pressButton(BASE_TIME + 130, 2);
   assertEqual(1, eventTracker.getNumEvents());
   {
-    EventRecord& record = eventTracker.getRecord(0);
+    const EventRecord& record = eventTracker.getRecord(0);
     assertEqual(AceButton::kEventPressed, record.getEventType());
     assertEqual(2, record.getPin());
     assertEqual(LOW, record.getButtonState());
@@ -156,13 +156,13 @@ test(EncodedButtonConfig, click) {
   helper.releaseButton(BASE_TIME + 320);
   assertEqual(2, eventTracker.getNumEvents());
   {
-    EventRecord& record = eventTracker.getRecord(0);
+    const EventRecord& record = eventTracker.getRecord(0);
     assertEqual(AceButton::kEventClicked, record.getEventType());
     assertEqual(2, record.getPin());
     assertEqual(HIGH, record.getButtonState());
   }
   {
-    EventRecord& record = eventTracker.getRecord(1);
+    const EventRecord& record = eventTracker.getRecord(1);
     assertEqual(AceButton::kEventReleased, record.getEventType());
     assertEqual(2, record.getPin());
     assertEqual(HIGH, record.getButtonState());

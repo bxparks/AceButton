@@ -30,7 +30,6 @@ SOFTWARE.
 namespace ace_button {
 
 class AceButton;
-class TimingStats;
 
 /**
  * Class that defines the timing parameters and event handler of an AceButton or
@@ -161,12 +160,23 @@ class ButtonConfig {
         uint8_t buttonState);
 
     /** Constructor. */
-    ButtonConfig() {}
+    ButtonConfig() = default;
 
-    // These configuration methods are virtual so that they can be overriddden.
-    // Subclasses can override at the class-level by defining a new virtual
-    // function in the subclass, or by defining an instance variable and storing
-    // the parameter with each instance of this class.
+    #if defined(ESP8266) || defined(ESP32)
+      /**
+       * Virtual destructor is provided *only* for 32-bit systems such as the
+       * ESP8266 and ESP32 which have enough flash memory that these objects can
+       * be created on the heap without the risk of heap fragmentation.
+       *
+       * For 8-bit processors, the addition of a virtual destructor causes the
+       * flash memory size of the library to increase by 600 bytes, which is far
+       * too large compared to the ~1000 bytes consumed by the entire library.
+       * For 32-bit processors, the virtual destructor seems to increase the
+       * code size by 60-120 bytes, which is tiny compared to the ~1 MB of total
+       * flash memory space offered by the ESP8266 and ESP32.
+       */
+      virtual ~ButtonConfig() = default;
+    #endif
 
     /** Milliseconds to wait for debouncing. */
     uint16_t getDebounceDelay() { return mDebounceDelay; }
@@ -246,12 +256,6 @@ class ButtonConfig {
     virtual unsigned long getClock() { return millis(); }
 
     /**
-     * Return the microseconds of the internal clock. Can be overridden
-     * for testing purposes.
-     */
-    virtual unsigned long getClockMicros() { return micros(); }
-
-    /**
      * Return the HIGH or LOW state of the button. Override to use something
      * other than digitalRead(). The return type is 'int' instead of uint16_t
      * because that's the return type of digitalRead().
@@ -260,7 +264,7 @@ class ButtonConfig {
       return digitalRead(pin);
     }
 
-    // These methods return the various feature flags that control the
+    // These methods provide access to various feature flags that control the
     // functionality of the AceButton.
 
     /** Check if the given features are enabled. */
@@ -278,6 +282,14 @@ class ButtonConfig {
       mFeatureFlags &= ~features;
     }
 
+    /**
+     * Disable all features. Useful when the ButtonConfig is reused in different
+     * configurations. Also useful for testing.
+     */
+    void resetFeatures() {
+      mFeatureFlags = 0;
+    }
+
     // EventHandler
 
     /** Return the eventHandler. */
@@ -293,32 +305,12 @@ class ButtonConfig {
       mEventHandler = eventHandler;
     }
 
-    // TimingStats
-
-    /** Set the timing stats object. The timingStats can be nullptr. */
-    void setTimingStats(TimingStats* timingStats) {
-      mTimingStats = timingStats;
-    }
-
-    /** Get the timing stats. Can return nullptr. */
-    TimingStats* getTimingStats() { return mTimingStats; }
-
     /**
      * Return a pointer to the singleton instance of the ButtonConfig
      * which is attached to all AceButton instances by default.
      */
     static ButtonConfig* getSystemButtonConfig() {
       return &sSystemButtonConfig;
-    }
-
-  protected:
-    /**
-     * Initialize to its pristine state, except for the EventHandler which is
-     * unchanged. This is intended mostly for testing purposes.
-     */
-    virtual void init() {
-      mFeatureFlags = 0;
-      mTimingStats = nullptr;
     }
 
   private:
@@ -334,9 +326,6 @@ class ButtonConfig {
 
     /** The event handler for all buttons associated with this ButtonConfig. */
     EventHandler mEventHandler = nullptr;
-
-    /** The timing stats object. */
-    TimingStats* mTimingStats = nullptr;
 
     /** A bit mask flag that activates certain features. */
     FeatureFlagType mFeatureFlags = 0;

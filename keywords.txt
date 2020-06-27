@@ -12,6 +12,7 @@ ButtonConfig	KEYWORD1
 Encoded4To2ButtonConfig	KEYWORD1
 Encoded8To3ButtonConfig	KEYWORD1
 EncodedButtonConfig	KEYWORD1
+LadderButtonConfig	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -44,6 +45,7 @@ readButton	KEYWORD2
 isFeature	KEYWORD2
 setFeature	KEYWORD2
 clearFeature	KEYWORD2
+resetFeatures	KEYWORD2
 #
 getEventHandler	KEYWORD2
 setEventHandler	KEYWORD2
@@ -58,6 +60,13 @@ setRepeatPressInterval	KEYWORD2
 
 # methods from EncodedButtonConfig
 checkButtons	KEYWORD2
+getVirtualPin	KEYWORD2
+getNoButtonPin	KEYWORD2
+
+# methods from LadderButtonConfig
+checkButtons	KEYWORD2
+getVirtualPin	KEYWORD2
+getNoButtonPin	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)

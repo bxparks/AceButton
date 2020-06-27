@@ -34,7 +34,7 @@ namespace testing {
 
 /**
  * A wrapper class that sends emulated button presses and released to the
-  underlying AceButton class, and captures the resulting events in the
+ * underlying AceButton class, and captures the resulting events in the
  * provided EventTracker.
  */
 class TestHelper {
@@ -47,6 +47,7 @@ class TestHelper {
 
     /** Reinitilize to its pristine state. */
     void init() {
+      mEventTracker->clear();
       mTestableConfig->init();
     }
 
@@ -67,7 +68,7 @@ class TestHelper {
      */
     void releaseButton(unsigned long time) {
       mTestableConfig->setClock(time);
-      mTestableConfig->setVirtualPin(0);
+      mTestableConfig->setVirtualPin(mTestableConfig->getNoButtonPin());
       mEventTracker->clear();
       mTestableConfig->checkButtons();
     }

@@ -94,9 +94,9 @@ class EncodedButtonConfig : public ButtonConfig {
         uint8_t defaultReleasedState = HIGH);
 
     /**
-     * Return state of the encoded 'pin' number, corresponding to the pull-down
-     * states of the actual pins. LOW means that the corresponding encoded
-     * virtual pin was pushed.
+     * Return state of the virtual (i.e. encoded) 'pin' number, corresponding to
+     * the pull-down states of the actual pins. LOW means that the corresponding
+     * encoded virtual pin was pushed.
      *
      * This method is not expected to be used. Use the checkButtons() method
      * instead for this class.
@@ -110,6 +110,11 @@ class EncodedButtonConfig : public ButtonConfig {
      * method, instead of calling the check() of each AceButton.
      */
     void checkButtons() const;
+
+    /** The virtual button pin number corresponding to "no button" pressed. */
+    uint8_t getNoButtonPin() const {
+      return 0;
+    }
 
   protected:
     /**
