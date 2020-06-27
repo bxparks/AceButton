@@ -117,7 +117,7 @@ you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
 That said, [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) shows that the
-library consumes between 860-1268  bytes of flash memory, and
+library consumes between 970-2180  bytes of flash memory, and
 [AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
 between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
 ESP32. Hopefully that is small enough and fast enough for the vast majority of
@@ -1267,7 +1267,7 @@ Most 8-bit processors have limited flash and static memory (for example,
 causes **600** additional bytes of flash memory to be consumed. I suspect this
 is due to the virtual destructor pulling the `malloc()` and `free()`
 functions which are needed to implement the `new` and `delete` operators. For a
-library that consumes only about 1000 bytes on an 8-bit processor, this increase
+library that consumes only about 1200 bytes on an 8-bit processor, this increase
 in flash memory size did not seem acceptable.
 
 For 32-bit processors (e.g. ESP8266, ESP32) which have far more flash memory
@@ -1282,15 +1282,15 @@ following 32-bit processors:
 * ESP32
 
 Testing shows that the virtual destructor adds only about 60-120 bytes of flash
-memory, which is a trivial amount of flash memory compared to the ~1 MB flash
-memory available on an ESP8266.
+memory for these microcontrollers, which is a trivial amount of flash memory
+compared to the ~1 MB flash memory available on an ESP8266.
 
 Even for 32-bit processors, I still recommend avoiding the creation and deletion
 of objects from the heap, to avoid the risk of heap fragmentation. If a variable
-number of buttons is needed, try to design your application so that you
-pre-allocate maximum number of buttons in a global pool. Even if some of the
-`AceButton` and `ButtonConfig` instances are unused, the overhead is probably
-smaller than the overhead of wasted space due to heap fragmentation.
+number of buttons is needed, try to design the application so that all
+buttons which will ever be needed is predefined in a global pool. Even if some
+of the `AceButton` and `ButtonConfig` instances are unused, the overhead is
+probably smaller than the overhead of wasted space due to heap fragmentation.
 
 ## Resource Consumption
 
@@ -1325,20 +1325,20 @@ are some ranges of number to give a rough estimate of how much flash and static
 memory are consumed for various button configurations:
 
 * one button using the default system `ButtonConfig`
-  * flash memory: 860-1268 bytes
-  * static memory: 14-28 bytes
+  * flash memory: 970-2180 bytes
+  * static memory: 40-680 bytes
 * 3 buttons using one `Encoded4To2ButtonConfig`
-  * flash memory: 1020-1476 bytes
-  * static memory: 59-64 bytes
+  * flash memory: 1100-2400 bytes
+  * static memory: 70-720 bytes
 * 7 buttons using one `Encoded8To3ButtonConfig`
-  * flash memory: 1080-1540 bytes
-  * static memory: 74-84 bytes
+  * flash memory: 1250-2500 bytes
+  * static memory: 130-780 bytes
 * 7 buttons using one `EncodedButtonConfig`
-  * flash memory: 1248-1760 bytes
-  * static memory: 151-188 bytes
+  * flash memory: 1350-2700 bytes
+  * static memory: 180-820 bytes
 * 7 buttons using one `LadderButtonConfig`
-  * flash memory: 1500-2904 bytes
-  * static memory: 152-200 bytes
+  * flash memory: 1600-4100 bytes
+  * static memory: 190-820 bytes
 
 **CPU cycles:**
 

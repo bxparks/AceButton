@@ -138,7 +138,9 @@ void setup() {
 }
 
 void loop() {
-#if FEATURE == 1
+#if FEATURE == 0
+  handleEvent(nullptr, 0, 0);
+#elif FEATURE == 1
   button.check();
 #elif FEATURE == 2
   b1.check();

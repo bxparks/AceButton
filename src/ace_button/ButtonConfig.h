@@ -160,7 +160,7 @@ class ButtonConfig {
         uint8_t buttonState);
 
     /** Constructor. */
-    ButtonConfig() {}
+    ButtonConfig() = default;
 
     #if defined(ESP8266) || defined(ESP32)
       /**
@@ -177,11 +177,6 @@ class ButtonConfig {
        */
       virtual ~ButtonConfig() = default;
     #endif
-
-    // These configuration methods are virtual so that they can be overriddden.
-    // Subclasses can override at the class-level by defining a new virtual
-    // function in the subclass, or by defining an instance variable and storing
-    // the parameter with each instance of this class.
 
     /** Milliseconds to wait for debouncing. */
     uint16_t getDebounceDelay() { return mDebounceDelay; }
