@@ -31,6 +31,7 @@ $ ./generate_table.awk < nano.txt
 
 ## Arduino Nano
 
+* 16MHz ATmega328P
 * AceButton 1.5
 * Arduino IDE 1.8.13
 * Arduino AVR Boards 1.8.3
@@ -42,8 +43,8 @@ $ ./generate_table.awk < nano.txt
 | Baseline                        |    972/   39 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |   1970/   53 |   998/   14 |
-| Encoded4To2ButtonConfig         |   2108/   98 |  1136/   59 |
-| Encoded8To3ButtonConfig         |   2202/  113 |  1230/   74 |
+| Encoded4To2ButtonConfig         |   2164/  112 |  1192/   73 |
+| Encoded8To3ButtonConfig         |   2432/  169 |  1460/  130 |
 | EncodedButtonConfig             |   2504/  192 |  1532/  153 |
 | LadderButtonConfig              |   2502/  205 |  1530/  166 |
 +--------------------------------------------------------------+
@@ -62,8 +63,8 @@ $ ./generate_table.awk < nano.txt
 | Baseline                        |   3968/  179 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |   4974/  193 |  1006/   14 |
-| Encoded4To2ButtonConfig         |   5114/  238 |  1146/   59 |
-| Encoded8To3ButtonConfig         |   5208/  253 |  1240/   74 |
+| Encoded4To2ButtonConfig         |   5170/  252 |  1202/   73 |
+| Encoded8To3ButtonConfig         |   5438/  309 |  1470/  130 |
 | EncodedButtonConfig             |   5524/  330 |  1556/  151 |
 | LadderButtonConfig              |   5570/  345 |  1602/  166 |
 +--------------------------------------------------------------+
@@ -82,8 +83,8 @@ $ ./generate_table.awk < nano.txt
 | Baseline                        |  11240/ 2404 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |  12100/ 2424 |   860/   20 |
-| Encoded4To2ButtonConfig         |  12260/ 2468 |  1020/   64 |
-| Encoded8To3ButtonConfig         |  12320/ 2484 |  1080/   80 |
+| Encoded4To2ButtonConfig         |  12288/ 2484 |  1048/   80 |
+| Encoded8To3ButtonConfig         |  12432/ 2548 |  1192/  144 |
 | EncodedButtonConfig             |  12488/ 2556 |  1248/  152 |
 | LadderButtonConfig              |  12740/ 2556 |  1500/  152 |
 +--------------------------------------------------------------+
@@ -91,6 +92,7 @@ $ ./generate_table.awk < nano.txt
 
 ## ESP8266
 
+* NodeMCU 1.0 clone, 80MHz ESP8266
 * AceButton 1.5
 * Arduino IDE 1.8.13
 * ESP8266 Boards 2.7.1
@@ -102,8 +104,8 @@ $ ./generate_table.awk < nano.txt
 | Baseline                        | 257000/26820 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    | 258268/26840 |  1268/   20 |
-| Encoded4To2ButtonConfig         | 258476/26888 |  1476/   68 |
-| Encoded8To3ButtonConfig         | 258540/26904 |  1540/   84 |
+| Encoded4To2ButtonConfig         | 258508/26904 |  1508/   84 |
+| Encoded8To3ButtonConfig         | 258636/26968 |  1636/  148 |
 | EncodedButtonConfig             | 258764/27008 |  1764/  188 |
 | LadderButtonConfig              | 258808/27020 |  1808/  200 |
 +--------------------------------------------------------------+
@@ -111,6 +113,7 @@ $ ./generate_table.awk < nano.txt
 
 ## ESP32
 
+* ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * AceButton 1.5
 * Arduino IDE 1.8.13
 * ESP32 Boards 1.0.4
@@ -122,8 +125,8 @@ $ ./generate_table.awk < nano.txt
 | Baseline                        | 208761/15292 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    | 209845/15308 |  1084/   16 |
-| Encoded4To2ButtonConfig         | 210093/15356 |  1332/   64 |
-| Encoded8To3ButtonConfig         | 210145/15372 |  1384/   80 |
+| Encoded4To2ButtonConfig         | 210113/15372 |  1352/   80 |
+| Encoded8To3ButtonConfig         | 210241/15436 |  1480/  144 |
 | EncodedButtonConfig             | 210277/15444 |  1516/  152 |
 | LadderButtonConfig              | 211665/15452 |  2904/  160 |
 +--------------------------------------------------------------+
@@ -133,7 +136,7 @@ $ ./generate_table.awk < nano.txt
 
 * AceButton 1.5
 * Arduino IDE 1.8.13
-* Teensyduino 1.52.beta
+* Teensyduino 1.53.beta
 
 ```
 +--------------------------------------------------------------+
@@ -142,8 +145,8 @@ $ ./generate_table.awk < nano.txt
 | Baseline                        |  11248/ 4180 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |  12340/ 4200 |  1092/   20 |
-| Encoded4To2ButtonConfig         |  12520/ 4244 |  1272/   64 |
-| Encoded8To3ButtonConfig         |  12580/ 4260 |  1332/   80 |
+| Encoded4To2ButtonConfig         |  12548/ 4260 |  1300/   80 |
+| Encoded8To3ButtonConfig         |  12696/ 4324 |  1448/  144 |
 | EncodedButtonConfig             |  12720/ 4332 |  1472/  152 |
 | LadderButtonConfig              |  13368/ 4336 |  2120/  156 |
 +--------------------------------------------------------------+

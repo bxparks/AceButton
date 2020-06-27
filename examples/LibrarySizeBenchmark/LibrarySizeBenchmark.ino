@@ -15,7 +15,7 @@ using namespace ace_button;
 // 3 - Encoded8To3ButtonConfig
 // 4 - EncodedButtonConfig
 // 5 - LadderButtonConfig
-#define FEATURE 4
+#define FEATURE 0
 
 // A volatile integer to prevent the compiler from optimizing away the entire
 // program.
