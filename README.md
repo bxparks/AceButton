@@ -246,10 +246,16 @@ The following example sketches are provided:
 * Resistor Ladder Buttons
     * [LadderButtons](examples/LadderButtons)
         * demo of 4 buttons on a single analog pin using `analogRead()`
-* [AutoBenchmark.ino](examples/AutoBenchmark)
-    * generates the timing stats (min/average/max) for the `AceButton::check()`
-      method for various types of events (idle, press/release, click,
-      double-click, and long-press)
+* Benchmarks
+    * These are internal benchmark programs. They were not written as examples
+      of how to use the library.
+    * [AutoBenchmark.ino](examples/AutoBenchmark)
+        * generates the timing stats (min/average/max) for the
+          `AceButton::check()` method for various types of events (idle,
+          press/release, click, double-click, and long-press)
+    * [LibrarySizeBenchmark.ino](examples/LibrarySizeBenchmark/)
+        * determines the amount of flash memory consumes by various objects and
+          features of the library
 
 ## Usage
 
@@ -258,6 +264,12 @@ There are 2 classes and one typedef that a user will normally interact with:
 * `AceButton` (class)
 * `ButtonConfig` (class)
 * `EventHandler` (typedef)
+
+Advanced usage is supported by:
+
+* `EncodedButtonConfig` - binary encoded buttons supporting `2^N-1` buttons on
+  `N` digital pins
+* `LadderButtonConfig` - resistor ladder buttons using analog pins
 
 We explain how to use these below.
 
@@ -1225,6 +1237,45 @@ The `LadderButtonConfig` class handles this configuration.
 See [docs/resistor_ladder/README.md](docs/resistor_ladder/README.md) for
 information on how to use this class.
 
+### Dynamic Allocation on the Heap
+
+All classes in this library were originally designed to be created statically at
+startup time and never deleted during the lifetime of the application. Since
+they were never meant to be deleted through the pointer, I did not include the
+virtual destructor for polymorphic classes (i.e. `ButtonConfig` and its
+subclasses). The `AceButton` class is not polymorphic and does not need a
+virtual destructor.
+
+Most 8-bit processors have limited flash and static memory (for example,
+32 kB flash and 2 KB static for the Nano or UNO). Adding a virtual destructor
+causes **600** additional bytes of flash memory to be consumed. I suspect this
+is due to the virtual destructor pulling the `malloc()` and `free()`
+functions which are needed to implement the `new` and `delete` operators. For a
+library that consumes only about 1000 bytes on an 8-bit processor, this increase
+in flash memory size did not seem acceptable.
+
+For 32-bit processors (e.g. ESP8266, ESP32) which have far more flash memory
+(e.g. 1 MB) and static memory (e.g. 80 kB), it seems reasonable to allow
+`AceButton` and `ButtonConfig` to be created and deleted from the heap.
+(See [Issue #46](https://github.com/bxparks/AceButton/issues/46) for the
+motivation.) Therefore, with v1.5, I have added a virtual destructor for the
+`ButtonConfig` and its subclasses which is conditionally compiled for the
+following 32-bit processors:
+
+* ESP8266
+* ESP32
+
+Testing shows that the virtual destructor adds only about 60-120 bytes of flash
+memory, which is a trivial amount of flash memory compared to the ~1 MB flash
+memory available on an ESP8266.
+
+Even for 32-bit processors, I still recommend avoiding the creation and deletion
+of objects from the heap, to avoid the risk of heap fragmentation. If a variable
+number of buttons is needed, try to design your application so that you
+pre-allocate maximum number of buttons in a global pool. Even if some of the
+`AceButton` and `ButtonConfig` instances are unused, the overhead is probably
+smaller than the overhead of wasted space due to heap fragmentation.
+
 ## Resource Consumption
 
 Here are the sizes of the various classes on the 8-bit AVR microcontrollers
@@ -1275,15 +1326,29 @@ memory are consumed for various button configurations:
 
 **CPU cycles:**
 
-The profiling numbers for `AceButton::check()` can be found in
-[examples/AutoBenchmark](examples/AutoBenchmark).
+The profiling numbers for `AceButton::check()` using a simple `ButtonConfig` can
+be found in [examples/AutoBenchmark](examples/AutoBenchmark).
 
 In summary, the average numbers for various boards are:
+
 * Arduino Nano: 13-15 microsesconds
 * SAMD21: 7-8 microseconds
 * ESP8266: 8-9 microseconds
 * ESP32: 2-3 microseconds
-* Teensy 3.2: 3 microseconds
+* Teensy 3.2: 2-3 microseconds
+
+If you use the more advanced `EncodedButtonConfig` or `LadderButtonConfig`
+to check more buttons, each iteration through all the buttons takes longer.
+As a rough summary, to check 7 buttons:
+
+* Arduino Nano: 80-180 microseconds
+* SAMD21: 26-50 microseconds (EncodedButtonConfig), 850 microseconds
+  (LadderButtonConfig). It seems like the `analogRead()` function on a SAMD21 is
+  particularly slow. I recommend double-checking these numbers if you use the
+  SAMD21.
+* ESP8266: 43-133 microseconds
+* ESP32: 13-22 microseconds
+* Teensy 3.2: 8-16 microseconds
 
 ## System Requirements
 
@@ -1291,28 +1356,26 @@ In summary, the average numbers for various boards are:
 
 This library was developed and tested using:
 
-* [Arduino IDE 1.8.9](https://www.arduino.cc/en/Main/Software)
-* [Arduino AVR Boards 1.6.23](https://github.com/arduino/ArduinoCore-avr)
-* [Arduino SAMD Boards 1.8.3](https://github.com/arduino/ArduinoCore-samd)
-* [SparkFun AVR Boards 1.1.12](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.6.2](https://github.com/sparkfun/Arduino_Boards)
-* [ESP8266 Arduino Core 2.5.2](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino Core 1.0.2](https://github.com/espressif/arduino-esp32)
-* [Teensyduino 1.41](https://www.pjrc.com/teensy/td_download.html)
+* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
+* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino SAMD Boards 1.8.6](https://github.com/arduino/ArduinoCore-samd)
+* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
+* [ESP8266 Arduino Core 2.7.1](https://github.com/esp8266/Arduino)
+* [ESP32 Arduino Core 1.0.4](https://github.com/espressif/arduino-esp32)
+* [Teensyduino 1.53.beta](https://www.pjrc.com/teensy/td_download.html)
 
 It should work with [PlatformIO](https://platformio.org/) but I have
 not tested it.
 
 ### Operating System
 
-I used MacOS 10.13.3 and Ubuntu Linux 18.04 for most of my development.
+I use Ubuntu Linux 18.04 for most of my development.
 
 ### Hardware
 
 The library has been extensively tested on the following boards:
 
 * Arduino Nano clone (16 MHz ATmega328P)
-* Arduino UNO R3 clone (16 MHz ATmega328P)
 * Arduino Pro Micro clone (16 MHz ATmega32U4)
 * SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
@@ -1323,6 +1386,7 @@ I will occasionally test on the following boards as a sanity check:
 
 * Teensy LC (48 MHz ARM Cortex-M0+)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
+* Arduino UNO R3 clone (16 MHz ATmega328P)
 
 ## Background Motivation
 

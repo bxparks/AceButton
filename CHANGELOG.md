@@ -4,7 +4,12 @@
     * Add `LadderButtonConfig` class to support multiple buttons on a single
       analog pin using `analogRead()`. Add documentation in
       [docs/resistor_ladder](docs/resistor_ladder).
-      Resolves [Issue #43](https://github.com/bxparks/AceButton/issues/43).
+      See [Issue #43](https://github.com/bxparks/AceButton/issues/43).
+    * Add a virtual destructor for `ButtonConfig`, but *only* on the ESP8266 and
+      ESP32, to allow polymorphic objects to be created and deleted on the heap.
+      See [Issue #46](https://github.com/bxparks/AceButton/issues/46). No
+      virtual destructor on 8-bit processors because it causes the flash memory
+      code size to increase by 600 bytes.
     * **Potential Breaking Change**: Remove `src/AdjustableButtonConfig.h` and
       `src/ButtonConfig.h` files which were deprecated 2 years ago, and
       contained nothing.

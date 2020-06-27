@@ -25,15 +25,19 @@ function usage() {
     exit 1
 }
 
-function clean_temp_file() {
+function cleanup() {
+    # Remove any temporary file
     if [[ "$auniter_out_file" != '' ]]; then
         rm -f $auniter_out_file
     fi
+
+    # Restore the 'FEATURE' line
+    sed -i -e "s/#define FEATURE [0-9]*/#define FEATURE 0/" \
+        LibrarySizeBenchmark.ino
 }
 
 function create_temp_file() {
     auniter_out_file=
-    trap "clean_temp_file" EXIT
     auniter_out_file=$(mktemp /tmp/memory_benchmark.auniter.XXXXXX)
 }
 
@@ -42,9 +46,6 @@ function create_temp_file() {
 function collect_for_board() {
     local board=$1
     local result_file=$2
-    local orig_param_line=$(
-      grep '#define FEATURE [0-9]*' LibrarySizeBenchmark.ino
-    )
 
     for feature in {0..5}; do
         echo "Collecting flash and ram usage for FEATURE $feature"
@@ -67,13 +68,9 @@ function collect_for_board() {
         echo $feature $flash $memory >> $result_file
     done
 
-    # Restore the 'FEATURE' line
-    sed -i -e "s/#define FEATURE [0-9]*/$orig_param_line/" \
-        LibrarySizeBenchmark.ino
 }
 
-trap interrupted INT
-trap "clean_temp_file" EXIT
+trap "cleanup" EXIT
 
 if [[ $# < 2 ]]; then
     usage

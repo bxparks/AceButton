@@ -90,6 +90,11 @@ LadderButtonConfig      | 857/866/877 | 1068    |
 ------------------------+-------------+---------+
 ```
 
+**Note:** The 800 microseconds per iteration (of 7 buttons) for
+`LadderButtonConfig` on the SAMD21 may be an anomaly of my cheap clone, or it
+may be an pervasive problem with the `analogRead()` function of a SAMD21
+microcontroller. I advise validating this result on your specific SAMD21 board.
+
 ### ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266

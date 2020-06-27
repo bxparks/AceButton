@@ -10,7 +10,7 @@ TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy32.txt
 # Type 'make benchmarks' to regenerate the benchmark files.
 benchmarks: $(TARGETS)
 
-.PHONY: $(TARGETS)
+.PHONY: benchmarks
 
 nano.txt:
 	./collect.sh nano $@

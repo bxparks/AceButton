@@ -162,6 +162,22 @@ class ButtonConfig {
     /** Constructor. */
     ButtonConfig() {}
 
+    #if defined(ESP8266) || defined(ESP32)
+      /**
+       * Virtual destructor is provided *only* for 32-bit systems such as the
+       * ESP8266 and ESP32 which have enough flash memory that these objects can
+       * be created on the heap without the risk of heap fragmentation.
+       *
+       * For 8-bit processors, the addition of a virtual destructor causes the
+       * flash memory size of the library to increase by 600 bytes, which is far
+       * too large compared to the ~1000 bytes consumed by the entire library.
+       * For 32-bit processors, the virtual destructor seems to increase the
+       * code size by 60-120 bytes, which is tiny compared to the ~1 MB of total
+       * flash memory space offered by the ESP8266 and ESP32.
+       */
+      virtual ~ButtonConfig() = default;
+    #endif
+
     // These configuration methods are virtual so that they can be overriddden.
     // Subclasses can override at the class-level by defining a new virtual
     // function in the subclass, or by defining an instance variable and storing
