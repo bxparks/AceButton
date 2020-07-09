@@ -31,11 +31,11 @@ well-known name, so I will call it the "active voltage divider".
 ![Active Voltage Divider](resistor_ladder_active.png)
 
 Here we have 4 identical resistors, `R1` to `R4`, each 4.7 kOhm. The 4 identical
-resistor divides the voltage equally, 0, 0.25, 0.5, 0.75. Each button connects
-the `A0` pin to the various voltages: 0V, 1.25V, 2.5V, and 3.75V. When no
-buttons are pressed, the `A0` pin reads 5V through the 100 kOhm pull-up registor
-`Rp`. This resistor value is high enough that it does not significantly change
-the effective resistance when the various buttons are pressed.
+resistors divide the voltage equally (0, 0.25, 0.5, 0.75) so that each button
+connects the `A0` pin to the various voltages: 0V, 1.25V, 2.5V, and 3.75V. When
+no buttons are pressed, the `A0` pin reads 5V through the 100 kOhm pull-up
+registor `Rp`. This resistor value is high enough that it does not significantly
+change the effective resistance when the various buttons are pressed.
 
 The 220 Ohm registor labeled `Rc` is a current limiting registor for safety. It
 is not strictly necessary, it could be replaced with a straight wire and the
