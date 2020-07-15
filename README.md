@@ -58,6 +58,8 @@ above (e.g. Clicked and DoubleClicked).
 
 Version: 1.5 (2020-06-27)
 
+Changelog: [CHANGELOG.md](CHANGELOG.md)
+
 [![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
 
 ## Features
@@ -1426,10 +1428,6 @@ none.
 
 I decided to write my own and use the opportunity to learn how to create and
 publish an Arduino library.
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

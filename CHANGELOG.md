@@ -1,6 +1,8 @@
 # Changelog
 
 * Unreleased
+    * Remove 'class Print' forward declaration that breaks megaAVR like Nano
+      Every.
 * 1.5 (2020-06-27)
     * Add `LadderButtonConfig` class to support multiple buttons on a single
       analog pin using `analogRead()`. Add documentation in
