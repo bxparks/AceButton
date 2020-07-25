@@ -1288,7 +1288,7 @@ compared to the ~1 MB flash memory available on an ESP8266.
 Even for 32-bit processors, I still recommend avoiding the creation and deletion
 of objects from the heap, to avoid the risk of heap fragmentation. If a variable
 number of buttons is needed, try to design the application so that all
-buttons which will ever be needed is predefined in a global pool. Even if some
+buttons which will ever be needed are predefined in a global pool. Even if some
 of the `AceButton` and `ButtonConfig` instances are unused, the overhead is
 probably smaller than the overhead of wasted space due to heap fragmentation.
 
