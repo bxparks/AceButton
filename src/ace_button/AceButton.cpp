@@ -85,7 +85,7 @@ void AceButton::setDefaultReleasedState(uint8_t state) {
   }
 }
 
-uint8_t AceButton::getDefaultReleasedState() {
+uint8_t AceButton::getDefaultReleasedState() const {
   return (mFlags & kFlagDefaultReleasedState) ? HIGH : LOW;
 }
 

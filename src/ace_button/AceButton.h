@@ -156,7 +156,7 @@ class AceButton {
         uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
 
     /** Get the ButtonConfig associated with this Button. */
-    ButtonConfig* getButtonConfig() {
+    ButtonConfig* getButtonConfig() const {
       return mButtonConfig;
     }
 
@@ -183,13 +183,13 @@ class AceButton {
     }
 
     /** Get the button's pin number. */
-    uint8_t getPin() { return mPin; }
+    uint8_t getPin() const { return mPin; }
 
     /** Get the custom identifier of the button. */
-    uint8_t getId() { return mId; }
+    uint8_t getId() const { return mId; }
 
     /** Get the initial released state of the button, HIGH or LOW. */
-    uint8_t getDefaultReleasedState();
+    uint8_t getDefaultReleasedState() const;
 
     /**
      * Return the button state that was last valid. This is a tri-state
@@ -204,7 +204,7 @@ class AceButton {
      * from the value of buttonState provided to the event handler. In other
      * words, there is a race-condition.
      */
-    uint8_t getLastButtonState() {
+    uint8_t getLastButtonState() const {
       return mLastButtonState;
     }
 
@@ -238,7 +238,7 @@ class AceButton {
      * because the value of the eventType already encodes this information.
      * This method is provided just in case.
      */
-    bool isReleased(uint8_t buttonState) {
+    bool isReleased(uint8_t buttonState) const {
       return buttonState == getDefaultReleasedState();
     }
 
@@ -249,7 +249,7 @@ class AceButton {
      * was booted. This method does not use the check() method, does not perform
      * any debouncing, and does not dispatch events to the EventHandler.
      */
-    bool isPressedRaw() {
+    bool isPressedRaw() const {
       return !isReleased(mButtonConfig->readButton(mPin));
     }
 
@@ -295,7 +295,7 @@ class AceButton {
     // I don't expect these to be useful to the outside world.
 
     // If this is set, then mLastDebounceTime is valid.
-    bool isDebouncing() {
+    bool isDebouncing() const {
       return mFlags & kFlagDebouncing;
     }
 
@@ -308,7 +308,7 @@ class AceButton {
     }
 
     // If this is set, then mLastPressTime is valid.
-    bool isPressed() {
+    bool isPressed() const {
       return mFlags & kFlagPressed;
     }
 
@@ -321,7 +321,7 @@ class AceButton {
     }
 
     // If this is set, then mLastClickTime is valid.
-    bool isClicked() {
+    bool isClicked() const {
       return mFlags & kFlagClicked;
     }
 
@@ -335,7 +335,7 @@ class AceButton {
 
     // A double click was detected. No need to store the last double-clicked
     // time because we don't support a triple-click event (yet).
-    bool isDoubleClicked() {
+    bool isDoubleClicked() const {
       return mFlags & kFlagDoubleClicked;
     }
 
@@ -349,7 +349,7 @@ class AceButton {
 
     // If this is set, then mLastPressTime can be treated as the start
     // of a long press.
-    bool isLongPressed() {
+    bool isLongPressed() const {
       return mFlags & kFlagLongPressed;
     }
 
@@ -362,7 +362,7 @@ class AceButton {
     }
 
     // If this is set, then mLastRepeatPressTime is valid.
-    bool isRepeatPressed() {
+    bool isRepeatPressed() const {
       return mFlags & kFlagRepeatPressed;
     }
 
@@ -374,7 +374,7 @@ class AceButton {
       mFlags &= ~kFlagRepeatPressed;
     }
 
-    bool isClickPostponed() {
+    bool isClickPostponed() const {
       return mFlags & kFlagClickPostponed;
     }
 
@@ -490,6 +490,12 @@ class AceButton {
      * But it is possible that the evaluation of the if-condition above takes
      * longer to evaluate than an empty function call, so we should do some
      * profiling before making this change.
+     *
+     * Note: This probably should have been a const function. But that would
+     * require the ButtonConfig::EventHandler callback function to accept a
+     * `const AceButton*` instead of a `AceButton*`. Unfortunately, that
+     * signature is part of the API, and I cannot change it without
+     * breaking backwards compatibility.
      *
      * @param eventType the type of event given by the kEvent* constants
      */

@@ -179,21 +179,21 @@ class ButtonConfig {
     #endif
 
     /** Milliseconds to wait for debouncing. */
-    uint16_t getDebounceDelay() { return mDebounceDelay; }
+    uint16_t getDebounceDelay() const { return mDebounceDelay; }
 
     /** Milliseconds to wait for a possible click. */
-    uint16_t getClickDelay() { return mClickDelay; }
+    uint16_t getClickDelay() const { return mClickDelay; }
 
     /**
      * Milliseconds between the first and second click to register as a
      * double-click.
      */
-    uint16_t getDoubleClickDelay() {
+    uint16_t getDoubleClickDelay() const {
       return mDoubleClickDelay;
     }
 
     /** Milliseconds for a long press event. */
-    uint16_t getLongPressDelay() {
+    uint16_t getLongPressDelay() const {
       return mLongPressDelay;
     }
 
@@ -203,14 +203,14 @@ class ButtonConfig {
      * as this delay has passed. Subsequent events will fire after
      * getRepeatPressInterval() time.
      */
-    uint16_t getRepeatPressDelay() {
+    uint16_t getRepeatPressDelay() const {
       return mRepeatPressDelay;
     }
 
     /**
      * Milliseconds between two successive RepeatPressed events.
      */
-    uint16_t getRepeatPressInterval() {
+    uint16_t getRepeatPressInterval() const {
       return mRepeatPressInterval;
     }
 
@@ -252,6 +252,9 @@ class ButtonConfig {
      * Return the milliseconds of the internal clock. Override to use something
      * other than millis(). The return type is 'unsigned long' instead of
      * uint16_t because that's the return type of millis().
+     *
+     * Note: This should have been a const function. I cannot change it now
+     * without breaking backwards compatibility.
      */
     virtual unsigned long getClock() { return millis(); }
 
@@ -259,6 +262,9 @@ class ButtonConfig {
      * Return the HIGH or LOW state of the button. Override to use something
      * other than digitalRead(). The return type is 'int' instead of uint16_t
      * because that's the return type of digitalRead().
+     *
+     * Note: This should have been a const function. I cannot change it now
+     * without breaking backwards compatibility.
      */
     virtual int readButton(uint8_t pin) {
       return digitalRead(pin);
@@ -268,7 +274,7 @@ class ButtonConfig {
     // functionality of the AceButton.
 
     /** Check if the given features are enabled. */
-    bool isFeature(FeatureFlagType features) {
+    bool isFeature(FeatureFlagType features) const {
       return mFeatureFlags & features;
     }
 
@@ -293,7 +299,7 @@ class ButtonConfig {
     // EventHandler
 
     /** Return the eventHandler. */
-    EventHandler getEventHandler() {
+    EventHandler getEventHandler() const {
       return mEventHandler;
     }
 
