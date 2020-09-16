@@ -137,8 +137,8 @@ class ButtonConfig {
     static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
 
     /**
-     * Internal flag to indicate that the mEventHandler is an IEventHandler
-     * object instead of an EventHandler function pointer.
+     * Internal flag to indicate that mEventHandler is an IEventHandler object
+     * pointer instead of an EventHandler function pointer.
      */
     static const FeatureFlagType kInternalFeatureIEventHandler = 0x8000;
 
@@ -301,6 +301,9 @@ class ButtonConfig {
      * feature flags (e.g. kInternalFeatureIEventHandler) are *not* cleared.
      */
     void resetFeatures() {
+      // NOTE: If any additional kInternalFeatureXxx flag is added, it must be
+      // added here like this:
+      // mFeatureFlags &= (kInternalFeatureIEventHandler | kInternalFeatureXxx)
       mFeatureFlags &= kInternalFeatureIEventHandler;
     }
 

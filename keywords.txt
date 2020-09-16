@@ -8,6 +8,7 @@
 
 AceButton	KEYWORD1
 EventHandler	KEYWORD1
+IEventHandler	KEYWORD1
 ButtonConfig	KEYWORD1
 Encoded4To2ButtonConfig	KEYWORD1
 Encoded8To3ButtonConfig	KEYWORD1
@@ -23,6 +24,7 @@ init	KEYWORD2
 getButtonConfig	KEYWORD2
 setButtonConfig	KEYWORD2
 setEventHandler	KEYWORD2
+setIEventHandler	KEYWORD2
 getPin	KEYWORD2
 getId	KEYWORD2
 getDefaultReleasedState	KEYWORD2
@@ -103,3 +105,4 @@ kFeatureSuppressAfterLongPress	LITERAL1
 kFeatureSuppressAfterRepeatPress	LITERAL1
 kFeatureSuppressClickBeforeDoubleClick	LITERAL1
 kFeatureSuppressAll	LITERAL1
+kInternalFeatureIEventHandler	LITERAL1
