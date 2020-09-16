@@ -26,6 +26,7 @@ SOFTWARE.
 #define ACE_BUTTON_BUTTON_CONFIG_H
 
 #include <Arduino.h>
+#include "IEventHandler.h"
 
 namespace ace_button {
 
@@ -298,9 +299,32 @@ class ButtonConfig {
 
     // EventHandler
 
-    /** Return the eventHandler. */
+    /**
+     * Return the eventHandler function pointer. Deprecated because the event
+     * handler can now be either a function pointer or a object pointer.
+     * AceButton now calls dispatchEvent() which correctly handles both cases.
+     * Application code should never need to retrieve the event handler
+     * directly.
+     */
     EventHandler getEventHandler() const {
-      return mEventHandler;
+      return reinterpret_cast<EventHandler>(mEventHandler);
+    }
+
+    /** Dispatch the event to the handler. */
+    void dispatchEvent(AceButton* button, uint8_t eventType,
+        uint8_t buttonState) const {
+
+      if (! mEventHandler) return;
+
+      if (mEventHandlerType == kEventHandlerTypeFunction) {
+        EventHandler eventHandler =
+            reinterpret_cast<EventHandler>(mEventHandler);
+        eventHandler(button, eventType, buttonState);
+      } else {
+        IEventHandler* eventHandler =
+            reinterpret_cast<IEventHandler*>(mEventHandler);
+        eventHandler->handleEvent(button, eventType, buttonState);
+      }
     }
 
     /**
@@ -308,7 +332,17 @@ class ButtonConfig {
      * AceButton to be useful.
      */
     void setEventHandler(EventHandler eventHandler) {
+      mEventHandler = reinterpret_cast<void*>(eventHandler);
+      mEventHandlerType = kEventHandlerTypeFunction;
+    }
+
+    /**
+     * Install the event handler object. The event handler must be defined for
+     * the AceButton to be useful.
+     */
+    void setEventHandler(IEventHandler* eventHandler) {
       mEventHandler = eventHandler;
+      mEventHandlerType = kEventHandlerTypeObject;
     }
 
     /**
@@ -326,15 +360,26 @@ class ButtonConfig {
      */
     static ButtonConfig sSystemButtonConfig;
 
+    static const uint8_t kEventHandlerTypeFunction = 0;
+    static const uint8_t kEventHandlerTypeObject = 1;
+
     // Disable copy-constructor and assignment operator
     ButtonConfig(const ButtonConfig&) = delete;
     ButtonConfig& operator=(const ButtonConfig&) = delete;
 
     /** The event handler for all buttons associated with this ButtonConfig. */
-    EventHandler mEventHandler = nullptr;
+    void* mEventHandler = nullptr;
 
     /** A bit mask flag that activates certain features. */
     FeatureFlagType mFeatureFlags = 0;
+
+    /**
+     * The event handler type. It was tempting to use one of the unused bits in
+     * mFeatureFlags to hold this. But it didn't make sense for the
+     * resetFeatures() to clear this bit. I suppose the resetFeatures() could
+     * preserve just this bit, while clearing the rest.
+     */
+    uint8_t mEventHandlerType = kEventHandlerTypeFunction;
 
     uint16_t mDebounceDelay = kDebounceDelay;
     uint16_t mClickDelay = kClickDelay;

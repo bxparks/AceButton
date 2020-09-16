@@ -22,27 +22,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#ifndef ACE_BUTTON_IEVENT_HANDLER_H
+#define ACE_BUTTON_IEVENT_HANDLER_H
+
+#include <stdint.h>
+
+namespace ace_button {
+
+class AceButton;
+
 /**
-@mainpage AceButton Library
+ * Interface of the class that will handle the button event. Users can create an
+ * implementation subclass and register the event handler object using
+ * ButtonConfig::setEventHandler().
+ */
+class IEventHandler {
+  public:
+    virtual void handleEvent(AceButton* button, uint8_t eventType,
+        uint8_t buttonState) = 0;
+};
 
-This is the Doxygen documentation for the
-<a href="https://github.com/bxparks/AceButton">AceButton Library</a>.
-*/
-
-#ifndef ACE_BUTTON_H
-#define ACE_BUTTON_H
-
-#include "ace_button/IEventHandler.h"
-#include "ace_button/ButtonConfig.h"
-#include "ace_button/AdjustableButtonConfig.h"
-#include "ace_button/Encoded8To3ButtonConfig.h"
-#include "ace_button/Encoded4To2ButtonConfig.h"
-#include "ace_button/EncodedButtonConfig.h"
-#include "ace_button/LadderButtonConfig.h"
-#include "ace_button/AceButton.h"
-
-// Version format: xxyyzz == "xx.yy.zz"
-#define ACE_BUTTON_VERSION 10500
-#define ACE_BUTTON_VERSION_STRING "1.5"
+}
 
 #endif
