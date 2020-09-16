@@ -1082,6 +1082,43 @@ as demonstrated in the [ArrayButtons.ino](examples/ArrayButtons) sketch.
 
 ## Advanced Topics
 
+### Object-based Event Handler
+
+The `EventHandler` is a typedef that is defined to be a function pointer. This
+is a simple, low-overhead design that produces the smallest memory footprint,
+and allows the event handler to be written with the smallest amount of
+boilerplate code. The user does not have to override a class.
+
+In more complex applications involving larger number of `AceButton` and
+`ButtonConfig` objects, it is often useful for the `EventHandler to be an object
+instead of a simple function pointer. This is especially true if the application
+uses Object Oriented Programming (OOP) techniques for modularity and
+encapsulation. Using an object as the event handler allows additional context
+information to be injected into the event handler.
+
+To support OOP techniques, AceButton Version 1.6 adds:
+
+* `IEventHandler` interface class
+    * contains a single pure virtual function `handleEvent()`
+* `ButtonConfig::setIEventHandler()` method
+    * accepts a pointer to an instance of the `IEventHandler` interface.
+
+The `IEventHandler` interface is simply this:
+```C++
+class IEventHandler {
+  public:
+    virtual void handleEvent(AceButton* button, uint8_t eventType,
+        uint8_t buttonState) = 0;
+};
+```
+
+At least one of `ButtonConfig::setEventHandler()` or
+`ButtonConfig::setIEventHandler()` must be called before events are actually
+dispatched. If both are called, the last one takes precedence.
+
+See
+[examples/SingleButtonUsingIEventHandler](examples/SingleButtonUsingIEventHandler) for an example.
+
 ### Distinguishing Between a Clicked and DoubleClicked
 
 On a project using only a small number of buttons (due to physical limits or the
