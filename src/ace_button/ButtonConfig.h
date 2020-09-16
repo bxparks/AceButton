@@ -137,6 +137,12 @@ class ButtonConfig {
     static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
 
     /**
+     * Internal flag to indicate that the mEventHandler is an IEventHandler
+     * object instead of an EventHandler function pointer.
+     */
+    static const FeatureFlagType kInternalFeatureIEventHandler = 0x8000;
+
+    /**
      * Convenience flag to suppress all suppressions. Calling
      * setFeature(kFeatureSuppressAll) suppresses all and
      * clearFeature(kFeatureSuppressAll) clears all suppression. Note however
@@ -290,50 +296,56 @@ class ButtonConfig {
     }
 
     /**
-     * Disable all features. Useful when the ButtonConfig is reused in different
-     * configurations. Also useful for testing.
+     * Disable all (externally visible) features. Useful when the ButtonConfig
+     * is reused in different configurations. Also useful for testing. Internal
+     * feature flags (e.g. kInternalFeatureIEventHandler) are *not* cleared.
      */
     void resetFeatures() {
-      mFeatureFlags = 0;
+      mFeatureFlags &= kInternalFeatureIEventHandler;
     }
 
     // EventHandler
 
     /**
-     * Return the eventHandler function pointer. Deprecated because the event
-     * handler can now be either a function pointer or a object pointer.
-     * AceButton now calls dispatchEvent() which correctly handles both cases.
-     * Application code should never need to retrieve the event handler
-     * directly.
+     * Return the eventHandler function pointer. This is meant to be an
+     * internal method.
+     *
+     * Deprecated because the event handler can now be either a function pointer
+     * or a object pointer. AceButton now calls dispatchEvent() which correctly
+     * handles both cases. Application code should never need to retrieve the
+     * event handler directly.
      */
     EventHandler getEventHandler() const {
       return reinterpret_cast<EventHandler>(mEventHandler);
     }
 
-    /** Dispatch the event to the handler. */
+    /**
+     * Dispatch the event to the handler. This is meant to be an internal
+     * method.
+     */
     void dispatchEvent(AceButton* button, uint8_t eventType,
         uint8_t buttonState) const {
 
       if (! mEventHandler) return;
 
-      if (mEventHandlerType == kEventHandlerTypeFunction) {
-        EventHandler eventHandler =
-            reinterpret_cast<EventHandler>(mEventHandler);
-        eventHandler(button, eventType, buttonState);
-      } else {
+      if (isFeature(kInternalFeatureIEventHandler)) {
         IEventHandler* eventHandler =
             reinterpret_cast<IEventHandler*>(mEventHandler);
         eventHandler->handleEvent(button, eventType, buttonState);
+      } else {
+        EventHandler eventHandler =
+            reinterpret_cast<EventHandler>(mEventHandler);
+        eventHandler(button, eventType, buttonState);
       }
     }
 
     /**
-     * Install the event handler. The event handler must be defined for the
-     * AceButton to be useful.
+     * Install the event handler function pointer. The event handler must be
+     * defined for the AceButton to be useful.
      */
     void setEventHandler(EventHandler eventHandler) {
       mEventHandler = reinterpret_cast<void*>(eventHandler);
-      mEventHandlerType = kEventHandlerTypeFunction;
+      clearFeature(kInternalFeatureIEventHandler);
     }
 
     /**
@@ -342,7 +354,7 @@ class ButtonConfig {
      */
     void setEventHandler(IEventHandler* eventHandler) {
       mEventHandler = eventHandler;
-      mEventHandlerType = kEventHandlerTypeObject;
+      setFeature(kInternalFeatureIEventHandler);
     }
 
     /**
@@ -360,9 +372,6 @@ class ButtonConfig {
      */
     static ButtonConfig sSystemButtonConfig;
 
-    static const uint8_t kEventHandlerTypeFunction = 0;
-    static const uint8_t kEventHandlerTypeObject = 1;
-
     // Disable copy-constructor and assignment operator
     ButtonConfig(const ButtonConfig&) = delete;
     ButtonConfig& operator=(const ButtonConfig&) = delete;
@@ -372,14 +381,6 @@ class ButtonConfig {
 
     /** A bit mask flag that activates certain features. */
     FeatureFlagType mFeatureFlags = 0;
-
-    /**
-     * The event handler type. It was tempting to use one of the unused bits in
-     * mFeatureFlags to hold this. But it didn't make sense for the
-     * resetFeatures() to clear this bit. I suppose the resetFeatures() could
-     * preserve just this bit, while clearing the rest.
-     */
-    uint8_t mEventHandlerType = kEventHandlerTypeFunction;
 
     uint16_t mDebounceDelay = kDebounceDelay;
     uint16_t mClickDelay = kClickDelay;
