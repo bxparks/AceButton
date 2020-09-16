@@ -68,7 +68,7 @@ void setup() {
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
   ButtonConfig* buttonConfig = button.getButtonConfig();
-  buttonConfig->setEventHandler(&handleEvent);
+  buttonConfig->setIEventHandler(&handleEvent);
   buttonConfig->setFeature(ButtonConfig::kFeatureClick);
   buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
   buttonConfig->setFeature(ButtonConfig::kFeatureLongPress);

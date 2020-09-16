@@ -340,7 +340,7 @@ class ButtonConfig {
     }
 
     /**
-     * Install the event handler function pointer. The event handler must be
+     * Install the EventHandler function pointer. The event handler must be
      * defined for the AceButton to be useful.
      */
     void setEventHandler(EventHandler eventHandler) {
@@ -349,10 +349,10 @@ class ButtonConfig {
     }
 
     /**
-     * Install the event handler object. The event handler must be defined for
-     * the AceButton to be useful.
+     * Install the IEventHandler object pointer. The event handler must be
+     * defined for the AceButton to be useful.
      */
-    void setEventHandler(IEventHandler* eventHandler) {
+    void setIEventHandler(IEventHandler* eventHandler) {
       mEventHandler = eventHandler;
       setFeature(kInternalFeatureIEventHandler);
     }
