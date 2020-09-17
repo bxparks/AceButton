@@ -704,6 +704,10 @@ before the `setup()` method:
 void handleEvent(AceButton*, uint8_t, uint8_t);
 ```
 
+**Pro Tips 2**: The event handler can be an object instead of just a function
+pointer, which can be useful in more complex applications with numerous buttons.
+See the section on *Object-based Event Handler* in the *Advanced Topic* below.
+
 #### EventHandler Parameters
 
 The `EventHandler` function receives 3 parameters from the `AceButton`:
@@ -773,6 +777,11 @@ run approximately every 5 ms, the user-provided `EventHandler` should run
 somewhat faster than 5 ms. Given a choice, it is probably better to use the
 `EventHandler` to set some flags or variables and return quickly, then do
 additional processing from the `loop()` method.
+
+Sometimes it is too convenient or unavoidable to perform a long-running
+operation inside the event handler (e.g. making an HTTP). This is fine, I have
+done this occasionally. Just be aware that the button scanning operation will
+not work during that long-running operation.
 
 Speaking of threads, the API of the AceButton Library was designed to work in a
 multi-threaded environment, if that situation were to occur in the Arduino
