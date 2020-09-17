@@ -34,7 +34,7 @@ class AceButton;
 /**
  * Interface of the class that will handle the button event. Users can create an
  * implementation subclass and register the event handler object using
- * ButtonConfig::setEventHandler().
+ * ButtonConfig::setIEventHandler().
  */
 class IEventHandler {
   public:
