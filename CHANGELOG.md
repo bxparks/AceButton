@@ -7,12 +7,14 @@
     * Mark non-virtual const functions with `const`, which preserves backwards
       compatibility.
     * Add support for object-based event handler using `IEventHandler` and
-      `ButtonConfig::setIEventHanlder()`. Regenerate library code size numbers.
+      `ButtonConfig::setIEventHanlder()`. Fixes [Issue
+      #50](https://github.com/bxparks/AceButton/issues/50). Regenerate library
+      code size numbers, showing increase of 34-64 bytes of flash memory.
     * Add examples of how to configure 2 AceButtons using either a single
       ButtonConfig or 2 ButtonConfigs.
-    * Mark `ButtonConfig::getEventHandler()` as an *internal* method and
-      *deprecated*. Replaced with `ButtConfig::dispatchEvent()` which is also an
-      internal method.
+    * **Potentially Breaking**: Change `ButtonConfig::getEventHandler()` to be
+      an *internal* and *deprecated* method. Replaced with
+      `ButtConfig::dispatchEvent()` which is also an internal method.
 * 1.5 (2020-06-27)
     * Add `LadderButtonConfig` class to support multiple buttons on a single
       analog pin using `analogRead()`. Add documentation in
