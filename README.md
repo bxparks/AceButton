@@ -202,8 +202,7 @@ The following example sketches are provided:
 * [HelloButton.ino](examples/HelloButton)
     * minimal program that reads a switch and control the built-in LED
 * [SingleButton.ino](examples/SingleButton)
-    * controls a single button wired with a pull-up resistor
-    * prints out a status line for every supported event
+    * single button wired with an internal pull-up resistor
 * [SingleButtonPullDown.ino](examples/SingleButtonPullDown)
     * same as SingleButton.ino but with an external pull-down resistor
 * [SingleButtonUsingIEventHandler.ino](examples/SingleButtonUsingIEventHandler)
@@ -212,6 +211,10 @@ The following example sketches are provided:
     * measures the speed of `AceButton:check()` with a start/stop/reset button
     * uses `kFeatureLongPress`
 * Multiple Buttons
+    * [TwoButtonsUsingOneButtonConfig.ino](examples/TwoButtonsUsingOneButtonConfig)
+        * two buttons using one ButtonConfig
+    * [TwoButtonsUsingTwoButtonConfigs.ino](examples/TwoButtonsUsingTwoButtonConfigs/)
+        * two buttons using two ButtonConfigs
     * [TunerButtons.ino](examples/TunerButtons)
         * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
         * shows multiple `ButtonConfig` and `EventHandler` instances
@@ -1040,8 +1043,10 @@ void loop() {
 }
 ```
 
-See the example sketch [TunerButtons.ino](examples/TunerButtons) to see how
-multiple `ButtonConfig` instances are used with multiple `AceButton` instances.
+See the example sketch
+[TwoButtonsUsingTwoButtonConfigs.ino](examples/TwoButtonsUsingTwoButtonConfigs)
+which uses 2 `ButtonConfig` instances to configure 2 `AceButton`
+instances.
 
 **Option 2: Multiple Button Discriminators**
 
@@ -1089,8 +1094,14 @@ void loop() {
 }
 ```
 
-You can also use this technique with `AceButton::getId()` method,
-as demonstrated in the [ArrayButtons.ino](examples/ArrayButtons) sketch.
+See the example code
+[TwoButtonsUsingOneButtonConfig](examples/TwoButtonsUsingOneButtonConfig).
+which uses a single `ButtonConfig` instance to handle 2 `AceButton`
+instances.
+
+Sometimes, it is more convenient to use the `AceButton::getId()` method
+to identify the button instead of the `AceButton::getPin()`.
+See [ArrayButtons.ino](examples/ArrayButtons) for an example.
 
 ## Advanced Topics
 
