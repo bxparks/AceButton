@@ -56,11 +56,11 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
 above (e.g. Clicked and DoubleClicked).
 
-Version: 1.6 (2020-09-18)
+**Version**: 1.6 (2020-09-18)
 
-Changelog: [CHANGELOG.md](CHANGELOG.md)
+**Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
-[![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
+![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
 
 ## Features
 
