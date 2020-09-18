@@ -22,25 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ACE_BUTTON_TEST_HELPER_H
-#define ACE_BUTTON_TEST_HELPER_H
+#ifndef ACE_BUTTON_HELPER_FOR_ENCODED_BUTTON_CONFIG_H
+#define ACE_BUTTON_HELPER_FOR_ENCODED_BUTTON_CONFIG_H
 
 #include <AceButton.h>
-#include <ace_button/testing/TestableLadderButtonConfig.h>
+#include <ace_button/testing/TestableEncodedButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
 
 namespace ace_button {
 namespace testing {
 
 /**
- * A wrapper class that sends emulated button presses and released to the
- * underlying AceButton class, and captures the resulting events in the
- * provided EventTracker.
+ * A wrapper class around an EncodedButtonConfig that sends emulated button
+ * presses and released to the underlying AceButton class, and captures the
+ * resulting events in the provided EventTracker.
  */
-class TestHelper {
+class HelperForEncodedButtonConfig {
   public:
-    TestHelper(
-        TestableLadderButtonConfig* testableConfig,
+    HelperForEncodedButtonConfig(
+        TestableEncodedButtonConfig* testableConfig,
         EventTracker* eventTracker):
       mTestableConfig(testableConfig),
       mEventTracker(eventTracker) {}
@@ -84,10 +84,11 @@ class TestHelper {
 
   private:
     // Disable copy-constructor and assignment operator
-    TestHelper(const TestHelper&) = delete;
-    TestHelper& operator=(const TestHelper&) = delete;
+    HelperForEncodedButtonConfig(const HelperForEncodedButtonConfig&) = delete;
+    HelperForEncodedButtonConfig&
+        operator=(const HelperForEncodedButtonConfig&) = delete;
 
-    TestableLadderButtonConfig* mTestableConfig;
+    TestableEncodedButtonConfig* mTestableConfig;
     EventTracker* mEventTracker;
 };
 

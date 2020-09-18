@@ -5,6 +5,8 @@
       Every.
     * Mark non-virtual const functions with `const`, which preserves backwards
       compatibility.
+    * Add support for object-based event handler using `IEventHandler` and
+      `ButtonConfig::setIEventHanlder()`. Regenerate library code size numbers.
 * 1.5 (2020-06-27)
     * Add `LadderButtonConfig` class to support multiple buttons on a single
       analog pin using `analogRead()`. Add documentation in

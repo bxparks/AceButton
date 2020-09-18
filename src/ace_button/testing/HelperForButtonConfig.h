@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ACE_BUTTON_TEST_HELPER_H
-#define ACE_BUTTON_TEST_HELPER_H
+#ifndef ACE_BUTTON_HELPER_BUTTON_CONFIG_H
+#define ACE_BUTTON_HELPER_BUTTON_CONFIG_H
 
 #include <AceButton.h>
 #include <ace_button/testing/TestableButtonConfig.h>
@@ -33,13 +33,13 @@ namespace ace_button {
 namespace testing {
 
 /**
- * A wrapper class that sends emulated button presses and released to the
- * underlying AceButton class, and captures the resulting events in the
- * provided EventTracker.
+ * A wrapper class around a ButtonConfig that sends emulated button presses and
+ * released to the underlying AceButton class, and captures the resulting events
+ * in the provided EventTracker.
  */
-class TestHelper {
+class HelperForButtonConfig {
   public:
-    TestHelper(
+    HelperForButtonConfig(
         TestableButtonConfig* testableConfig,
         AceButton* button,
         EventTracker* eventTracker):
@@ -92,8 +92,8 @@ class TestHelper {
 
   private:
     // Disable copy-constructor and assignment operator
-    TestHelper(const TestHelper&) = delete;
-    TestHelper& operator=(const TestHelper&) = delete;
+    HelperForButtonConfig(const HelperForButtonConfig&) = delete;
+    HelperForButtonConfig& operator=(const HelperForButtonConfig&) = delete;
 
     TestableButtonConfig* mTestableConfig;
     AceButton* mButton;

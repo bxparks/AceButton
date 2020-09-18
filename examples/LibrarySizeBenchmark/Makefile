@@ -3,6 +3,7 @@
 
 APP_NAME := LibrarySizeBenchmark
 ARDUINO_LIBS := AceButton
+MORE_CLEAN := more_clean
 include ../../../UnixHostDuino/UnixHostDuino.mk
 
 TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy32.txt

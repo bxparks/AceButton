@@ -9,6 +9,11 @@
 using namespace ace_button;
 using namespace ace_button::testing;
 
+// Set this to 1 to run the benchmarks using the IEventHandler object instead of
+// EventHandler function. The result is that AceButton::check() seems slightly
+// slower (maybe a few microseconds). Probably not enough to worry about.
+#define EVENT_HANDLER_CLASS 1
+
 #if defined(ESP32) && !defined(SERIAL_PORT_MONITOR)
 #define SERIAL_PORT_MONITOR Serial
 #endif
@@ -127,11 +132,23 @@ void nextMode() {
   loopMode++;
 }
 
-// An empty event handler.
-void handleEvent(AceButton* /* button */, uint8_t eventType,
-    uint8_t /* buttonState */) {
-  loopEventType = eventType;
-}
+#if EVENT_HANDLER_CLASS
+  class ButtonHandler: public IEventHandler {
+    public:
+      void handleEvent(AceButton* /* button */, uint8_t eventType,
+          uint8_t /* buttonState */) override {
+        loopEventType = eventType;
+      }
+  };
+
+  ButtonHandler handleEvent;
+#else
+  // An empty event handler.
+  void handleEvent(AceButton* /* button */, uint8_t eventType,
+      uint8_t /* buttonState */) {
+    loopEventType = eventType;
+  }
+#endif
 
 // Measure how long the AceButton.check() takes
 void checkSimpleButton() {
@@ -375,35 +392,55 @@ void setup() {
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
+#if EVENT_HANDLER_CLASS
+  buttonConfig.setIEventHandler(&handleEvent);
+#else
   buttonConfig.setEventHandler(handleEvent);
+#endif
   buttonConfig.setFeature(ButtonConfig::kFeatureClick);
   buttonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
   buttonConfig.setFeature(ButtonConfig::kFeatureLongPress);
   buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   buttonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
 
+#if EVENT_HANDLER_CLASS
+  encoded4To2ButtonConfig.setIEventHandler(&handleEvent);
+#else
   encoded4To2ButtonConfig.setEventHandler(handleEvent);
+#endif
   encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureClick);
   encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
   encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
   encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
 
+#if EVENT_HANDLER_CLASS
+  encoded8To3ButtonConfig.setIEventHandler(&handleEvent);
+#else
   encoded8To3ButtonConfig.setEventHandler(handleEvent);
+#endif
   encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureClick);
   encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
   encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
   encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
 
+#if EVENT_HANDLER_CLASS
+  encodedButtonConfig.setIEventHandler(&handleEvent);
+#else
   encodedButtonConfig.setEventHandler(handleEvent);
+#endif
   encodedButtonConfig.setFeature(ButtonConfig::kFeatureClick);
   encodedButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
   encodedButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);
   encodedButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   encodedButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
 
+#if EVENT_HANDLER_CLASS
+  ladderButtonConfig.setIEventHandler(&handleEvent);
+#else
   ladderButtonConfig.setEventHandler(handleEvent);
+#endif
   ladderButtonConfig.setFeature(ButtonConfig::kFeatureClick);
   ladderButtonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
   ladderButtonConfig.setFeature(ButtonConfig::kFeatureLongPress);

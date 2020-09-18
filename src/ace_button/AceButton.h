@@ -177,6 +177,27 @@ class AceButton {
      * you are using multiple ButtonConfig objects, you should call the
      * ButtonConfig::setEventHandler() method on those objects directly, instead
      * of using this method.
+     *
+     * Since v1.6, the event handler can be either a function pointer or an
+     * object pointer. The recommended way to set the event handler is to call
+     * the setEventHanlder() or the setIEventHandler() on the ButtonConfig
+     * object directly using one of the following:
+     *
+     * @code
+     * ButtonConfig* config = button.getButtonConfig();
+     * config->setEventHandler(eventHandler);
+     * @endcode
+     *
+     * OR
+     *
+     * @code
+     * ButtonConfig* config = button.getButtonConfig();
+     * config->setIEventHandler(&eventHandler);
+     * @endcode
+     *
+     * I decided against deprecating this method because it allows someone to
+     * write the simple HelloButton.ino program without having any knowledge of
+     * the ButtonConfig object.
      */
     void setEventHandler(ButtonConfig::EventHandler eventHandler) {
       mButtonConfig->setEventHandler(eventHandler);
