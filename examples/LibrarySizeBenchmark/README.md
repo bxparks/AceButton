@@ -71,7 +71,7 @@ used which required no additional fields to be added to the `ButtonConfig`.
 ## Arduino Nano
 
 * 16MHz ATmega328P
-* AceButton 1.5
+* AceButton 1.6
 * Arduino IDE 1.8.13
 * Arduino AVR Boards 1.8.3
 
@@ -92,7 +92,7 @@ used which required no additional fields to be added to the `ButtonConfig`.
 ## Sparkfun Pro Micro
 
 * 16 MHz ATmega32U4
-* AceButton 1.5
+* AceButton 1.6
 * Arduino IDE 1.8.13
 * SparkFun AVR Boards 1.1.13
 
@@ -113,7 +113,7 @@ used which required no additional fields to be added to the `ButtonConfig`.
 ## SAMD21 M0 Mini
 
 * 48 MHz ARM Cortex-M0+
-* AceButton 1.5
+* AceButton 1.6
 * Arduino IDE 1.8.13
 * Arduino SAMD Core 1.8.6
 
@@ -134,7 +134,7 @@ used which required no additional fields to be added to the `ButtonConfig`.
 ## ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
-* AceButton 1.5
+* AceButton 1.6
 * Arduino IDE 1.8.13
 * ESP8266 Boards 2.7.1
 
@@ -155,7 +155,7 @@ used which required no additional fields to be added to the `ButtonConfig`.
 ## ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* AceButton 1.5
+* AceButton 1.6
 * Arduino IDE 1.8.13
 * ESP32 Boards 1.0.4
 
@@ -176,7 +176,7 @@ used which required no additional fields to be added to the `ButtonConfig`.
 ## Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* AceButton 1.5
+* AceButton 1.6
 * Arduino IDE 1.8.13
 * Teensyduino 1.53.beta
 * Compiler options: "Faster"
