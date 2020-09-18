@@ -33,3 +33,6 @@
 
 # arduino-cli working files
 build
+
+# doxygen backup file
+doxygen.cfg.bak
