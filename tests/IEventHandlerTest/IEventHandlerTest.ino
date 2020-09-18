@@ -4,7 +4,7 @@
 #include <AceButton.h>
 #include <ace_button/testing/TestableButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
-#include "TestHelper.h"
+#include <ace_button/testing/HelperForButtonConfig.h>
 
 using namespace aunit;
 using namespace ace_button;
@@ -29,7 +29,7 @@ class EventHandlerClass: public IEventHandler {
 TestableButtonConfig testableConfig;
 AceButton button(&testableConfig);
 EventTracker eventTracker;
-TestHelper helper(&testableConfig, &button, &eventTracker);
+HelperForButtonConfig helper(&testableConfig, &button, &eventTracker);
 EventHandlerClass eventHandler(&eventTracker);
 
 const uint8_t PIN = 13;

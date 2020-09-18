@@ -22,39 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef ACE_BUTTON_TEST_HELPER_H
-#define ACE_BUTTON_TEST_HELPER_H
+#ifndef ACE_BUTTON_HELPER_FOR_ENCODED_BUTTON_CONFIG_H
+#define ACE_BUTTON_HELPER_FOR_ENCODED_BUTTON_CONFIG_H
 
 #include <AceButton.h>
-#include <ace_button/testing/TestableButtonConfig.h>
+#include <ace_button/testing/TestableEncodedButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
 
 namespace ace_button {
 namespace testing {
 
 /**
- * A wrapper class that sends emulated button presses and released to the
- * underlying AceButton class, and captures the resulting events in the
- * provided EventTracker.
+ * A wrapper class around an EncodedButtonConfig that sends emulated button
+ * presses and released to the underlying AceButton class, and captures the
+ * resulting events in the provided EventTracker.
  */
-class TestHelper {
+class HelperForEncodedButtonConfig {
   public:
-    TestHelper(
-        TestableButtonConfig* testableConfig,
-        AceButton* button,
+    HelperForEncodedButtonConfig(
+        TestableEncodedButtonConfig* testableConfig,
         EventTracker* eventTracker):
       mTestableConfig(testableConfig),
-      mButton(button),
       mEventTracker(eventTracker) {}
 
     /** Reinitilize to its pristine state. */
-    void init(uint8_t pin, uint8_t defaultReleasedState, uint8_t id) {
-      mPin = pin;
-      mDefaultReleasedState = defaultReleasedState;
-      mId = id;
-      mButton->init(mPin, mDefaultReleasedState, mId);
+    void init() {
+      mEventTracker->clear();
       mTestableConfig->init();
-      mTestableConfig->setButtonState(defaultReleasedState);
     }
 
     /**
@@ -62,46 +56,40 @@ class TestHelper {
      * defaultReleasedState is determined by whether the button has a pullup
      * (HIGH) or pulldown (LOW) resistor.
      */
-    void pressButton(unsigned long time) {
-      uint8_t targetState = (HIGH == mDefaultReleasedState) ? LOW : HIGH;
+    void pressButton(unsigned long time, uint8_t virtualPin) {
       mTestableConfig->setClock(time);
-      mTestableConfig->setButtonState(targetState);
+      mTestableConfig->setVirtualPin(virtualPin);
       mEventTracker->clear();
-      mButton->check();
+      mTestableConfig->checkButtons();
     }
 
     /**
      * Simulate a release of the button and run the button.check() processing.
      */
     void releaseButton(unsigned long time) {
-      uint8_t targetState = (HIGH == mDefaultReleasedState) ? HIGH : LOW;
       mTestableConfig->setClock(time);
-      mTestableConfig->setButtonState(targetState);
+      mTestableConfig->setVirtualPin(mTestableConfig->getNoButtonPin());
       mEventTracker->clear();
-      mButton->check();
+      mTestableConfig->checkButtons();
     }
 
     /**
-     * Simply move the time forward and check the button. No changes to button.
+     * Simply move the time forward and check the button.
      */
     void checkTime(unsigned long time) {
       mTestableConfig->setClock(time);
       mEventTracker->clear();
-      mButton->check();
+      mTestableConfig->checkButtons();
     }
 
   private:
     // Disable copy-constructor and assignment operator
-    TestHelper(const TestHelper&) = delete;
-    TestHelper& operator=(const TestHelper&) = delete;
+    HelperForEncodedButtonConfig(const HelperForEncodedButtonConfig&) = delete;
+    HelperForEncodedButtonConfig&
+        operator=(const HelperForEncodedButtonConfig&) = delete;
 
-    TestableButtonConfig* mTestableConfig;
-    AceButton* mButton;
+    TestableEncodedButtonConfig* mTestableConfig;
     EventTracker* mEventTracker;
-
-    uint8_t mPin;
-    uint8_t mDefaultReleasedState;
-    uint8_t mId;
 };
 
 }

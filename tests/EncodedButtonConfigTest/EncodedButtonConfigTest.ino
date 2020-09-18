@@ -4,7 +4,7 @@
 #include <AceButton.h>
 #include <ace_button/testing/TestableEncodedButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
-#include "TestHelper.h"
+#include <ace_button/testing/HelperForEncodedButtonConfig.h>
 
 using namespace aunit;
 using namespace ace_button;
@@ -46,7 +46,7 @@ static AceButton* const BUTTONS[] = {
 static TestableEncodedButtonConfig testableConfig(
     NUM_PINS, PINS, NUM_BUTTONS, BUTTONS);
 static EventTracker eventTracker;
-static TestHelper helper(&testableConfig, &eventTracker);
+static HelperForEncodedButtonConfig helper(&testableConfig, &eventTracker);
 
 // Store the arguments passed into the event handler into the EventTracker
 // for assertion later.
