@@ -38,6 +38,7 @@ class AceButton;
  */
 class IEventHandler {
   public:
+    /** Handle the button event. */
     virtual void handleEvent(AceButton* button, uint8_t eventType,
         uint8_t buttonState) = 0;
 };
