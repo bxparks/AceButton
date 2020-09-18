@@ -28,6 +28,16 @@ SOFTWARE.
 #include <Arduino.h>
 #include "IEventHandler.h"
 
+// https://stackoverflow.com/questions/295120
+#if defined(__GNUC__) || defined(__clang__)
+  #define DEPRECATED __attribute__((deprecated))
+#elif defined(_MSC_VER)
+  #define DEPRECATED __declspec(deprecated)
+#else
+  #pragma message("WARNING: You need to implement DEPRECATED for this compiler")
+  #define DEPRECATED
+#endif
+
 namespace ace_button {
 
 class AceButton;
@@ -313,12 +323,12 @@ class ButtonConfig {
      * Return the eventHandler function pointer. This is meant to be an
      * internal method.
      *
-     * Deprecated because the event handler can now be either a function pointer
-     * or a object pointer. AceButton now calls dispatchEvent() which correctly
-     * handles both cases. Application code should never need to retrieve the
-     * event handler directly.
+     * Deprecated as of v1.6 because the event handler can now be either a
+     * function pointer or an object pointer. AceButton class now calls
+     * dispatchEvent() which correctly handles both cases. Application code
+     * should never need to retrieve the event handler directly.
      */
-    EventHandler getEventHandler() const {
+    EventHandler getEventHandler() const DEPRECATED {
       return reinterpret_cast<EventHandler>(mEventHandler);
     }
 

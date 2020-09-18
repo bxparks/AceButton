@@ -24,7 +24,6 @@ init	KEYWORD2
 getButtonConfig	KEYWORD2
 setButtonConfig	KEYWORD2
 setEventHandler	KEYWORD2
-setIEventHandler	KEYWORD2
 getPin	KEYWORD2
 getId	KEYWORD2
 getDefaultReleasedState	KEYWORD2
@@ -51,6 +50,7 @@ resetFeatures	KEYWORD2
 #
 getEventHandler	KEYWORD2
 setEventHandler	KEYWORD2
+setIEventHandler	KEYWORD2
 getSystemButtonConfig	KEYWORD2
 #
 setDebounceDelay	KEYWORD2

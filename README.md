@@ -68,7 +68,8 @@ Here are the high-level features of the AceButton library:
 
 * debounces the mechanical contact
 * supports both pull-up and pull-down wiring
-* event-driven through a user-defined `EventHandler` callback funcition
+* event-driven through a user-defined `EventHandler` callback function
+* event-driven through an object-based `IEventHandler` (>= v1.6)
 * supports 6 event types:
     * Pressed
     * Released
@@ -205,6 +206,8 @@ The following example sketches are provided:
     * prints out a status line for every supported event
 * [SingleButtonPullDown.ino](examples/SingleButtonPullDown)
     * same as SingleButton.ino but with an external pull-down resistor
+* [SingleButtonUsingIEventHandler.ino](examples/SingleButtonUsingIEventHandler)
+    * same as SingleButton.ino using an object-based `IEventHandler`
 * [Stopwatch.ino](examples/Stopwatch)
     * measures the speed of `AceButton:check()` with a start/stop/reset button
     * uses `kFeatureLongPress`
@@ -531,7 +534,6 @@ class ButtonConfig {
     void clearFeature(FeatureFlagType features);
     void resetFeatures();
 
-    EventHandler getEventHandler();
     void setEventHandler(EventHandler eventHandler);
 
     static ButtonConfig* getSystemButtonConfig();
@@ -689,7 +691,7 @@ are associated with a single `ButtonConfig`, then it is not necessary for every
 button of that type to hold the same pointer to the `EventHandler` function. It
 is only necessary to save that information once, in the `ButtonConfig` object.
 
-**Pro Tip**: Comment out the unused parameter(s) in the `handleEvent()` method
+**Pro Tip 1**: Comment out the unused parameter(s) in the `handleEvent()` method
 to avoid the `unused parameter` compiler warning:
 ```C++
 void handleEvent(AceButton* /*button*/, uint8_t eventType,
@@ -705,8 +707,9 @@ void handleEvent(AceButton*, uint8_t, uint8_t);
 ```
 
 **Pro Tips 2**: The event handler can be an object instead of just a function
-pointer, which can be useful in more complex applications with numerous buttons.
-See the section on *Object-based Event Handler* in the *Advanced Topic* below.
+pointer. An object-based event handler can be useful in more complex
+applications with numerous buttons. See the section on *Object-based Event
+Handler* in the *Advanced Topic* below.
 
 #### EventHandler Parameters
 
