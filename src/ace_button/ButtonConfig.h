@@ -26,6 +26,17 @@ SOFTWARE.
 #define ACE_BUTTON_BUTTON_CONFIG_H
 
 #include <Arduino.h>
+#include "IEventHandler.h"
+
+// https://stackoverflow.com/questions/295120
+#if defined(__GNUC__) || defined(__clang__)
+  #define DEPRECATED __attribute__((deprecated))
+#elif defined(_MSC_VER)
+  #define DEPRECATED __declspec(deprecated)
+#else
+  #pragma message("WARNING: You need to implement DEPRECATED for this compiler")
+  #define DEPRECATED
+#endif
 
 namespace ace_button {
 
@@ -136,6 +147,12 @@ class ButtonConfig {
     static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
 
     /**
+     * Internal flag to indicate that mEventHandler is an IEventHandler object
+     * pointer instead of an EventHandler function pointer.
+     */
+    static const FeatureFlagType kInternalFeatureIEventHandler = 0x8000;
+
+    /**
      * Convenience flag to suppress all suppressions. Calling
      * setFeature(kFeatureSuppressAll) suppresses all and
      * clearFeature(kFeatureSuppressAll) clears all suppression. Note however
@@ -179,21 +196,21 @@ class ButtonConfig {
     #endif
 
     /** Milliseconds to wait for debouncing. */
-    uint16_t getDebounceDelay() { return mDebounceDelay; }
+    uint16_t getDebounceDelay() const { return mDebounceDelay; }
 
     /** Milliseconds to wait for a possible click. */
-    uint16_t getClickDelay() { return mClickDelay; }
+    uint16_t getClickDelay() const { return mClickDelay; }
 
     /**
      * Milliseconds between the first and second click to register as a
      * double-click.
      */
-    uint16_t getDoubleClickDelay() {
+    uint16_t getDoubleClickDelay() const {
       return mDoubleClickDelay;
     }
 
     /** Milliseconds for a long press event. */
-    uint16_t getLongPressDelay() {
+    uint16_t getLongPressDelay() const {
       return mLongPressDelay;
     }
 
@@ -203,14 +220,14 @@ class ButtonConfig {
      * as this delay has passed. Subsequent events will fire after
      * getRepeatPressInterval() time.
      */
-    uint16_t getRepeatPressDelay() {
+    uint16_t getRepeatPressDelay() const {
       return mRepeatPressDelay;
     }
 
     /**
      * Milliseconds between two successive RepeatPressed events.
      */
-    uint16_t getRepeatPressInterval() {
+    uint16_t getRepeatPressInterval() const {
       return mRepeatPressInterval;
     }
 
@@ -252,6 +269,9 @@ class ButtonConfig {
      * Return the milliseconds of the internal clock. Override to use something
      * other than millis(). The return type is 'unsigned long' instead of
      * uint16_t because that's the return type of millis().
+     *
+     * Note: This should have been a const function. I cannot change it now
+     * without breaking backwards compatibility.
      */
     virtual unsigned long getClock() { return millis(); }
 
@@ -259,6 +279,9 @@ class ButtonConfig {
      * Return the HIGH or LOW state of the button. Override to use something
      * other than digitalRead(). The return type is 'int' instead of uint16_t
      * because that's the return type of digitalRead().
+     *
+     * Note: This should have been a const function. I cannot change it now
+     * without breaking backwards compatibility.
      */
     virtual int readButton(uint8_t pin) {
       return digitalRead(pin);
@@ -268,7 +291,7 @@ class ButtonConfig {
     // functionality of the AceButton.
 
     /** Check if the given features are enabled. */
-    bool isFeature(FeatureFlagType features) {
+    bool isFeature(FeatureFlagType features) const {
       return mFeatureFlags & features;
     }
 
@@ -283,26 +306,68 @@ class ButtonConfig {
     }
 
     /**
-     * Disable all features. Useful when the ButtonConfig is reused in different
-     * configurations. Also useful for testing.
+     * Disable all (externally visible) features. Useful when the ButtonConfig
+     * is reused in different configurations. Also useful for testing. Internal
+     * feature flags (e.g. kInternalFeatureIEventHandler) are *not* cleared.
      */
     void resetFeatures() {
-      mFeatureFlags = 0;
+      // NOTE: If any additional kInternalFeatureXxx flag is added, it must be
+      // added here like this:
+      // mFeatureFlags &= (kInternalFeatureIEventHandler | kInternalFeatureXxx)
+      mFeatureFlags &= kInternalFeatureIEventHandler;
     }
 
     // EventHandler
 
-    /** Return the eventHandler. */
-    EventHandler getEventHandler() {
-      return mEventHandler;
+    /**
+     * Return the eventHandler function pointer. This is meant to be an
+     * internal method.
+     *
+     * Deprecated as of v1.6 because the event handler can now be either a
+     * function pointer or an object pointer. AceButton class now calls
+     * dispatchEvent() which correctly handles both cases. Application code
+     * should never need to retrieve the event handler directly.
+     */
+    EventHandler getEventHandler() const DEPRECATED {
+      return reinterpret_cast<EventHandler>(mEventHandler);
     }
 
     /**
-     * Install the event handler. The event handler must be defined for the
-     * AceButton to be useful.
+     * Dispatch the event to the handler. This is meant to be an internal
+     * method.
+     */
+    void dispatchEvent(AceButton* button, uint8_t eventType,
+        uint8_t buttonState) const {
+
+      if (! mEventHandler) return;
+
+      if (isFeature(kInternalFeatureIEventHandler)) {
+        IEventHandler* eventHandler =
+            reinterpret_cast<IEventHandler*>(mEventHandler);
+        eventHandler->handleEvent(button, eventType, buttonState);
+      } else {
+        EventHandler eventHandler =
+            reinterpret_cast<EventHandler>(mEventHandler);
+        eventHandler(button, eventType, buttonState);
+      }
+    }
+
+    /**
+     * Install the EventHandler function pointer. The event handler must be
+     * defined for the AceButton to be useful.
      */
     void setEventHandler(EventHandler eventHandler) {
+      mEventHandler = reinterpret_cast<void*>(eventHandler);
+      clearFeature(kInternalFeatureIEventHandler);
+    }
+
+    /**
+     * Install the IEventHandler object pointer. The event handler must be
+     * defined for the AceButton to be useful.
+     */
+    void setIEventHandler(IEventHandler* eventHandler) {
       mEventHandler = eventHandler;
+      setFeature(kInternalFeatureIEventHandler);
     }
 
     /**
@@ -325,7 +390,7 @@ class ButtonConfig {
     ButtonConfig& operator=(const ButtonConfig&) = delete;
 
     /** The event handler for all buttons associated with this ButtonConfig. */
-    EventHandler mEventHandler = nullptr;
+    void* mEventHandler = nullptr;
 
     /** A bit mask flag that activates certain features. */
     FeatureFlagType mFeatureFlags = 0;

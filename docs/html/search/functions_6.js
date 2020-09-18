@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ladderbuttonconfig',['LadderButtonConfig',['../classace__button_1_1LadderButtonConfig.html#a4d1169f4324af804afb75b4eddf7dcb8',1,'ace_button::LadderButtonConfig']]]
+  ['handleevent_107',['handleEvent',['../classace__button_1_1IEventHandler.html#ab63192ee17b393582e9f6e8b8b15a5c8',1,'ace_button::IEventHandler']]]
 ];

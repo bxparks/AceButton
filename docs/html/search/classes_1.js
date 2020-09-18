@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['buttonconfig',['ButtonConfig',['../classace__button_1_1ButtonConfig.html',1,'ace_button']]]
+  ['buttonconfig_75',['ButtonConfig',['../classace__button_1_1ButtonConfig.html',1,'ace_button']]]
 ];

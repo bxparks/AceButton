@@ -85,7 +85,7 @@ void AceButton::setDefaultReleasedState(uint8_t state) {
   }
 }
 
-uint8_t AceButton::getDefaultReleasedState() {
+uint8_t AceButton::getDefaultReleasedState() const {
   return (mFlags & kFlagDefaultReleasedState) ? HIGH : LOW;
 }
 
@@ -378,10 +378,7 @@ void AceButton::checkPostponedClick(uint16_t now) {
 }
 
 void AceButton::handleEvent(uint8_t eventType) {
-  ButtonConfig::EventHandler eventHandler = mButtonConfig->getEventHandler();
-  if (eventHandler) {
-    eventHandler(this, eventType, getLastButtonState());
-  }
+  mButtonConfig->dispatchEvent(this, eventType, getLastButtonState());
 }
 
 }

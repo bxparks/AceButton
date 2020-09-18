@@ -4,7 +4,7 @@
 #include <AceButton.h>
 #include <ace_button/testing/TestableEncodedButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
-#include "TestHelper.h"
+#include <ace_button/testing/HelperForEncodedButtonConfig.h>
 
 using namespace aunit;
 using namespace ace_button;
@@ -17,9 +17,11 @@ static const uint8_t NUM_PINS = 4;
 static const uint8_t PINS[] = {2, 3, 4, 5};
 
 // Create 15 AceButton objects.
-// Note: we could use an array of AceButton BUTTONS[15], and use a lop to
+// Note: we could use an array of AceButton BUTTONS[15], and use a loop to
 // initialize these arrays, but this is more explicit and easier to understand
 // as an example code.
+// AceButton b00 cannot be created because it is used to indicate "no button
+// pressed".
 static const uint8_t NUM_BUTTONS = 15;
 static AceButton b01(1);
 static AceButton b02(2);
@@ -44,7 +46,7 @@ static AceButton* const BUTTONS[] = {
 static TestableEncodedButtonConfig testableConfig(
     NUM_PINS, PINS, NUM_BUTTONS, BUTTONS);
 static EventTracker eventTracker;
-static TestHelper helper(&testableConfig, &eventTracker);
+static HelperForEncodedButtonConfig helper(&testableConfig, &eventTracker);
 
 // Store the arguments passed into the event handler into the EventTracker
 // for assertion later.

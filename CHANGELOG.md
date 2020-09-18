@@ -1,6 +1,20 @@
 # Changelog
 
 * Unreleased
+* 1.6 (2020-09-18)
+    * Remove 'class Print' forward declaration that breaks megaAVR like Nano
+      Every.
+    * Mark non-virtual const functions with `const`, which preserves backwards
+      compatibility.
+    * Add support for object-based event handler using `IEventHandler` and
+      `ButtonConfig::setIEventHanlder()`. Fixes [Issue
+      #50](https://github.com/bxparks/AceButton/issues/50). Regenerate library
+      code size numbers, showing increase of 34-64 bytes of flash memory.
+    * Add examples of how to configure 2 AceButtons using either a single
+      ButtonConfig or 2 ButtonConfigs.
+    * **Potentially Breaking**: Change `ButtonConfig::getEventHandler()` to be
+      an *internal* and *deprecated* method. Replaced with
+      `ButtConfig::dispatchEvent()` which is also an internal method.
 * 1.5 (2020-06-27)
     * Add `LadderButtonConfig` class to support multiple buttons on a single
       analog pin using `analogRead()`. Add documentation in

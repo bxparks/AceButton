@@ -27,8 +27,6 @@ SOFTWARE.
 
 #include <Arduino.h> // LOW
 
-class Print;
-
 namespace ace_button {
 namespace testing {
 

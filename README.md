@@ -56,9 +56,11 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
 above (e.g. Clicked and DoubleClicked).
 
-Version: 1.5 (2020-06-27)
+**Version**: 1.6 (2020-09-18)
 
-[![AUniter Jenkins Badge](https://us-central1-xparks2018.cloudfunctions.net/badge?project=AceButton)](https://github.com/bxparks/AUniter)
+**Changelog**: [CHANGELOG.md](CHANGELOG.md)
+
+![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
 
 ## Features
 
@@ -66,7 +68,8 @@ Here are the high-level features of the AceButton library:
 
 * debounces the mechanical contact
 * supports both pull-up and pull-down wiring
-* event-driven through a user-defined `EventHandler` callback funcition
+* event-driven through a user-defined `EventHandler` callback function
+* event-driven through an object-based `IEventHandler` (>= v1.6)
 * supports 6 event types:
     * Pressed
     * Released
@@ -199,14 +202,19 @@ The following example sketches are provided:
 * [HelloButton.ino](examples/HelloButton)
     * minimal program that reads a switch and control the built-in LED
 * [SingleButton.ino](examples/SingleButton)
-    * controls a single button wired with a pull-up resistor
-    * prints out a status line for every supported event
+    * single button wired with an internal pull-up resistor
 * [SingleButtonPullDown.ino](examples/SingleButtonPullDown)
     * same as SingleButton.ino but with an external pull-down resistor
+* [SingleButtonUsingIEventHandler.ino](examples/SingleButtonUsingIEventHandler)
+    * same as SingleButton.ino using an object-based `IEventHandler`
 * [Stopwatch.ino](examples/Stopwatch)
     * measures the speed of `AceButton:check()` with a start/stop/reset button
     * uses `kFeatureLongPress`
 * Multiple Buttons
+    * [TwoButtonsUsingOneButtonConfig.ino](examples/TwoButtonsUsingOneButtonConfig)
+        * two buttons using one ButtonConfig
+    * [TwoButtonsUsingTwoButtonConfigs.ino](examples/TwoButtonsUsingTwoButtonConfigs/)
+        * two buttons using two ButtonConfigs
     * [TunerButtons.ino](examples/TunerButtons)
         * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
         * shows multiple `ButtonConfig` and `EventHandler` instances
@@ -529,7 +537,6 @@ class ButtonConfig {
     void clearFeature(FeatureFlagType features);
     void resetFeatures();
 
-    EventHandler getEventHandler();
     void setEventHandler(EventHandler eventHandler);
 
     static ButtonConfig* getSystemButtonConfig();
@@ -687,7 +694,7 @@ are associated with a single `ButtonConfig`, then it is not necessary for every
 button of that type to hold the same pointer to the `EventHandler` function. It
 is only necessary to save that information once, in the `ButtonConfig` object.
 
-**Pro Tip**: Comment out the unused parameter(s) in the `handleEvent()` method
+**Pro Tip 1**: Comment out the unused parameter(s) in the `handleEvent()` method
 to avoid the `unused parameter` compiler warning:
 ```C++
 void handleEvent(AceButton* /*button*/, uint8_t eventType,
@@ -701,6 +708,11 @@ before the `setup()` method:
 ```C++
 void handleEvent(AceButton*, uint8_t, uint8_t);
 ```
+
+**Pro Tips 2**: The event handler can be an object instead of just a function
+pointer. An object-based event handler can be useful in more complex
+applications with numerous buttons. See the section on *Object-based Event
+Handler* in the *Advanced Topic* below.
 
 #### EventHandler Parameters
 
@@ -771,6 +783,11 @@ run approximately every 5 ms, the user-provided `EventHandler` should run
 somewhat faster than 5 ms. Given a choice, it is probably better to use the
 `EventHandler` to set some flags or variables and return quickly, then do
 additional processing from the `loop()` method.
+
+Sometimes it is too convenient or unavoidable to perform a long-running
+operation inside the event handler (e.g. making an HTTP). This is fine, I have
+done this occasionally. Just be aware that the button scanning operation will
+not work during that long-running operation.
 
 Speaking of threads, the API of the AceButton Library was designed to work in a
 multi-threaded environment, if that situation were to occur in the Arduino
@@ -1026,8 +1043,10 @@ void loop() {
 }
 ```
 
-See the example sketch [TunerButtons.ino](examples/TunerButtons) to see how
-multiple `ButtonConfig` instances are used with multiple `AceButton` instances.
+See the example sketch
+[TwoButtonsUsingTwoButtonConfigs.ino](examples/TwoButtonsUsingTwoButtonConfigs)
+which uses 2 `ButtonConfig` instances to configure 2 `AceButton`
+instances.
 
 **Option 2: Multiple Button Discriminators**
 
@@ -1075,10 +1094,53 @@ void loop() {
 }
 ```
 
-You can also use this technique with `AceButton::getId()` method,
-as demonstrated in the [ArrayButtons.ino](examples/ArrayButtons) sketch.
+See the example code
+[TwoButtonsUsingOneButtonConfig](examples/TwoButtonsUsingOneButtonConfig).
+which uses a single `ButtonConfig` instance to handle 2 `AceButton`
+instances.
+
+Sometimes, it is more convenient to use the `AceButton::getId()` method
+to identify the button instead of the `AceButton::getPin()`.
+See [ArrayButtons.ino](examples/ArrayButtons) for an example.
 
 ## Advanced Topics
+
+### Object-based Event Handler
+
+The `EventHandler` is a typedef that is defined to be a function pointer. This
+is a simple, low-overhead design that produces the smallest memory footprint,
+and allows the event handler to be written with the smallest amount of
+boilerplate code. The user does not have to override a class.
+
+In more complex applications involving larger number of `AceButton` and
+`ButtonConfig` objects, it is often useful for the `EventHandler to be an object
+instead of a simple function pointer. This is especially true if the application
+uses Object Oriented Programming (OOP) techniques for modularity and
+encapsulation. Using an object as the event handler allows additional context
+information to be injected into the event handler.
+
+To support OOP techniques, AceButton Version 1.6 adds:
+
+* `IEventHandler` interface class
+    * contains a single pure virtual function `handleEvent()`
+* `ButtonConfig::setIEventHandler()` method
+    * accepts a pointer to an instance of the `IEventHandler` interface.
+
+The `IEventHandler` interface is simply this:
+```C++
+class IEventHandler {
+  public:
+    virtual void handleEvent(AceButton* button, uint8_t eventType,
+        uint8_t buttonState) = 0;
+};
+```
+
+At least one of `ButtonConfig::setEventHandler()` or
+`ButtonConfig::setIEventHandler()` must be called before events are actually
+dispatched. If both are called, the last one takes precedence.
+
+See
+[examples/SingleButtonUsingIEventHandler](examples/SingleButtonUsingIEventHandler) for an example.
 
 ### Distinguishing Between a Clicked and DoubleClicked
 
@@ -1286,7 +1348,7 @@ compared to the ~1 MB flash memory available on an ESP8266.
 Even for 32-bit processors, I still recommend avoiding the creation and deletion
 of objects from the heap, to avoid the risk of heap fragmentation. If a variable
 number of buttons is needed, try to design the application so that all
-buttons which will ever be needed is predefined in a global pool. Even if some
+buttons which will ever be needed are predefined in a global pool. Even if some
 of the `AceButton` and `ButtonConfig` instances are unused, the overhead is
 probably smaller than the overhead of wasted space due to heap fragmentation.
 
@@ -1426,10 +1488,6 @@ none.
 
 I decided to write my own and use the opportunity to learn how to create and
 publish an Arduino library.
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

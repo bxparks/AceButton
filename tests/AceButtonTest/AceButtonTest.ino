@@ -59,7 +59,7 @@ SOFTWARE.
 #include <AceButton.h>
 #include <ace_button/testing/TestableButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
-#include "TestHelper.h"
+#include <ace_button/testing/HelperForButtonConfig.h>
 
 using namespace ace_button;
 using namespace ace_button::testing;
@@ -74,7 +74,7 @@ ButtonConfig buttonConfig;
 TestableButtonConfig testableConfig;
 AceButton button(&testableConfig);
 EventTracker eventTracker;
-TestHelper helper(&testableConfig, &button, &eventTracker);
+HelperForButtonConfig helper(&testableConfig, &button, &eventTracker);
 
 // Store the arguments passed into the event handler into the EventTracker
 // for assertion later.

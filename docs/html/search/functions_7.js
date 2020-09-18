@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['readbutton',['readButton',['../classace__button_1_1ButtonConfig.html#a5dab877bf124bfdf5a5eb703ca123027',1,'ace_button::ButtonConfig::readButton()'],['../classace__button_1_1Encoded4To2ButtonConfig.html#a4607829b4dc2bbf93fdb0608e1677496',1,'ace_button::Encoded4To2ButtonConfig::readButton()'],['../classace__button_1_1Encoded8To3ButtonConfig.html#a64b28331794008afc39df78795a6fb10',1,'ace_button::Encoded8To3ButtonConfig::readButton()'],['../classace__button_1_1EncodedButtonConfig.html#a16c46caeb76f48bcc572df4483b25549',1,'ace_button::EncodedButtonConfig::readButton()'],['../classace__button_1_1LadderButtonConfig.html#a9b0f911723cf3b13ec5ca4d89f793493',1,'ace_button::LadderButtonConfig::readButton()']]],
-  ['resetfeatures',['resetFeatures',['../classace__button_1_1ButtonConfig.html#af947cc369000a9c3619ac16b417db8b7',1,'ace_button::ButtonConfig']]]
+  ['init_108',['init',['../classace__button_1_1AceButton.html#a18c47304c694c6f084a343a7c83bef34',1,'ace_button::AceButton::init(uint8_t pin=0, uint8_t defaultReleasedState=HIGH, uint8_t id=0)'],['../classace__button_1_1AceButton.html#a6433836fba70c590917284ff43e4afb4',1,'ace_button::AceButton::init(ButtonConfig *buttonConfig, uint8_t pin=0, uint8_t defaultReleasedState=HIGH, uint8_t id=0)']]],
+  ['isfeature_109',['isFeature',['../classace__button_1_1ButtonConfig.html#aeaa36505747dbd23bbd3a77e228820c9',1,'ace_button::ButtonConfig']]],
+  ['ispressedraw_110',['isPressedRaw',['../classace__button_1_1AceButton.html#a940975bbdf673f6411b0efc008ba9981',1,'ace_button::AceButton']]],
+  ['isreleased_111',['isReleased',['../classace__button_1_1AceButton.html#ac1a720cb3ad156081a132ede781c5ea8',1,'ace_button::AceButton']]]
 ];

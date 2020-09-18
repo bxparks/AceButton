@@ -32,6 +32,7 @@ This is the Doxygen documentation for the
 #ifndef ACE_BUTTON_H
 #define ACE_BUTTON_H
 
+#include "ace_button/IEventHandler.h"
 #include "ace_button/ButtonConfig.h"
 #include "ace_button/AdjustableButtonConfig.h"
 #include "ace_button/Encoded8To3ButtonConfig.h"
@@ -41,7 +42,7 @@ This is the Doxygen documentation for the
 #include "ace_button/AceButton.h"
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_BUTTON_VERSION 10500
-#define ACE_BUTTON_VERSION_STRING "1.5"
+#define ACE_BUTTON_VERSION 10600
+#define ACE_BUTTON_VERSION_STRING "1.6"
 
 #endif
