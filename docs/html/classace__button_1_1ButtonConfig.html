@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.6</span>
+   &#160;<span id="projectnumber">1.6.1</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven button library for Arduino.</div>
   </td>
@@ -111,6 +111,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aa81d236e4030f4abc48eb01ae9ade202">ButtonConfig</a> ()=default</td></tr>
 <tr class="memdesc:aa81d236e4030f4abc48eb01ae9ade202"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
 <tr class="separator:aa81d236e4030f4abc48eb01ae9ade202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa118a96cb344ada0230eb441f9729d5e"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#aa118a96cb344ada0230eb441f9729d5e">~ButtonConfig</a> ()=default</td></tr>
+<tr class="memdesc:aa118a96cb344ada0230eb441f9729d5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> is created and deleted on the heap, a virtual destructor is technically required by the C++ language to prevent memory leaks.  <a href="classace__button_1_1ButtonConfig.html#aa118a96cb344ada0230eb441f9729d5e">More...</a><br /></td></tr>
+<tr class="separator:aa118a96cb344ada0230eb441f9729d5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2866cf111973f8b1bf4ae0e7df17b6dd"><td class="memItemLeft" align="right" valign="top"><a id="a2866cf111973f8b1bf4ae0e7df17b6dd"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1ButtonConfig.html#a2866cf111973f8b1bf4ae0e7df17b6dd">getDebounceDelay</a> () const</td></tr>
 <tr class="memdesc:a2866cf111973f8b1bf4ae0e7df17b6dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Milliseconds to wait for debouncing. <br /></td></tr>
@@ -319,6 +322,38 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 
 </div>
 </div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aa118a96cb344ada0230eb441f9729d5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa118a96cb344ada0230eb441f9729d5e">&#9670;&nbsp;</a></span>~ButtonConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ace_button::ButtonConfig::~ButtonConfig </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If the <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> is created and deleted on the heap, a virtual destructor is technically required by the C++ language to prevent memory leaks. </p>
+<p>But <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> does not have any memory to leak, so everything is fine even without a virtual destructor. This virtual destructor definition is provided for the sole purpose of keeping the compiler quiet.</p>
+<p>The problem is that for 8-bit AVR processors, the addition of a virtual destructor causes the flash memory size of the library to increase by 600 bytes, which is far too large compared to the ~1000 bytes consumed by the entire library. For 32-bit processors, the virtual destructor seems to increase the code size by 60-120 bytes, probably because the malloc/free are pulled in by something else already. This small increase in flash memory is tiny compared to the ~1 MB of total flash memory space offered by the ESP8266 and ESP32.</p>
+<p>Therefore, I expose the virtual destructor only to non-AVR microcontrollers, which I hope means that only 32-bit chips with large flash memory will pay the cost of the virtual destructor. The check for the ARDUINO_ARCH_AVR macro seems to cover the ATmega328 chips (e.g. Arduino Nano), the ATmega32U4 (e.g. SparkFun Pro Micro), and the ATtiny85 (e.g. DigiSparks ATtiny85).</p>
+<p>If there are other Arduino compatible boards with low flash memory that need to be excluded from the virtual destructor, we need to figure out the appropriate ARDUINO_ARCH_xxx macro, and add it to the <code>#if</code> statement above. </p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="abb346713a5bd136a39d5e6fb16892996"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abb346713a5bd136a39d5e6fb16892996">&#9670;&nbsp;</a></span>dispatchEvent()</h2>
@@ -363,7 +398,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 <p>Dispatch the event to the handler. </p>
 <p>This is meant to be an internal method. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00339">339</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00356">356</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -394,7 +429,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 <p>Override to use something other than millis(). The return type is 'unsigned long' instead of uint16_t because that's the return type of millis().</p>
 <p>Note: This should have been a const function. I cannot change it now without breaking backwards compatibility. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00276">276</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00293">293</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -425,7 +460,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 <p>This is meant to be an internal method.</p>
 <p>Deprecated as of v1.6 because the event handler can now be either a function pointer or an object pointer. <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> class now calls <a class="el" href="classace__button_1_1ButtonConfig.html#abb346713a5bd136a39d5e6fb16892996" title="Dispatch the event to the handler.">dispatchEvent()</a> which correctly handles both cases. Application code should never need to retrieve the event handler directly. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00331">331</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00348">348</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -455,7 +490,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 <p>Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed events. </p>
 <p>The first event will fire as soon as this delay has passed. Subsequent events will fire after <a class="el" href="classace__button_1_1ButtonConfig.html#a5c5d86932a98f71030422ef367b57a25" title="Milliseconds between two successive RepeatPressed events.">getRepeatPressInterval()</a> time. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00223">223</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00240">240</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -489,7 +524,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 
 <p>Reimplemented in <a class="el" href="classace__button_1_1EncodedButtonConfig.html#a16c46caeb76f48bcc572df4483b25549">ace_button::EncodedButtonConfig</a>, <a class="el" href="classace__button_1_1Encoded8To3ButtonConfig.html#a64b28331794008afc39df78795a6fb10">ace_button::Encoded8To3ButtonConfig</a>, <a class="el" href="classace__button_1_1LadderButtonConfig.html#a9b0f911723cf3b13ec5ca4d89f793493">ace_button::LadderButtonConfig</a>, and <a class="el" href="classace__button_1_1Encoded4To2ButtonConfig.html#a4607829b4dc2bbf93fdb0608e1677496">ace_button::Encoded4To2ButtonConfig</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00286">286</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00303">303</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -519,7 +554,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 <p>Disable all (externally visible) features. </p>
 <p>Useful when the <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> is reused in different configurations. Also useful for testing. Internal feature flags (e.g. kInternalFeatureIEventHandler) are <em>not</em> cleared. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00313">313</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00330">330</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -550,7 +585,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 <p>Install the EventHandler function pointer. </p>
 <p>The event handler must be defined for the <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> to be useful. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00359">359</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00376">376</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
@@ -581,7 +616,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 <p>Install the <a class="el" href="classace__button_1_1IEventHandler.html" title="Interface of the class that will handle the button event.">IEventHandler</a> object pointer. </p>
 <p>The event handler must be defined for the <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a> to be useful. </p>
 
-<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00368">368</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00385">385</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 
 </div>
 </div>
