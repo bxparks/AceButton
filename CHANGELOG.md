@@ -1,6 +1,14 @@
 # Changelog
 
 * Unreleased
+* 1.6.1 (2020-09-27)
+    * Expose the `ButtonConfig` virtual destructor for all architectures
+      except the AVR. In other words, instead of whitelisting only ESP8266 and
+      ESP32, we blacklist just the AVR chips. This will allow most
+      microcontrollers with sufficient memory to create AceButton objects on the
+      heap without triggering compiler warnings. Most AVR chips have limited
+      amount of flash and static memory, and pulling in the virtual destructor
+      causes the flash size of to increase by 600 bytes, which is too large.
 * 1.6 (2020-09-18)
     * Remove 'class Print' forward declaration that breaks megaAVR like Nano
       Every.

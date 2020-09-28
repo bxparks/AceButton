@@ -179,18 +179,35 @@ class ButtonConfig {
     /** Constructor. */
     ButtonConfig() = default;
 
-    #if defined(ESP8266) || defined(ESP32)
+    #if ! defined(ARDUINO_ARCH_AVR)
       /**
-       * Virtual destructor is provided *only* for 32-bit systems such as the
-       * ESP8266 and ESP32 which have enough flash memory that these objects can
-       * be created on the heap without the risk of heap fragmentation.
+       * If the ButtonConfig is created and deleted on the heap, a virtual
+       * destructor is technically required by the C++ language to prevent
+       * memory leaks. But ButtonConfig does not have any memory to leak, so
+       * everything is fine even without a virtual destructor. This virtual
+       * destructor definition is provided for the sole purpose of keeping the
+       * compiler quiet.
        *
-       * For 8-bit processors, the addition of a virtual destructor causes the
-       * flash memory size of the library to increase by 600 bytes, which is far
-       * too large compared to the ~1000 bytes consumed by the entire library.
-       * For 32-bit processors, the virtual destructor seems to increase the
-       * code size by 60-120 bytes, which is tiny compared to the ~1 MB of total
-       * flash memory space offered by the ESP8266 and ESP32.
+       * The problem is that for 8-bit AVR processors, the addition of a virtual
+       * destructor causes the flash memory size of the library to increase by
+       * 600 bytes, which is far too large compared to the ~1000 bytes consumed
+       * by the entire library. For 32-bit processors, the virtual destructor
+       * seems to increase the code size by 60-120 bytes, probably because
+       * the malloc/free are pulled in by something else already. This small
+       * increase in flash memory is tiny compared to the ~1 MB of total flash
+       * memory space offered by the ESP8266 and ESP32.
+       *
+       * Therefore, I expose the virtual destructor only to non-AVR
+       * microcontrollers, which I hope means that only 32-bit chips with
+       * large flash memory will pay the cost of the virtual destructor. The
+       * check for the ARDUINO_ARCH_AVR macro seems to cover the ATmega328 chips
+       * (e.g. Arduino Nano), the ATmega32U4 (e.g. SparkFun Pro Micro), and the
+       * ATtiny85 (e.g. DigiSparks ATtiny85).
+       *
+       * If there are other Arduino compatible boards with low flash memory that
+       * need to be excluded from the virtual destructor, we need to figure out
+       * the appropriate ARDUINO_ARCH_xxx macro, and add it to the `#if`
+       * statement above.
        */
       virtual ~ButtonConfig() = default;
     #endif
