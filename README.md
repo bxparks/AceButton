@@ -1113,13 +1113,13 @@ and allows the event handler to be written with the smallest amount of
 boilerplate code. The user does not have to override a class.
 
 In more complex applications involving larger number of `AceButton` and
-`ButtonConfig` objects, it is often useful for the `EventHandler to be an object
-instead of a simple function pointer. This is especially true if the application
-uses Object Oriented Programming (OOP) techniques for modularity and
+`ButtonConfig` objects, it is often useful for the `EventHandler` to be an
+object instead of a simple function pointer. This is especially true if the
+application uses Object Oriented Programming (OOP) techniques for modularity and
 encapsulation. Using an object as the event handler allows additional context
 information to be injected into the event handler.
 
-To support OOP techniques, AceButton Version 1.6 adds:
+To support OOP techniques, AceButton v1.6 adds:
 
 * `IEventHandler` interface class
     * contains a single pure virtual function `handleEvent()`
@@ -1334,23 +1334,23 @@ For 32-bit processors (e.g. ESP8266, ESP32) which have far more flash memory
 (e.g. 1 MB) and static memory (e.g. 80 kB), it seems reasonable to allow
 `AceButton` and `ButtonConfig` to be created and deleted from the heap.
 (See [Issue #46](https://github.com/bxparks/AceButton/issues/46) for the
-motivation.) Therefore, with v1.5, I have added a virtual destructor for the
-`ButtonConfig` and its subclasses which is conditionally compiled for the
-following 32-bit processors:
+motivation.) Testing shows that the virtual destructor adds only about 60-120
+bytes of flash memory for these microcontrollers, probably because the
+`malloc()` and `free()` functions are already pulled in by something else. The
+60-120 bytes of additional consumption seems trivial compared to the range of
+~256 kB to ~4 MB flash memory available on these 32-bit processors.
 
-* ESP8266
-* ESP32
-
-Testing shows that the virtual destructor adds only about 60-120 bytes of flash
-memory for these microcontrollers, which is a trivial amount of flash memory
-compared to the ~1 MB flash memory available on an ESP8266.
+Therefore, I added a virtual destructor for the `ButtonConfig` class (v1.5) and
+enabled it for all architectures *other* than `ARDUINO_ARCH_AVR` (v1.6.1). This
+prevents 8-bit processors with limited memory from suffering the overhead of an
+extra 600 bytes of flash memory usage.
 
 Even for 32-bit processors, I still recommend avoiding the creation and deletion
 of objects from the heap, to avoid the risk of heap fragmentation. If a variable
-number of buttons is needed, try to design the application so that all
-buttons which will ever be needed are predefined in a global pool. Even if some
-of the `AceButton` and `ButtonConfig` instances are unused, the overhead is
-probably smaller than the overhead of wasted space due to heap fragmentation.
+number of buttons is needed, it might be possible to design the application so
+that all buttons which will ever be needed are predefined in a global pool. Even
+if some of the `AceButton` and `ButtonConfig` instances are unused, the overhead
+is probably smaller than the overhead of wasted space due to heap fragmentation.
 
 ## Resource Consumption
 
