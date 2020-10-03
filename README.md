@@ -175,10 +175,22 @@ The latest stable release is available in the Arduino IDE Library Manager.
 Search for "AceButton". Click install.
 
 The development version can be installed by cloning the
-[GitHub repository](https://github.com/bxparks/AceButton), checking out the
+GitHub repository (https://github.com/bxparks/AceButton), checking out the
 `develop` branch, then manually copying over the contents to the `./libraries`
 directory used by the Arduino IDE. (The result is a directory named
-`./libraries/AceButton`.) The `master` branch contains the stable release.
+`./libraries/AceButton`.)
+
+The `master` branch contains the tagged stable releases.
+
+### External Dependencies
+
+You can use the core of the library without external dependencies.
+
+The some programs in `examples/` may depend on:
+* AceUtils (https://github.com/bxparks/AceUtils)
+
+The unit tests under `tests` depend on:
+* AUnit (https://github.com/bxparks/AUnit)
 
 ### Source Code
 
@@ -191,8 +203,8 @@ The source files are organized as follows:
 
 ### Docs
 
-Besides this README.md file, the [docs/](docs/) directory contains the [Doxygen
-docs](https://bxparks.github.io/AceButton/html/) published on GitHub Pages. It
+Besides this README.md file, the [docs/](docs/) directory contains the Doxygen
+docs (https://bxparks.github.io/AceButton/html/) published on GitHub Pages. It
 can help you navigate an unfamiliar code base.
 
 ### Examples
