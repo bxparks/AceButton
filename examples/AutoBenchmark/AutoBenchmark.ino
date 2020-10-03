@@ -1,13 +1,18 @@
 /*
  * A program that prints out the time (min/avg/max) taken by the
  * AceButton::check() method.
+ *
+ * Depends on:
+ *
+ *  * https://github.com/bxparks/AceButton
+ *  * https://github.com/bxparks/AceUtils
  */
 
 #include <AceButton.h>
-#include <ace_button/testing/TimingStats.h>
+#include <TimingStats.h>
 #include "ProfilingButtonConfig.h"
 using namespace ace_button;
-using namespace ace_button::testing;
+using namespace timing_stats;
 
 // Set this to 1 to run the benchmarks using the IEventHandler object instead of
 // EventHandler function. The result is that AceButton::check() seems slightly
