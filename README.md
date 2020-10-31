@@ -184,10 +184,10 @@ The `master` branch contains the tagged stable releases.
 
 ### External Dependencies
 
-You can use the core of the library without external dependencies.
+The core of the library is self-contained and has no external dependencies.
 
 The some programs in `examples/` may depend on:
-* AceUtils (https://github.com/bxparks/AceUtils)
+* AceCommon (https://github.com/bxparks/AceCommon)
 
 The unit tests under `tests` depend on:
 * AUnit (https://github.com/bxparks/AUnit)

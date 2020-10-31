@@ -4,15 +4,15 @@
  *
  * Depends on:
  *
+ *  * https://github.com/bxparks/AceCommon
  *  * https://github.com/bxparks/AceButton
- *  * https://github.com/bxparks/AceUtils
  */
 
+#include <AceCommon.h>
 #include <AceButton.h>
-#include <TimingStats.h>
 #include "ProfilingButtonConfig.h"
+using ace_common::TimingStats;
 using namespace ace_button;
-using namespace timing_stats;
 
 // Set this to 1 to run the benchmarks using the IEventHandler object instead of
 // EventHandler function. The result is that AceButton::check() seems slightly
