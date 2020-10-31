@@ -7,7 +7,7 @@ connected to a digital input pin on the Arduino. The library should be able to
 handle momentary buttons, maintained buttons, and switches, but it was designed
 primarily for momentary buttons.
 
-The library is called the ACE Button Library (or AceButton Library) because:
+The library is named "AceButton" because:
 
 * many configurations of the button are **adjustable**, either at compile-time
   or run-time
@@ -16,20 +16,28 @@ The library is called the ACE Button Library (or AceButton Library) because:
 * the library detects changes in the button state and sends **events** to
   a user-defined `EventHandler` callback function
 
-Most of the features of the library can be accessed through 2 classes and
-1 callback function:
+Most of the features of the library can be accessed through 2 classes,
+1 callback function, and 1 interface:
 
 * `AceButton` (class)
 * `ButtonConfig` (class)
 * `EventHandler` (typedef)
+* `IEventHandler` (interface)
 
 The `AceButton` class contains the logic for debouncing and determining if a
-particular event has occurred. The `ButtonConfig` class holds various timing
-parameters, the event handler, code for reading the button, and code for
-getting the internal clock. The `EventHandler` is a user-defined callback
-function with a specific signature which is registered with the `ButtonConfig`
-object. When the library detects interesting events, the callback function is
-called by the library, allowing the client code to handle the event.
+particular event has occurred.
+
+The `ButtonConfig` class holds various timing parameters, the event handler,
+code for reading the button, and code for getting the internal clock.
+
+The `EventHandler` is a user-defined callback function with a specific signature
+which is registered with the `ButtonConfig` object. When the library detects
+interesting events, the callback function is called by the library, allowing the
+client code to handle the event.
+
+The `IEventHandler` is an interface (pure abstract class) that provides an
+alternative to the `EventHandler`. Instead of using a callback function, an
+object of type `IEventHandler` can be used to handle the button events.
 
 The supported events are:
 
@@ -56,7 +64,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
 above (e.g. Clicked and DoubleClicked).
 
-**Version**: 1.6.1 (2020-09-27)
+**Version**: 1.7 (2020-10-31)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
