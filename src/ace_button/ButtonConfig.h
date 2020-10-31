@@ -30,12 +30,12 @@ SOFTWARE.
 
 // https://stackoverflow.com/questions/295120
 #if defined(__GNUC__) || defined(__clang__)
-  #define DEPRECATED __attribute__((deprecated))
+  #define ACE_BUTTON_DEPRECATED __attribute__((deprecated))
 #elif defined(_MSC_VER)
-  #define DEPRECATED __declspec(deprecated)
+  #define ACE_BUTTON_DEPRECATED __declspec(deprecated)
 #else
-  #pragma message("WARNING: You need to implement DEPRECATED for this compiler")
-  #define DEPRECATED
+  #pragma message("WARNING: Implement ACE_BUTTON_DEPRECATED for this compiler")
+  #define ACE_BUTTON_DEPRECATED
 #endif
 
 namespace ace_button {
@@ -345,7 +345,7 @@ class ButtonConfig {
      * dispatchEvent() which correctly handles both cases. Application code
      * should never need to retrieve the event handler directly.
      */
-    EventHandler getEventHandler() const DEPRECATED {
+    EventHandler getEventHandler() const ACE_BUTTON_DEPRECATED {
       return reinterpret_cast<EventHandler>(mEventHandler);
     }
 
