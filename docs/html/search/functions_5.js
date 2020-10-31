@@ -6,7 +6,7 @@ var searchData=
   ['getdebouncedelay_95',['getDebounceDelay',['../classace__button_1_1ButtonConfig.html#a2866cf111973f8b1bf4ae0e7df17b6dd',1,'ace_button::ButtonConfig']]],
   ['getdefaultreleasedstate_96',['getDefaultReleasedState',['../classace__button_1_1AceButton.html#a5c253900d6d6c0035095a322ee7f9aa1',1,'ace_button::AceButton']]],
   ['getdoubleclickdelay_97',['getDoubleClickDelay',['../classace__button_1_1ButtonConfig.html#a0098549db5df3c730f64f4235845a5a5',1,'ace_button::ButtonConfig']]],
-  ['geteventhandler_98',['getEventHandler',['../classace__button_1_1ButtonConfig.html#af0e25e21ee86af10e00e644c9be340a7',1,'ace_button::ButtonConfig']]],
+  ['geteventhandler_98',['getEventHandler',['../classace__button_1_1ButtonConfig.html#a06b1f78f5f1f03bc9af51af3345cc22c',1,'ace_button::ButtonConfig']]],
   ['getid_99',['getId',['../classace__button_1_1AceButton.html#a244a2ea3166f2d886ccd94a44286b835',1,'ace_button::AceButton']]],
   ['getlastbuttonstate_100',['getLastButtonState',['../classace__button_1_1AceButton.html#abb9c10c1fc6df01fae071ccfcb906935',1,'ace_button::AceButton']]],
   ['getlongpressdelay_101',['getLongPressDelay',['../classace__button_1_1ButtonConfig.html#a3ded707bd12aaf7bbcb14e431ec77e15',1,'ace_button::ButtonConfig']]],
