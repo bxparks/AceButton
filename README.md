@@ -7,7 +7,7 @@ connected to a digital input pin on the Arduino. The library should be able to
 handle momentary buttons, maintained buttons, and switches, but it was designed
 primarily for momentary buttons.
 
-The library is called the ACE Button Library (or AceButton Library) because:
+The library is named "AceButton" because:
 
 * many configurations of the button are **adjustable**, either at compile-time
   or run-time
@@ -16,20 +16,28 @@ The library is called the ACE Button Library (or AceButton Library) because:
 * the library detects changes in the button state and sends **events** to
   a user-defined `EventHandler` callback function
 
-Most of the features of the library can be accessed through 2 classes and
-1 callback function:
+Most of the features of the library can be accessed through 2 classes,
+1 callback function, and 1 interface:
 
 * `AceButton` (class)
 * `ButtonConfig` (class)
 * `EventHandler` (typedef)
+* `IEventHandler` (interface)
 
 The `AceButton` class contains the logic for debouncing and determining if a
-particular event has occurred. The `ButtonConfig` class holds various timing
-parameters, the event handler, code for reading the button, and code for
-getting the internal clock. The `EventHandler` is a user-defined callback
-function with a specific signature which is registered with the `ButtonConfig`
-object. When the library detects interesting events, the callback function is
-called by the library, allowing the client code to handle the event.
+particular event has occurred.
+
+The `ButtonConfig` class holds various timing parameters, the event handler,
+code for reading the button, and code for getting the internal clock.
+
+The `EventHandler` is a user-defined callback function with a specific signature
+which is registered with the `ButtonConfig` object. When the library detects
+interesting events, the callback function is called by the library, allowing the
+client code to handle the event.
+
+The `IEventHandler` is an interface (pure abstract class) that provides an
+alternative to the `EventHandler`. Instead of using a callback function, an
+object of type `IEventHandler` can be used to handle the button events.
 
 The supported events are:
 
@@ -56,7 +64,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
 above (e.g. Clicked and DoubleClicked).
 
-**Version**: 1.6.1 (2020-09-27)
+**Version**: 1.7 (2020-10-31)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -175,10 +183,22 @@ The latest stable release is available in the Arduino IDE Library Manager.
 Search for "AceButton". Click install.
 
 The development version can be installed by cloning the
-[GitHub repository](https://github.com/bxparks/AceButton), checking out the
+GitHub repository (https://github.com/bxparks/AceButton), checking out the
 `develop` branch, then manually copying over the contents to the `./libraries`
 directory used by the Arduino IDE. (The result is a directory named
-`./libraries/AceButton`.) The `master` branch contains the stable release.
+`./libraries/AceButton`.)
+
+The `master` branch contains the tagged stable releases.
+
+### External Dependencies
+
+The core of the library is self-contained and has no external dependencies.
+
+The some programs in `examples/` may depend on:
+* AceCommon (https://github.com/bxparks/AceCommon)
+
+The unit tests under `tests` depend on:
+* AUnit (https://github.com/bxparks/AUnit)
 
 ### Source Code
 
@@ -191,8 +211,8 @@ The source files are organized as follows:
 
 ### Docs
 
-Besides this README.md file, the [docs/](docs/) directory contains the [Doxygen
-docs](https://bxparks.github.io/AceButton/html/) published on GitHub Pages. It
+Besides this README.md file, the [docs/](docs/) directory contains the Doxygen
+docs (https://bxparks.github.io/AceButton/html/) published on GitHub Pages. It
 can help you navigate an unfamiliar code base.
 
 ### Examples
@@ -1113,13 +1133,13 @@ and allows the event handler to be written with the smallest amount of
 boilerplate code. The user does not have to override a class.
 
 In more complex applications involving larger number of `AceButton` and
-`ButtonConfig` objects, it is often useful for the `EventHandler to be an object
-instead of a simple function pointer. This is especially true if the application
-uses Object Oriented Programming (OOP) techniques for modularity and
+`ButtonConfig` objects, it is often useful for the `EventHandler` to be an
+object instead of a simple function pointer. This is especially true if the
+application uses Object Oriented Programming (OOP) techniques for modularity and
 encapsulation. Using an object as the event handler allows additional context
 information to be injected into the event handler.
 
-To support OOP techniques, AceButton Version 1.6 adds:
+To support OOP techniques, AceButton v1.6 adds:
 
 * `IEventHandler` interface class
     * contains a single pure virtual function `handleEvent()`
@@ -1334,23 +1354,23 @@ For 32-bit processors (e.g. ESP8266, ESP32) which have far more flash memory
 (e.g. 1 MB) and static memory (e.g. 80 kB), it seems reasonable to allow
 `AceButton` and `ButtonConfig` to be created and deleted from the heap.
 (See [Issue #46](https://github.com/bxparks/AceButton/issues/46) for the
-motivation.) Therefore, with v1.5, I have added a virtual destructor for the
-`ButtonConfig` and its subclasses which is conditionally compiled for the
-following 32-bit processors:
+motivation.) Testing shows that the virtual destructor adds only about 60-120
+bytes of flash memory for these microcontrollers, probably because the
+`malloc()` and `free()` functions are already pulled in by something else. The
+60-120 bytes of additional consumption seems trivial compared to the range of
+~256 kB to ~4 MB flash memory available on these 32-bit processors.
 
-* ESP8266
-* ESP32
-
-Testing shows that the virtual destructor adds only about 60-120 bytes of flash
-memory for these microcontrollers, which is a trivial amount of flash memory
-compared to the ~1 MB flash memory available on an ESP8266.
+Therefore, I added a virtual destructor for the `ButtonConfig` class (v1.5) and
+enabled it for all architectures *other* than `ARDUINO_ARCH_AVR` (v1.6.1). This
+prevents 8-bit processors with limited memory from suffering the overhead of an
+extra 600 bytes of flash memory usage.
 
 Even for 32-bit processors, I still recommend avoiding the creation and deletion
 of objects from the heap, to avoid the risk of heap fragmentation. If a variable
-number of buttons is needed, try to design the application so that all
-buttons which will ever be needed are predefined in a global pool. Even if some
-of the `AceButton` and `ButtonConfig` instances are unused, the overhead is
-probably smaller than the overhead of wasted space due to heap fragmentation.
+number of buttons is needed, it might be possible to design the application so
+that all buttons which will ever be needed are predefined in a global pool. Even
+if some of the `AceButton` and `ButtonConfig` instances are unused, the overhead
+is probably smaller than the overhead of wasted space due to heap fragmentation.
 
 ## Resource Consumption
 

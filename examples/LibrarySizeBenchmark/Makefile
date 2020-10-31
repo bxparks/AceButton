@@ -32,4 +32,7 @@ teensy32.txt:
 	./collect.sh teensy32 $@
 
 more_clean:
+	echo "Use 'make clean_benchmarks' to remove *.txt files"
+
+clean_benchmarks:
 	rm -f $(TARGETS)

@@ -1,6 +1,10 @@
 # Changelog
 
-* Unreleased
+* 1.7 (2020-10-31)
+    * **Potentially Breaking**: Remove `src/ace_button/testing/TimingStats.h`
+      and replace it with `TimingStats` from AceCommon library
+      https://github.com/bxparks/AceCommon. Affects only
+      `examples/AutoBenchark/AutoBenchmark.ino`.
 * 1.6.1 (2020-09-27)
     * Expose the `ButtonConfig` virtual destructor for all architectures
       except the AVR. In other words, instead of whitelisting only ESP8266 and
