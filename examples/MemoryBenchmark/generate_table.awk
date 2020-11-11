@@ -6,14 +6,15 @@
 # table that can be inserted into the README.md.
 #
 
-{
+BEGIN {
     labels[0] = "Baseline"
     labels[1] = "ButtonConfig"
     labels[2] = "Encoded4To2ButtonConfig"
     labels[3] = "Encoded8To3ButtonConfig"
     labels[4] = "EncodedButtonConfig"
     labels[5] = "LadderButtonConfig"
-
+}
+{
     feature = NR-1
     u[feature]["flash"] = $2
     u[feature]["ram"] = $4
