@@ -1,7 +1,7 @@
 # See https://github.com/bxparks/UnixHostDuino for documentation about using
 # UnixHostDuino to compile and run AUnit tests natively on Linux or MacOS.
 
-APP_NAME := LibrarySizeBenchmark
+APP_NAME := MemoryBenchmark
 ARDUINO_LIBS := AceButton
 MORE_CLEAN := more_clean
 include ../../../UnixHostDuino/UnixHostDuino.mk

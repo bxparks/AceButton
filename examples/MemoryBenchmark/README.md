@@ -1,6 +1,6 @@
-# LibrarySizeBenchmark
+# MemoryBenchmark
 
-The `LibrarySizeBenchmark.ino` compiles example code snippets using the various
+The `MemoryBenchmark.ino` compiles example code snippets using the various
 `ButtonConfig` classes. The `FEATURE` macro flag controls which feature is
 compiled. The `collect.sh` edits this `FEATURE` flag programmatically, then runs
 the Arduino IDE compiler on the program, and extracts the flash and static

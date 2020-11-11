@@ -125,7 +125,7 @@ memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
 you are seriously optimizing for program size or CPU cycles, you will probably
 want to write everything yourself from scratch.
 
-That said, [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) shows that the
+That said, [examples/MemoryBenchmark](examples/MemoryBenchmark/) shows that the
 library consumes between 970-2180  bytes of flash memory, and
 [AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
 between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
@@ -279,7 +279,7 @@ The following example sketches are provided:
         * generates the timing stats (min/average/max) for the
           `AceButton::check()` method for various types of events (idle,
           press/release, click, double-click, and long-press)
-    * [LibrarySizeBenchmark.ino](examples/LibrarySizeBenchmark/)
+    * [MemoryBenchmark.ino](examples/MemoryBenchmark/)
         * determines the amount of flash memory consumes by various objects and
           features of the library
 
@@ -1399,7 +1399,7 @@ to 14.)
 
 **Program size:**
 
-[LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine the
+[MemoryBenchmark](examples/MemoryBenchmark/) was used to determine the
 size of the library for various microcontrollers (Arduino Nano to ESP32). Here
 are some ranges of number to give a rough estimate of how much flash and static
 memory are consumed for various button configurations:
