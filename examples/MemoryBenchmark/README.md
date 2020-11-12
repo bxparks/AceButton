@@ -1,4 +1,4 @@
-# MemoryBenchmark
+# Memory Benchmark
 
 The `MemoryBenchmark.ino` compiles example code snippets using the various
 `ButtonConfig` classes. The `FEATURE` macro flag controls which feature is
@@ -11,6 +11,10 @@ difficult to separate out the code size of the library from the overhead imposed
 by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
+
+**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
+
+**Version**: AceButton v1.6
 
 ## How to Generate
 
@@ -30,7 +34,7 @@ micro.txt
 samd.txt
 esp8266.txt
 esp32.txt
-teensy.txt
+teensy32.txt
 ```
 
 The `generate_table.awk` program reads one of `*.txt` files and prints out an
@@ -39,6 +43,13 @@ the following command produces the table in the Nano section below:
 
 ```
 $ ./generate_table.awk < nano.txt
+```
+
+Fortunately, we no longer need to run `generate_table.awk` for each `*.txt`
+file. The process has been automated using the `generate_readme.py` script which
+will be invoked by the following command:
+```
+$ make README.md
 ```
 
 ## Functionality
@@ -55,8 +66,8 @@ $ ./generate_table.awk < nano.txt
 Prior to v1.5, the 'Baseline' numbers also included the system `ButtonConfig`
 that is automatically created by the library. But in v1.5, I discovered that
 defining the `ButtonConfig::ButtonConfig()` constructor with a `= default`
-instead of explicitly defining an empty body `{}` allows the compiler/linker to
-completely remove the static instance of the system `ButtonConfig` if it is
+instead of explicitly defining an empty body `{}` allows the compiler/linker
+to completely remove the static instance of the system `ButtonConfig` if it is
 never referenced. This caused the incremental size of the library as listed in
 the tables to increase by 200-1000 bytes, but the total flash size of any
 program that uses the AceButton library to actually decreased by 40-80 bytes
@@ -71,7 +82,6 @@ used which required no additional fields to be added to the `ButtonConfig`.
 ## Arduino Nano
 
 * 16MHz ATmega328P
-* AceButton 1.6
 * Arduino IDE 1.8.13
 * Arduino AVR Boards 1.8.3
 
@@ -87,12 +97,12 @@ used which required no additional fields to be added to the `ButtonConfig`.
 | EncodedButtonConfig             |   2490/  188 |  1880/  177 |
 | LadderButtonConfig              |   2492/  201 |  1882/  190 |
 +--------------------------------------------------------------+
+
 ```
 
 ## Sparkfun Pro Micro
 
 * 16 MHz ATmega32U4
-* AceButton 1.6
 * Arduino IDE 1.8.13
 * SparkFun AVR Boards 1.1.13
 
@@ -108,12 +118,12 @@ used which required no additional fields to be added to the `ButtonConfig`.
 | EncodedButtonConfig             |   5510/  326 |  1952/  175 |
 | LadderButtonConfig              |   5560/  341 |  2002/  190 |
 +--------------------------------------------------------------+
+
 ```
 
 ## SAMD21 M0 Mini
 
 * 48 MHz ARM Cortex-M0+
-* AceButton 1.6
 * Arduino IDE 1.8.13
 * Arduino SAMD Core 1.8.6
 
@@ -129,12 +139,12 @@ used which required no additional fields to be added to the `ButtonConfig`.
 | EncodedButtonConfig             |  12496/ 2548 |  1388/  180 |
 | LadderButtonConfig              |  12768/ 2564 |  1660/  196 |
 +--------------------------------------------------------------+
+
 ```
 
 ## ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
-* AceButton 1.6
 * Arduino IDE 1.8.13
 * ESP8266 Boards 2.7.1
 
@@ -150,12 +160,12 @@ used which required no additional fields to be added to the `ButtonConfig`.
 | EncodedButtonConfig             | 258972/27020 |  1832/  200 |
 | LadderButtonConfig              | 259016/27024 |  1876/  204 |
 +--------------------------------------------------------------+
+
 ```
 
 ## ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* AceButton 1.6
 * Arduino IDE 1.8.13
 * ESP32 Boards 1.0.4
 
@@ -171,12 +181,12 @@ used which required no additional fields to be added to the `ButtonConfig`.
 | EncodedButtonConfig             | 210373/15444 |  2716/  816 |
 | LadderButtonConfig              | 211761/15452 |  4104/  824 |
 +--------------------------------------------------------------+
+
 ```
 
 ## Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* AceButton 1.6
 * Arduino IDE 1.8.13
 * Teensyduino 1.53.beta
 * Compiler options: "Faster"
@@ -193,4 +203,6 @@ used which required no additional fields to be added to the `ButtonConfig`.
 | EncodedButtonConfig             |  12872/ 4332 |  2028/  172 |
 | LadderButtonConfig              |  13520/ 4336 |  2676/  176 |
 +--------------------------------------------------------------+
+
 ```
+
