@@ -248,7 +248,7 @@ The source files are organized as follows:
 ### Documentation
 
 * this [README.md](README.md)
-* [Doxygen docs] (https://bxparks.github.io/AceButton/html/) published on GitHub
+* [Doxygen docs](https://bxparks.github.io/AceButton/html/) published on GitHub
   Pages which can help navigate an unfamiliar code base.
 
 <a name="Examples"></a>
