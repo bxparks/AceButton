@@ -36,7 +36,7 @@ calculated flash size can jump around in unexpected ways.
 
 **NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
 
-**Version**: AceButton v1.6
+**Version**: AceButton v1.7
 
 ## How to Generate
 
@@ -96,10 +96,19 @@ program that uses the AceButton library to actually decreased by 40-80 bytes
 because it could use the `= default` implementation instead of an explicit empty
 implementation.
 
-Support for using an `IEventHandler` object as the event handler in v1.6
-increased the library flash size between 34 to 64 bytes on 8-bit and 32-bit
-processors. The RAM size is unchanged because only a single bit-field flag is
-used which required no additional fields to be added to the `ButtonConfig`.
+In v1.6, adding support for using `IEventHandler` as the event handler increased
+the library flash size between 34 to 64 bytes on 8-bit and 32-bit processors.
+The RAM size is unchanged because only a single bit-field flag is used which
+required no additional fields to be added to the `ButtonConfig`.
+
+In v1.6.1, making the destructor in `ButtonConfig` to be `virtual` was extended
+to SAMD and Teensy architectures (joining ESP8266 and ESP32). This seems to
+cause flash memory usage to increase by about 200-300 bytes on the SAMD, and
+about 3500 bytes on the Teensy 3.2. Even though those platforms have significant
+amounts of flash memory (256kB if I recall), those numbers are not ideal. The
+mitigating factor is that the increase in flash size is probably due `malloc()`
+and `free()` so if any other library brings those in (e.g. the `String` class),
+then the incremental cost is not significant.
 
 ## Arduino Nano
 

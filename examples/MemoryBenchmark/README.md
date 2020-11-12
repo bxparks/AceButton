@@ -14,7 +14,7 @@ calculated flash size can jump around in unexpected ways.
 
 **NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
 
-**Version**: AceButton v1.6
+**Version**: AceButton v1.7
 
 ## How to Generate
 
@@ -74,10 +74,19 @@ program that uses the AceButton library to actually decreased by 40-80 bytes
 because it could use the `= default` implementation instead of an explicit empty
 implementation.
 
-Support for using an `IEventHandler` object as the event handler in v1.6
-increased the library flash size between 34 to 64 bytes on 8-bit and 32-bit
-processors. The RAM size is unchanged because only a single bit-field flag is
-used which required no additional fields to be added to the `ButtonConfig`.
+In v1.6, adding support for using `IEventHandler` as the event handler increased
+the library flash size between 34 to 64 bytes on 8-bit and 32-bit processors.
+The RAM size is unchanged because only a single bit-field flag is used which
+required no additional fields to be added to the `ButtonConfig`.
+
+In v1.6.1, making the destructor in `ButtonConfig` to be `virtual` was extended
+to SAMD and Teensy architectures (joining ESP8266 and ESP32). This seems to
+cause flash memory usage to increase by about 200-300 bytes on the SAMD, and
+about 3500 bytes on the Teensy 3.2. Even though those platforms have significant
+amounts of flash memory (256kB if I recall), those numbers are not ideal. The
+mitigating factor is that the increase in flash size is probably due `malloc()`
+and `free()` so if any other library brings those in (e.g. the `String` class),
+then the incremental cost is not significant.
 
 ## Arduino Nano
 
@@ -133,11 +142,11 @@ used which required no additional fields to be added to the `ButtonConfig`.
 |---------------------------------+--------------+-------------|
 | Baseline                        |  11108/ 2368 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12108/ 2416 |  1000/   48 |
-| Encoded4To2ButtonConfig         |  12252/ 2460 |  1144/   92 |
-| Encoded8To3ButtonConfig         |  12392/ 2524 |  1284/  156 |
-| EncodedButtonConfig             |  12496/ 2548 |  1388/  180 |
-| LadderButtonConfig              |  12768/ 2564 |  1660/  196 |
+| ButtonConfig                    |  12220/ 2432 |  1112/   64 |
+| Encoded4To2ButtonConfig         |  12448/ 2492 |  1340/  124 |
+| Encoded8To3ButtonConfig         |  12584/ 2556 |  1476/  188 |
+| EncodedButtonConfig             |  12652/ 2564 |  1544/  196 |
+| LadderButtonConfig              |  12904/ 2564 |  1796/  196 |
 +--------------------------------------------------------------+
 
 ```
@@ -152,13 +161,13 @@ used which required no additional fields to be added to the `ButtonConfig`.
 +--------------------------------------------------------------+
 | functionality                   |    flash/ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        | 257140/26820 |     0/    0 |
+| Baseline                        | 256924/26800 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 258424/26840 |  1284/   20 |
-| Encoded4To2ButtonConfig         | 258716/26916 |  1576/   96 |
-| Encoded8To3ButtonConfig         | 258860/26980 |  1720/  160 |
-| EncodedButtonConfig             | 258972/27020 |  1832/  200 |
-| LadderButtonConfig              | 259016/27024 |  1876/  204 |
+| ButtonConfig                    | 258424/26840 |  1500/   40 |
+| Encoded4To2ButtonConfig         | 258716/26916 |  1792/  116 |
+| Encoded8To3ButtonConfig         | 258860/26980 |  1936/  180 |
+| EncodedButtonConfig             | 258972/27020 |  2048/  220 |
+| LadderButtonConfig              | 259016/27024 |  2092/  224 |
 +--------------------------------------------------------------+
 
 ```
@@ -173,13 +182,13 @@ used which required no additional fields to be added to the `ButtonConfig`.
 +--------------------------------------------------------------+
 | functionality                   |    flash/ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        | 207657/14628 |     0/    0 |
+| Baseline                        | 206625/14564 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 209869/15308 |  2212/  680 |
-| Encoded4To2ButtonConfig         | 210073/15348 |  2416/  720 |
-| Encoded8To3ButtonConfig         | 210201/15412 |  2544/  784 |
-| EncodedButtonConfig             | 210373/15444 |  2716/  816 |
-| LadderButtonConfig              | 211761/15452 |  4104/  824 |
+| ButtonConfig                    | 209869/15308 |  3244/  744 |
+| Encoded4To2ButtonConfig         | 210073/15348 |  3448/  784 |
+| Encoded8To3ButtonConfig         | 210201/15412 |  3576/  848 |
+| EncodedButtonConfig             | 210373/15444 |  3748/  880 |
+| LadderButtonConfig              | 211761/15452 |  5136/  888 |
 +--------------------------------------------------------------+
 
 ```
@@ -195,13 +204,13 @@ used which required no additional fields to be added to the `ButtonConfig`.
 +--------------------------------------------------------------+
 | functionality                   |    flash/ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |  10844/ 4160 |     0/    0 |
+| Baseline                        |   7632/ 3048 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12496/ 4200 |  1652/   40 |
-| Encoded4To2ButtonConfig         |  12660/ 4236 |  1816/   76 |
-| Encoded8To3ButtonConfig         |  12808/ 4300 |  1964/  140 |
-| EncodedButtonConfig             |  12872/ 4332 |  2028/  172 |
-| LadderButtonConfig              |  13520/ 4336 |  2676/  176 |
+| ButtonConfig                    |  12564/ 4200 |  4932/ 1152 |
+| Encoded4To2ButtonConfig         |  12816/ 4260 |  5184/ 1212 |
+| Encoded8To3ButtonConfig         |  12964/ 4324 |  5332/ 1276 |
+| EncodedButtonConfig             |  12988/ 4332 |  5356/ 1284 |
+| LadderButtonConfig              |  13636/ 4336 |  6004/ 1288 |
 +--------------------------------------------------------------+
 
 ```

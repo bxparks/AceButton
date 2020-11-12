@@ -5,8 +5,7 @@
  * AceButton library.
  */
 
-#include <AceButton.h>
-using namespace ace_button;
+#include <Arduino.h>
 
 // Set this to [0..n] to extract the flash and static memory usage.
 // 0 - baseline
@@ -20,6 +19,16 @@ using namespace ace_button;
 // A volatile integer to prevent the compiler from optimizing away the entire
 // program.
 volatile int disableCompilerOptimization = 0;
+
+#if FEATURE != 0
+  #include <AceButton.h>
+  using namespace ace_button;
+
+void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
+    uint8_t /* buttonState */) {
+  disableCompilerOptimization++;
+}
+#endif
 
 #if FEATURE == 1
   static const int BUTTON_PIN = 2;
@@ -94,11 +103,6 @@ volatile int disableCompilerOptimization = 0;
   );
 #endif
 
-void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
-    uint8_t /* buttonState */) {
-  disableCompilerOptimization++;
-}
-
 void setup() {
   delay(2000);
 
@@ -139,7 +143,7 @@ void setup() {
 
 void loop() {
 #if FEATURE == 0
-  handleEvent(nullptr, 0, 0);
+  disableCompilerOptimization++;
 #elif FEATURE == 1
   button.check();
 #elif FEATURE == 2
