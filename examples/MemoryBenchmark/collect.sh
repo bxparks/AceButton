@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Shell script that runs 'auniter verify ${board} LibrarySizeBenchmark.ino', and
+# Shell script that runs 'auniter verify ${board} MemoryBenchmark.ino', and
 # collects the flash memory and static RAM usage for each of the FEATURE [0,5].
 #
 # Usage: collect.sh {board} {result_file}
@@ -14,6 +14,8 @@
 #  5 aa bb cc dd
 
 set -eu
+
+PROGRAM_NAME='MemoryBenchmark.ino'
 
 # Assume that https://github.com/bxparks/AUniter is installed as a
 # sibling project to AceButton.
@@ -32,8 +34,7 @@ function cleanup() {
     fi
 
     # Restore the 'FEATURE' line
-    sed -i -e "s/#define FEATURE [0-9]*/#define FEATURE 0/" \
-        LibrarySizeBenchmark.ino
+    sed -i -e "s/#define FEATURE [0-9]*/#define FEATURE 0/" $PROGRAM_NAME
 }
 
 function create_temp_file() {
@@ -50,9 +51,9 @@ function collect_for_board() {
     for feature in {0..5}; do
         echo "Collecting flash and ram usage for FEATURE $feature"
         sed -i -e "s/#define FEATURE [0-9]*/#define FEATURE $feature/" \
-            LibrarySizeBenchmark.ino
+            $PROGRAM_NAME
 
-        if ! ($AUNITER_CMD verify $board LibrarySizeBenchmark.ino 2>&1) > \
+        if ! ($AUNITER_CMD verify $board $PROGRAM_NAME 2>&1) > \
                 $auniter_out_file; then
             # Ignore 'Sketch too big' condition, since we just want to
             # collect the flash and ram usage numbers.

@@ -1,17 +1,19 @@
 # See https://github.com/bxparks/UnixHostDuino for documentation about using
 # UnixHostDuino to compile and run AUnit tests natively on Linux or MacOS.
 
-APP_NAME := LibrarySizeBenchmark
+APP_NAME := MemoryBenchmark
 ARDUINO_LIBS := AceButton
 MORE_CLEAN := more_clean
 include ../../../UnixHostDuino/UnixHostDuino.mk
 
+.PHONY: benchmarks
+
 TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy32.txt
 
-# Type 'make benchmarks' to regenerate the benchmark files.
-benchmarks: $(TARGETS)
+README.md: $(TARGETS) generate_readme.py
+	./generate_readme.py > $@
 
-.PHONY: benchmarks
+benchmarks: $(TARGETS)
 
 nano.txt:
 	./collect.sh nano $@

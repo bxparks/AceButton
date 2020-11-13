@@ -23,10 +23,14 @@ SOFTWARE.
 */
 
 /**
-@mainpage AceButton Library
-
-This is the Doxygen documentation for the
-<a href="https://github.com/bxparks/AceButton">AceButton Library</a>.
+ * @mainpage AceButton Library
+ *
+ * This is the Doxygen documentation for the
+ * <a href="https://github.com/bxparks/AceButton">AceButton Library</a>.
+ *
+ * Click on the "Classes" menu above to see the list of classes.
+ *
+ * Click on the "Files" menu above to see the list of header files.
 */
 
 #ifndef ACE_BUTTON_H
@@ -42,7 +46,7 @@ This is the Doxygen documentation for the
 #include "ace_button/AceButton.h"
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_BUTTON_VERSION 10700
-#define ACE_BUTTON_VERSION_STRING "1.7"
+#define ACE_BUTTON_VERSION 10701
+#define ACE_BUTTON_VERSION_STRING "1.7.1"
 
 #endif

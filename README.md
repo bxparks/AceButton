@@ -64,12 +64,59 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
 above (e.g. Clicked and DoubleClicked).
 
-**Version**: 1.7 (2020-10-31)
+**Version**: 1.7.1 (2020-11-12)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 ![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
 
+**Table of Contents**
+
+* [Features](#Features)
+* [HelloButton](#HelloButton)
+* [Installation](#Installation)
+  * [External Dependencies](#ExternalDependencies)
+  * [Source Code](#SourceCode)
+  * [Documentation](#Documentation)
+  * [Examples](#Examples)
+* [Usage](#Usage)
+  * [Include Header and Use Namespace](#IncludeHeader)
+  * [Pin Wiring and Initialization](#PinWiring)
+  * [AceButton Class](#AceButtonClass)
+  * [ButtonConfig Class](#ButtonConfigClass)
+    * [System ButtonConfig](#SystemButtonConfig)
+    * [Configuring the EventHandler](#ConfiguringEventHandler)
+    * [Timing Parameters](#TimingParameters)
+    * [Hardware Dependencies](#HardwareDependencies)
+    * [Multiple ButtonConfig Instances](#MultipleButtonConfigs)
+  * [EventHandler Typedef](#EventHandlerTypedef)
+    * [EventHandler Signature](#EventHandlerSignature)
+    * [EventHandler Parameters](#EventHandlerParameters)
+    * [One EventHandler Per ButtonConfig](#OneEventHandler)
+    * [EventHandler Tips](#EventHandlerTips)
+  * [Event Types](#EventTypes)
+  * [ButtonConfig Feature Flags](#ButtonConfigFeatureFlags)
+    * [Event Activation](#EventActivation)
+    * [Event Suppression](#EventSuppression)
+  * [Single Button Simplifications](#SingleButtonSimplifications)
+  * [Multiple Buttons](#MultipleButtons)
+* [Advanced Topics](#AdvancedTopics)
+  * [Object-based Event Handler](#ObjectBasedEventHandler)
+  * [Distinguishing Clicked and DoubleClicked](#ClickedAndDoubleClicked)
+  * [Events After Reboot](#EventsAfterReboot)
+  * [Orphaned Clicks](#OrphanedClicks)
+  * [Binary Encoded Buttons](#BinaryEncodedButtons)
+  * [Resistor Ladder Buttons](#ResistorLadderButtons)
+  * [Dynamic Allocation on the Heap](#HeapAllocation)
+* [Resource Consumption](#ResourceConsumption)
+* [System Requirements](#SystemRequirements)
+* [Background Motivation](#BackgroundMotivation)
+  * [Non-goals](#NonGoals)
+* [License](#License)
+* [Feedback and Support](#FeedbackSupport)
+* [Author](#Author)
+
+<a name="Features"></a>
 ## Features
 
 Here are the high-level features of the AceButton library:
@@ -116,23 +163,8 @@ features of the AceButton library are:
 * thorough unit testing
 * support for multiple buttons using Binary Encoding or a Resistor Ladder
 
-### Non-goals
-
-An Arduino UNO or Nano has 16 times more flash memory (32KB) than static memory
-(2KB), so the library is optimized to minimize the static memory usage. The
-AceButton library is not optimized to create a small program size (i.e. flash
-memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
-you are seriously optimizing for program size or CPU cycles, you will probably
-want to write everything yourself from scratch.
-
-That said, [LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) shows that the
-library consumes between 970-2180  bytes of flash memory, and
-[AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
-between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
-ESP32. Hopefully that is small enough and fast enough for the vast majority of
-people.
-
-### HelloButton
+<a name="HelloButton"></a>
+## HelloButton
 
 Here is a simple program (see [examples/HelloButton](examples/HelloButton))
 which controls the builtin LED on the Arduino board using a momentary button
@@ -177,6 +209,7 @@ void handleEvent(AceButton* /*button*/, uint8_t eventType,
 parameter` warning from the compiler. We can't remove the parameters completely
 because the method signature is defined by the `EventHandler` typedef.)
 
+<a name="Installation"></a>
 ## Installation
 
 The latest stable release is available in the Arduino IDE Library Manager.
@@ -190,6 +223,7 @@ directory used by the Arduino IDE. (The result is a directory named
 
 The `master` branch contains the tagged stable releases.
 
+<a name="ExternalDependencies"></a>
 ### External Dependencies
 
 The core of the library is self-contained and has no external dependencies.
@@ -200,6 +234,7 @@ The some programs in `examples/` may depend on:
 The unit tests under `tests` depend on:
 * AUnit (https://github.com/bxparks/AUnit)
 
+<a name="SourceCode"></a>
 ### Source Code
 
 The source files are organized as follows:
@@ -209,12 +244,14 @@ The source files are organized as follows:
 * `tests/` - unit tests which require [AUnit](https://github.com/bxparks/AUnit)
 * `examples/` - example sketches
 
-### Docs
+<a name="Documentation"></a>
+### Documentation
 
-Besides this README.md file, the [docs/](docs/) directory contains the Doxygen
-docs (https://bxparks.github.io/AceButton/html/) published on GitHub Pages. It
-can help you navigate an unfamiliar code base.
+* this [README.md](README.md)
+* [Doxygen docs](https://bxparks.github.io/AceButton/html/) published on GitHub
+  Pages which can help navigate an unfamiliar code base.
 
+<a name="Examples"></a>
 ### Examples
 
 The following example sketches are provided:
@@ -279,10 +316,11 @@ The following example sketches are provided:
         * generates the timing stats (min/average/max) for the
           `AceButton::check()` method for various types of events (idle,
           press/release, click, double-click, and long-press)
-    * [LibrarySizeBenchmark.ino](examples/LibrarySizeBenchmark/)
+    * [MemoryBenchmark.ino](examples/MemoryBenchmark/)
         * determines the amount of flash memory consumes by various objects and
           features of the library
 
+<a name="Usage"></a>
 ## Usage
 
 There are 2 classes and one typedef that a user will normally interact with:
@@ -299,6 +337,7 @@ Advanced usage is supported by:
 
 We explain how to use these below.
 
+<a name="IncludeHeader"></a>
 ### Include Header and Use Namespace
 
 Only a single header file `AceButton.h` is required to use this library.
@@ -318,6 +357,7 @@ If you are dependent on just `AceButton`, the following might be sufficient:
 using ace_button::AceButton;
 ```
 
+<a name="PinWiring"></a>
 ### Pin Wiring and Initialization
 
 The `ButtonConfig` class supports the simplest wiring. Each button is connected
@@ -368,6 +408,7 @@ cares about whether the resistor is a pull-up or a pull-down.
 See https://www.arduino.cc/en/Tutorial/DigitalPins for additional information
 about the I/O pins on an Arduino.
 
+<a name="AceButtonClass"></a>
 ### AceButton Class
 
 The `AceButton` class looks like this (not all public methods are shown):
@@ -486,6 +527,7 @@ AceButton button(PIN);
 See [Issue #40](https://github.com/bxparks/AceButton/issues/40) for details.
 
 
+<a name="ButtonConfigClass"></a>
 ### ButtonConfig Class
 
 The core concept of the AceButton library is the separation of the
@@ -592,6 +634,7 @@ Another way to inject the `ButtonConfig` dependency is to use the
 `AceButton::setButtonConfig()` method but it is recommended that you use the
 constructor instead because the dependency is easier to follow.
 
+<a name="SystemButtonConfig"></a>
 #### System ButtonConfig
 
 A single instance of `ButtonConfig` called the "System ButtonConfig" is
@@ -600,6 +643,7 @@ automatically created by the library at startup. By default, all instances of
 the _Single Button Simplifications_ section below how this simplifies the code
 needed to handle a single button.
 
+<a name="ConfiguringEventHandler"></a>
 #### Configuring the EventHandler
 
 The `ButtonConfig` class provides a number of methods which are mostly
@@ -609,6 +653,7 @@ assigns the user-defined `EventHandler` callback function to the `ButtonConfig`
 instance. This is explained in more detail below in the
 **EventHandler** section below.
 
+<a name="TimingParameters"></a>
 #### Timing Parameters
 
 Here are the methods to retrieve the timing parameters:
@@ -630,6 +675,7 @@ the following methods:
 * `void setRepeatPressDelay(uint16_t repeatPressDelay);`
 * `void setRepeatPressInterval(uint16_t repeatPressInterval);`
 
+<a name="HardwareDependencies"></a>
 #### Hardware Dependencies
 
 The `ButtonConfig` class has 2 methods which provide hooks to its external
@@ -647,6 +693,7 @@ respectively:
 Unit tests are possible because these methods are `virtual` and the hardware
 dependencies can be swapped out with fake ones.
 
+<a name="MultipleButtonConfigs"></a>
 #### Multiple ButtonConfig Instances
 
 We have assumed that there is a 1-to-many relationship between a `ButtonConfig`
@@ -668,7 +715,8 @@ consider the buttons of a car radio. It has several types of buttons:
 In this example, there are 9 buttons, but only 3 instances of `ButtonConfig`
 would be needed.
 
-### EventHandler
+<a name="EventHandlerTypedef"></a>
+### EventHandler Typedef
 
 The event handler is a callback function that gets called when the `AceButton`
 class determines that an interesting event happened on the button. The
@@ -676,6 +724,7 @@ advantage of this mechanism is that all the complicated logic of determining
 the various events happens inside the `AceButton` class, and the user will
 normally not need to worry about the details.
 
+<a name="EventHandlerSignature"></a>
 #### EventHandler Signature
 
 The event handler is defined in the `ButtonConfig` class and has the following
@@ -732,8 +781,9 @@ void handleEvent(AceButton*, uint8_t, uint8_t);
 **Pro Tips 2**: The event handler can be an object instead of just a function
 pointer. An object-based event handler can be useful in more complex
 applications with numerous buttons. See the section on *Object-based Event
-Handler* in the *Advanced Topic* below.
+Handler* in the *Advanced Topics* below.
 
+<a name="EventHandlerParameters"></a>
 #### EventHandler Parameters
 
 The `EventHandler` function receives 3 parameters from the `AceButton`:
@@ -767,6 +817,7 @@ depends on whether the button was wired with a pull-up or pull-down resistor.
 Use the helper function `button->isReleased(buttonState)` to translate the raw
 `buttonState` into a more meaningful determination if you need it.
 
+<a name="OneEventHandler"></a>
 #### One EventHandler Per ButtonConfig
 
 Only a single `EventHandler` per `ButtonConfig` is supported. An alternative
@@ -792,6 +843,7 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 ```
 
+<a name="EventHandlerTips"></a>
 #### EventHandler Tips
 
 The Arduino runtime environment is single-threaded, so the `EventHandler` is
@@ -813,6 +865,7 @@ Speaking of threads, the API of the AceButton Library was designed to work in a
 multi-threaded environment, if that situation were to occur in the Arduino
 world.
 
+<a name="EventTypes"></a>
 ### Event Types
 
 The supported events are defined by a list of constants in `AceButton`:
@@ -829,6 +882,7 @@ These values are sent to the `EventHandler` in the `eventType` parameter.
 Two of the events are enabled by default, four are disabled by default but can
 be enabled by using a Feature flag described below.
 
+<a name="ButtonConfigFeatureFlags"></a>
 ### ButtonConfig Feature Flags
 
 There are 9 flags defined in `ButtonConfig` which can
@@ -868,6 +922,7 @@ config->resetFeatures()
 
 The meaning of these flags are described below.
 
+<a name="EventActivation"></a>
 #### Event Activation
 
 Of the 6 event types, 4 are disabled by default:
@@ -894,6 +949,7 @@ need to have a Clicked event before a DoubleClicked event can be detected.
 It seems unlikely that both `LongPress` and `RepeatPress` events would be
 useful at the same time, but both event types can be activated if you need it.
 
+<a name="EventSuppression"></a>
 #### Event Suppression
 
 Event types can be considered to be built up in layers, starting with the
@@ -971,6 +1027,7 @@ config->resetFeatures();
 This is useful if you want to reuse a `ButtonConfig` instance and you want to
 reset its feature flags to its initial state.
 
+<a name="SingleButtonSimplifications"></a>
 ### Single Button Simplifications
 
 Although the AceButton library is designed to shine for multiple buttons, you
@@ -1016,6 +1073,7 @@ this to the `setup()` section:
   button.getButtonConfig()->setFeature(ButtonConfig::kFeatureLongPress);
 ```
 
+<a name="MultipleButtons"></a>
 ### Multiple Buttons
 
 When transitioning from a single button to multiple buttons, it's important to
@@ -1123,8 +1181,10 @@ Sometimes, it is more convenient to use the `AceButton::getId()` method
 to identify the button instead of the `AceButton::getPin()`.
 See [ArrayButtons.ino](examples/ArrayButtons) for an example.
 
+<a name="AdvancedTopics"></a>
 ## Advanced Topics
 
+<a name="ObjectBasedEventHandler"></a>
 ### Object-based Event Handler
 
 The `EventHandler` is a typedef that is defined to be a function pointer. This
@@ -1162,7 +1222,8 @@ dispatched. If both are called, the last one takes precedence.
 See
 [examples/SingleButtonUsingIEventHandler](examples/SingleButtonUsingIEventHandler) for an example.
 
-### Distinguishing Between a Clicked and DoubleClicked
+<a name="ClickedAndDoubleClicked"></a>
+### Distinguishing Clicked and DoubleClicked
 
 On a project using only a small number of buttons (due to physical limits or the
 limited availability of pins), it may be desirable to distinguish between a
@@ -1256,6 +1317,7 @@ buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
 See the example code at
 `examples/ClickVersusDoubleClickUsingBoth/`.
 
+<a name="EventsAfterReboot"></a>
 ### Events After Reboot
 
 A number of edge cases occur when the microcontroller is rebooted:
@@ -1280,6 +1342,7 @@ button is configured). It will directly call the `digitalRead()` method
 associated with the button pin and return `true` if the button is in the
 Pressed state.
 
+<a name="OrphanedClicks"></a>
 ### Orphaned Clicks
 
 When a Clicked event is generated, the `AceButton` class looks for a
@@ -1300,7 +1363,8 @@ integer on the Arduino), the overflow problem would still occur after `2^32`
 milliseconds (i.e. 49.7 days). To be strictly correct, the `AceButton` class
 would still need logic to take care of orphaned Clicked events.
 
-### Binary Encoding
+<a name="BinaryEncodedButtons"></a>
+### Binary Encoded Buttons
 
 Instead of allocating one pin for each button, we can use
 [Binary Encoding](http://www.learnabout-electronics.org/Digital/dig44.php) to
@@ -1320,7 +1384,8 @@ buttons:
 See [docs/binary_encoding/README.md](docs/binary_encoding/README.md) for
 information on how to use these classes.
 
-### Resistor Ladder
+<a name="ResistorLadderButtons"></a>
+### Resistor Ladder Buttons
 
 It is possible to attach 5-8 (maybe more) buttons on a single analog pin through
 a resistor ladder, and use the `analogRead()` to read the different voltages
@@ -1333,6 +1398,7 @@ The `LadderButtonConfig` class handles this configuration.
 See [docs/resistor_ladder/README.md](docs/resistor_ladder/README.md) for
 information on how to use this class.
 
+<a name="HeapAllocation"></a>
 ### Dynamic Allocation on the Heap
 
 All classes in this library were originally designed to be created statically at
@@ -1372,6 +1438,7 @@ that all buttons which will ever be needed are predefined in a global pool. Even
 if some of the `AceButton` and `ButtonConfig` instances are unused, the overhead
 is probably smaller than the overhead of wasted space due to heap fragmentation.
 
+<a name="ResourceConsumption"></a>
 ## Resource Consumption
 
 Here are the sizes of the various classes on the 8-bit AVR microcontrollers
@@ -1399,7 +1466,7 @@ to 14.)
 
 **Program size:**
 
-[LibrarySizeBenchmark](examples/LibrarySizeBenchmark/) was used to determine the
+[MemoryBenchmark](examples/MemoryBenchmark/) was used to determine the
 size of the library for various microcontrollers (Arduino Nano to ESP32). Here
 are some ranges of number to give a rough estimate of how much flash and static
 memory are consumed for various button configurations:
@@ -1446,6 +1513,7 @@ As a rough summary, to check 7 buttons:
 * ESP32: 13-22 microseconds
 * Teensy 3.2: 8-16 microseconds
 
+<a name="SystemRequirements"></a>
 ## System Requirements
 
 ### Tool Chain
@@ -1484,6 +1552,7 @@ I will occasionally test on the following boards as a sanity check:
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 * Arduino UNO R3 clone (16 MHz ATmega328P)
 
+<a name="BackgroundMotivation"></a>
 ## Background Motivation
 
 There are numerous "button" libraries out there for the Arduino. Why write
@@ -1509,6 +1578,24 @@ none.
 I decided to write my own and use the opportunity to learn how to create and
 publish an Arduino library.
 
+<a name="NonGoals"></a>
+### Non-goals
+
+An Arduino UNO or Nano has 16 times more flash memory (32KB) than static memory
+(2KB), so the library is optimized to minimize the static memory usage. The
+AceButton library is not optimized to create a small program size (i.e. flash
+memory), or for small CPU cycles (i.e. high execution speed). I assumed that if
+you are seriously optimizing for program size or CPU cycles, you will probably
+want to write everything yourself from scratch.
+
+That said, [examples/MemoryBenchmark](examples/MemoryBenchmark/) shows that the
+library consumes between 970-2180  bytes of flash memory, and
+[AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
+between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
+ESP32. Hopefully that is small enough and fast enough for the vast majority of
+people.
+
+<a name="License"></a>
 ## License
 
 * Versions 1.0 to 1.0.6:
@@ -1519,6 +1606,7 @@ I changed to the MIT License starting with version 1.1 because the MIT License
 is so simple to understand. I could not be sure that I understood what the
 Apache License 2.0 meant.
 
+<a name="FeedbackSupport"></a>
 ## Feedback and Support
 
 If you have any questions, comments, bug reports, or feature requests, please
@@ -1528,6 +1616,7 @@ other people ask similar questions later.) I'd love to hear about how this
 software and its documentation can be improved. I can't promise that I will
 incorporate everything, but I will give your ideas serious consideration.
 
+<a name="Author"></a>
 ## Author
 
 Created by Brian T. Park (brian@xparks.net).
