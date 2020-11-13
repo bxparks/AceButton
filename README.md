@@ -64,7 +64,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
 above (e.g. Clicked and DoubleClicked).
 
-**Version**: 1.7 (2020-10-31)
+**Version**: 1.7.1 (2020-11-12)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 

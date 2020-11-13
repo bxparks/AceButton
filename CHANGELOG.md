@@ -1,8 +1,10 @@
 # Changelog
 
 * Unreleased
+* 1.7.1 (2020-11-12)
     * Add Table of Contents to README.md.
     * Regenerate MemoryBenchmark numbers for v1.7.
+    * No functional change in this release.
 * 1.7 (2020-10-31)
     * **Potentially Breaking**: Remove `src/ace_button/testing/TimingStats.h`
       and replace it with `TimingStats` from AceCommon library
