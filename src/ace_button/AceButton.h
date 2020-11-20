@@ -41,6 +41,7 @@ namespace ace_button {
  * - kEventDoubleClicked
  * - kEventLongPressed
  * - kEventRepeatPressed
+ * - kEventLongReleased
  *
  * The check() method should be called from the loop() at least 2-3 times during
  * the debouncing time period. For 20 ms delay, the check() method should be
@@ -82,6 +83,17 @@ class AceButton {
      * button is released.
      */
     static const uint8_t kEventRepeatPressed = 5;
+
+    /**
+     * Button was released after a long press. This event becomes the
+     * replacement for kEventReleased if kFeatureSuppressAfterLongPress is
+     * enabled. The kFeatureSuppressAfterLongPress allows us to distinguish a
+     * simple Pressed from a LongPressed, by using the Released event as a
+     * replacement of Pressed. But the suppression prevents us from detecting a
+     * Released event from a LongPress (which is sometimes needed). This event
+     * can be used as a replacement.
+     */
+    static const uint8_t kEventLongReleased = 6;
 
     /**
      * Button state is unknown. This is a third state (different from LOW or
