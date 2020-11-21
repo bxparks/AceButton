@@ -1,6 +1,13 @@
 # Changelog
 
 * Unreleased
+    * Add `kEventLongReleased` event type which is triggered after a
+      `kEventLongPressed` as a substitute for `kEventReleased` when
+      `kFeatureSuppressAfterLongPress` is used to suppress the `kEventReleased`
+      event. See the new [Distinguishing Pressed and
+      LongPressed](README.md#PressedAndLongPressed) section in the README.md and
+      the new [examples/PressedAndLongPressed](examples/PressVersusLongPress)
+      sample code.
 * 1.7.1 (2020-11-12)
     * Add Table of Contents to README.md.
     * Regenerate MemoryBenchmark numbers for v1.7.
