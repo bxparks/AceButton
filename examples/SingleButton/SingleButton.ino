@@ -5,8 +5,8 @@
  * - prints out the button events to the Serial monitor
  * - enables the all button events, including LongPress and RepeatPress
  * - suppresses lower-level events when higher-level events are detected
- *   (e.g. Clicked suppressed Released, DoubleClicked suppresses the
- *   second Clicked, LongPressed suppressed the Released, etc.)
+ *   (e.g. Clicked suppresses Released, DoubleClicked suppresses the
+ *   second Clicked, LongPressed suppresses the Released, etc.)
  * - setup() determines if a button was pressed during reboot
  */
 
