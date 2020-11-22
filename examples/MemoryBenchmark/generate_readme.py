@@ -36,7 +36,7 @@ calculated flash size can jump around in unexpected ways.
 
 **NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
 
-**Version**: AceButton v1.7
+**Version**: AceButton v1.8
 
 ## How to Generate
 
@@ -109,6 +109,9 @@ amounts of flash memory (256kB if I recall), those numbers are not ideal. The
 mitigating factor is that the increase in flash size is probably due `malloc()`
 and `free()` so if any other library brings those in (e.g. the `String` class),
 then the incremental cost is not significant.
+
+In v1.8, adding support for `kEventLongReleased` increased the flash memory
+consumption by 8 to 56 bytes.
 
 ## Arduino Nano
 

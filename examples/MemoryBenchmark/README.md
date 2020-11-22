@@ -14,7 +14,7 @@ calculated flash size can jump around in unexpected ways.
 
 **NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
 
-**Version**: AceButton v1.7
+**Version**: AceButton v1.8
 
 ## How to Generate
 
@@ -88,6 +88,9 @@ mitigating factor is that the increase in flash size is probably due `malloc()`
 and `free()` so if any other library brings those in (e.g. the `String` class),
 then the incremental cost is not significant.
 
+In v1.8, adding support for `kEventLongReleased` increased the flash memory
+consumption by 8 to 56 bytes.
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
@@ -100,11 +103,11 @@ then the incremental cost is not significant.
 |---------------------------------+--------------+-------------|
 | Baseline                        |    610/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1932/   51 |  1322/   40 |
-| Encoded4To2ButtonConfig         |   2146/   82 |  1536/   71 |
-| Encoded8To3ButtonConfig         |   2414/  139 |  1804/  128 |
-| EncodedButtonConfig             |   2490/  188 |  1880/  177 |
-| LadderButtonConfig              |   2492/  201 |  1882/  190 |
+| ButtonConfig                    |   1946/   51 |  1336/   40 |
+| Encoded4To2ButtonConfig         |   2160/   82 |  1550/   71 |
+| Encoded8To3ButtonConfig         |   2428/  139 |  1818/  128 |
+| EncodedButtonConfig             |   2504/  188 |  1894/  177 |
+| LadderButtonConfig              |   2506/  201 |  1896/  190 |
 +--------------------------------------------------------------+
 
 ```
@@ -121,11 +124,11 @@ then the incremental cost is not significant.
 |---------------------------------+--------------+-------------|
 | Baseline                        |   3558/  151 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   4936/  191 |  1378/   40 |
-| Encoded4To2ButtonConfig         |   5152/  222 |  1594/   71 |
-| Encoded8To3ButtonConfig         |   5420/  279 |  1862/  128 |
-| EncodedButtonConfig             |   5510/  326 |  1952/  175 |
-| LadderButtonConfig              |   5560/  341 |  2002/  190 |
+| ButtonConfig                    |   4950/  191 |  1392/   40 |
+| Encoded4To2ButtonConfig         |   5166/  222 |  1608/   71 |
+| Encoded8To3ButtonConfig         |   5434/  279 |  1876/  128 |
+| EncodedButtonConfig             |   5524/  326 |  1966/  175 |
+| LadderButtonConfig              |   5574/  341 |  2016/  190 |
 +--------------------------------------------------------------+
 
 ```
@@ -142,11 +145,11 @@ then the incremental cost is not significant.
 |---------------------------------+--------------+-------------|
 | Baseline                        |  11108/ 2368 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12220/ 2432 |  1112/   64 |
-| Encoded4To2ButtonConfig         |  12448/ 2492 |  1340/  124 |
-| Encoded8To3ButtonConfig         |  12584/ 2556 |  1476/  188 |
-| EncodedButtonConfig             |  12652/ 2564 |  1544/  196 |
-| LadderButtonConfig              |  12904/ 2564 |  1796/  196 |
+| ButtonConfig                    |  12228/ 2432 |  1120/   64 |
+| Encoded4To2ButtonConfig         |  12460/ 2492 |  1352/  124 |
+| Encoded8To3ButtonConfig         |  12596/ 2556 |  1488/  188 |
+| EncodedButtonConfig             |  12660/ 2564 |  1552/  196 |
+| LadderButtonConfig              |  12912/ 2564 |  1804/  196 |
 +--------------------------------------------------------------+
 
 ```
@@ -163,11 +166,11 @@ then the incremental cost is not significant.
 |---------------------------------+--------------+-------------|
 | Baseline                        | 256924/26800 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 258424/26840 |  1500/   40 |
-| Encoded4To2ButtonConfig         | 258716/26916 |  1792/  116 |
-| Encoded8To3ButtonConfig         | 258860/26980 |  1936/  180 |
-| EncodedButtonConfig             | 258972/27020 |  2048/  220 |
-| LadderButtonConfig              | 259016/27024 |  2092/  224 |
+| ButtonConfig                    | 258440/26840 |  1516/   40 |
+| Encoded4To2ButtonConfig         | 258732/26916 |  1808/  116 |
+| Encoded8To3ButtonConfig         | 258876/26980 |  1952/  180 |
+| EncodedButtonConfig             | 258988/27020 |  2064/  220 |
+| LadderButtonConfig              | 259032/27024 |  2108/  224 |
 +--------------------------------------------------------------+
 
 ```
@@ -184,11 +187,11 @@ then the incremental cost is not significant.
 |---------------------------------+--------------+-------------|
 | Baseline                        | 206625/14564 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 209869/15308 |  3244/  744 |
-| Encoded4To2ButtonConfig         | 210073/15348 |  3448/  784 |
-| Encoded8To3ButtonConfig         | 210201/15412 |  3576/  848 |
-| EncodedButtonConfig             | 210373/15444 |  3748/  880 |
-| LadderButtonConfig              | 211761/15452 |  5136/  888 |
+| ButtonConfig                    | 209881/15308 |  3256/  744 |
+| Encoded4To2ButtonConfig         | 210085/15348 |  3460/  784 |
+| Encoded8To3ButtonConfig         | 210213/15412 |  3588/  848 |
+| EncodedButtonConfig             | 210385/15444 |  3760/  880 |
+| LadderButtonConfig              | 211773/15452 |  5148/  888 |
 +--------------------------------------------------------------+
 
 ```
@@ -204,13 +207,13 @@ then the incremental cost is not significant.
 +--------------------------------------------------------------+
 | functionality                   |    flash/ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |   7632/ 3048 |     0/    0 |
+| Baseline                        |   7664/ 3048 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12564/ 4200 |  4932/ 1152 |
-| Encoded4To2ButtonConfig         |  12816/ 4260 |  5184/ 1212 |
-| Encoded8To3ButtonConfig         |  12964/ 4324 |  5332/ 1276 |
-| EncodedButtonConfig             |  12988/ 4332 |  5356/ 1284 |
-| LadderButtonConfig              |  13636/ 4336 |  6004/ 1288 |
+| ButtonConfig                    |  12652/ 4200 |  4988/ 1152 |
+| Encoded4To2ButtonConfig         |  12904/ 4260 |  5240/ 1212 |
+| Encoded8To3ButtonConfig         |  13052/ 4324 |  5388/ 1276 |
+| EncodedButtonConfig             |  13076/ 4332 |  5412/ 1284 |
+| LadderButtonConfig              |  13724/ 4336 |  6060/ 1288 |
 +--------------------------------------------------------------+
 
 ```
