@@ -14,13 +14,9 @@ which will add to the timing values in actual usage.
 The [digitalWriteFast library](https://github.com/NicksonYap/digitalWriteFast)
 might be an alternative if speed is critical.
 
-## Benchmark Results
+**Version**: AceButton v1.8
 
-In all of the tests, the **min** time for the "idle" case is larger than any of
-the other button events. This is because when a button event occurs, the
-`AceButton::checkDebounced()` method returns immediately until the debouncing
-time is over which brings down the minimum time. No debouncing is done in the
-"idle" case so the minimum code path takes more CPU cycles.
+## Benchmark Results
 
 All times are in microseconds. The "samples" column is the number of
 `TimingStats::update()` calls that were made.
@@ -28,9 +24,9 @@ All times are in microseconds. The "samples" column is the number of
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* AceButton 1.5
 * Arduino IDE 1.8.13
 * Arduino AVR Boards 1.8.3
+* `micros()` has a resolution of 4 microseconds
 
 **Memory**
 ```
@@ -48,20 +44,22 @@ sizeof(LadderButtonConfig): 26
 button event            | min/avg/max | samples |
 ------------------------+-------------+---------+
 idle                    |   8/ 15/ 24 | 1933    |
-press/release           |   8/ 16/ 24 | 1924    |
-click                   |   8/ 15/ 24 | 1925    |
-double click            |  12/ 15/ 28 | 1923    |
-long press/repeat press |  12/ 16/ 24 | 1926    |
-Encode4To2ButtonConfig  |  60/ 64/ 76 | 1847    |
-Encode8To3ButtonConfig  | 164/177/188 | 1672    |
-EncodeButtonConfig      |  80/ 92/108 | 1800    |
-LadderButtonConfig      | 176/190/276 | 1657    |
+press/release           |   8/ 16/ 24 | 1925    |
+click                   |  12/ 15/ 24 | 1926    |
+double click            |   8/ 15/ 28 | 1921    |
+long press/repeat press |  12/ 16/ 24 | 1925    |
+Encode4To2ButtonConfig  |  56/ 67/ 92 | 1840    |
+Encode8To3ButtonConfig  | 164/186/208 | 1660    |
+EncodeButtonConfig      |  80/100/124 | 1786    |
+LadderButtonConfig      | 180/201/280 | 1642    |
 ------------------------+-------------+---------+
 ```
 
 ### SAMD21
 
 * SAMD21 M0 Mini, 48MHz SAMD21
+* Arduino IDE 1.8.13
+* SparkFun SAMD Boards 1.8.1
 
 **Memory**
 ```
@@ -78,19 +76,19 @@ sizeof(LadderButtonConfig): 36
 ------------------------+-------------+---------+
 button event            | min/avg/max | samples |
 ------------------------+-------------+---------+
-idle                    |   4/  8/ 18 | 1970    |
-press/release           |   4/  8/ 19 | 1968    |
-click                   |   4/  8/ 17 | 1968    |
-double click            |   4/  8/ 17 | 1968    |
-long press/repeat press |   4/  8/ 19 | 1967    |
-Encode4To2ButtonConfig  |  19/ 23/ 33 | 1941    |
-Encode8To3ButtonConfig  |  50/ 60/ 72 | 1874    |
-EncodeButtonConfig      |  26/ 36/ 46 | 1917    |
-LadderButtonConfig      | 857/866/877 | 1068    |
+idle                    |   4/  8/ 13 | 2002    |
+press/release           |   4/  9/ 14 | 2002    |
+click                   |   4/  8/ 14 | 2002    |
+double click            |   4/  8/ 16 | 2002    |
+long press/repeat press |   4/  9/ 14 | 2002    |
+Encode4To2ButtonConfig  |  18/ 30/ 34 | 2002    |
+Encode8To3ButtonConfig  |  49/ 76/ 80 | 2002    |
+EncodeButtonConfig      |  27/ 54/ 58 | 2002    |
+LadderButtonConfig      | 447/474/478 | 2002    |
 ------------------------+-------------+---------+
 ```
 
-**Note:** The 800 microseconds per iteration (of 7 buttons) for
+**Note:** The 400-800 microseconds per iteration (of 7 buttons) for
 `LadderButtonConfig` on the SAMD21 may be an anomaly of my cheap clone, or it
 may be an pervasive problem with the `analogRead()` function of a SAMD21
 microcontroller. I advise validating this result on your specific SAMD21 board.
@@ -98,9 +96,8 @@ microcontroller. I advise validating this result on your specific SAMD21 board.
 ### ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
-* AceButton 1.5
 * Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.1
+* ESP8266 Boards 2.7.4
 
 **Memory**
 ```
@@ -118,22 +115,21 @@ sizeof(LadderButtonConfig): 36
 ------------------------+-------------+---------+
 button event            | min/avg/max | samples |
 ------------------------+-------------+---------+
-idle                    |   6/  8/ 52 | 1907    |
-press/release           |   6/  8/ 42 | 1904    |
-click                   |   6/  8/ 32 | 1901    |
-double click            |   6/  8/ 28 | 1900    |
-long press/repeat press |   6/  8/ 36 | 1899    |
-Encode4To2ButtonConfig  |  21/ 23/ 41 | 1879    |
-Encode8To3ButtonConfig  |  54/ 58/ 78 | 1822    |
-EncodeButtonConfig      |  43/ 46/ 66 | 1839    |
-LadderButtonConfig      | 133/140/262 | 1692    |
+idle                    |   6/  8/ 67 | 1922    |
+press/release           |   6/  8/ 61 | 1910    |
+click                   |   6/  8/ 36 | 1910    |
+double click            |   6/  8/111 | 1895    |
+long press/repeat press |   6/  8/111 | 1874    |
+Encode4To2ButtonConfig  |  22/ 27/146 | 1853    |
+Encode8To3ButtonConfig  |  54/ 67/193 | 1785    |
+EncodeButtonConfig      |  42/ 54/181 | 1814    |
+LadderButtonConfig      |  81/148/420 | 1683    |
 ------------------------+-------------+---------+
 ```
 
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* AceButton 1.5
 * Arduino IDE 1.8.13
 * ESP32 Boards 1.0.4
 
@@ -152,22 +148,26 @@ sizeof(LadderButtonConfig): 36
 ------------------------+-------------+---------+
 button event            | min/avg/max | samples |
 ------------------------+-------------+---------+
-idle                    |   3/  4/ 17 | 2002    |
-press/release           |   2/  2/ 10 | 2002    |
-click                   |   2/  2/  7 | 2002    |
+idle                    |   3/  3/ 16 | 2002    |
+press/release           |   3/  3/ 13 | 2002    |
+click                   |   3/  3/  8 | 2002    |
 double click            |   3/  3/  5 | 2002    |
 long press/repeat press |   3/  3/  4 | 2002    |
-Encode4To2ButtonConfig  |   7/  7/ 11 | 2002    |
-Encode8To3ButtonConfig  |  16/ 16/ 20 | 2002    |
-EncodeButtonConfig      |  13/ 13/ 26 | 2002    |
-LadderButtonConfig      |  22/ 23/ 78 | 2002    |
+Encode4To2ButtonConfig  |   7/  8/ 12 | 2002    |
+Encode8To3ButtonConfig  |  15/ 19/ 20 | 2002    |
+EncodeButtonConfig      |  13/ 16/ 25 | 2002    |
+LadderButtonConfig      |  21/ 25/ 77 | 2002    |
 ------------------------+-------------+---------+
 ```
 
 ### Teensy 3.2
 
+**Stale Data**: I am no longer able to program Teensy from my computer. Maybe it
+was the upgrade from Ubuntu 18.04 to 20.04. Maybe it was upgrading Arduino IDE
+1.8.9 to 1.8.13. Maybe it was upgrading Teensyduino. I don't know. I think the
+following data is from AceButton v1.5.
+
 * 96 MHz ARM Cortex-M4
-* AceButton 1.5
 * Arduino IDE 1.8.13
 * Teensyduino 1.53.beta
 * Compiler options: "Faster"
