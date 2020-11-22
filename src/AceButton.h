@@ -45,7 +45,7 @@ SOFTWARE.
 #include "ace_button/AceButton.h"
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_BUTTON_VERSION 10701
-#define ACE_BUTTON_VERSION_STRING "1.7.1"
+#define ACE_BUTTON_VERSION 10800
+#define ACE_BUTTON_VERSION_STRING "1.8"
 
 #endif

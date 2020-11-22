@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 1.8 (2020-11-21)
     * Add `kEventLongReleased` event type which is triggered after a
       `kEventLongPressed` as a substitute for `kEventReleased` when
       `kFeatureSuppressAfterLongPress` is used to suppress the `kEventReleased`
