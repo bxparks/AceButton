@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.7.1</span>
+   &#160;<span id="projectnumber">1.8</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven button library for Arduino.</div>
   </td>
@@ -157,6 +157,9 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <tr class="memitem:a9c4195cb128da40677ea223eb81743c9"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1AceButton.html#a9c4195cb128da40677ea223eb81743c9">kEventRepeatPressed</a> = 5</td></tr>
 <tr class="memdesc:a9c4195cb128da40677ea223eb81743c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button was held down and auto generated multiple presses.  <a href="classace__button_1_1AceButton.html#a9c4195cb128da40677ea223eb81743c9">More...</a><br /></td></tr>
 <tr class="separator:a9c4195cb128da40677ea223eb81743c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad25e42744fa8dd6a13ab483409a1833"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1AceButton.html#aad25e42744fa8dd6a13ab483409a1833">kEventLongReleased</a> = 6</td></tr>
+<tr class="memdesc:aad25e42744fa8dd6a13ab483409a1833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button was released after a long press.  <a href="classace__button_1_1AceButton.html#aad25e42744fa8dd6a13ab483409a1833">More...</a><br /></td></tr>
+<tr class="separator:aad25e42744fa8dd6a13ab483409a1833"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe8e8e22146f510afa487e6ec98b6253"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1AceButton.html#afe8e8e22146f510afa487e6ec98b6253">kButtonStateUnknown</a> = 127</td></tr>
 <tr class="memdesc:afe8e8e22146f510afa487e6ec98b6253"><td class="mdescLeft">&#160;</td><td class="mdescRight">Button state is unknown.  <a href="classace__button_1_1AceButton.html#afe8e8e22146f510afa487e6ec98b6253">More...</a><br /></td></tr>
 <tr class="separator:afe8e8e22146f510afa487e6ec98b6253"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,10 +174,11 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <li>kEventDoubleClicked</li>
 <li>kEventLongPressed</li>
 <li>kEventRepeatPressed</li>
+<li>kEventLongReleased</li>
 </ul>
 <p>The <a class="el" href="classace__button_1_1AceButton.html#af710048a654fa5d5e45405661282a7b1" title="Check state of button and trigger event processing.">check()</a> method should be called from the loop() at least 2-3 times during the debouncing time period. For 20 ms delay, the <a class="el" href="classace__button_1_1AceButton.html#af710048a654fa5d5e45405661282a7b1" title="Check state of button and trigger event processing.">check()</a> method should be called at a minimum of every 5 ms. The execution time of <a class="el" href="classace__button_1_1AceButton.html#af710048a654fa5d5e45405661282a7b1" title="Check state of button and trigger event processing.">check()</a> on a 16 MHz Arduino ATmega328P MCU seems to about about 12-14 microseconds. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00050">50</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00051">51</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3c480636223edc899a79c821c32c6982"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c480636223edc899a79c821c32c6982">&#9670;&nbsp;</a></span>AceButton() <span class="overload">[1/2]</span></h2>
@@ -358,7 +362,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>This is a tri-state function. It may return HIGH, LOW or kButtonStateUnknown to indicate that the last state is not known. This method is <b>not</b> for public consumption, it is exposed only for testing purposes. Consider it to be a private method. Use the buttonState parameter provided to the EventHandler.</p>
 <p>In a more general multi-threaded environment (which the Arduino is not, fortunately or unfortunately), the <a class="el" href="classace__button_1_1AceButton.html#abb9c10c1fc6df01fae071ccfcb906935" title="Return the button state that was last valid.">getLastButtonState()</a> may have changed from the value of buttonState provided to the event handler. In other words, there is a race-condition. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00228">228</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00240">240</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>
@@ -472,7 +476,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Read the button state directly using <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> and return true if the button is in the Pressed state. </p>
 <p>This method is intended to be used in the global setup() to determine if the button was pressed while the device was booted. This method does not use the <a class="el" href="classace__button_1_1AceButton.html#af710048a654fa5d5e45405661282a7b1" title="Check state of button and trigger event processing.">check()</a> method, does not perform any debouncing, and does not dispatch events to the EventHandler. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00273">273</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00285">285</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>
@@ -505,7 +509,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>The HIGH or LOW logical value of buttonState represents different a button position depending on whether the button is wired with a pull-up or a pull-down resistor. This method translates the logical level to the physical position which allows the client code to be independent of the physical wiring.</p>
 <p>Normally, the eventType given to the EventHandler should be sufficient because the value of the eventType already encodes this information. This method is provided just in case. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00262">262</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00274">274</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>
@@ -536,7 +540,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Set the <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> associated with this Button. </p>
 <p>It is recommended that the AceButton(ButtonConfig*) constructor is used instead to make the dependency to <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> more explicit. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00168">168</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00180">180</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>
@@ -574,7 +578,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <div class="line">config-&gt;setIEventHandler(&amp;eventHandler);</div>
 </div><!-- fragment --><p>I decided against deprecating this method because it allows someone to write the simple HelloButton.ino program without having any knowledge of the <a class="el" href="classace__button_1_1ButtonConfig.html" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in...">ButtonConfig</a> object. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00202">202</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00214">214</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>
@@ -602,7 +606,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Button state is unknown. </p>
 <p>This is a third state (different from LOW or HIGH) used when the class is first initialized upon reboot. No longer able to use '2' because the new PinStatus enum API contains 'CHANGE' which has a value of 2. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00092">92</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00104">104</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>
@@ -629,7 +633,34 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Button was double-clicked. </p>
 <p>(Two clicks within <a class="el" href="classace__button_1_1ButtonConfig.html#a0098549db5df3c730f64f4235845a5a5" title="Milliseconds between the first and second click to register as a double-click.">ButtonConfig::getDoubleClickDelay()</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00070">70</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00071">71</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+
+</div>
+</div>
+<a id="aad25e42744fa8dd6a13ab483409a1833"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad25e42744fa8dd6a13ab483409a1833">&#9670;&nbsp;</a></span>kEventLongReleased</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t ace_button::AceButton::kEventLongReleased = 6</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Button was released after a long press. </p>
+<p>This event becomes the replacement for kEventReleased if kFeatureSuppressAfterLongPress is enabled. The kFeatureSuppressAfterLongPress allows us to distinguish a simple Pressed from a LongPressed, by using the Released event as a replacement of Pressed. But the suppression prevents us from detecting a Released event from a LongPress (which is sometimes needed). This event can be used as a replacement. </p>
+
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00096">96</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>
@@ -656,7 +687,7 @@ static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class
 <p>Button was held down and auto generated multiple presses. </p>
 <p>The first event is triggered after <a class="el" href="classace__button_1_1ButtonConfig.html#aeca9329775d17a06433c9588fca28695" title="Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed...">ButtonConfig::getRepeatPressDelay()</a>, then the event fires repeatedly every <a class="el" href="classace__button_1_1ButtonConfig.html#a5c5d86932a98f71030422ef367b57a25" title="Milliseconds between two successive RepeatPressed events.">ButtonConfig::getRepeatPressInterval()</a> until the button is released. </p>
 
-<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00084">84</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ace__button_2AceButton_8h_source.html#l00085">85</a> of file <a class="el" href="ace__button_2AceButton_8h_source.html">AceButton.h</a>.</p>
 
 </div>
 </div>
