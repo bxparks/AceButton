@@ -240,7 +240,7 @@ The constructor takes a number of parameters:
 * the ADC `pin` number where the resistors and buttons are attached
 
 Each `AceButton` should be given a "virtual" pin number (in other words, a
-synthetic in number) which corresponds to each button on the analog pin.
+synthetic pin number) which corresponds to each button on the analog pin.
 These virtual pin numbers will range from `0` to `N-1`.
 
 The `levels[]` array **must** contain monotonically increasing values of

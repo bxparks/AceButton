@@ -85,6 +85,7 @@ kEventClicked	LITERAL1
 kEventDoubleClicked	LITERAL1
 kEventLongPressed	LITERAL1
 kEventRepeatPressed	LITERAL1
+kEventLongReleased	LITERAL1
 kButtonStateUnknown	LITERAL1
 
 # public constants from ButtonConfig.h

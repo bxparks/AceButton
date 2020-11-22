@@ -138,8 +138,8 @@ test(feature_flags_off_by_default) {
       ButtonConfig::kFeatureSuppressAfterRepeatPress));
 }
 
-// Test that the ButtonConfig parameters are mutable, just like the
-// original AdjustableButtonConfig.
+// Test that the ButtonConfig parameters are mutable, just like the deprecated
+// AdjustableButtonConfig class (which was finally removed in v1.8).
 test(adjustable_config) {
   buttonConfig.setDebounceDelay(1);
   assertEqual((uint16_t)1, buttonConfig.getDebounceDelay());
@@ -1262,7 +1262,7 @@ test(long_press_without_suppression) {
   assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
 }
 
-// Test a long press with suppression should produce no released event.
+// Test a long press with suppression should produces a LongReleased event.
 test(long_press_with_supression) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
@@ -1308,9 +1308,12 @@ test(long_press_with_supression) {
   assertEqual(0, eventTracker.getNumEvents());
 
   // Must wait for debouncing. We elected kFeatureSuppressAfterLongPress so
-  // no kEventReleased is generated.
+  // the kEventReleased becomes replaced with kEventLongReleased.
   helper.releaseButton(BASE_TIME + 1660);
-  assertEqual(0, eventTracker.getNumEvents());
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventLongReleased;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
 }
 
 // Test that no LongPress generated with isFeature() flag off.

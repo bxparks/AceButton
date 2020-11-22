@@ -262,7 +262,10 @@ void AceButton::checkReleased(uint16_t now, uint8_t buttonState) {
     checkClicked(now);
   }
 
-  // check if Released events are suppressed
+  // Save whether this was generated from a long press.
+  bool wasLongPressed = isLongPressed();
+
+  // Check if Released events are suppressed.
   bool suppress =
       ((isLongPressed() &&
           mButtonConfig->
@@ -276,13 +279,22 @@ void AceButton::checkReleased(uint16_t now, uint8_t buttonState) {
           mButtonConfig->
               isFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick)));
 
-  // button was released
+  // Button was released, so clear current flags. Note that the compiler will
+  // optimize the following 4 statements to be equivalent to this single one:
+  //    mFlags &= ~kFlagPressed & ~kFlagDoubleClicked & ~kFlagLongPressed
+  //        & ~kFlagRepeatPressed;
   clearPressed();
   clearDoubleClicked();
   clearLongPressed();
   clearRepeatPressed();
 
-  if (!suppress) {
+  // Fire off a Released event, unless suppressed. Replace Released with
+  // LongReleased if this was a LongPressed.
+  if (suppress) {
+    if (wasLongPressed) {
+      handleEvent(kEventLongReleased);
+    }
+  } else {
     handleEvent(kEventReleased);
   }
 }

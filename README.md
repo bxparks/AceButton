@@ -47,6 +47,7 @@ The supported events are:
 * `AceButton::kEventDoubleClicked`
 * `AceButton::kEventLongPressed`
 * `AceButton::kEventRepeatPressed`
+* `AceButton::kEventLongReleased` (v1.8)
 
 The basic `ButtonConfig` class assumes that each button is connected to a single
 digital input pin. In some situations, the number of buttons that we want is
@@ -61,10 +62,10 @@ greater than the number of input pins available. This library provides
       resistor ladder. The `analogRead()` method is used to read the different
       voltage levels corresponding to each button.
 
-Both `EncodedButtonConfig` and `LadderButtonConfig` support all 6 events listed
-above (e.g. Clicked and DoubleClicked).
+Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
+above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.7.1 (2020-11-12)
+**Version**: 1.8 (2020-11-21)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -103,6 +104,7 @@ above (e.g. Clicked and DoubleClicked).
 * [Advanced Topics](#AdvancedTopics)
   * [Object-based Event Handler](#ObjectBasedEventHandler)
   * [Distinguishing Clicked and DoubleClicked](#ClickedAndDoubleClicked)
+  * [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
   * [Events After Reboot](#EventsAfterReboot)
   * [Orphaned Clicks](#OrphanedClicks)
   * [Binary Encoded Buttons](#BinaryEncodedButtons)
@@ -125,13 +127,14 @@ Here are the high-level features of the AceButton library:
 * supports both pull-up and pull-down wiring
 * event-driven through a user-defined `EventHandler` callback function
 * event-driven through an object-based `IEventHandler` (>= v1.6)
-* supports 6 event types:
-    * Pressed
-    * Released
-    * Clicked
-    * DoubleClicked
-    * LongPressed
-    * RepeatPressed
+* supports 7 event types:
+    * `kEventPressed`
+    * `kEventReleased`
+    * `kEventClicked`
+    * `kEventDoubleClicked`
+    * `kEventLongPressed`
+    * `kEventRepeatPressed`
+    * `kEventLongReleased`
 * adjustable configurations at runtime or compile-time
     * timing parameters
     * `digitalRead()` button read function can be overridden
@@ -294,6 +297,10 @@ The following example sketches are provided:
     * [ClickVersusDoubleClickUsingBoth.ino](examples/ClickVersusDoubleClickUsingBoth)
         * an example that combines both the "UsingPressed" and
           "UsingSuppression" techniques
+* distinguishing Pressed and LongPressed
+    * [examples/PressedAndLongPressed](examples/PressedAndLongPressed)
+    * see also the [Distinguishing Pressed and
+      LongPressed](#PressedAndLongPressed) subsection below
 * [CapacitiveButton](examples/CapacitiveButton)
     * reads a capacitive button using the
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
@@ -423,6 +430,7 @@ class AceButton {
     static const uint8_t kEventDoubleClicked = 3;
     static const uint8_t kEventLongPressed = 4;
     static const uint8_t kEventRepeatPressed = 5;
+    static const uint8_t kEventLongReleased = 6;
     static const uint8_t kButtonStateUnknown = 127;
 
     explicit AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
@@ -868,14 +876,16 @@ world.
 <a name="EventTypes"></a>
 ### Event Types
 
-The supported events are defined by a list of constants in `AceButton`:
+The supported events are defined by a list of constants in `AceButton.h`:
 
-* `AceButton::kEventPressed` (always enabled)
-* `AceButton::kEventReleased` (conditionally enabled)
+* `AceButton::kEventPressed` (always enabled, cannot be suppressed)
+* `AceButton::kEventReleased` (default: enabled)
 * `AceButton::kEventClicked` (default: disabled)
 * `AceButton::kEventDoubleClicked` (default: disabled)
 * `AceButton::kEventLongPressed` (default: disabled)
 * `AceButton::kEventRepeatPressed` (default: disabled)
+* `AceButton::kEventLongReleased` (default: disabled, autoenabled by
+  `kFeatureSuppressAfterLongPress`, new for v1.8)
 
 These values are sent to the `EventHandler` in the `eventType` parameter.
 
@@ -925,20 +935,23 @@ The meaning of these flags are described below.
 <a name="EventActivation"></a>
 #### Event Activation
 
-Of the 6 event types, 4 are disabled by default:
+Of the 7 event types, 5 are disabled by default:
 
 * `AceButton::kEventClicked`
 * `AceButton::kEventDoubleClicked`
 * `AceButton::kEventLongPressed`
 * `AceButton::kEventRepeatPressed`
+* `AceButton::kEventLongReleased`
 
 To receive these events, call `ButtonConfig::setFeature()` with the following
-flags respectively:
+corresponding  flags:
 
 * `ButtonConfig::kFeatureClick`
 * `ButtonConfig::kFeatureDoubleClick`
 * `ButtonConfig::kFeatureLongPress`
 * `ButtonConfig::kFeatureRepeatPress`
+* `ButtonConfig::kFeatureSuppressAfterLongPress` (suppresses `kEventReleased`
+  after a LongPress, but turns on `kEventLongReleased` as a side effect)
 
 To disable these events, call `ButtonConfig::clearFeature()` with one of these
 flags.
@@ -970,30 +983,34 @@ level events. Call the `setFeature(feature)` method passing the various
 `kFeatureSuppressXxx` constants:
 
 * `ButtonConfig::kFeatureSuppressAfterClick`
-    * suppresses the Released event after a Clicked event is detected
+    * suppresses the `kEventReleased` event after a Clicked event is detected
     * also suppresses the Released event from the *first* Clicked of a
       DoubleClicked, since `kFeatureDoubleClick` automatically enables
       `kFeatureClick`
 * `ButtonConfig::kFeatureSuppressAfterDoubleClick`
-    * suppresses the Released event and the *second* Clicked event if a
+    * suppresses the `kEventReleased` event and the *second* Clicked event if a
       DoubleClicked event is detected
 * `ButtonConfig::kFeatureSuppressAfterLongPress`
-    * suppresses the Released event if a LongPressed event is detected
+    * suppresses the `kEventReleased` event if a LongPressed event is detected
+    * (v1.8) automatically enables `kEventLongReleased` event as a substitute
+      for the suppressed `kEventReleased`, see [Distinguishing Pressed and Long
+      Pressed](#PressedAndLongPressed) subsection below for more details.
 * `ButtonConfig::kFeatureSuppressAfterRepeatPress`
-    * suppresses the Released event after the last RepeatPressed event
+    * suppresses the `kEventReleased` event after the last RepeatPressed event
+* `ButtonConfig::kFeatureSuppressClickBeforeDoubleClick`
+    * The *first* `kEventClicked` event is postponed by `getDoubleClickDelay()`
+      millis until the code can determine if a DoubleClick has occurred. If so,
+      then the postponed `kEventClicked` message to the `EventHandler` is
+      suppressed.
+    * See [Distinguishing Clicked and DoubleClicked](#ClickedAndDoubleClicked)
+      subsection below for more info.
 * `ButtonConfig::kFeatureSuppressAll`
     * a convenience parameter that is the equivalent of suppressing all of the
       previous events
-* `ButtonConfig::kFeatureSuppressClickBeforeDoubleClick`
-    * The *first* Clicked event is postponed by `getDoubleClickDelay()`
-      millis until the code can determine if a DoubleClick has occurred. If so,
-      then the postponed Clicked message to the `EventHandler` is suppressed.
-    * See the section ___Distinguishing Between a Clicked and DoubleClicked___
-      for more info.
 
 By default, no suppression is performed.
 
-As an example, to suppress the `Released` event after a `LongPressed` event
+As an example, to suppress the `kEventReleased` after a `kEventLongPressed`
 (this is actually often the case), you would do this:
 
 ```C++
@@ -1316,6 +1333,34 @@ buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
 
 See the example code at
 `examples/ClickVersusDoubleClickUsingBoth/`.
+
+<a name="PressedAndLongPressed"></a>
+### Distinguishing Pressed and LongPressed
+
+Sometimes it is useful to capture both a Pressed event and a LongPressed event
+from a single button. Since every button press always triggers a `kEventPressed`
+event, the only reasonable way to distinguish between Pressed and LongPressed is
+to use the `kEventReleased` as a substitute for the simple Pressed event. When
+we active `kFeatureLongPress`, we then must activate the
+`kFeatureSuppressAfterLongPress` feature to suppress the `kEventReleased` event
+after the `kEventLongPressed` to avoid yet another overlap of events.
+
+```C++
+ButtonConfig* config = button.getButtonConfig();
+config->setFeature(ButtonConfig::kFeatureLongPress);
+config->setFeature(ButtonConfig::kFeatureSuppressAfterLongPress);
+```
+
+This works most of the time, but I encountered an edge case. Occasionally we
+want to capture the Released event after the LongPressed event, even if
+`kEventReleased` must be suppressed as described above. To solve this edge case,
+in v1.8, I added a new event type `kEventLongReleased` which is triggered as a
+substitute for `kEventReleased`, only if `kFeatureSuppressAfterLongPress` is
+used to suppress `kEventReleased`.
+
+See the example code at
+[examples/PressVersusLongPress](examples/PressVersusLongPress) to see how all
+these come together.
 
 <a name="EventsAfterReboot"></a>
 ### Events After Reboot

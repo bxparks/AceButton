@@ -38,7 +38,6 @@ SOFTWARE.
 
 #include "ace_button/IEventHandler.h"
 #include "ace_button/ButtonConfig.h"
-#include "ace_button/AdjustableButtonConfig.h"
 #include "ace_button/Encoded8To3ButtonConfig.h"
 #include "ace_button/Encoded4To2ButtonConfig.h"
 #include "ace_button/EncodedButtonConfig.h"
@@ -46,7 +45,7 @@ SOFTWARE.
 #include "ace_button/AceButton.h"
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_BUTTON_VERSION 10701
-#define ACE_BUTTON_VERSION_STRING "1.7.1"
+#define ACE_BUTTON_VERSION 10800
+#define ACE_BUTTON_VERSION_STRING "1.8"
 
 #endif

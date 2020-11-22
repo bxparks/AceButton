@@ -1,6 +1,17 @@
 # Changelog
 
 * Unreleased
+* 1.8 (2020-11-21)
+    * Add `kEventLongReleased` event type which is triggered after a
+      `kEventLongPressed` as a substitute for `kEventReleased` when
+      `kFeatureSuppressAfterLongPress` is used to suppress the `kEventReleased`
+      event. See the new [Distinguishing Pressed and
+      LongPressed](README.md#PressedAndLongPressed) section in the README.md and
+      the new [examples/PressedAndLongPressed](examples/PressVersusLongPress)
+      sample code.
+    * **Potentially Breaking**: Completely remove
+      `src/ace_button/AdjustableButtonConfig.h`. It was deprecated over 2 years
+      ago in v1.3.
 * 1.7.1 (2020-11-12)
     * Add Table of Contents to README.md.
     * Regenerate MemoryBenchmark numbers for v1.7.
