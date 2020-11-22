@@ -8,6 +8,9 @@
       LongPressed](README.md#PressedAndLongPressed) section in the README.md and
       the new [examples/PressedAndLongPressed](examples/PressVersusLongPress)
       sample code.
+    * **Potentially Breaking**: Completely remove
+      `src/ace_button/AdjustableButtonConfig.h`. It was deprecated over 2 years
+      ago in v1.3.
 * 1.7.1 (2020-11-12)
     * Add Table of Contents to README.md.
     * Regenerate MemoryBenchmark numbers for v1.7.

@@ -38,7 +38,6 @@ SOFTWARE.
 
 #include "ace_button/IEventHandler.h"
 #include "ace_button/ButtonConfig.h"
-#include "ace_button/AdjustableButtonConfig.h"
 #include "ace_button/Encoded8To3ButtonConfig.h"
 #include "ace_button/Encoded4To2ButtonConfig.h"
 #include "ace_button/EncodedButtonConfig.h"

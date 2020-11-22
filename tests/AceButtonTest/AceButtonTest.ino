@@ -138,8 +138,8 @@ test(feature_flags_off_by_default) {
       ButtonConfig::kFeatureSuppressAfterRepeatPress));
 }
 
-// Test that the ButtonConfig parameters are mutable, just like the
-// original AdjustableButtonConfig.
+// Test that the ButtonConfig parameters are mutable, just like the deprecated
+// AdjustableButtonConfig class (which was finally removed in v1.8).
 test(adjustable_config) {
   buttonConfig.setDebounceDelay(1);
   assertEqual((uint16_t)1, buttonConfig.getDebounceDelay());
