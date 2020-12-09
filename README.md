@@ -1,5 +1,7 @@
 # AceButton
 
+![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
+
 An adjustable, compact, event-driven button library for Arduino platforms.
 
 This library provides classes which accept inputs from a mechanical button
@@ -69,16 +71,14 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
-![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
-
-**Table of Contents**
+## Table of Contents
 
 * [Features](#Features)
 * [HelloButton](#HelloButton)
 * [Installation](#Installation)
   * [External Dependencies](#ExternalDependencies)
   * [Source Code](#SourceCode)
-  * [Documentation](#Documentation)
+* [Documentation](#Documentation)
   * [Examples](#Examples)
 * [Usage](#Usage)
   * [Include Header and Use Namespace](#IncludeHeader)
@@ -248,7 +248,7 @@ The source files are organized as follows:
 * `examples/` - example sketches
 
 <a name="Documentation"></a>
-### Documentation
+## Documentation
 
 * this [README.md](README.md)
 * [Doxygen docs](https://bxparks.github.io/AceButton/html/) published on GitHub
