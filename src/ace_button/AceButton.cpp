@@ -51,6 +51,16 @@ COMPILE_TIME_ASSERT(LOW == 0, "LOW must be 0")
     "kButtonStateUnknown conflicts with PinStatus enum")
 #endif
 
+// ensure static const uint8_t variables are assigned an address
+const uint8_t AceButton::kEventPressed;
+const uint8_t AceButton::kEventReleased;
+const uint8_t AceButton::kEventClicked;
+const uint8_t AceButton::kEventDoubleClicked;
+const uint8_t AceButton::kEventLongPressed;
+const uint8_t AceButton::kEventRepeatPressed;
+const uint8_t AceButton::kEventLongReleased;
+const uint8_t AceButton::kButtonStateUnknown;
+
 AceButton::AceButton(uint8_t pin, uint8_t defaultReleasedState, uint8_t id):
     mButtonConfig(ButtonConfig::getSystemButtonConfig()) {
   init(pin, defaultReleasedState, id);
