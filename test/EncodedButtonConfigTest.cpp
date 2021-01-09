@@ -1,12 +1,10 @@
-#line 2 "EncodedButtonConfigTest.ino"
+#include <Arduino.h>
+#include <ArduinoUnitTests.h>
 
-#include <AUnit.h>
-#include <AceButton.h>
 #include <ace_button/testing/TestableEncodedButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
 #include <ace_button/testing/HelperForEncodedButtonConfig.h>
 
-using namespace aunit;
 using namespace ace_button;
 using namespace ace_button::testing;
 
@@ -54,26 +52,16 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   eventTracker.addEvent(button->getPin(), eventType, buttonState);
 }
 
-void setup() {
-#if ! defined(UNIX_HOST_DUINO)
-  delay(1000); // wait to prevent garbage on SERIAL_PORT_MONITOR
-#endif
-
-  SERIAL_PORT_MONITOR.begin(115200); // ESP8266 74880 not supported on Linux
-  while(!SERIAL_PORT_MONITOR); // for the Arduino Leonardo/Micro only
-
+unittest_setup() {
+  testableConfig.init();
   testableConfig.setEventHandler(handleEvent);
-}
-
-void loop() {
-  TestRunner::run();
 }
 
 // --------------------------------------------------------------------------
 // EncodedButtonConfig
 // --------------------------------------------------------------------------
 
-test(EncodedButtonConfig, press_and_release_pullup) {
+unittest(EncodedButtonConfig_press_and_release_pullup) {
   const unsigned long BASE_TIME = 65500; // rolls over in 36 milliseconds
   helper.init();
 
@@ -116,7 +104,7 @@ test(EncodedButtonConfig, press_and_release_pullup) {
   }
 }
 
-test(EncodedButtonConfig, click) {
+unittest(EncodedButtonConfig_click) {
   const unsigned long BASE_TIME = 65500; // rolls over in 36 milliseconds
   helper.init();
   testableConfig.setFeature(ButtonConfig::kFeatureClick);
@@ -171,3 +159,4 @@ test(EncodedButtonConfig, click) {
   }
 }
 
+unittest_main();

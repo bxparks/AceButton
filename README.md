@@ -1,6 +1,7 @@
 # AceButton
 
-![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
+[![Arduino CI action](https://github.com/bxparks/AceButton/workflows/Arduino_CI_Action/badge.svg)](https://github.com/marketplace/actions/arduino_ci)
+[![Arduino CI runner](https://github.com/bxparks/AceButton/workflows/Arduino_CI_runner/badge.svg)](https://github.com/Arduino-CI/arduino_ci)
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
@@ -244,7 +245,7 @@ The source files are organized as follows:
 * `src/AceButton.h` - main header file
 * `src/ace_button/` - all implementation files
 * `src/ace_button/testing/` - internal testing files
-* `tests/` - unit tests which require [AUnit](https://github.com/bxparks/AUnit)
+* `test/` - unit tests which require [arduino_ci](https://github.com/Arduino-CI/arduino_ci)
 * `examples/` - example sketches
 
 <a name="Documentation"></a>

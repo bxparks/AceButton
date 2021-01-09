@@ -1,12 +1,11 @@
-#line 2 "IEventHandlerTest.ino"
+#include <Arduino.h>
+#include <ArduinoUnitTests.h>
 
-#include <AUnit.h>
 #include <AceButton.h>
 #include <ace_button/testing/TestableButtonConfig.h>
 #include <ace_button/testing/EventTracker.h>
 #include <ace_button/testing/HelperForButtonConfig.h>
 
-using namespace aunit;
 using namespace ace_button;
 using namespace ace_button::testing;
 
@@ -35,26 +34,16 @@ EventHandlerClass eventHandler(&eventTracker);
 const uint8_t PIN = 13;
 const uint8_t BUTTON_ID = 1;
 
-void setup() {
-#if ! defined(UNIX_HOST_DUINO)
-  delay(1000); // wait to prevent garbage on SERIAL_PORT_MONITOR
-#endif
-
-  SERIAL_PORT_MONITOR.begin(115200); // ESP8266 74880 not supported on Linux
-  while(!SERIAL_PORT_MONITOR); // for the Arduino Leonardo/Micro only
-
+unittest_setup() {
+  testableConfig.init();
   testableConfig.setIEventHandler(&eventHandler);
-}
-
-void loop() {
-  TestRunner::run();
 }
 
 // --------------------------------------------------------------------------
 // Test IEventHandler
 // --------------------------------------------------------------------------
 
-test(press_and_release_pullup) {
+unittest(press_and_release_pullup) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   uint8_t expected;
 
@@ -95,3 +84,5 @@ test(press_and_release_pullup) {
   assertEqual(expected, eventTracker.getRecord(0).getEventType());
   assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
 }
+
+unittest_main();

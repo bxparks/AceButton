@@ -1,60 +1,5 @@
-#line 2 "AceButtonTest.ino"
-/*
-MIT License
-
-Copyright (c) 2018 Brian T. Park
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-
-/*
- * Using Multiple Cpp Files:
- *
- * I tried to spread the tests of this .ino file into 6 .cpp files (and one
- * .h file), matching the 6 logical sections indicated below. Unfortunately,
- * on the AVR platform (Arduino Nano), the flash memory consumption increased
- * from 26768 (87%) to 28630 (93%), a difference of 1862 bytes. Since an Arduino
- * Nano has only 32720 bytes in flash, the difference of 1862 bytes (5.7%) is
- * signficant. I'm not sure where the flash consumption is coming from. Maybe
- * the compiler is includeing debugging information to the 6 additional .cpp
- * file names, or maybe the compiler/linker is using 4-bytes references to
- * various global variables instead of 2-bytes? For now, let's leave all the
- * tests in this single .ino file. I also noticed that changing from "const int
- * PIN = 13" to "#define PIN 13" (and the same with BUTTON_ID) in the .h header
- * file, the #define saved 210 bytes.
- *
- * On the Teensy-ARM platform (Teensy LC), using 6 separate .cpp files instead
- * of one giant .ino file caused the flash memory to *decrease* from 31408 to
- * 31204 bytes(!). And on the ARM platform, there was no difference in flash
- * memory size between "const int PIN = 13" and "#define PIN 13".
- *
- * Conclusion, this seems to be a problem with the avr-gcc compiler, or a
- * suboptimal compiler flags set by the Arduino IDE.
- */
-
-#define USE_AUNIT 1
-
-#if USE_AUNIT == 1
-#include <AUnit.h>
-#else
-#include <ArduinoUnit.h>
-#endif
+#include <Arduino.h>
+#include <ArduinoUnitTests.h>
 
 #include <AceButton.h>
 #include <ace_button/testing/TestableButtonConfig.h>
@@ -83,12 +28,8 @@ void handleEvent(AceButton* button, uint8_t eventType,
   eventTracker.addEvent(button->getPin(), eventType, buttonState);
 }
 
-void setup() {
-#if ! defined(UNIX_HOST_DUINO)
-  delay(1000); // Wait for stability on some boards, otherwise garage on Serial
-#endif
-  Serial.begin(115200); // ESP8266 default 74880 not supported on Linux
-  while (!Serial); // for the Arduino Leonardo/Micro only
+unittest_setup() {
+  testableConfig.init();
 
   testableConfig.setEventHandler(handleEvent);
 
@@ -96,33 +37,15 @@ void setup() {
   // and some of the timing delays are hardcoded to assume that, so we have to
   // revert back to the old value.
   testableConfig.setDebounceDelay(50);
-
-  Serial.print(F("sizeof(AceButton): "));
-  Serial.println(sizeof(AceButton));
-  Serial.print(F("sizeof(ButtonConfig): "));
-  Serial.println(sizeof(ButtonConfig));
-  Serial.print(F("sizeof(TestableButtonConfig): "));
-  Serial.println(sizeof(TestableButtonConfig));
-
-  /*
-  aunit::TestRunner::exclude("*");
-  aunit::TestRunner::include("suppress_click_before_double_click");
-  */
 }
 
-void loop() {
-#if USE_AUNIT == 1
-  aunit::TestRunner::run();
-#else
-  Test::run();
-#endif
-}
+
 
 // ------------------------------------------------------------------
 // ButtonConfig tests
 // ------------------------------------------------------------------
 
-test(feature_flags_off_by_default) {
+unittest(feature_flags_off_by_default) {
   assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureClick));
   assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureDoubleClick));
   assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureLongPress));
@@ -140,7 +63,7 @@ test(feature_flags_off_by_default) {
 
 // Test that the ButtonConfig parameters are mutable, just like the deprecated
 // AdjustableButtonConfig class (which was finally removed in v1.8).
-test(adjustable_config) {
+unittest(adjustable_config) {
   buttonConfig.setDebounceDelay(1);
   assertEqual((uint16_t)1, buttonConfig.getDebounceDelay());
 
@@ -165,7 +88,7 @@ test(adjustable_config) {
 // ------------------------------------------------------------------
 
 // Test that the pin is properly set and retrieved.
-test(pin) {
+unittest(pin) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
 
   helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
@@ -173,7 +96,7 @@ test(pin) {
 }
 
 // Test that the custom id is properly set and retrieved.
-test(custom_id) {
+unittest(custom_id) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
 
   // reset the button
@@ -182,7 +105,7 @@ test(custom_id) {
 }
 
 // Test that the getLastButtonPressed() returns BUTTON_STATE_UKNOWN initially.
-test(button_state_unknown) {
+unittest(button_state_unknown) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
 
   // reset the button
@@ -194,7 +117,7 @@ test(button_state_unknown) {
 
 // Test that the button transitions out of the kButtonStateUnknown after
 // getDebounceDelay() time.
-test(init_while_released) {
+unittest(init_while_released) {
   uint8_t expected;
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
 
@@ -228,7 +151,7 @@ test(init_while_released) {
 
 // Test that the button transitions out of the kButtonStateUnknown when
 // rebooted with the button pressed.
-test(init_while_pressed) {
+unittest(init_while_pressed) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   // reset the button
   helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
@@ -261,7 +184,7 @@ test(init_while_pressed) {
 
 // Test that the TestableButtonConfig overrides the corresponding
 // parameters on AceButton properly.
-test(testable_config) {
+unittest(testable_config) {
   testableConfig.setClock(0);
   assertEqual(0UL, button.getButtonConfig()->getClock());
 
@@ -276,7 +199,7 @@ test(testable_config) {
 }
 
 // Detect if a button is pressed while the device is booted.
-test(is_released_raw) {
+unittest(is_released_raw) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   button.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
   testableConfig.init();
@@ -294,7 +217,7 @@ test(is_released_raw) {
 
 // We assume this will be the common case because of the Aruino boards provide
 // internal pullup resistors on the digital input pins.
-test(press_and_release_pullup) {
+unittest(press_and_release_pullup) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   uint8_t expected;
 
@@ -338,7 +261,7 @@ test(press_and_release_pullup) {
 
 // Do the same test as press_and_release_pullup, but using
 // the logic levels of an external pulldown resistor.
-test(press_and_release_pulldown) {
+unittest(press_and_release_pulldown) {
   const uint8_t DEFAULT_RELEASED_STATE = LOW;
   uint8_t expected;
 
@@ -381,7 +304,7 @@ test(press_and_release_pulldown) {
 
 // The AceButton class uses 16-bit timer variables for memory efficiency.
 // Verify that we can rollover those variables without affecting the logic.
-test(clock_rollover) {
+unittest(clock_rollover) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500; // rolls over in 36 milliseconds
   uint8_t expected;
@@ -425,7 +348,7 @@ test(clock_rollover) {
 // ------------------------------------------------------------------
 
 // Test a single click.
-test(click_without_suppression) {
+unittest(click_without_suppression) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -469,7 +392,7 @@ test(click_without_suppression) {
 }
 
 // Test a single click.
-test(click_with_suppression) {
+unittest(click_with_suppression) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -511,7 +434,7 @@ test(click_with_suppression) {
 }
 
 // Test that no click generated with isFeature() flag off.
-test(no_click_without_feature_flag) {
+unittest(no_click_without_feature_flag) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -560,7 +483,7 @@ test(no_click_without_feature_flag) {
 // spurious second double click. It should generate only the following:
 //  Pressed, Clicked, Pressed, DoubleClicked, Pressed, Clicked
 // because we have suppressed the Released events.
-test(double_click_suppressed) {
+unittest(double_click_suppressed) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -659,7 +582,7 @@ test(double_click_suppressed) {
 // Three rapid clicks should generate the following:
 //    Pressed, Released, Clicked, Pressed, Released, DoubleClicked, Pressed,
 //    Released, Clicked.
-test(double_click_not_suppressed) {
+unittest(double_click_not_suppressed) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -764,7 +687,7 @@ test(double_click_not_suppressed) {
 }
 
 // Test that no double clicks generated with isFeature() flag off.
-test(no_double_click_without_feature_flag) {
+unittest(no_double_click_without_feature_flag) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -842,7 +765,7 @@ test(no_double_click_without_feature_flag) {
 
 // Test that an orphaned click is properly removed to prevent spurious
 // double-click if the second click happens slightly over 65.536 seconds later.
-test(orphaned_click_cleared) {
+unittest(orphaned_click_cleared) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   const unsigned long ROLLOVER_TIME = 65536;
@@ -925,7 +848,7 @@ test(orphaned_click_cleared) {
 }
 
 // Test that an orphaned click generates a double click if not cleared.
-test(orphaned_click_causes_double_click_if_not_cleared) {
+unittest(orphaned_click_causes_double_click_if_not_cleared) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   const unsigned long ROLLOVER_TIME = 65536;
@@ -1004,7 +927,7 @@ test(orphaned_click_causes_double_click_if_not_cleared) {
 }
 
 // Test that an orphaned click is removed if Click is enabled.
-test(orphaned_click_removed_if_click_enabled) {
+unittest(orphaned_click_removed_if_click_enabled) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   const unsigned long ROLLOVER_TIME = 65536;
@@ -1093,7 +1016,7 @@ test(orphaned_click_removed_if_click_enabled) {
 
 // Test that kFeatureSuppressClickBeforeDoubleClick causes the first Clicked to
 // be postponed until it can determine if a DoubleClick actually occurred.
-test(suppress_click_before_double_click) {
+unittest(suppress_click_before_double_click) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -1211,7 +1134,7 @@ test(suppress_click_before_double_click) {
 
 // Test a long press without suppression should generate a released event at
 // the end.
-test(long_press_without_suppression) {
+unittest(long_press_without_suppression) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -1263,7 +1186,7 @@ test(long_press_without_suppression) {
 }
 
 // Test a long press with suppression should produces a LongReleased event.
-test(long_press_with_supression) {
+unittest(long_press_with_supression) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -1317,7 +1240,7 @@ test(long_press_with_supression) {
 }
 
 // Test that no LongPress generated with isFeature() flag off.
-test(no_long_press_without_feature_flag) {
+unittest(no_long_press_without_feature_flag) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -1370,7 +1293,7 @@ test(no_long_press_without_feature_flag) {
 // ------------------------------------------------------------------
 
 // Test repeated press
-test(repeat_press_without_suppression) {
+unittest(repeat_press_without_suppression) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -1430,7 +1353,7 @@ test(repeat_press_without_suppression) {
 }
 
 // Test repeated press
-test(repeat_press_with_suppression) {
+unittest(repeat_press_with_suppression) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -1489,7 +1412,7 @@ test(repeat_press_with_suppression) {
 }
 
 // Test that no RepeatPress generated with isFeature() flag off.
-test(no_repeat_press_without_feature_flag) {
+unittest(no_repeat_press_without_feature_flag) {
   const uint8_t DEFAULT_RELEASED_STATE = HIGH;
   const unsigned long BASE_TIME = 65500;
   uint8_t expected;
@@ -1541,3 +1464,5 @@ test(no_repeat_press_without_feature_flag) {
   assertEqual(expected, eventTracker.getRecord(0).getEventType());
   assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
 }
+
+unittest_main();

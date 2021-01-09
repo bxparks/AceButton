@@ -1,0 +1,27 @@
+---
+# this workflow demonstrates how you might run arduino_ci on your local development machine
+name: Arduino_CI_runner
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6
+    - name: Setup
+      run: |
+        bundle install
+        bundle exec ensure_arduino_installation.rb
+        cd $(bundle exec arduino_library_location.rb)
+        sh $GITHUB_WORKSPACE/examples/CapacitiveButton/install_dependencies.sh
+        cd $GITHUB_WORKSPACE
+    - name: Verify examples
+      run: |
+        SKIP_LIBRARY_PROPERTIES=1 bundle exec arduino_ci.rb --skip-unittests
+    - name: Run tests
+      run: |
+        bundle exec arduino_ci.rb --skip-examples-compilation

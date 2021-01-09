@@ -36,3 +36,6 @@ build
 
 # doxygen backup file
 doxygen.cfg.bak
+
+# arduino_ci unit test binaries
+*.bin

@@ -1,0 +1,9 @@
+unittest:
+  platforms:
+    - leonardo
+    - esp8266
+
+compile:
+  platforms:
+   - leonardo
+   - esp8266
