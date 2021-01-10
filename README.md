@@ -1123,7 +1123,7 @@ void button2Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(6, INPUT_PULLUP);
   pinMode(7, INPUT_PULLUP);
   config1.setEventHandler(button1Handler);
@@ -1176,7 +1176,7 @@ void buttonHandler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(6, INPUT_PULLUP);
   pinMode(7, INPUT_PULLUP);
   ButtonConfig* config = ButtonConfig::getSystemButtonConfig();
