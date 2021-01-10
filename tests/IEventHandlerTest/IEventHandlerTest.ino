@@ -40,8 +40,8 @@ void setup() {
   delay(1000); // wait to prevent garbage on SERIAL_PORT_MONITOR
 #endif
 
-  SERIAL_PORT_MONITOR.begin(115200); // ESP8266 74880 not supported on Linux
-  while(!SERIAL_PORT_MONITOR); // for the Arduino Leonardo/Micro only
+  SERIAL_PORT_MONITOR.begin(115200);
+  while (!SERIAL_PORT_MONITOR); // wait until ready - Leonardo/Micro only
 
   testableConfig.setIEventHandler(&eventHandler);
 }
