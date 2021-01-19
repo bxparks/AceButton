@@ -12,9 +12,9 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
-
 **Version**: AceButton v1.8
+
+**DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
 ## How to Generate
 
@@ -137,19 +137,19 @@ consumption by 8 to 56 bytes.
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Arduino SAMD Core 1.8.6
+* SparkFun SAMD Core 1.8.1
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |  11108/ 2368 |     0/    0 |
+| Baseline                        |  10072/    0 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12228/ 2432 |  1120/   64 |
-| Encoded4To2ButtonConfig         |  12460/ 2492 |  1352/  124 |
-| Encoded8To3ButtonConfig         |  12596/ 2556 |  1488/  188 |
-| EncodedButtonConfig             |  12660/ 2564 |  1552/  196 |
-| LadderButtonConfig              |  12912/ 2564 |  1804/  196 |
+| ButtonConfig                    |  11360/    0 |  1288/    0 |
+| Encoded4To2ButtonConfig         |  11600/    0 |  1528/    0 |
+| Encoded8To3ButtonConfig         |  11744/    0 |  1672/    0 |
+| EncodedButtonConfig             |  11816/    0 |  1744/    0 |
+| LadderButtonConfig              |  12072/    0 |  2000/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -158,7 +158,7 @@ consumption by 8 to 56 bytes.
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
 * Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.1
+* ESP8266 Boards 2.7.4
 
 ```
 +--------------------------------------------------------------+
@@ -168,9 +168,30 @@ consumption by 8 to 56 bytes.
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    | 258440/26840 |  1516/   40 |
 | Encoded4To2ButtonConfig         | 258732/26916 |  1808/  116 |
-| Encoded8To3ButtonConfig         | 258876/26980 |  1952/  180 |
+| Encoded8To3ButtonConfig         | 258860/26980 |  1936/  180 |
 | EncodedButtonConfig             | 258988/27020 |  2064/  220 |
 | LadderButtonConfig              | 259032/27024 |  2108/  224 |
++--------------------------------------------------------------+
+
+```
+
+## STM32
+
+* STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
+* Arduino IDE 1.8.13
+* STM32duino 1.9.0
+
+```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| Baseline                        |  19144/ 3788 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| ButtonConfig                    |  21872/ 3848 |  2728/   60 |
+| Encoded4To2ButtonConfig         |  22024/ 3884 |  2880/   96 |
+| Encoded8To3ButtonConfig         |  22164/ 3948 |  3020/  160 |
+| EncodedButtonConfig             |  22280/ 3980 |  3136/  192 |
+| LadderButtonConfig              |  25076/ 3992 |  5932/  204 |
 +--------------------------------------------------------------+
 
 ```
@@ -200,7 +221,7 @@ consumption by 8 to 56 bytes.
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13
-* Teensyduino 1.53.beta
+* Teensyduino 1.53
 * Compiler options: "Faster"
 
 ```

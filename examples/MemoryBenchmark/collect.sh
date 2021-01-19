@@ -45,15 +45,16 @@ function create_temp_file() {
 # Usage: collect_for_board $board $result_file
 # Output: A file named '${board}.out' that contains
 function collect_for_board() {
-    local board=$1
-    local result_file=$2
+    local cli_flag="$1"
+    local board=$2
+    local result_file=$3
 
     for feature in {0..5}; do
         echo "Collecting flash and ram usage for FEATURE $feature"
         sed -i -e "s/#define FEATURE [0-9]*/#define FEATURE $feature/" \
             $PROGRAM_NAME
 
-        if ! ($AUNITER_CMD verify $board $PROGRAM_NAME 2>&1) > \
+        if ! ($AUNITER_CMD "$cli_flag" verify $board $PROGRAM_NAME 2>&1) > \
                 $auniter_out_file; then
             # Ignore 'Sketch too big' condition, since we just want to
             # collect the flash and ram usage numbers.
@@ -73,6 +74,19 @@ function collect_for_board() {
 
 trap "cleanup" EXIT
 
+# Parse flags.
+cli_flag='--cli'
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --cli) cli_flag='--cli' ;;
+        --ide) cli_flag='--ide' ;;
+        --help|-h) usage ;;
+        --) shift; break ;;
+        -*) echo "Unknown flag '$1'" 1>&2; usage 1>&2 ;;
+        *) break ;;
+    esac
+    shift
+done
 if [[ $# < 2 ]]; then
     usage
 fi
@@ -80,4 +94,4 @@ fi
 rm -f $2
 create_temp_file
 echo "==== Collecting for board: $1"
-collect_for_board $1 $2
+collect_for_board "$cli_flag" "$@"

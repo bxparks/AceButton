@@ -1,6 +1,28 @@
 /*
  * A program that prints out the time (min/avg/max) taken by the
- * AceButton::check() method.
+ * AceButton::check() method. Prints the timing stats (min/avg/max in micros)
+ * and the sample size in the following format:
+ *
+ * @verbatim
+ * SIZEOF
+ * sizeof(AceButton): 24
+ * sizeof(ButtonConfig): 32
+ * sizeof(Encoded4To2ButtonConfig): 40
+ * sizeof(Encoded8To3ButtonConfig): 40
+ * sizeof(EncodedButtonConfig): 56
+ * sizeof(LadderButtonConfig): 56
+ * BENCHMARKS
+ * idle 0 1 12 924
+ * press/release 0 1 15 922
+ * click 0 1 12 923
+ * double click 0 1 27 923
+ * long press/repeat press 0 1 16 921
+ * Encoded4To2ButtonConfig 0 2 36 921
+ * Encoded8To3ButtonConfig 0 3 16 920
+ * EncodedButtonConfig 0 3 16 921
+ * LadderButtonConfig 0 3 426 921
+ * END
+ * @endverbatim
  *
  * Depends on:
  *
@@ -17,9 +39,9 @@ using namespace ace_button;
 // Set this to 1 to run the benchmarks using the IEventHandler object instead of
 // EventHandler function. The result is that AceButton::check() seems slightly
 // slower (maybe a few microseconds). Probably not enough to worry about.
-#define EVENT_HANDLER_CLASS 1
+#define USE_EVENT_HANDLER_CLASS 1
 
-#if defined(ESP32) && !defined(SERIAL_PORT_MONITOR)
+#if !defined(SERIAL_PORT_MONITOR)
 #define SERIAL_PORT_MONITOR Serial
 #endif
 
@@ -114,21 +136,19 @@ const uint8_t LOOP_MODE_END = 10;
 uint8_t loopMode;
 uint8_t loopEventType;
 
-// print integer within 3 characters, padded on left with spaces
-void printInt(uint16_t i) {
-  if (i < 100) SERIAL_PORT_MONITOR.print(' ');
-  if (i < 10) SERIAL_PORT_MONITOR.print(' ');
-  SERIAL_PORT_MONITOR.print(i);
-}
+//-----------------------------------------------------------------------------
 
-void printStats() {
-  printInt(stats.getMin());
-  SERIAL_PORT_MONITOR.print('/');
-  printInt(stats.getAvg());
-  SERIAL_PORT_MONITOR.print('/');
-  printInt(stats.getMax());
-  SERIAL_PORT_MONITOR.print(F(" | "));
-  printInt(stats.getCount());
+void printStats(const __FlashStringHelper* label) {
+  SERIAL_PORT_MONITOR.print(label);
+  SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(stats.getMin());
+  SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(stats.getAvg());
+  SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(stats.getMax());
+  SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(stats.getCount());
+  SERIAL_PORT_MONITOR.println();
 }
 
 void nextMode() {
@@ -137,7 +157,7 @@ void nextMode() {
   loopMode++;
 }
 
-#if EVENT_HANDLER_CLASS
+#if USE_EVENT_HANDLER_CLASS
   class ButtonHandler: public IEventHandler {
     public:
       void handleEvent(AceButton* /* button */, uint8_t eventType,
@@ -154,6 +174,8 @@ void nextMode() {
     loopEventType = eventType;
   }
 #endif
+
+//-----------------------------------------------------------------------------
 
 // Measure how long the AceButton.check() takes
 void checkSimpleButton() {
@@ -199,24 +221,10 @@ void checkLadderButtons() {
   stats.update(elapsedMicros);
 }
 
-void loopStart() {
-  static unsigned long start = millis();
+//-----------------------------------------------------------------------------
 
-  // Wait one iteration for things to cool down.
-  if (millis() - start > STATS_PRINT_INTERVAL) {
-    SERIAL_PORT_MONITOR.println(
-        F("------------------------+-------------+---------+"));
-    SERIAL_PORT_MONITOR.println(
-        F("button event            | min/avg/max | samples |"));
-    SERIAL_PORT_MONITOR.println(
-        F("------------------------+-------------+---------+"));
-    nextMode();
-  }
-}
-
-void loopEnd() {
-  SERIAL_PORT_MONITOR.println(
-      F("------------------------+-------------+---------+"));
+void loopStartBenchmarks() {
+  SERIAL_PORT_MONITOR.println(F("BENCHMARKS"));
   nextMode();
 }
 
@@ -226,9 +234,7 @@ void loopIdle() {
   checkSimpleButton();
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    SERIAL_PORT_MONITOR.print(F("idle                    | "));
-    printStats();
-    SERIAL_PORT_MONITOR.println(F("    |"));
+    printStats(F("idle"));
     nextMode();
   }
 }
@@ -244,11 +250,10 @@ void loopPressRelease() {
   if (1000 <= elapsed) buttonConfig.setButtonState(HIGH);
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    if (loopEventType == AceButton::kEventReleased) {
-      SERIAL_PORT_MONITOR.print(F("press/release           | "));
-      printStats();
-      SERIAL_PORT_MONITOR.println(F("    |"));
+    if (loopEventType != AceButton::kEventReleased) {
+      SERIAL_PORT_MONITOR.print(F("ERROR "));
     }
+    printStats(F("press/release"));
     nextMode();
   }
 }
@@ -264,11 +269,10 @@ void loopClick() {
   if (200 <= elapsed) buttonConfig.setButtonState(HIGH);
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    if (loopEventType == AceButton::kEventClicked) {
-      SERIAL_PORT_MONITOR.print(F("click                   | "));
-      printStats();
-      SERIAL_PORT_MONITOR.println(F("    |"));
+    if (loopEventType != AceButton::kEventClicked) {
+      SERIAL_PORT_MONITOR.print(F("ERROR "));
     }
+    printStats(F("click"));
     nextMode();
   }
 }
@@ -286,11 +290,10 @@ void loopDoubleClick() {
   if (400 <= elapsed) buttonConfig.setButtonState(HIGH);
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    if (loopEventType == AceButton::kEventDoubleClicked) {
-      SERIAL_PORT_MONITOR.print(F("double click            | "));
-      printStats();
-      SERIAL_PORT_MONITOR.println(F("    |"));
+    if (loopEventType != AceButton::kEventDoubleClicked) {
+      SERIAL_PORT_MONITOR.print(F("ERROR "));
     }
+    printStats(F("double_click"));
     nextMode();
   }
 }
@@ -305,11 +308,10 @@ void loopLongPress() {
   if (100 <= elapsed) buttonConfig.setButtonState(LOW);
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    if (loopEventType == AceButton::kEventRepeatPressed) {
-      SERIAL_PORT_MONITOR.print(F("long press/repeat press | "));
-      printStats();
-      SERIAL_PORT_MONITOR.println(F("    |"));
+    if (loopEventType != AceButton::kEventRepeatPressed) {
+      SERIAL_PORT_MONITOR.print(F("ERROR "));
     }
+    printStats(F("long_press/repeat_press"));
     nextMode();
   }
 }
@@ -320,9 +322,7 @@ void loopEncoded4To2ButtonConfig() {
   checkEncoded4To2Buttons();
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    SERIAL_PORT_MONITOR.print(F("Encode4To2ButtonConfig  | "));
-    printStats();
-    SERIAL_PORT_MONITOR.println(F("    |"));
+    printStats(F("Encoded4To2ButtonConfig"));
     nextMode();
   }
 }
@@ -333,9 +333,7 @@ void loopEncoded8To3ButtonConfig() {
   checkEncoded8To3Buttons();
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    SERIAL_PORT_MONITOR.print(F("Encode8To3ButtonConfig  | "));
-    printStats();
-    SERIAL_PORT_MONITOR.println(F("    |"));
+    printStats(F("Encoded8To3ButtonConfig"));
     nextMode();
   }
 }
@@ -346,9 +344,7 @@ void loopEncodedButtonConfig() {
   checkEncodedButtons();
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    SERIAL_PORT_MONITOR.print(F("EncodeButtonConfig      | "));
-    printStats();
-    SERIAL_PORT_MONITOR.println(F("    |"));
+    printStats(F("EncodedButtonConfig"));
     nextMode();
   }
 }
@@ -359,18 +355,27 @@ void loopLadderButtonConfig() {
   checkLadderButtons();
 
   if (millis() - start > STATS_PRINT_INTERVAL) {
-    SERIAL_PORT_MONITOR.print(F("LadderButtonConfig      | "));
-    printStats();
-    SERIAL_PORT_MONITOR.println(F("    |"));
+    printStats(F("LadderButtonConfig"));
     nextMode();
   }
 }
 
+void loopEndBenchmarks() {
+  SERIAL_PORT_MONITOR.println(F("END"));
+  nextMode();
+}
+
+//-----------------------------------------------------------------------------
+
 void setup() {
+#if ! defined(UNIX_HOST_DUINO)
   delay(1000); // some microcontrollers reboot twice
+#endif
+
   SERIAL_PORT_MONITOR.begin(115200);
   while (!SERIAL_PORT_MONITOR); // wait until ready - Leonardo/Micro
-  SERIAL_PORT_MONITOR.println(F("setup(): begin"));
+
+  SERIAL_PORT_MONITOR.println("SIZEOF");
 
   // Print sizeof various classes
   SERIAL_PORT_MONITOR.print(F("sizeof(AceButton): "));
@@ -397,7 +402,7 @@ void setup() {
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
-#if EVENT_HANDLER_CLASS
+#if USE_EVENT_HANDLER_CLASS
   buttonConfig.setIEventHandler(&handleEvent);
 #else
   buttonConfig.setEventHandler(handleEvent);
@@ -408,7 +413,7 @@ void setup() {
   buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   buttonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
 
-#if EVENT_HANDLER_CLASS
+#if USE_EVENT_HANDLER_CLASS
   encoded4To2ButtonConfig.setIEventHandler(&handleEvent);
 #else
   encoded4To2ButtonConfig.setEventHandler(handleEvent);
@@ -419,7 +424,7 @@ void setup() {
   encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   encoded4To2ButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
 
-#if EVENT_HANDLER_CLASS
+#if USE_EVENT_HANDLER_CLASS
   encoded8To3ButtonConfig.setIEventHandler(&handleEvent);
 #else
   encoded8To3ButtonConfig.setEventHandler(handleEvent);
@@ -430,7 +435,7 @@ void setup() {
   encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   encoded8To3ButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
 
-#if EVENT_HANDLER_CLASS
+#if USE_EVENT_HANDLER_CLASS
   encodedButtonConfig.setIEventHandler(&handleEvent);
 #else
   encodedButtonConfig.setEventHandler(handleEvent);
@@ -441,7 +446,7 @@ void setup() {
   encodedButtonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   encodedButtonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
 
-#if EVENT_HANDLER_CLASS
+#if USE_EVENT_HANDLER_CLASS
   ladderButtonConfig.setIEventHandler(&handleEvent);
 #else
   ladderButtonConfig.setEventHandler(handleEvent);
@@ -454,8 +459,6 @@ void setup() {
 
   loopMode = LOOP_MODE_START;
   loopEventType = AceButton::kEventPressed;
-
-  SERIAL_PORT_MONITOR.println(F("setup(): end"));
 }
 
 void loop() {
@@ -463,7 +466,7 @@ void loop() {
 
   switch (loopMode) {
     case LOOP_MODE_START:
-      loopStart();
+      loopStartBenchmarks();
       break;
     case LOOP_MODE_IDLE:
       loopIdle();
@@ -493,7 +496,7 @@ void loop() {
       loopLadderButtonConfig();
       break;
     case LOOP_MODE_END:
-      loopEnd();
+      loopEndBenchmarks();
       break;
     default:
       #ifdef UNIX_HOST_DUINO
