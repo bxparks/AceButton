@@ -18,6 +18,8 @@ esp32_results = check_output(
     "./generate_table.awk < esp32.txt", shell=True, text=True)
 teensy32_results = check_output(
     "./generate_table.awk < teensy32.txt", shell=True, text=True)
+stm32_results = check_output(
+    "./generate_table.awk < stm32.txt", shell=True, text=True)
 
 print(f"""\
 # Memory Benchmark
@@ -34,9 +36,9 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
-
 **Version**: AceButton v1.8
+
+**DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
 ## How to Generate
 
@@ -137,7 +139,7 @@ consumption by 8 to 56 bytes.
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Arduino SAMD Core 1.8.6
+* SparkFun SAMD Core 1.8.1
 
 ```
 {samd_results}
@@ -147,10 +149,20 @@ consumption by 8 to 56 bytes.
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
 * Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.1
+* ESP8266 Boards 2.7.4
 
 ```
 {esp8266_results}
+```
+
+## STM32
+
+* STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
+* Arduino IDE 1.8.13
+* STM32duino 1.9.0
+
+```
+{stm32_results}
 ```
 
 ## ESP32
@@ -167,7 +179,7 @@ consumption by 8 to 56 bytes.
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13
-* Teensyduino 1.53.beta
+* Teensyduino 1.53
 * Compiler options: "Faster"
 
 ```
