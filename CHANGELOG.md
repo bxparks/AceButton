@@ -1,6 +1,8 @@
 # Changelog
 
 * Unreleased
+    * Add scripts to automate collection of `AutoBenchmark` data. Add
+      benchmarks for STM32 microcontroller.
 * 1.8 (2020-11-21)
     * Add `kEventLongReleased` event type which is triggered after a
       `kEventLongPressed` as a substitute for `kEventReleased` when
