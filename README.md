@@ -1574,13 +1574,14 @@ The library has been extensively tested on the following boards:
 * SparkFun Pro Micro clone (16 MHz ATmega32U4)
 * SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
 * STM32 Blue Pill (STM32F103C8, 72 MHz ARM Cortex-M3)
-* NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
+* NodeMCU 1.0 (ESP-12E module, 80MHz ESP8266)
 * WeMos D1 Mini (ESP-12E module, 80 MHz ESP8266)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
 * Teensy 3.2 (96 MHz ARM Cortex-M4)
 
 I will occasionally test on the following boards as a sanity check:
 
+* Arduino Pro Mini clone (16 MHz ATmega328P)
 * Teensy LC (48 MHz ARM Cortex-M0+)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 
@@ -1601,6 +1602,9 @@ This library was developed and tested using:
 
 It should work with [PlatformIO](https://platformio.org/) but I have
 not tested it.
+
+The library works on Linux or MacOS (using both g++ and clang++ compilers) using
+the [UnixHostDuino](https://github.com/bxparks/UnixHostDuino) emulation layer.
 
 ### Operating System
 
