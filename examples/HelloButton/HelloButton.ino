@@ -22,6 +22,7 @@ const int LED_OFF = LOW;
 
 AceButton button(BUTTON_PIN);
 
+// Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
 
 void setup() {

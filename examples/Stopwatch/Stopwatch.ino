@@ -136,8 +136,8 @@ void loop() {
   // especially true on an ESP8266 board, where a Watch Dog Timer will
   // soft-reset the board if loop() doesn't return every few seconds.
   do {
-    // button.check() Should be called every 20ms or faster for the default
-    // debouncing time of ~50ms.
+    // button.check() Should be called every 4-5ms or faster for the default
+    // debouncing time of ~20ms.
     button.check();
 
     // increment loop counter

@@ -51,6 +51,7 @@ static AceButton* const BUTTONS[] = {
 // EncodedButtonConfig.
 static EncodedButtonConfig buttonConfig(NUM_PINS, PINS, NUM_BUTTONS, BUTTONS);
 
+// Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
 
 void setup() {

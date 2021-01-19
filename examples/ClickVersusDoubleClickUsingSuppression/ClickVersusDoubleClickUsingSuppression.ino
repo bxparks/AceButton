@@ -41,6 +41,7 @@ const int LED_OFF = LOW;
 // setup() below.
 AceButton button(BUTTON_PIN);
 
+// Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
 
 void setup() {
@@ -58,8 +59,8 @@ void setup() {
 }
 
 void loop() {
-  // Should be called every 20ms or faster for the default debouncing time
-  // of ~50ms.
+  // Should be called every 4-5ms or faster, for the default debouncing time
+  // of ~20ms.
   button.check();
 }
 

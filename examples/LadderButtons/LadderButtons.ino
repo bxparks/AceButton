@@ -54,6 +54,7 @@ static LadderButtonConfig buttonConfig(
   BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, BUTTONS
 );
 
+// Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
 
 void setup() {
