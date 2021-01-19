@@ -12,15 +12,15 @@ micro_results = check_output(
     "./generate_table.awk < micro.txt", shell=True, text=True)
 samd_results = check_output(
     "./generate_table.awk < samd.txt", shell=True, text=True)
-esp8266_results = check_output(
-    "./generate_table.awk < esp8266.txt", shell=True, text=True)
 stm32_results = check_output(
     "./generate_table.awk < stm32.txt", shell=True, text=True)
+esp8266_results = check_output(
+    "./generate_table.awk < esp8266.txt", shell=True, text=True)
 esp32_results = check_output(
     "./generate_table.awk < esp32.txt", shell=True, text=True)
-#teensy32_results = check_output(
-#    "./generate_table.awk < teensy32.txt", shell=True, text=True)
-teensy32_results = 'TBD'
+teensy32_results = check_output(
+    "./generate_table.awk < teensy32.txt", shell=True, text=True)
+#teensy32_results = 'TBD'
 
 print(f"""\
 # AutoBenchmark
@@ -123,16 +123,6 @@ Version 1.8.1 adds benchmarks for STM32.
 {samd_results}
 ```
 
-## ESP8266
-
-* NodeMCU 1.0 clone, 80MHz ESP8266
-* Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.4
-
-```
-{esp8266_results}
-```
-
 ## STM32
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
@@ -141,6 +131,16 @@ Version 1.8.1 adds benchmarks for STM32.
 
 ```
 {stm32_results}
+```
+
+## ESP8266
+
+* NodeMCU 1.0 clone, 80MHz ESP8266
+* Arduino IDE 1.8.13
+* ESP8266 Boards 2.7.4
+
+```
+{esp8266_results}
 ```
 
 ## ESP32
@@ -160,33 +160,7 @@ Version 1.8.1 adds benchmarks for STM32.
 * Teensyduino 1.53
 * Compiler options: "Faster"
 
-**Stale Data**: I am no longer able to program Teensy from my computer. Maybe it
-was the upgrade from Ubuntu 18.04 to 20.04. Maybe it was upgrading Arduino IDE
-1.8.9 to 1.8.13. Maybe it was upgrading Teensyduino. I don't know. I think the
-following data is from AceButton v1.5.
-
 ```
-Sizes of Objects:
-sizeof(AceButton): 16
-sizeof(ButtonConfig): 24
-sizeof(Encoded4To2ButtonConfig): 28
-sizeof(Encoded8To3ButtonConfig): 28
-sizeof(EncodedButtonConfig): 36
-sizeof(LadderButtonConfig): 36
-
-CPU:
-+------------------------+-------------+---------+
-|button event            | min/avg/max | samples |
-|------------------------+-------------+---------+
-|idle                    |   2/  3/  5 | 1988    |
-|press/release           |   2/  3/  6 | 1988    |
-|click                   |   2/  3/  6 | 1988    |
-|double click            |   2/  3/  6 | 1988    |
-|long press/repeat press |   2/  3/  6 | 1987    |
-|Encode4To2ButtonConfig  |   6/ 11/ 14 | 1972    |
-|Encode8To3ButtonConfig  |  16/ 27/ 30 | 1942    |
-|EncodeButtonConfig      |   8/ 20/ 22 | 1957    |
-|LadderButtonConfig      |  16/ 25/ 33 | 1945    |
-+------------------------+-------------+---------+
+{teensy32_results}
 ```
 """)

@@ -375,7 +375,7 @@ void setup() {
   SERIAL_PORT_MONITOR.begin(115200);
   while (!SERIAL_PORT_MONITOR); // wait until ready - Leonardo/Micro
 
-  SERIAL_PORT_MONITOR.println("SIZEOF");
+  SERIAL_PORT_MONITOR.println(F("SIZEOF"));
 
   // Print sizeof various classes
   SERIAL_PORT_MONITOR.print(F("sizeof(AceButton): "));
