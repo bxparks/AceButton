@@ -67,7 +67,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.8 (2020-11-21)
+**Version**: 1.8.1 (2021-01-18)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -1662,6 +1662,10 @@ Apache License 2.0 meant.
 
 <a name="FeedbackSupport"></a>
 ## Feedback and Support
+
+If you find this library useful, consider starring this project on GitHub. The
+stars will let me prioritize the more popular libraries over the less popular
+ones.
 
 If you have any questions, comments, bug reports, or feature requests, please
 file a GitHub ticket instead of emailing me unless the content is sensitive.

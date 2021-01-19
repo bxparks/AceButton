@@ -14,7 +14,7 @@ which will add to the timing values shown below in actual usage.
 The [digitalWriteFast library](https://github.com/NicksonYap/digitalWriteFast)
 might be an alternative if speed is critical.
 
-**Version**: AceButton v1.8
+**Version**: AceButton v1.8.1
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`. 
 
