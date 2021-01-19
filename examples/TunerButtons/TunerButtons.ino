@@ -48,6 +48,7 @@ uint16_t stations[NUM_PRESETS];
 // The current station frequency.
 uint16_t currentStation = FM_FREQ_MIN;
 
+// Forward references to prevent Arduino compiler becoming confused.
 void handlePresetEvent(AceButton*, uint8_t, uint8_t);
 void handleTuneEvent(AceButton*, uint8_t, uint8_t);
 

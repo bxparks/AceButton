@@ -4,12 +4,10 @@
  * - more comments
  * - prints out the button events to the Serial monitor
  * - enables the all button events, including LongPress and RepeatPress
- * - suppresses lower-level events when higher-level events are detected
- *   (e.g. Clicked suppresses Released, DoubleClicked suppresses the
- *   second Clicked, LongPressed suppresses the Released, etc.)
  * - setup() determines if a button was pressed during reboot
  */
 
+#include <Arduino.h>
 #include <AceButton.h>
 using namespace ace_button;
 
@@ -32,6 +30,7 @@ const int LED_OFF = LOW;
 // setup() below.
 AceButton button(BUTTON_PIN);
 
+// Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
 
 void setup() {
@@ -42,6 +41,7 @@ void setup() {
 
   // initialize built-in LED as an output
   pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LED_OFF);
 
   // Button uses the built-in pull up register.
   pinMode(BUTTON_PIN, INPUT_PULLUP);

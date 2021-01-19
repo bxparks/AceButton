@@ -29,7 +29,7 @@ struct Info {
 };
 
 // An array of button pins, led pins, and the led states. Cannot be const
-// because ledState is mutable.
+// because Info.ledState is mutable.
 Info INFOS[NUM_LEDS] = {
   {2, 8, LED_OFF},
   {3, 9, LED_OFF},
@@ -47,6 +47,7 @@ Info INFOS[NUM_LEDS] = {
 // NUM_LEDS instances of AceButton.
 AceButton buttons[NUM_LEDS];
 
+// Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
 
 void setup() {

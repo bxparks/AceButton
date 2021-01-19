@@ -1,6 +1,11 @@
 # Changelog
 
 * Unreleased
+* 1.8.1 (2021-01-18)
+    * Add official support for STM32 by validating on a "Blue Pill" board.
+    * Add scripts to automate collection of `AutoBenchmark` data. Add
+      benchmarks for STM32 microcontroller.
+    * No functional change in this release.
 * 1.8 (2020-11-21)
     * Add `kEventLongReleased` event type which is triggered after a
       `kEventLongPressed` as a substitute for `kEventReleased` when

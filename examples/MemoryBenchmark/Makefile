@@ -10,7 +10,7 @@ include ../../../UnixHostDuino/UnixHostDuino.mk
 
 TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy32.txt
 
-README.md: $(TARGETS) generate_readme.py
+README.md: generate_readme.py generate_table.awk
 	./generate_readme.py > $@
 
 benchmarks: $(TARGETS)
@@ -22,16 +22,19 @@ micro.txt:
 	./collect.sh micro $@
 
 samd.txt:
-	./collect.sh mkrzero $@
+	./collect.sh samd $@
 
 esp8266.txt:
-	./collect.sh esp8266 $@
+	./collect.sh nodemcu $@
 
 esp32.txt:
 	./collect.sh esp32 $@
 
 teensy32.txt:
-	./collect.sh teensy32 $@
+	./collect.sh --ide teensy32 $@
+
+stm32.txt:
+	./collect.sh stm32 $@
 
 more_clean:
 	echo "Use 'make clean_benchmarks' to remove *.txt files"

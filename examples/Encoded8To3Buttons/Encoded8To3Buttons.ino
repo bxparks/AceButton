@@ -42,6 +42,7 @@ static const uint8_t BUTTON_PIN2 = 4;
   AceButton b7(&buttonConfig, 7);
 #endif
 
+// Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
 
 void setup() {

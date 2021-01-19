@@ -1,5 +1,7 @@
 # AceButton
 
+![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
+
 An adjustable, compact, event-driven button library for Arduino platforms.
 
 This library provides classes which accept inputs from a mechanical button
@@ -65,20 +67,18 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.8 (2020-11-21)
+**Version**: 1.8.1 (2021-01-18)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
-![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
-
-**Table of Contents**
+## Table of Contents
 
 * [Features](#Features)
 * [HelloButton](#HelloButton)
 * [Installation](#Installation)
   * [External Dependencies](#ExternalDependencies)
   * [Source Code](#SourceCode)
-  * [Documentation](#Documentation)
+* [Documentation](#Documentation)
   * [Examples](#Examples)
 * [Usage](#Usage)
   * [Include Header and Use Namespace](#IncludeHeader)
@@ -248,7 +248,7 @@ The source files are organized as follows:
 * `examples/` - example sketches
 
 <a name="Documentation"></a>
-### Documentation
+## Documentation
 
 * this [README.md](README.md)
 * [Doxygen docs](https://bxparks.github.io/AceButton/html/) published on GitHub
@@ -1123,7 +1123,7 @@ void button2Handler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(6, INPUT_PULLUP);
   pinMode(7, INPUT_PULLUP);
   config1.setEventHandler(button1Handler);
@@ -1176,7 +1176,7 @@ void buttonHandler(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(6, INPUT_PULLUP);
   pinMode(7, INPUT_PULLUP);
   ButtonConfig* config = ButtonConfig::getSystemButtonConfig();
@@ -1517,20 +1517,20 @@ are some ranges of number to give a rough estimate of how much flash and static
 memory are consumed for various button configurations:
 
 * one button using the default system `ButtonConfig`
-  * flash memory: 970-2180 bytes
-  * static memory: 40-680 bytes
+  * flash memory: 1300-5000 bytes
+  * static memory: 40-1150 bytes
 * 3 buttons using one `Encoded4To2ButtonConfig`
-  * flash memory: 1100-2400 bytes
-  * static memory: 70-720 bytes
+  * flash memory: 1600-5200 bytes
+  * static memory: 70-1200 bytes
 * 7 buttons using one `Encoded8To3ButtonConfig`
-  * flash memory: 1250-2500 bytes
-  * static memory: 130-780 bytes
+  * flash memory: 1800-5400 bytes
+  * static memory: 130-1200 bytes
 * 7 buttons using one `EncodedButtonConfig`
-  * flash memory: 1350-2700 bytes
-  * static memory: 180-820 bytes
+  * flash memory: 1900-5400 bytes
+  * static memory: 180-1300 bytes
 * 7 buttons using one `LadderButtonConfig`
-  * flash memory: 1600-4100 bytes
-  * static memory: 190-820 bytes
+  * flash memory: 1900-6000 bytes
+  * static memory: 190-1300 bytes
 
 **CPU cycles:**
 
@@ -1539,46 +1539,32 @@ be found in [examples/AutoBenchmark](examples/AutoBenchmark).
 
 In summary, the average numbers for various boards are:
 
-* Arduino Nano: 13-15 microsesconds
-* SAMD21: 7-8 microseconds
-* ESP8266: 8-9 microseconds
-* ESP32: 2-3 microseconds
-* Teensy 3.2: 2-3 microseconds
+* Arduino Nano: 15-16 microsesconds
+* SparkFun Pro Micro: 15-16 microsesconds
+* SAMD21: 8-9 microseconds
+* ESP8266: 8 microseconds
+* STM32: 5 microseconds
+* ESP32: 3 microseconds
+* Teensy 3.2: 3 microseconds
 
 If you use the more advanced `EncodedButtonConfig` or `LadderButtonConfig`
 to check more buttons, each iteration through all the buttons takes longer.
 As a rough summary, to check 7 buttons:
 
-* Arduino Nano: 80-180 microseconds
-* SAMD21: 26-50 microseconds (EncodedButtonConfig), 850 microseconds
-  (LadderButtonConfig). It seems like the `analogRead()` function on a SAMD21 is
-  particularly slow. I recommend double-checking these numbers if you use the
-  SAMD21.
-* ESP8266: 43-133 microseconds
-* ESP32: 13-22 microseconds
-* Teensy 3.2: 8-16 microseconds
+* Arduino Nano: 100-200 microseconds
+* SparkFun Pro Micro: 100-200 microseconds
+* SAMD21: 53 microseconds (EncodedButtonConfig), 470 microseconds
+  (LadderButtonConfig).
+    * Seems like the `analogRead()` function on a SAMD21 is
+      significantly slower than other microcontrollers.
+      I recommend double-checking these numbers.
+* ESP8266: 54-150 microseconds
+* STM32: 34-96 microseconds
+* ESP32: 16-24 microseconds
+* Teensy 3.2: 20-25 microseconds
 
 <a name="SystemRequirements"></a>
 ## System Requirements
-
-### Tool Chain
-
-This library was developed and tested using:
-
-* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
-* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
-* [Arduino SAMD Boards 1.8.6](https://github.com/arduino/ArduinoCore-samd)
-* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [ESP8266 Arduino Core 2.7.1](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino Core 1.0.4](https://github.com/espressif/arduino-esp32)
-* [Teensyduino 1.53.beta](https://www.pjrc.com/teensy/td_download.html)
-
-It should work with [PlatformIO](https://platformio.org/) but I have
-not tested it.
-
-### Operating System
-
-I use Ubuntu Linux 18.04 for most of my development.
 
 ### Hardware
 
@@ -1588,14 +1574,37 @@ The library has been extensively tested on the following boards:
 * Arduino Pro Micro clone (16 MHz ATmega32U4)
 * SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
 * NodeMCU 1.0 clone (ESP-12E module, 80MHz ESP8266)
+* WeMos D1 Mini (ESP-12E module, 80 MHz ESP8266)
+* STM32 "Blue Pill" (STM32F103C8, 72 MHz ARM Cortex-M3)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
-* Teensy 3.2 (72 MHz ARM Cortex-M4)
+* Teensy 3.2 (96 MHz ARM Cortex-M4)
 
 I will occasionally test on the following boards as a sanity check:
 
 * Teensy LC (48 MHz ARM Cortex-M0+)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 * Arduino UNO R3 clone (16 MHz ATmega328P)
+
+### Tool Chain
+
+This library was developed and tested using:
+
+* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
+* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
+* [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
+* [ESP8266 Arduino Core 2.7.4](https://github.com/esp8266/Arduino)
+* [STM32duino 1.9.0](https://github.com/stm32duino/Arduino_Core_STM32)
+* [ESP32 Arduino Core 1.0.4](https://github.com/espressif/arduino-esp32)
+* [Teensyduino 1.53](https://www.pjrc.com/teensy/td_download.html)
+
+It should work with [PlatformIO](https://platformio.org/) but I have
+not tested it.
+
+### Operating System
+
+I use Ubuntu Linux 18.04 and 20.04 for most of my development.
 
 <a name="BackgroundMotivation"></a>
 ## Background Motivation
@@ -1653,6 +1662,10 @@ Apache License 2.0 meant.
 
 <a name="FeedbackSupport"></a>
 ## Feedback and Support
+
+If you find this library useful, consider starring this project on GitHub. The
+stars will let me prioritize the more popular libraries over the less popular
+ones.
 
 If you have any questions, comments, bug reports, or feature requests, please
 file a GitHub ticket instead of emailing me unless the content is sensitive.
