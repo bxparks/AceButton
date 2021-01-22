@@ -368,7 +368,7 @@ void loopEndBenchmarks() {
 //-----------------------------------------------------------------------------
 
 void setup() {
-#if ! defined(UNIX_HOST_DUINO)
+#if ! defined(EPOXY_DUINO)
   delay(1000); // some microcontrollers reboot twice
 #endif
 
@@ -499,7 +499,7 @@ void loop() {
       loopEndBenchmarks();
       break;
     default:
-      #ifdef UNIX_HOST_DUINO
+      #ifdef EPOXY_DUINO
         exit(1);
       #endif
       break;

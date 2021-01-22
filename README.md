@@ -1604,7 +1604,7 @@ It should work with [PlatformIO](https://platformio.org/) but I have
 not tested it.
 
 The library works on Linux or MacOS (using both g++ and clang++ compilers) using
-the [UnixHostDuino](https://github.com/bxparks/UnixHostDuino) emulation layer.
+the [EpoxyDuino](https://github.com/bxparks/EpoxyDuino) emulation layer.
 
 ### Operating System
 

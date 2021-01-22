@@ -1,10 +1,10 @@
-# See https://github.com/bxparks/UnixHostDuino for documentation about using
-# UnixHostDuino to compile and run AUnit tests natively on Linux or MacOS.
+# See https://github.com/bxparks/EpoxyDuino for documentation about using
+# EpoxyDuino to compile and run AUnit tests natively on Linux or MacOS.
 
 APP_NAME := AutoBenchmark
 ARDUINO_LIBS := AceCommon AceButton
 MORE_CLEAN := more_clean
-include ../../../UnixHostDuino/UnixHostDuino.mk
+include ../../../EpoxyDuino/EpoxyDuino.mk
 
 .PHONY: benchmarks
 

@@ -11,7 +11,7 @@
  * because the fixes for those boards have not been released as of 2019-08-11.
  *
  * This program cannot be compiled using
- * https://github.com/bxparks/UnixHostDuino because the external
+ * https://github.com/bxparks/EpoxyDuino because the external
  * CapacitiveSensor library cannot be compiled with it.
  *
  * Brian T. Park 2018
