@@ -164,38 +164,6 @@ CPU:
 
 ```
 
-## ESP8266
-
-* NodeMCU 1.0 clone, 80MHz ESP8266
-* Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.4
-
-```
-Sizes of Objects:
-sizeof(AceButton): 16
-sizeof(ButtonConfig): 24
-sizeof(Encoded4To2ButtonConfig): 28
-sizeof(Encoded8To3ButtonConfig): 28
-sizeof(EncodedButtonConfig): 36
-sizeof(LadderButtonConfig): 36
-
-CPU:
-+---------------------------+-------------+---------+
-| Button Event              | min/avg/max | samples |
-|---------------------------+-------------+---------|
-| idle                      |   6/  8/ 63 | 1920    |
-| press/release             |   7/  8/ 53 | 1907    |
-| click                     |   6/  8/ 32 | 1910    |
-| double_click              |   6/  8/ 32 | 1909    |
-| long_press/repeat_press   |   6/  8/107 | 1901    |
-| Encoded4To2ButtonConfig   |  22/ 27/142 | 1856    |
-| Encoded8To3ButtonConfig   |  54/ 67/189 | 1784    |
-| EncodedButtonConfig       |  43/ 54/181 | 1815    |
-| LadderButtonConfig        |  81/156/405 | 1678    |
-+---------------------------+-------------+---------+
-
-```
-
 ## STM32
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
@@ -224,6 +192,38 @@ CPU:
 | Encoded8To3ButtonConfig   |  37/ 53/ 57 | 2002    |
 | EncodedButtonConfig       |  20/ 34/ 35 | 2002    |
 | LadderButtonConfig        |  82/ 96/ 97 | 2002    |
++---------------------------+-------------+---------+
+
+```
+
+## ESP8266
+
+* NodeMCU 1.0 clone, 80MHz ESP8266
+* Arduino IDE 1.8.13
+* ESP8266 Boards 2.7.4
+
+```
+Sizes of Objects:
+sizeof(AceButton): 16
+sizeof(ButtonConfig): 24
+sizeof(Encoded4To2ButtonConfig): 28
+sizeof(Encoded8To3ButtonConfig): 28
+sizeof(EncodedButtonConfig): 36
+sizeof(LadderButtonConfig): 36
+
+CPU:
++---------------------------+-------------+---------+
+| Button Event              | min/avg/max | samples |
+|---------------------------+-------------+---------|
+| idle                      |   6/  8/ 63 | 1920    |
+| press/release             |   7/  8/ 53 | 1907    |
+| click                     |   6/  8/ 32 | 1910    |
+| double_click              |   6/  8/ 32 | 1909    |
+| long_press/repeat_press   |   6/  8/107 | 1901    |
+| Encoded4To2ButtonConfig   |  22/ 27/142 | 1856    |
+| Encoded8To3ButtonConfig   |  54/ 67/189 | 1784    |
+| EncodedButtonConfig       |  43/ 54/181 | 1815    |
+| LadderButtonConfig        |  81/156/405 | 1678    |
 +---------------------------+-------------+---------+
 
 ```
@@ -267,11 +267,6 @@ CPU:
 * Teensyduino 1.53
 * Compiler options: "Faster"
 
-**Stale Data**: I am no longer able to program Teensy from my computer. Maybe it
-was the upgrade from Ubuntu 18.04 to 20.04. Maybe it was upgrading Arduino IDE
-1.8.9 to 1.8.13. Maybe it was upgrading Teensyduino. I don't know. I think the
-following data is from AceButton v1.5.
-
 ```
 Sizes of Objects:
 sizeof(AceButton): 16
@@ -282,18 +277,19 @@ sizeof(EncodedButtonConfig): 36
 sizeof(LadderButtonConfig): 36
 
 CPU:
-+------------------------+-------------+---------+
-|button event            | min/avg/max | samples |
-|------------------------+-------------+---------+
-|idle                    |   2/  3/  5 | 1988    |
-|press/release           |   2/  3/  6 | 1988    |
-|click                   |   2/  3/  6 | 1988    |
-|double click            |   2/  3/  6 | 1988    |
-|long press/repeat press |   2/  3/  6 | 1987    |
-|Encode4To2ButtonConfig  |   6/ 11/ 14 | 1972    |
-|Encode8To3ButtonConfig  |  16/ 27/ 30 | 1942    |
-|EncodeButtonConfig      |   8/ 20/ 22 | 1957    |
-|LadderButtonConfig      |  16/ 25/ 33 | 1945    |
-+------------------------+-------------+---------+
++---------------------------+-------------+---------+
+| Button Event              | min/avg/max | samples |
+|---------------------------+-------------+---------|
+| idle                      |   2/  3/  6 | 1988    |
+| press/release             |   2/  3/  6 | 1987    |
+| click                     |   2/  3/  7 | 1987    |
+| double_click              |   2/  3/  7 | 1987    |
+| long_press/repeat_press   |   2/  4/  6 | 1986    |
+| Encoded4To2ButtonConfig   |   6/ 12/ 15 | 1971    |
+| Encoded8To3ButtonConfig   |  17/ 30/ 33 | 1936    |
+| EncodedButtonConfig       |   8/ 22/ 25 | 1951    |
+| LadderButtonConfig        |  16/ 28/ 36 | 1941    |
++---------------------------+-------------+---------+
+
 ```
 

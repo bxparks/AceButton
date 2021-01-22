@@ -368,14 +368,14 @@ void loopEndBenchmarks() {
 //-----------------------------------------------------------------------------
 
 void setup() {
-#if ! defined(UNIX_HOST_DUINO)
+#if ! defined(EPOXY_DUINO)
   delay(1000); // some microcontrollers reboot twice
 #endif
 
   SERIAL_PORT_MONITOR.begin(115200);
   while (!SERIAL_PORT_MONITOR); // wait until ready - Leonardo/Micro
 
-  SERIAL_PORT_MONITOR.println("SIZEOF");
+  SERIAL_PORT_MONITOR.println(F("SIZEOF"));
 
   // Print sizeof various classes
   SERIAL_PORT_MONITOR.print(F("sizeof(AceButton): "));
@@ -499,7 +499,7 @@ void loop() {
       loopEndBenchmarks();
       break;
     default:
-      #ifdef UNIX_HOST_DUINO
+      #ifdef EPOXY_DUINO
         exit(1);
       #endif
       break;

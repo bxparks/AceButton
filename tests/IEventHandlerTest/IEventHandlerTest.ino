@@ -36,7 +36,7 @@ const uint8_t PIN = 13;
 const uint8_t BUTTON_ID = 1;
 
 void setup() {
-#if ! defined(UNIX_HOST_DUINO)
+#if ! defined(EPOXY_DUINO)
   delay(1000); // wait to prevent garbage on SERIAL_PORT_MONITOR
 #endif
 
