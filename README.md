@@ -1,6 +1,6 @@
 # AceButton
 
-![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
+[![AUnit Tests](https://github.com/bxparks/AceButton/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceButton/actions/workflows/aunit_tests.yml)
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
