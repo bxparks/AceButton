@@ -159,12 +159,12 @@ class ButtonConfig {
      * that isFeature(kFeatureSuppressAll) currently means "is ANY feature
      * enabled?" not "are ALL features enabled?".
      */
-    static const FeatureFlagType kFeatureSuppressAll =
-        (kFeatureSuppressAfterClick |
-        kFeatureSuppressAfterDoubleClick |
-        kFeatureSuppressAfterLongPress |
-        kFeatureSuppressAfterRepeatPress |
-        kFeatureSuppressClickBeforeDoubleClick);
+    static const FeatureFlagType kFeatureSuppressAll = (
+        kFeatureSuppressAfterClick
+        | kFeatureSuppressAfterDoubleClick
+        | kFeatureSuppressAfterLongPress
+        | kFeatureSuppressAfterRepeatPress
+        | kFeatureSuppressClickBeforeDoubleClick);
 
     /**
      * The event handler signature.
@@ -406,7 +406,11 @@ class ButtonConfig {
     ButtonConfig(const ButtonConfig&) = delete;
     ButtonConfig& operator=(const ButtonConfig&) = delete;
 
-    /** The event handler for all buttons associated with this ButtonConfig. */
+    /**
+     * The event handler for all buttons associated with this ButtonConfig.
+     * This can be a function pointer or an object pointer, depending on the
+     * kInternalFeatureIEventHandler flag.
+     */
     void* mEventHandler = nullptr;
 
     /** A bit mask flag that activates certain features. */

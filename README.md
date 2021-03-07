@@ -573,12 +573,12 @@ class ButtonConfig {
     static const FeatureFlagType kFeatureSuppressAfterLongPress = 0x40;
     static const FeatureFlagType kFeatureSuppressAfterRepeatPress = 0x80;
     static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
-    static const FeatureFlagType kFeatureSuppressAll =
-        (kFeatureSuppressAfterClick |
-        kFeatureSuppressAfterDoubleClick |
-        kFeatureSuppressAfterLongPress |
-        kFeatureSuppressAfterRepeatPress |
-        kFeatureSuppressClickBeforeDoubleClick);
+    static const FeatureFlagType kFeatureSuppressAll = (
+        kFeatureSuppressAfterClick
+        | kFeatureSuppressAfterDoubleClick
+        | kFeatureSuppressAfterLongPress
+        | kFeatureSuppressAfterRepeatPress
+        | kFeatureSuppressClickBeforeDoubleClick);
 
     typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
         uint8_t buttonState);
@@ -593,7 +593,7 @@ class ButtonConfig {
     uint16_t getRepeatPressInterval();
 
     void setDebounceDelay(uint16_t debounceDelay);
-    void setClickDelay(uint16_t clickDelay) {
+    void setClickDelay(uint16_t clickDelay);
     void setDoubleClickDelay(uint16_t doubleClickDelay);
     void setLongPressDelay(uint16_t longPressDelay);
     void setRepeatPressDelay(uint16_t repeatPressDelay);
@@ -608,6 +608,7 @@ class ButtonConfig {
     void resetFeatures();
 
     void setEventHandler(EventHandler eventHandler);
+    void setIEventHandler(IEventHandler* eventHandler);
 
     static ButtonConfig* getSystemButtonConfig();
 };
