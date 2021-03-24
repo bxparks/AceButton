@@ -77,6 +77,15 @@ class LadderButtonConfig : public ButtonConfig {
      * trigger any events. This is more efficient than calling the check() of
      * each AceButton, which in turn, calls LadderButtonConfig::readButton() for
      * each button.
+     *
+     * Warning: This method is often called from the global `loop()` function.
+     * But on ESP8266, this method must not be called too quickly, otherwise it
+     * triggers a bug which causes the WiFi to disconnect (see
+     * https://github.com/esp8266/Arduino/issues/1634 and
+     * https://github.com/esp8266/Arduino/issues/5083). You must rate-limit the
+     * calls to this method to ~5 milliseconds. See
+     * `examples/LadderButtons/LadderButtons.ino` for an example of how to do
+     * that.
      */
     void checkButtons() const;
 
@@ -87,9 +96,10 @@ class LadderButtonConfig : public ButtonConfig {
 
   protected:
     /**
-     * Return the virtual pin number corresponding to current state of the ADC.
-     * When no button is pressed, this returns (numLevels - 1), which does not
-     * correspond to any valid button.
+     * Return the virtual pin number corresponding to current state of the ADC
+     * as returned by the `analogRead()` function. When no button is pressed,
+     * this returns (numLevels - 1), which does not correspond to any valid
+     * button.
      */
     virtual uint8_t getVirtualPin() const;
 

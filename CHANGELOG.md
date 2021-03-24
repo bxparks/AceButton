@@ -1,6 +1,9 @@
 # Changelog
 
 * Unreleased
+    * Add [warning](docs/resistor_ladder/README.md#RateLimitingOnEsp8266)
+      that `LadderButtonsConfig::checkButtons()` must be rate-limited on the
+      ESP8266 to less than 200 samples/second to avoid disconnecting the WiFi.
 * 1.8.2 (2021-01-22)
     * Update UnixHostDuino 0.4 to EpoxyDuino 0.5.
     * No functional change in this release.
