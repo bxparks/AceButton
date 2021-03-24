@@ -1,6 +1,11 @@
 # Changelog
 
 * Unreleased
+    * AceButton now has a
+      [GitHub Discussion](https://github.com/bxparks/AceButton/discussions).
+        * Use that for general questions and discussions.
+        * Reserve [GitHub Issues](https://github.com/bxparks/AceButton/issues)
+          for bugs and feature requests.
     * Add [warning](docs/resistor_ladder/README.md#RateLimitingOnEsp8266)
       that `LadderButtonsConfig::checkButtons()` must be rate-limited on the
       ESP8266 to less than 200 samples/second to avoid disconnecting the WiFi.
