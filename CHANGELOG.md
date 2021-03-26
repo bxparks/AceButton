@@ -6,9 +6,11 @@
         * Use that for general questions and discussions.
         * Reserve [GitHub Issues](https://github.com/bxparks/AceButton/issues)
           for bugs and feature requests.
-    * Add [warning](docs/resistor_ladder/README.md#RateLimitingOnEsp8266)
-      that `LadderButtonsConfig::checkButtons()` must be rate-limited on the
-      ESP8266 to less than 200 samples/second to avoid disconnecting the WiFi.
+    * Add [Rate Limit](docs/resistor_ladder/README.md#RateLimitCheckButtons)
+      warning on `LadderButtonsConfig::checkButtons()` should be limited to
+      about 200 samples/second. This reduces the overhead of the slow
+      `analogRead()` function, and avoids triggering a bug that disconnects the
+      WiFi on the ESP8266.
 * 1.8.2 (2021-01-22)
     * Update UnixHostDuino 0.4 to EpoxyDuino 0.5.
     * No functional change in this release.

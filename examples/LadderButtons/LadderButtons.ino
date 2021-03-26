@@ -88,16 +88,16 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 void calibrateAnalogRead() {
   uint16_t val = analogRead(BUTTON_PIN);
   Serial.println(val);
+  delay(1);
 }
 
 // On most processors, this should be called every 4-5ms or faster, if default
-// debouncing time is ~20ms. On a ESP8266, we must sample *no* faster than
-// 4-5 ms due to instability of the WiFi connection. (See
+// the debouncing time is ~20ms. On a ESP8266, we must sample *no* faster than
+// 4-5 ms to avoid disconnecting the WiFi connection. (See
 // https://github.com/esp8266/Arduino/issues/1634 and
-// https://github.com/esp8266/Arduino/issues/5083). Instead, must rate-limit the
-// analogRead() to avoid disconnecting the WiFi connection
+// https://github.com/esp8266/Arduino/issues/5083). Let's rate-limit on all
+// processors to about 200 samples/second.
 void checkButtons() {
-#if ESP8266
   static unsigned long prev = millis();
 
   // DO NOT USE delay(5) to do this.
@@ -106,9 +106,6 @@ void checkButtons() {
     buttonConfig.checkButtons();
     prev = now;
   }
-#else
-  buttonConfig.checkButtons();
-#endif
 }
 
 //-----------------------------------------------------------------------------

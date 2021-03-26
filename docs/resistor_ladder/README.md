@@ -24,7 +24,7 @@ single analog line.
 * [LadderButtonConfig](#LadderButtonConfig)
     * [Public Methods](#PublicMethods)
     * [Constructor](#Constructor)
-    * [Rate Limiting on ESP8266](#RateLimitingOnEsp8266)
+    * [Rate Limit CheckButtons](#RateLimitCheckButtons)
 * [LadderButtons Example](#LadderButtonsExample)
 * [Level Matching Tolerance Range](#LevelMatchingTolerance)
 * [LadderButtons Calibration](#LadderButtonsCalibration)
@@ -274,33 +274,57 @@ expected to be returned by the `analogRead()` method. For a 10-bit ADC, this
 value is either `2^10 - 1 = 1023` or exactly `2^10 = 1024`. For a 12-bit ADC,
 the value is `2^12 - 1 = 4095` or exactly `2^12 = 4096`.
 
-<a name="RateLimitingOnEsp8266"></a>
-### Rate Limiting on ESP8266
+<a name="RateLimitCheckButtons"></a>
+### Rate Limit CheckButtons
 
-The `LadderButtonConfig::checkButtons()` calls `analogRead()`. On the ESP8266,
-you must take special care to avoid calling the `analogRead()` function too
-quickly. It causes the WiFi to disconnect, as detailed by these bug reports:
+The `LadderButtonConfig::checkButtons()` calls `analogRead()` which is an
+expensive function compared to `digitalRead()`. On an AVR processor,
+`analogRead()` can take 100 micros compared to single-digit micros for
+`digitalRead().
+
+On the ESP8266, there is an even bigger problem. If the `analogRead()` function
+is called too quickly, it causes the WiFi to disconnect, as detailed by these
+bug reports:
 
 * https://github.com/esp8266/Arduino/issues/1634
 * https://github.com/esp8266/Arduino/issues/5083
 
 According to a comment in the
 [EspScopeA0/Bravo](https://github.com/krzychb/EspScopeA0/tree/master/Bravo)
-project, which references an Espressif ESP8266 FAQ PDF documentation that seems
-to have moved to a new URL that I cannot locate, the `analogRead()` can be read
-as fast as 1k samples/second, or every 1 ms, without interfering with the WiFi.
-It also shows experimental results that suggest that sampling less than 200
-samples/second is needed to get long-term WiFi stability. Fortunately, AceButton
-needs to sample the A0 every 4-5 ms, or only about 200 samples/second so we
-should be fine.
+project, which references an Espressif ESP8266 FAQ PDF documentation (that seems
+to have moved to a new URL that I cannot locate), the `analogRead()` can be read
+as fast as 1000 samples/second, or every 1 ms, without interfering with the
+WiFi. It also shows experimental results that suggest that in reality, an even
+slower sampling rate of less than 200 samples/second is needed to get long-term
+WiFi stability. Fortunately, AceButton needs to sample the A0 every 4-5 ms, or
+only about 200 samples/second so we should be fine.
 
-One way to rate-limit the call to `LadderButtonConfig::checkButtons()` is shown
-in the `LadderButtons.ino` example shown below, using an extra variable that
-keeps track of the `millis()` timestamp of the previous call. Another way is to
-use a multitasking or coroutine library, making calls to `checkButtons()` with a
-non-blocking delay function. I often use my coroutine library
-[AceRoutine](https://github.com/bxparks/AceRoutine), but this is an advanced
-usage which seems out of scope for this documentation.
+For these reasons, I recommend always rate-limit the call to
+`LadderButtonConfig::checkButtons()` no matter what processor you are using.
+There is no advantage to calling `checkButtons()` more often than necessary, and
+your microprocessor could be doing other things during that time.
+
+There are several ways to do do rate-limiting. I show one way in the
+`LadderButtons.ino` example shown below, using an extra variable that keeps
+track of the `millis()` timestamp of the previous call.
+
+```C++
+void checkButtons() {
+  static unsigned long prev = millis();
+
+  // DO NOT USE delay(5) to do this.
+  unsigned long now = millis();
+  if (now - prev > 5) {
+    buttonConfig.checkButtons();
+    prev = now;
+  }
+}
+```
+
+Another way is to use a multitasking or coroutine library, to call
+`checkButtons()` with a non-blocking delay function. I often use my coroutine
+library [AceRoutine](https://github.com/bxparks/AceRoutine), but this is an
+advanced usage which seems out of scope for this documentation.
 
 <a name="LadderButtonsExample"></a>
 ## LadderButtons Example
@@ -314,7 +338,9 @@ using namespace ace_button;
 
 static const uint8_t BUTTON_PIN = A0;
 
-// Create 4 AceButton objects, with their virtual pin number 0 to 3.
+// Create 4 AceButton objects, with their virtual pin number 0 to 3. The number
+// of buttons does not need to be identical to the number of analog levels. You
+// can choose to define only a subset of buttons here.
 static const uint8_t NUM_BUTTONS = 4;
 static AceButton b0((uint8_t) 0);
 static AceButton b1(1);
@@ -374,22 +400,19 @@ void setup() {
 // The buttonConfig.checkButtons() should be called every 4-5ms or faster, if
 // the debouncing time is ~20ms. On ESP8266, analogRead() must be called *no*
 // faster than 4-5ms to avoid a bug which disconnects the WiFi connection.
-void loop() {
-
-#if ESP8266
-  // DO NOT USE delay(5) to do this.
+void checkButtons() {
   static unsigned long prev = millis();
 
+  // DO NOT USE delay(5) to do this.
   unsigned long now = millis();
   if (now - prev > 5) {
     buttonConfig.checkButtons();
     prev = now;
   }
+}
 
-#else
-  buttonConfig.checkButtons();
-
-#endif
+void loop() {
+  checkButtons();
 }
 ```
 
