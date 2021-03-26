@@ -11,6 +11,9 @@
       about 200 samples/second. This reduces the overhead of the slow
       `analogRead()` function, and avoids triggering a bug that disconnects the
       WiFi on the ESP8266.
+    * Add general [Sampling Rate](README.md##SamplingRate) recommendation to
+      sample at about 5 ms intervals, or 200 samples/second. Add code sample
+      using non-blocking delay.
 * 1.8.2 (2021-01-22)
     * Update UnixHostDuino 0.4 to EpoxyDuino 0.5.
     * No functional change in this release.

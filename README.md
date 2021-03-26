@@ -89,6 +89,8 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
   * [Include Header and Use Namespace](#IncludeHeader)
   * [Pin Wiring and Initialization](#PinWiring)
   * [AceButton Class](#AceButtonClass)
+    * [Sampling Rate](#SamplingRate)
+    * [Compiler Error on Pin 0](#CompilerErrorOnPin0)
   * [ButtonConfig Class](#ButtonConfigClass)
     * [System ButtonConfig](#SystemButtonConfig)
     * [Configuring the EventHandler](#ConfiguringEventHandler)
@@ -501,11 +503,19 @@ shown above:
 The `pin` must be defined either through the constructor or the `init()` method.
 But the other two parameters may be optional in many cases.
 
-Finally, the `AceButton::check()` method should be called from the `loop()`
-method periodically. Roughly speaking, this should be about 4 times faster than
-the value of `getDebounceDelay()` so that the various event detection logic can
-work properly. (If the debounce delay is 20 ms, `AceButton::check()` should be
-called every 5 ms or faster.)
+<a name="SamplingRate"></a>
+### Sampling Rate
+
+To read the state of the button, the `AceButton::check()` method should be
+called from the `loop()` method periodically. Roughly speaking, this should be
+about 4 times faster than the value of `getDebounceDelay()` so that the various
+event detection logic can work properly. For example, for the default debounce
+delay is 20 ms, `AceButton::check()` should be called every 5 ms. I have
+successfully experimented with using a sampling delay as large as 10 ms, but I
+recommend about 5 ms in most cases.
+
+You could call the `AceButton::check()` method directly in the global `loop()`
+function like this:
 
 ```C++
 void loop() {
@@ -515,7 +525,46 @@ void loop() {
 }
 ```
 
-**Warning**:
+This would sample the button as fast as possible on your particular
+microprocessor, perhaps as fast as 10,000 or 100,000 times a second, depending
+on the other code that is in the `loop()` function.
+
+Most of the time, a high sampling rate is not a problem except for 2 things:
+
+* Calling the `AceButton::check()` has a small overhead and your processor could
+  be doing other things during that time.
+* If you use [Resistor Ladder Buttons](#ResistorLadderButtons) described below,
+  on an ESP8266, you will trigger a bug that causes the WiFi to disconnect if
+  you sample the `analogRead()` function more than a 1000 times/second.
+
+If you want to limit the sampling rate, see the example code in [Rate
+Limit CheckButtons](docs/resistor_ladder/README.md#RateLimitCheckButtons). The
+code relies on using a `static` variable to implement a non-blocking delay, like
+this:
+
+```C++
+AceButton button;
+...
+
+void checkButtons() {
+  static unsigned long prev = millis();
+
+  // DO NOT USE delay(5) to do this.
+  unsigned long now = millis();
+  if (now - prev > 5) {
+    button.check();
+    prev = now;
+  }
+}
+
+void loop() {
+  checkButtons();
+  ...
+}
+```
+
+<a name="CompilerErrorOnPin0"></a>
+### Compiler Error On Pin 0
 
 If you attempt to use Pin 0 in the `AceButton()` constructor:
 ```C++
@@ -538,7 +587,6 @@ AceButton button(PIN);
 
 ```
 See [Issue #40](https://github.com/bxparks/AceButton/issues/40) for details.
-
 
 <a name="ButtonConfigClass"></a>
 ### ButtonConfig Class
