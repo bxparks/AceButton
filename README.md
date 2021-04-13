@@ -122,7 +122,7 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 * [Background Motivation](#BackgroundMotivation)
   * [Non-goals](#NonGoals)
 * [License](#License)
-* [Feedback and Support](#FeedbackSupport)
+* [Feedback and Support](#FeedbackAndSupport)
 * [Author](#Author)
 
 <a name="Features"></a>
@@ -1718,7 +1718,7 @@ I changed to the MIT License starting with version 1.1 because the MIT License
 is so simple to understand. I could not be sure that I understood what the
 Apache License 2.0 meant.
 
-<a name="FeedbackSupport"></a>
+<a name="FeedbackAndSupport"></a>
 ## Feedback and Support
 
 If you find this library useful, consider starring this project on GitHub. The
