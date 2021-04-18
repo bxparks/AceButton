@@ -348,6 +348,7 @@ Advanced usage is supported by:
 * `EncodedButtonConfig` - binary encoded buttons supporting `2^N-1` buttons on
   `N` digital pins
 * `LadderButtonConfig` - resistor ladder buttons using analog pins
+* `IEventHandler` - use a callback object instead of a callback function
 
 We explain how to use these below.
 
