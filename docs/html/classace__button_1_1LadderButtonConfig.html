@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.8.3</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven button library for Arduino.</div>
   </td>
@@ -204,7 +204,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:aac2d59d472aadad37efa9a9c5509dc71"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classace__button_1_1LadderButtonConfig.html#aac2d59d472aadad37efa9a9c5509dc71">getVirtualPin</a> () const</td></tr>
-<tr class="memdesc:aac2d59d472aadad37efa9a9c5509dc71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the virtual pin number corresponding to current state of the ADC.  <a href="classace__button_1_1LadderButtonConfig.html#aac2d59d472aadad37efa9a9c5509dc71">More...</a><br /></td></tr>
+<tr class="memdesc:aac2d59d472aadad37efa9a9c5509dc71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the virtual pin number corresponding to current state of the ADC as returned by the <code>analogRead()</code> function.  <a href="classace__button_1_1LadderButtonConfig.html#aac2d59d472aadad37efa9a9c5509dc71">More...</a><br /></td></tr>
 <tr class="separator:aac2d59d472aadad37efa9a9c5509dc71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -382,7 +382,8 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 </div><div class="memdoc">
 
 <p>Read the single mPin once, calculate the virtual pin number of the pressed button (if any), then call each button's checkState() method to trigger any events. </p>
-<p>This is more efficient than calling the check() of each <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a>, which in turn, calls <a class="el" href="classace__button_1_1LadderButtonConfig.html#a9b0f911723cf3b13ec5ca4d89f793493" title="Return state of the button corresponding to the virtual &#39;pin&#39; number.">LadderButtonConfig::readButton()</a> for each button. </p>
+<p>This is more efficient than calling the check() of each <a class="el" href="classace__button_1_1AceButton.html" title="An Adjustable Compact Event-driven (ACE) Button library that debounces and dispatches button events t...">AceButton</a>, which in turn, calls <a class="el" href="classace__button_1_1LadderButtonConfig.html#a9b0f911723cf3b13ec5ca4d89f793493" title="Return state of the button corresponding to the virtual &#39;pin&#39; number.">LadderButtonConfig::readButton()</a> for each button.</p>
+<p>Warning: This method is often called from the global <code>loop()</code> function. But on ESP8266, this method must not be called too quickly, otherwise it triggers a bug which causes the WiFi to disconnect (see <a href="https://github.com/esp8266/Arduino/issues/1634">https://github.com/esp8266/Arduino/issues/1634</a> and <a href="https://github.com/esp8266/Arduino/issues/5083">https://github.com/esp8266/Arduino/issues/5083</a>). You must rate-limit the calls to this method to ~5 milliseconds. See <code>examples/LadderButtons/LadderButtons.ino</code> for an example of how to do that. </p>
 
 <p class="definition">Definition at line <a class="el" href="LadderButtonConfig_8cpp_source.html#l00058">58</a> of file <a class="el" href="LadderButtonConfig_8cpp_source.html">LadderButtonConfig.cpp</a>.</p>
 
@@ -411,7 +412,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 </table>
 </div><div class="memdoc">
 
-<p>Return the virtual pin number corresponding to current state of the ADC. </p>
+<p>Return the virtual pin number corresponding to current state of the ADC as returned by the <code>analogRead()</code> function. </p>
 <p>When no button is pressed, this returns (numLevels - 1), which does not correspond to any valid button. </p>
 
 <p class="definition">Definition at line <a class="el" href="LadderButtonConfig_8cpp_source.html#l00074">74</a> of file <a class="el" href="LadderButtonConfig_8cpp_source.html">LadderButtonConfig.cpp</a>.</p>
