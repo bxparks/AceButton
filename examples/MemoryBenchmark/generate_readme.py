@@ -36,7 +36,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.8.1
+**Version**: AceButton v1.8.3
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -115,6 +115,14 @@ then the incremental cost is not significant.
 In v1.8, adding support for `kEventLongReleased` increased the flash memory
 consumption by 8 to 56 bytes.
 
+In v1.8.3, I upgraded my ESP32 Arduino Core from v1.0.4 to v1.0.6. For some
+reason, it causes the `LadderButtConfig` to increase flash consumption from ~5kB
+to ~19kB. The CPU time consumption for `LadderButtonConfig` also went up by a
+factor of 2.5X (24 micros to 67 micros). It looks like they changed the
+implementation of `analogRead()` in v1.0.5. See
+https://github.com/espressif/arduino-esp32/issues/4973 and
+https://github.com/espressif/arduino-esp32/pull/3377.
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
@@ -169,7 +177,7 @@ consumption by 8 to 56 bytes.
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
-* ESP32 Boards 1.0.4
+* ESP32 Boards 1.0.6
 
 ```
 {esp32_results}

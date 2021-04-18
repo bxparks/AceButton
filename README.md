@@ -1,6 +1,11 @@
 # AceButton
 
-![AUnit Tests](https://github.com/bxparks/AceButton/workflows/AUnit%20Tests/badge.svg)
+[![AUnit Tests](https://github.com/bxparks/AceButton/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceButton/actions/workflows/aunit_tests.yml)
+
+**New**: [GitHub Discussions](https://github.com/bxparks/AceButton/discussions)
+for this project is now active! Let's use that for general support questions,
+and reserve the [GitHub Issues](https://github.com/bxparks/AceButton/issues)
+section for bugs and feature requests.
 
 An adjustable, compact, event-driven button library for Arduino platforms.
 
@@ -60,14 +65,14 @@ greater than the number of input pins available. This library provides
     * Supports binary encoded buttons, to read `2^N - 1` buttons using `N`
       pins (e.g. 7 buttons using 3 digital pins).
 * `LadderButtonConfig`
-    * Supports 5-8 buttons (maybe more) on a single analog pin through a
+    * Supports 1-8 buttons (maybe more) on a single analog pin through a
       resistor ladder. The `analogRead()` method is used to read the different
       voltage levels corresponding to each button.
 
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.8.2 (2021-01-22)
+**Version**: 1.8.3 (2021-04-18)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -84,6 +89,8 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
   * [Include Header and Use Namespace](#IncludeHeader)
   * [Pin Wiring and Initialization](#PinWiring)
   * [AceButton Class](#AceButtonClass)
+    * [Sampling Rate](#SamplingRate)
+    * [Compiler Error on Pin 0](#CompilerErrorOnPin0)
   * [ButtonConfig Class](#ButtonConfigClass)
     * [System ButtonConfig](#SystemButtonConfig)
     * [Configuring the EventHandler](#ConfiguringEventHandler)
@@ -115,7 +122,7 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 * [Background Motivation](#BackgroundMotivation)
   * [Non-goals](#NonGoals)
 * [License](#License)
-* [Feedback and Support](#FeedbackSupport)
+* [Feedback and Support](#FeedbackAndSupport)
 * [Author](#Author)
 
 <a name="Features"></a>
@@ -341,6 +348,7 @@ Advanced usage is supported by:
 * `EncodedButtonConfig` - binary encoded buttons supporting `2^N-1` buttons on
   `N` digital pins
 * `LadderButtonConfig` - resistor ladder buttons using analog pins
+* `IEventHandler` - use a callback object instead of a callback function
 
 We explain how to use these below.
 
@@ -496,11 +504,19 @@ shown above:
 The `pin` must be defined either through the constructor or the `init()` method.
 But the other two parameters may be optional in many cases.
 
-Finally, the `AceButton::check()` method should be called from the `loop()`
-method periodically. Roughly speaking, this should be about 4 times faster than
-the value of `getDebounceDelay()` so that the various event detection logic can
-work properly. (If the debounce delay is 20 ms, `AceButton::check()` should be
-called every 5 ms or faster.)
+<a name="SamplingRate"></a>
+### Sampling Rate
+
+To read the state of the button, the `AceButton::check()` method should be
+called from the `loop()` method periodically. Roughly speaking, this should be
+about 4 times faster than the value of `getDebounceDelay()` so that the various
+event detection logic can work properly. For example, for the default debounce
+delay is 20 ms, `AceButton::check()` should be called every 5 ms. I have
+successfully experimented with using a sampling delay as large as 10 ms, but I
+recommend about 5 ms in most cases.
+
+You could call the `AceButton::check()` method directly in the global `loop()`
+function like this:
 
 ```C++
 void loop() {
@@ -510,7 +526,46 @@ void loop() {
 }
 ```
 
-**Warning**:
+This would sample the button as fast as possible on your particular
+microprocessor, perhaps as fast as 10,000 or 100,000 times a second, depending
+on the other code that is in the `loop()` function.
+
+Most of the time, a high sampling rate is not a problem except for 2 things:
+
+* Calling the `AceButton::check()` has a small overhead and your processor could
+  be doing other things during that time.
+* If you use [Resistor Ladder Buttons](#ResistorLadderButtons) described below,
+  on an ESP8266, you will trigger a bug that causes the WiFi to disconnect if
+  you sample the `analogRead()` function more than a 1000 times/second.
+
+If you want to limit the sampling rate, see the example code in [Rate
+Limit CheckButtons](docs/resistor_ladder/README.md#RateLimitCheckButtons). The
+code relies on using a `static` variable to implement a non-blocking delay, like
+this:
+
+```C++
+AceButton button;
+...
+
+void checkButtons() {
+  static unsigned long prev = millis();
+
+  // DO NOT USE delay(5) to do this.
+  unsigned long now = millis();
+  if (now - prev > 5) {
+    button.check();
+    prev = now;
+  }
+}
+
+void loop() {
+  checkButtons();
+  ...
+}
+```
+
+<a name="CompilerErrorOnPin0"></a>
+### Compiler Error On Pin 0
 
 If you attempt to use Pin 0 in the `AceButton()` constructor:
 ```C++
@@ -533,7 +588,6 @@ AceButton button(PIN);
 
 ```
 See [Issue #40](https://github.com/bxparks/AceButton/issues/40) for details.
-
 
 <a name="ButtonConfigClass"></a>
 ### ButtonConfig Class
@@ -573,12 +627,12 @@ class ButtonConfig {
     static const FeatureFlagType kFeatureSuppressAfterLongPress = 0x40;
     static const FeatureFlagType kFeatureSuppressAfterRepeatPress = 0x80;
     static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
-    static const FeatureFlagType kFeatureSuppressAll =
-        (kFeatureSuppressAfterClick |
-        kFeatureSuppressAfterDoubleClick |
-        kFeatureSuppressAfterLongPress |
-        kFeatureSuppressAfterRepeatPress |
-        kFeatureSuppressClickBeforeDoubleClick);
+    static const FeatureFlagType kFeatureSuppressAll = (
+        kFeatureSuppressAfterClick
+        | kFeatureSuppressAfterDoubleClick
+        | kFeatureSuppressAfterLongPress
+        | kFeatureSuppressAfterRepeatPress
+        | kFeatureSuppressClickBeforeDoubleClick);
 
     typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
         uint8_t buttonState);
@@ -593,7 +647,7 @@ class ButtonConfig {
     uint16_t getRepeatPressInterval();
 
     void setDebounceDelay(uint16_t debounceDelay);
-    void setClickDelay(uint16_t clickDelay) {
+    void setClickDelay(uint16_t clickDelay);
     void setDoubleClickDelay(uint16_t doubleClickDelay);
     void setLongPressDelay(uint16_t longPressDelay);
     void setRepeatPressDelay(uint16_t repeatPressDelay);
@@ -608,6 +662,7 @@ class ButtonConfig {
     void resetFeatures();
 
     void setEventHandler(EventHandler eventHandler);
+    void setIEventHandler(IEventHandler* eventHandler);
 
     static ButtonConfig* getSystemButtonConfig();
 };
@@ -1432,7 +1487,7 @@ information on how to use these classes.
 <a name="ResistorLadderButtons"></a>
 ### Resistor Ladder Buttons
 
-It is possible to attach 5-8 (maybe more) buttons on a single analog pin through
+It is possible to attach 1-8 (maybe more) buttons on a single analog pin through
 a resistor ladder, and use the `analogRead()` to read the different voltages
 generated by each button. An example circuit looks like this:
 
@@ -1597,7 +1652,7 @@ This library was developed and tested using:
 * [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
 * [STM32duino 1.9.0](https://github.com/stm32duino/Arduino_Core_STM32)
 * [ESP8266 Arduino Core 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino Core 1.0.4](https://github.com/espressif/arduino-esp32)
+* [ESP32 Arduino Core 1.0.6](https://github.com/espressif/arduino-esp32)
 * [Teensyduino 1.53](https://www.pjrc.com/teensy/td_download.html)
 
 It should work with [PlatformIO](https://platformio.org/) but I have
@@ -1664,19 +1719,25 @@ I changed to the MIT License starting with version 1.1 because the MIT License
 is so simple to understand. I could not be sure that I understood what the
 Apache License 2.0 meant.
 
-<a name="FeedbackSupport"></a>
+<a name="FeedbackAndSupport"></a>
 ## Feedback and Support
 
 If you find this library useful, consider starring this project on GitHub. The
 stars will let me prioritize the more popular libraries over the less popular
 ones.
 
-If you have any questions, comments, bug reports, or feature requests, please
-file a GitHub ticket instead of emailing me unless the content is sensitive.
-(The problem with email is that I cannot reference the email conversation when
-other people ask similar questions later.) I'd love to hear about how this
-software and its documentation can be improved. I can't promise that I will
-incorporate everything, but I will give your ideas serious consideration.
+If you have any questions, comments and other support questions about how to
+use this library, please use the
+[GitHub Discussions](https://github.com/bxparks/AceButton/discussions)
+for this project. If you have bug reports or feature requests, please file a
+ticket in [GitHub Issues](https://github.com/bxparks/AceButton/issues).
+I'd love to hear about how this software and its documentation can be improved.
+I can't promise that I will incorporate everything, but I will give your ideas
+serious consideration.
+
+Please refrain from emailing me directly unless the content is sensitive. The
+problem with email is that I cannot reference the email conversation when other
+people ask similar questions later.
 
 <a name="Author"></a>
 ## Author

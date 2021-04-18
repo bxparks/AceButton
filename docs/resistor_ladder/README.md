@@ -15,6 +15,22 @@ more details:
 The `LadderButtonConfig` class was created to support multiple buttons on a
 single analog line.
 
+## Table of Contents
+
+* [Circuits](#Circuits)
+    * [Circuit 1: Active Voltage Divider](#Circuit1)
+    * [Circuit 2: Series Resistor Ladder](#Circuit2)
+    * [Circuit 3: Parallel Resistor Ladder (Recommended)](#Circuit3)
+* [LadderButtonConfig](#LadderButtonConfig)
+    * [Public Methods](#PublicMethods)
+    * [Constructor](#Constructor)
+    * [Rate Limit CheckButtons](#RateLimitCheckButtons)
+* [LadderButtons Example](#LadderButtonsExample)
+* [Level Matching Tolerance Range](#LevelMatchingTolerance)
+* [LadderButtons Calibration](#LadderButtonsCalibration)
+* [Appendix](#Appendix)
+
+<a name="Circuits"></a>
 ## Circuits
 
 There are at least 3 different ways to wire up the resistor ladder. The
@@ -22,6 +38,7 @@ There are at least 3 different ways to wire up the resistor ladder. The
 expected voltage levels are given to the class. As explained below, my
 recommended circuit is Circuit 3.
 
+<a name="Circuit1"></a>
 ### Circuit 1: Active Voltage Divider
 
 The following circuit is the easiest to understand, but it seems to have
@@ -54,6 +71,7 @@ buttons are pressed. If your device is powered through the USB, this current is
 probably negligle. But if the microcontroller is battery powered, this power
 drainage could shorten the battery life of your device significantly.
 
+<a name="Circuit2"></a>
 ### Circuit 2: Series Resistor Ladder
 
 There are many examples on the web showing a circuit like this:
@@ -140,6 +158,7 @@ be a bit of a chore.
 
 These issues with Circuit 2 lead me to recommend Circuit 3 instead.
 
+<a name="Circuit3"></a>
 ### Circuit 3: Parallel Resistor Ladder (Recommended)
 
 The following circuit attaches a separate resistor for each button, like this:
@@ -208,8 +227,10 @@ There several things about this circuit that I like:
 
 For these reasons, Circuit 3 is the one that I would recommend.
 
+<a name="LadderButtonConfig"></a>
 ## LadderButtonConfig
 
+<a name="PublicMethods"></a>
 ### Public Methods
 
 The public API for `LadderButtonConfig` looks something like this:
@@ -229,6 +250,7 @@ class LadderButtonConfig : public ButtonConfig {
 };
 ```
 
+<a name="Constructor"></a>
 ### Constructor
 
 The constructor takes a number of parameters:
@@ -249,8 +271,62 @@ voltage levels. The number of elements in this array is equal to `N+1`, where
 
 The last value of the `levels[]` array should be the largest number that is
 expected to be returned by the `analogRead()` method. For a 10-bit ADC, this
-value is `2^10 - 1 = 1023`. For a 12-bit ADC, the value is `2^12 - 1 = 4095`.
+value is either `2^10 - 1 = 1023` or exactly `2^10 = 1024`. For a 12-bit ADC,
+the value is `2^12 - 1 = 4095` or exactly `2^12 = 4096`.
 
+<a name="RateLimitCheckButtons"></a>
+### Rate Limit CheckButtons
+
+The `LadderButtonConfig::checkButtons()` calls `analogRead()` which is an
+expensive function compared to `digitalRead()`. On an AVR processor,
+`analogRead()` can take 100 micros compared to single-digit micros for
+`digitalRead().
+
+On the ESP8266, there is an even bigger problem. If the `analogRead()` function
+is called too quickly, it causes the WiFi to disconnect, as detailed by these
+bug reports:
+
+* https://github.com/esp8266/Arduino/issues/1634
+* https://github.com/esp8266/Arduino/issues/5083
+
+According to a comment in the
+[EspScopeA0/Bravo](https://github.com/krzychb/EspScopeA0/tree/master/Bravo)
+project, which references an Espressif ESP8266 FAQ PDF documentation (that seems
+to have moved to a new URL that I cannot locate), the `analogRead()` can be read
+as fast as 1000 samples/second, or every 1 ms, without interfering with the
+WiFi. It also shows experimental results that suggest that in reality, an even
+slower sampling rate of less than 200 samples/second is needed to get long-term
+WiFi stability. Fortunately, AceButton needs to sample the A0 every 4-5 ms, or
+only about 200 samples/second so we should be fine.
+
+For these reasons, I recommend always rate-limit the call to
+`LadderButtonConfig::checkButtons()` no matter what processor you are using.
+There is no advantage to calling `checkButtons()` more often than necessary, and
+your microprocessor could be doing other things during that time.
+
+There are several ways to do do rate-limiting. I show one way in the
+`LadderButtons.ino` example shown below, using an extra variable that keeps
+track of the `millis()` timestamp of the previous call.
+
+```C++
+void checkButtons() {
+  static unsigned long prev = millis();
+
+  // DO NOT USE delay(5) to do this.
+  unsigned long now = millis();
+  if (now - prev > 5) {
+    buttonConfig.checkButtons();
+    prev = now;
+  }
+}
+```
+
+Another way is to use a multitasking or coroutine library, to call
+`checkButtons()` with a non-blocking delay function. I often use my coroutine
+library [AceRoutine](https://github.com/bxparks/AceRoutine), but this is an
+advanced usage which seems out of scope for this documentation.
+
+<a name="LadderButtonsExample"></a>
 ## LadderButtons Example
 
 The example code [LadderButtons](../../examples/LadderButtons/) looks something
@@ -262,7 +338,9 @@ using namespace ace_button;
 
 static const uint8_t BUTTON_PIN = A0;
 
-// Create 4 AceButton objects, with their virtual pin number 0 to 3.
+// Create 4 AceButton objects, with their virtual pin number 0 to 3. The number
+// of buttons does not need to be identical to the number of analog levels. You
+// can choose to define only a subset of buttons here.
 static const uint8_t NUM_BUTTONS = 4;
 static AceButton b0((uint8_t) 0);
 static AceButton b1(1);
@@ -289,7 +367,18 @@ static LadderButtonConfig buttonConfig(
   BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, BUTTONS
 );
 
-void handleEvent(AceButton*, uint8_t, uint8_t);
+// The event handler for the button.
+void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+
+  // Print out a message for all events.
+  Serial.print(F("handleEvent(): "));
+  Serial.print(F("virtualPin: "));
+  Serial.print(button->getPin());
+  Serial.print(F("; eventType: "));
+  Serial.print(eventType);
+  Serial.print(F("; buttonState: "));
+  Serial.println(buttonState);
+}
 
 void setup() {
   delay(1000); // some microcontrollers reboot twice
@@ -308,23 +397,22 @@ void setup() {
   buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
 }
 
-void loop() {
-  // Should be called every 4-5ms or faster, for the default debouncing time
-  // of ~20ms.
-  buttonConfig.checkButtons();
+// The buttonConfig.checkButtons() should be called every 4-5ms or faster, if
+// the debouncing time is ~20ms. On ESP8266, analogRead() must be called *no*
+// faster than 4-5ms to avoid a bug which disconnects the WiFi connection.
+void checkButtons() {
+  static unsigned long prev = millis();
+
+  // DO NOT USE delay(5) to do this.
+  unsigned long now = millis();
+  if (now - prev > 5) {
+    buttonConfig.checkButtons();
+    prev = now;
+  }
 }
 
-// The event handler for the button.
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
-
-  // Print out a message for all events.
-  Serial.print(F("handleEvent(): "));
-  Serial.print(F("virtualPin: "));
-  Serial.print(button->getPin());
-  Serial.print(F("; eventType: "));
-  Serial.print(eventType);
-  Serial.print(F("; buttonState: "));
-  Serial.println(buttonState);
+void loop() {
+  checkButtons();
 }
 ```
 
@@ -351,6 +439,7 @@ handleEvent(): virtualPin: 3; eventType: 2; buttonState: 1
 handleEvent(): virtualPin: 3; eventType: 1; buttonState: 1
 ```
 
+<a name="LevelMatchingTolerance"></a>
 ## Level Matching Tolerance Range
 
 The voltage levels given in the `levels[]` array can be calculated from
@@ -403,6 +492,7 @@ The size of the gap determines how many resistors can be supported by a single
 pin. I don't know exactly what the realistic maximum may be, but I suspect it is
 somewhere between 6-10 buttons, using 5% resistors.
 
+<a name="LadderButtonsCalibration"></a>
 ## LadderButtons Calibration
 
 The example code [LadderButtons](../../examples/LadderButtons/) supports
@@ -458,6 +548,7 @@ calculated using theoretical formulas. If the circuit was wired correctly and
 resistors were chosen properly, the theoretical and actual values should be
 close to each other.
 
+<a name="Appendix"></a>
 ## Appendix
 
 _The `*.cddx` files were generated by https://www.circuit-diagram.org/_

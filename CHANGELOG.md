@@ -1,6 +1,22 @@
 # Changelog
 
 * Unreleased
+* 1.8.3 (2021-04-18)
+    * AceButton now has a
+      [GitHub Discussion](https://github.com/bxparks/AceButton/discussions).
+        * Use that for general questions and discussions.
+        * Reserve [GitHub Issues](https://github.com/bxparks/AceButton/issues)
+          for bugs and feature requests.
+    * Add [Rate Limit](docs/resistor_ladder/README.md#RateLimitCheckButtons)
+      warning on `LadderButtonsConfig::checkButtons()` should be limited to
+      about 200 samples/second. This reduces the overhead of the slow
+      `analogRead()` function, and avoids triggering a bug that disconnects the
+      WiFi on the ESP8266.
+    * Add general [Sampling Rate](README.md##SamplingRate) recommendation to
+      sample at about 5 ms intervals, or 200 samples/second. Add code sample
+      using non-blocking delay.
+    * Update Makefiles used by EpoxyDuino for better compatibility with FreeBSD.
+    * Update ESP32 Arduino Core from v1.0.4 to v1.0.6.
 * 1.8.2 (2021-01-22)
     * Update UnixHostDuino 0.4 to EpoxyDuino 0.5.
     * No functional change in this release.

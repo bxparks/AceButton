@@ -10,7 +10,7 @@ include ../../../EpoxyDuino/EpoxyDuino.mk
 
 TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy32.txt
 
-README.md: generate_readme.py generate_table.awk
+README.md: $(TARGETS) generate_readme.py generate_table.awk
 	./generate_readme.py > $@
 
 benchmarks: $(TARGETS)

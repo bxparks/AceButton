@@ -6,13 +6,13 @@ sizeof(Encoded8To3ButtonConfig): 28
 sizeof(EncodedButtonConfig): 36
 sizeof(LadderButtonConfig): 36
 BENCHMARKS
-idle 3 3 16 2002
-press/release 3 3 15 2002
-click 3 3 7 2002
-double_click 3 3 5 2002
-long_press/repeat_press 3 3 4 2002
-Encoded4To2ButtonConfig 7 8 10 2002
-Encoded8To3ButtonConfig 16 19 20 2002
-EncodedButtonConfig 13 16 24 2002
-LadderButtonConfig 21 24 76 2002
+idle 2 3 17 2002
+press/release 2 2 11 2002
+click 2 2 6 2002
+double_click 2 2 4 2002
+long_press/repeat_press 2 2 3 2002
+Encoded4To2ButtonConfig 6 7 13 2002
+Encoded8To3ButtonConfig 15 18 21 2002
+EncodedButtonConfig 12 15 24 2002
+LadderButtonConfig 64 67 266 2002
 END

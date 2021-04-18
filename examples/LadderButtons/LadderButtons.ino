@@ -4,11 +4,15 @@
  */
 
 #include <AceButton.h>
-using namespace ace_button;
+using ace_button::AceButton;
+using ace_button::ButtonConfig;
+using ace_button::LadderButtonConfig;
 
+// Select MODE_CALIBRATE to calibrate the analogRead().
+// Select MODE_READ_BUTTONS to read multiple buttons using LadderButtonConfig.
 #define MODE_CALIBRATE 1
 #define MODE_READ_BUTTONS 2
-#define MODE MODE_CALIBRATE
+#define MODE MODE_READ_BUTTONS
 
 #ifdef ESP32
   // Different ESP32 boards use different pins
@@ -21,7 +25,7 @@ using namespace ace_button;
 static const int LED_ON = HIGH;
 static const int LED_OFF = LOW;
 
-// Define the actual ADC pin
+// Define the actual ADC pin.
 static const uint8_t BUTTON_PIN = A0;
 
 // Create 4 AceButton objects, with their virtual pin number 0 to 3.
@@ -54,8 +58,57 @@ static LadderButtonConfig buttonConfig(
   BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, BUTTONS
 );
 
-// Forward reference to prevent Arduino compiler becoming confused.
-void handleEvent(AceButton*, uint8_t, uint8_t);
+// The event handler for the button.
+void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+
+  // Print out a message for all events.
+  Serial.print(F("handleEvent(): "));
+  Serial.print(F("virtualPin: "));
+  Serial.print(button->getPin());
+  Serial.print(F("; eventType: "));
+  Serial.print(eventType);
+  Serial.print(F("; buttonState: "));
+  Serial.println(buttonState);
+
+  // Control the LED only for the Pressed and Released events.
+  // Notice that if the MCU is rebooted while the button is pressed down, no
+  // event is triggered and the LED remains off.
+  switch (eventType) {
+    case AceButton::kEventPressed:
+      digitalWrite(LED_PIN, LED_ON);
+      break;
+    case AceButton::kEventReleased:
+      digitalWrite(LED_PIN, LED_OFF);
+      break;
+  }
+}
+
+// Call analogRead() and just print the value. Click on the various buttons to
+// see the actual value is returned by each button.
+void calibrateAnalogRead() {
+  uint16_t val = analogRead(BUTTON_PIN);
+  Serial.println(val);
+  delay(1);
+}
+
+// On most processors, this should be called every 4-5ms or faster, if default
+// the debouncing time is ~20ms. On a ESP8266, we must sample *no* faster than
+// 4-5 ms to avoid disconnecting the WiFi connection. (See
+// https://github.com/esp8266/Arduino/issues/1634 and
+// https://github.com/esp8266/Arduino/issues/5083). Let's rate-limit on all
+// processors to about 200 samples/second.
+void checkButtons() {
+  static unsigned long prev = millis();
+
+  // DO NOT USE delay(5) to do this.
+  unsigned long now = millis();
+  if (now - prev > 5) {
+    buttonConfig.checkButtons();
+    prev = now;
+  }
+}
+
+//-----------------------------------------------------------------------------
 
 void setup() {
   delay(1000); // some microcontrollers reboot twice
@@ -82,36 +135,9 @@ void setup() {
 
 void loop() {
 #if MODE == MODE_CALIBRATE
-  uint16_t val = analogRead(BUTTON_PIN);
-  Serial.println(val);
+  calibrateAnalogRead();
 #else
-  // Should be called every 4-5ms or faster, for the default debouncing time
-  // of ~20ms.
-  buttonConfig.checkButtons();
+  checkButtons();
 #endif
 }
 
-// The event handler for the button.
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
-
-  // Print out a message for all events.
-  Serial.print(F("handleEvent(): "));
-  Serial.print(F("virtualPin: "));
-  Serial.print(button->getPin());
-  Serial.print(F("; eventType: "));
-  Serial.print(eventType);
-  Serial.print(F("; buttonState: "));
-  Serial.println(buttonState);
-
-  // Control the LED only for the Pressed and Released events.
-  // Notice that if the MCU is rebooted while the button is pressed down, no
-  // event is triggered and the LED remains off.
-  switch (eventType) {
-    case AceButton::kEventPressed:
-      digitalWrite(LED_PIN, LED_ON);
-      break;
-    case AceButton::kEventReleased:
-      digitalWrite(LED_PIN, LED_OFF);
-      break;
-  }
-}

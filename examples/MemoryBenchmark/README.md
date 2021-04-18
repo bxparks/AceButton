@@ -12,7 +12,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.8.1
+**Version**: AceButton v1.8.3
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -91,6 +91,14 @@ then the incremental cost is not significant.
 In v1.8, adding support for `kEventLongReleased` increased the flash memory
 consumption by 8 to 56 bytes.
 
+In v1.8.3, I upgraded my ESP32 Arduino Core from v1.0.4 to v1.0.6. For some
+reason, it causes the `LadderButtConfig` to increase flash consumption from ~5kB
+to ~19kB. The CPU time consumption for `LadderButtonConfig` also went up by a
+factor of 2.5X (24 micros to 67 micros). It looks like they changed the
+implementation of `analogRead()` in v1.0.5. See
+https://github.com/espressif/arduino-esp32/issues/4973 and
+https://github.com/espressif/arduino-esp32/pull/3377.
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
@@ -168,7 +176,7 @@ consumption by 8 to 56 bytes.
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    | 258440/26840 |  1516/   40 |
 | Encoded4To2ButtonConfig         | 258732/26916 |  1808/  116 |
-| Encoded8To3ButtonConfig         | 258860/26980 |  1936/  180 |
+| Encoded8To3ButtonConfig         | 258876/26980 |  1952/  180 |
 | EncodedButtonConfig             | 258988/27020 |  2064/  220 |
 | LadderButtonConfig              | 259032/27024 |  2108/  224 |
 +--------------------------------------------------------------+
@@ -200,19 +208,19 @@ consumption by 8 to 56 bytes.
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
-* ESP32 Boards 1.0.4
+* ESP32 Boards 1.0.6
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        | 206625/14564 |     0/    0 |
+| Baseline                        | 197914/13092 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 209881/15308 |  3256/  744 |
-| Encoded4To2ButtonConfig         | 210085/15348 |  3460/  784 |
-| Encoded8To3ButtonConfig         | 210213/15412 |  3588/  848 |
-| EncodedButtonConfig             | 210385/15444 |  3760/  880 |
-| LadderButtonConfig              | 211773/15452 |  5148/  888 |
+| ButtonConfig                    | 200850/13344 |  2936/  252 |
+| Encoded4To2ButtonConfig         | 201046/13368 |  3132/  276 |
+| Encoded8To3ButtonConfig         | 201174/13432 |  3260/  340 |
+| EncodedButtonConfig             | 201358/13472 |  3444/  380 |
+| LadderButtonConfig              | 216918/13504 | 19004/  412 |
 +--------------------------------------------------------------+
 
 ```
@@ -228,13 +236,13 @@ consumption by 8 to 56 bytes.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |   7664/ 3048 |     0/    0 |
+| Baseline                        |   7632/ 3048 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12652/ 4200 |  4988/ 1152 |
-| Encoded4To2ButtonConfig         |  12904/ 4260 |  5240/ 1212 |
-| Encoded8To3ButtonConfig         |  13052/ 4324 |  5388/ 1276 |
-| EncodedButtonConfig             |  13076/ 4332 |  5412/ 1284 |
-| LadderButtonConfig              |  13724/ 4336 |  6060/ 1288 |
+| ButtonConfig                    |  12620/ 4200 |  4988/ 1152 |
+| Encoded4To2ButtonConfig         |  12872/ 4260 |  5240/ 1212 |
+| Encoded8To3ButtonConfig         |  13020/ 4324 |  5388/ 1276 |
+| EncodedButtonConfig             |  13044/ 4332 |  5412/ 1284 |
+| LadderButtonConfig              |  13692/ 4336 |  6060/ 1288 |
 +--------------------------------------------------------------+
 
 ```

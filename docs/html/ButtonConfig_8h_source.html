@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.8.1</span>
+   &#160;<span id="projectnumber">1.8.3</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven button library for Arduino.</div>
   </td>
@@ -167,12 +167,12 @@ $(function() {
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
 <div class="line"><a name="l00153"></a><span class="lineno"><a class="line" href="classace__button_1_1ButtonConfig.html#ac5a27fc7c6397ff6c5edc307988506a4">  153</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> <a class="code" href="classace__button_1_1ButtonConfig.html#ac5a27fc7c6397ff6c5edc307988506a4">kInternalFeatureIEventHandler</a> = 0x8000;</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="classace__button_1_1ButtonConfig.html#abfd736234ae852f22894c7aceb4e534e">  162</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> <a class="code" href="classace__button_1_1ButtonConfig.html#abfd736234ae852f22894c7aceb4e534e">kFeatureSuppressAll</a> =</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        (<a class="code" href="classace__button_1_1ButtonConfig.html#a57327066d135bcc99c4a68b55fca162e">kFeatureSuppressAfterClick</a> |</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <a class="code" href="classace__button_1_1ButtonConfig.html#a7642e16b2cc8dd0136312054b1da8f9e">kFeatureSuppressAfterDoubleClick</a> |</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <a class="code" href="classace__button_1_1ButtonConfig.html#a15b8e90b1ffe01009a1d7dd18b5b6aae">kFeatureSuppressAfterLongPress</a> |</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <a class="code" href="classace__button_1_1ButtonConfig.html#a6b43b591ba53d360e787bf780af0abbc">kFeatureSuppressAfterRepeatPress</a> |</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <a class="code" href="classace__button_1_1ButtonConfig.html#a80d621dbcf533c9bb91a111b8fec2c53">kFeatureSuppressClickBeforeDoubleClick</a>);</div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="classace__button_1_1ButtonConfig.html#abfd736234ae852f22894c7aceb4e534e">  162</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> <a class="code" href="classace__button_1_1ButtonConfig.html#abfd736234ae852f22894c7aceb4e534e">kFeatureSuppressAll</a> = (</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        <a class="code" href="classace__button_1_1ButtonConfig.html#a57327066d135bcc99c4a68b55fca162e">kFeatureSuppressAfterClick</a></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        | <a class="code" href="classace__button_1_1ButtonConfig.html#a7642e16b2cc8dd0136312054b1da8f9e">kFeatureSuppressAfterDoubleClick</a></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        | <a class="code" href="classace__button_1_1ButtonConfig.html#a15b8e90b1ffe01009a1d7dd18b5b6aae">kFeatureSuppressAfterLongPress</a></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        | <a class="code" href="classace__button_1_1ButtonConfig.html#a6b43b591ba53d360e787bf780af0abbc">kFeatureSuppressAfterRepeatPress</a></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        | <a class="code" href="classace__button_1_1ButtonConfig.html#a80d621dbcf533c9bb91a111b8fec2c53">kFeatureSuppressClickBeforeDoubleClick</a>);</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
 <div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="classace__button_1_1ButtonConfig.html#a6d9db3c7b221b474c3cfd8fca5f4ba1e">  176</a></span>&#160;    <span class="keyword">typedef</span> void (*<a class="code" href="classace__button_1_1ButtonConfig.html#a6d9db3c7b221b474c3cfd8fca5f4ba1e">EventHandler</a>)(<a class="code" href="classace__button_1_1AceButton.html">AceButton</a>* button, uint8_t eventType,</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        uint8_t buttonState);</div>
@@ -303,20 +303,20 @@ $(function() {
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    <a class="code" href="classace__button_1_1ButtonConfig.html#aa81d236e4030f4abc48eb01ae9ade202">ButtonConfig</a>(<span class="keyword">const</span> <a class="code" href="classace__button_1_1ButtonConfig.html">ButtonConfig</a>&amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <a class="code" href="classace__button_1_1ButtonConfig.html">ButtonConfig</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="classace__button_1_1ButtonConfig.html">ButtonConfig</a>&amp;) = <span class="keyword">delete</span>;</div>
 <div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160; </div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    <span class="keywordtype">void</span>* mEventHandler = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160; </div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <a class="code" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> mFeatureFlags = 0;</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160; </div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    uint16_t mDebounceDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#a8fbe63588107a1375d05911d27df3ad8">kDebounceDelay</a>;</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    uint16_t mClickDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#a5691e38564dae63592d22abf74fb15f3">kClickDelay</a>;</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    uint16_t mDoubleClickDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#af0a0d503f3396acef6a84aca4390fd6a">kDoubleClickDelay</a>;</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;    uint16_t mLongPressDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#a60bf588a2c067a561887eadf18cedccd">kLongPressDelay</a>;</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    uint16_t mRepeatPressDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#a3d20bc5800532085fd046fc64b80ae9f">kRepeatPressDelay</a>;</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    uint16_t mRepeatPressInterval = <a class="code" href="classace__button_1_1ButtonConfig.html#a218c1aa09b45ea2fe6884e3af3a18310">kRepeatPressInterval</a>;</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;};</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160; </div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;}</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    <span class="keywordtype">void</span>* mEventHandler = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160; </div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <a class="code" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc42738278330243dfc43f23eb">FeatureFlagType</a> mFeatureFlags = 0;</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160; </div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    uint16_t mDebounceDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#a8fbe63588107a1375d05911d27df3ad8">kDebounceDelay</a>;</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    uint16_t mClickDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#a5691e38564dae63592d22abf74fb15f3">kClickDelay</a>;</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    uint16_t mDoubleClickDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#af0a0d503f3396acef6a84aca4390fd6a">kDoubleClickDelay</a>;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    uint16_t mLongPressDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#a60bf588a2c067a561887eadf18cedccd">kLongPressDelay</a>;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    uint16_t mRepeatPressDelay = <a class="code" href="classace__button_1_1ButtonConfig.html#a3d20bc5800532085fd046fc64b80ae9f">kRepeatPressDelay</a>;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    uint16_t mRepeatPressInterval = <a class="code" href="classace__button_1_1ButtonConfig.html#a218c1aa09b45ea2fe6884e3af3a18310">kRepeatPressInterval</a>;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;};</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160; </div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;}</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="aclassace__button_1_1ButtonConfig_html_aeca9329775d17a06433c9588fca28695"><div class="ttname"><a href="classace__button_1_1ButtonConfig.html#aeca9329775d17a06433c9588fca28695">ace_button::ButtonConfig::getRepeatPressDelay</a></div><div class="ttdeci">uint16_t getRepeatPressDelay() const</div><div class="ttdoc">Milliseconds that a button needs to be Pressed down before the start of the sequence of RepeatPressed...</div><div class="ttdef"><b>Definition:</b> <a href="ButtonConfig_8h_source.html#l00240">ButtonConfig.h:240</a></div></div>
 <div class="ttc" id="aclassace__button_1_1ButtonConfig_html_a3ded707bd12aaf7bbcb14e431ec77e15"><div class="ttname"><a href="classace__button_1_1ButtonConfig.html#a3ded707bd12aaf7bbcb14e431ec77e15">ace_button::ButtonConfig::getLongPressDelay</a></div><div class="ttdeci">uint16_t getLongPressDelay() const</div><div class="ttdoc">Milliseconds for a long press event.</div><div class="ttdef"><b>Definition:</b> <a href="ButtonConfig_8h_source.html#l00230">ButtonConfig.h:230</a></div></div>

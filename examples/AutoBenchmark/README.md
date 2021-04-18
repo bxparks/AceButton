@@ -14,9 +14,9 @@ which will add to the timing values shown below in actual usage.
 The [digitalWriteFast library](https://github.com/NicksonYap/digitalWriteFast)
 might be an alternative if speed is critical.
 
-**Version**: AceButton v1.8.1
+**Version**: AceButton v1.8.3
 
-**DO NOT EDIT**: This file was auto-generated using `make README.md`. 
+**DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
 ## Dependencies
 
@@ -65,6 +65,15 @@ number of `TimingStats::update()` calls that were made.
 ## CPU Time Changes
 
 Version 1.8.1 adds benchmarks for STM32.
+
+Version 1.8.3 upgrades the ESP32 Arduino Core from v1.0.4 to v1.0.6. Most things
+remain the same, maybe slightly faster, except for `LadderButtonConfig`. The
+flash memory consumption goes up by about 14kB, and the CPU time for
+`LadderButtonConfig::checkButtons()` goes up significantly, from 24 micros on
+average to 67 micros. It looks like they changed the implementation of
+`analogRead()` in v1.0.5. See
+https://github.com/espressif/arduino-esp32/issues/4973 and
+https://github.com/espressif/arduino-esp32/pull/3377.
 
 ## Arduino Nano
 
@@ -247,15 +256,15 @@ CPU:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   3/  3/ 16 | 2002    |
-| press/release             |   3/  3/ 15 | 2002    |
-| click                     |   3/  3/  7 | 2002    |
-| double_click              |   3/  3/  5 | 2002    |
-| long_press/repeat_press   |   3/  3/  4 | 2002    |
-| Encoded4To2ButtonConfig   |   7/  8/ 10 | 2002    |
-| Encoded8To3ButtonConfig   |  16/ 19/ 20 | 2002    |
-| EncodedButtonConfig       |  13/ 16/ 24 | 2002    |
-| LadderButtonConfig        |  21/ 24/ 76 | 2002    |
+| idle                      |   2/  3/ 17 | 2002    |
+| press/release             |   2/  2/ 11 | 2002    |
+| click                     |   2/  2/  6 | 2002    |
+| double_click              |   2/  2/  4 | 2002    |
+| long_press/repeat_press   |   2/  2/  3 | 2002    |
+| Encoded4To2ButtonConfig   |   6/  7/ 13 | 2002    |
+| Encoded8To3ButtonConfig   |  15/ 18/ 21 | 2002    |
+| EncodedButtonConfig       |  12/ 15/ 24 | 2002    |
+| LadderButtonConfig        |  64/ 67/266 | 2002    |
 +---------------------------+-------------+---------+
 
 ```
