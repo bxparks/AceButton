@@ -41,7 +41,7 @@ might be an alternative if speed is critical.
 
 **Version**: AceButton v1.8.3
 
-**DO NOT EDIT**: This file was auto-generated using `make README.md`. 
+**DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
 ## Dependencies
 
@@ -95,8 +95,10 @@ Version 1.8.3 upgrades the ESP32 Arduino Core from v1.0.4 to v1.0.6. Most things
 remain the same, maybe slightly faster, except for `LadderButtonConfig`. The
 flash memory consumption goes up by about 14kB, and the CPU time for
 `LadderButtonConfig::checkButtons()` goes up significantly, from 24 micros on
-average to 67 micros. I wonder if they added more code to try to make
-`analogRead()` on the ESP32 behave better.
+average to 67 micros. It looks like they changed the implementation of
+`analogRead()` in v1.0.5. See
+https://github.com/espressif/arduino-esp32/issues/4973 and
+https://github.com/espressif/arduino-esp32/pull/3377.
 
 ## Arduino Nano
 

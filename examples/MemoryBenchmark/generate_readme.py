@@ -118,8 +118,10 @@ consumption by 8 to 56 bytes.
 In v1.8.3, I upgraded my ESP32 Arduino Core from v1.0.4 to v1.0.6. For some
 reason, it causes the `LadderButtConfig` to increase flash consumption from ~5kB
 to ~19kB. The CPU time consumption for `LadderButtonConfig` also went up by a
-factor of 2.5X (24 micros to 67 micros). My theory is that they added additional
-code to make `analogRead()` behave better on the ESP32.
+factor of 2.5X (24 micros to 67 micros). It looks like they changed the
+implementation of `analogRead()` in v1.0.5. See
+https://github.com/espressif/arduino-esp32/issues/4973 and
+https://github.com/espressif/arduino-esp32/pull/3377.
 
 ## Arduino Nano
 
