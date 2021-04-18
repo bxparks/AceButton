@@ -72,7 +72,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.8.2 (2021-01-22)
+**Version**: 1.8.3 (2021-04-18)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -1652,7 +1652,7 @@ This library was developed and tested using:
 * [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
 * [STM32duino 1.9.0](https://github.com/stm32duino/Arduino_Core_STM32)
 * [ESP8266 Arduino Core 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino Core 1.0.4](https://github.com/espressif/arduino-esp32)
+* [ESP32 Arduino Core 1.0.6](https://github.com/espressif/arduino-esp32)
 * [Teensyduino 1.53](https://www.pjrc.com/teensy/td_download.html)
 
 It should work with [PlatformIO](https://platformio.org/) but I have

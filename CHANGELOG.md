@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 1.8.3 (2021-04-18)
     * AceButton now has a
       [GitHub Discussion](https://github.com/bxparks/AceButton/discussions).
         * Use that for general questions and discussions.
@@ -14,6 +15,8 @@
     * Add general [Sampling Rate](README.md##SamplingRate) recommendation to
       sample at about 5 ms intervals, or 200 samples/second. Add code sample
       using non-blocking delay.
+    * Update Makefiles used by EpoxyDuino for better compatibility with FreeBSD.
+    * Update ESP32 Arduino Core from v1.0.4 to v1.0.6.
 * 1.8.2 (2021-01-22)
     * Update UnixHostDuino 0.4 to EpoxyDuino 0.5.
     * No functional change in this release.
