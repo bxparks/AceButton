@@ -1,6 +1,12 @@
 # Changelog
 
 * Unreleased
+    * Split [LadderButtonCalibrator](examples/LadderButtonCalibrator)
+      from [LadderButtons](examples/LadderButtons) for convenience.
+    * Add [LadderButtonsTiny](examples/LadderButtonsTiny), a demo of attaching
+      2 buttons to the `RESET/A0` pin of the ATtiny85 micrcontroller using
+      a resistor ladder. This avoids wasting the RESET pin, freeing the other 5
+      GPIO pins for other purposes.
 * 1.8.3 (2021-04-18)
     * AceButton now has a
       [GitHub Discussion](https://github.com/bxparks/AceButton/discussions).

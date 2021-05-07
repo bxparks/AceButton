@@ -10,6 +10,10 @@ using ace_button::AceButton;
 using ace_button::ButtonConfig;
 using ace_button::LadderButtonConfig;
 
+//-----------------------------------------------------------------------------
+// Configure built-in LED
+//-----------------------------------------------------------------------------
+
 #if defined(ESP32)
   // Different ESP32 boards use different pins, so you have to supply the
   // correct value here.
@@ -28,7 +32,11 @@ using ace_button::LadderButtonConfig;
   static const int LED_OFF = LOW;
 #endif
 
-// Define the actual ADC pin.
+//-----------------------------------------------------------------------------
+// Configure AceButton
+//-----------------------------------------------------------------------------
+
+// The ADC pin used by the resistor ladder.
 static const uint8_t BUTTON_PIN = A0;
 
 // Create 4 AceButton objects, with their corresonding virtual pin numbers 0 to
@@ -64,7 +72,7 @@ static LadderButtonConfig buttonConfig(
   BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, BUTTONS
 );
 
-// The event handler for the button.
+// The event handler for the buttons.
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 
   // Print out a message for all events.
@@ -101,8 +109,8 @@ void checkButtons() {
   // DO NOT USE delay(5) to do this.
   uint16_t now = millis();
   if (now - prev >= 5) {
-    buttonConfig.checkButtons();
     prev = now;
+    buttonConfig.checkButtons();
   }
 }
 

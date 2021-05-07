@@ -306,8 +306,9 @@ The following example sketches are provided:
           "UsingSuppression" techniques
 * distinguishing Pressed and LongPressed
     * [examples/PressedAndLongPressed](examples/PressedAndLongPressed)
-    * see also the [Distinguishing Pressed and
-      LongPressed](#PressedAndLongPressed) subsection below
+    * see also the
+      [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
+      subsection below
 * [CapacitiveButton](examples/CapacitiveButton)
     * reads a capacitive button using the
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
@@ -323,6 +324,13 @@ The following example sketches are provided:
 * Resistor Ladder Buttons
     * [LadderButtons](examples/LadderButtons)
         * demo of 4 buttons on a single analog pin using `analogRead()`
+    * [LadderButtonCalibrator](examples/LadderButtonCalibrator)
+        * print out the value returned by `analogRead()` for various buttons
+        * useful to compare the expected values of the resistor ladder versus
+          the actual values returned by the function
+    * [LadderButtonsTiny](examples/LadderButtonsTiny)
+        * 2 buttons on the `RESET/A0` pin of an ATtiny85 microcontroller
+        * avoid wasting the RESET pin, saving the other pins for other purposes
 * Benchmarks
     * These are internal benchmark programs. They were not written as examples
       of how to use the library.
