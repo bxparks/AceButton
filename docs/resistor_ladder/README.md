@@ -469,19 +469,20 @@ values observed using the LadderButtonCalibrator (see below) are 933 and 980
 respectively. The button configurations look like:
 
 ```C++
-static const uint8_t NUM_BUTTONS = 2;
-static AceButton b0((uint8_t) 0);
-static AceButton b1(1);
-static AceButton* const BUTTONS[NUM_BUTTONS] = { &b0, &b1 };
+const uint8_t BUTTON_PIN = A0; // RESET pin
+const uint8_t NUM_BUTTONS = 2;
+AceButton b0((uint8_t) 0);
+AceButton b1(1);
+AceButton* const BUTTONS[NUM_BUTTONS] = { &b0, &b1 };
 
-static const uint8_t NUM_LEVELS = NUM_BUTTONS + 1;
-static const uint16_t LEVELS[NUM_LEVELS] = {
+const uint8_t NUM_LEVELS = NUM_BUTTONS + 1;
+const uint16_t LEVELS[NUM_LEVELS] = {
   933 /* 91.2%, 10 kohm */,
   980 /* 95.8%, 22 kohm */,
   1023 /* 100%, open circuit */,
 };
 
-static LadderButtonConfig buttonConfig(
+LadderButtonConfig buttonConfig(
   BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, BUTTONS
 );
 ```
