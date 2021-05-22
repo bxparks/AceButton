@@ -25,9 +25,12 @@ single analog line.
     * [Public Methods](#PublicMethods)
     * [Constructor](#Constructor)
     * [Rate Limit CheckButtons](#RateLimitCheckButtons)
+* [Examples](#Examples)
+    * [LadderButtons](#LadderButtons)
+    * [LadderButtonsTiny](#LadderButtonsTiny)
 * [LadderButtons Example](#LadderButtonsExample)
 * [Level Matching Tolerance Range](#LevelMatchingTolerance)
-* [LadderButtons Calibration](#LadderButtonsCalibration)
+* [Ladder Button Calibrator](#LadderButtonCalibrator)
 * [Appendix](#Appendix)
 
 <a name="Circuits"></a>
@@ -314,7 +317,7 @@ void checkButtons() {
 
   // DO NOT USE delay(5) to do this.
   unsigned long now = millis();
-  if (now - prev > 5) {
+  if (now - prev >= 5) {
     buttonConfig.checkButtons();
     prev = now;
   }
@@ -326,8 +329,11 @@ Another way is to use a multitasking or coroutine library, to call
 library [AceRoutine](https://github.com/bxparks/AceRoutine), but this is an
 advanced usage which seems out of scope for this documentation.
 
+<a name="Examples"></a>
+## Examples
+
 <a name="LadderButtonsExample"></a>
-## LadderButtons Example
+### LadderButtons
 
 The example code [LadderButtons](../../examples/LadderButtons/) looks something
 like this:
@@ -439,6 +445,56 @@ handleEvent(): virtualPin: 3; eventType: 2; buttonState: 1
 handleEvent(): virtualPin: 3; eventType: 1; buttonState: 1
 ```
 
+<a name="LadderButtonsTiny"></a>
+### LadderButtonsTiny
+
+The [LadderButtonsTiny](../../examples/LadderButtonsTiny) example is specially
+designed to be used on the RESET pin of an ATtiny85 microcontroller. The
+ATtiny85 has 6 GPIO pins, but one of those pins (A0/D5) overlaps with the RESET
+pin. Fortunately, the RESET pin can be used as an input pin as long as the
+voltage level remains above 0.9 Vcc.
+
+The LadderButtonsTiny program shows that it is possible to connect 2 buttons
+through a resistor ladder on the RESET pin, with one button configured to
+trigger at the 90% level, and the other button configured to trigger at the 95%
+level.
+
+The wiring diagram looks like this:
+
+```
+    ATtiny85
+  +-----------+
++-|RST/A0  VCC|-+
+| |D3/A3 A1/D2| |
+| |D4/D2    D1| |
+| |GND      D0|-|-- R -- LED --+
+| +-----------+ |              |
+|               |              |
+|              1k             GND
+|               |
++-----------+---+---+
+            |       |
+           10k     22k
+            |       |
+            +       +
+           /       /
+          v  S0   v  S1
+            x       x
+            |       |
+            +-------+
+                |
+               GND
+```
+
+With the resistor values shown above (1k, 10k, and 22k), S0 corresponds to 90.9%
+(10k/11k), and S1 corresponds to 95.7% (22k/23k). Since the ATtiny85 does not
+have a Serial port, the `LadderButtonsTiny` uses a single LED connected to the
+D0 pin, and blinks differently depending on the button that was pressed:
+
+* blink once every 1.5 seconds if no button is pressed,
+* blink twice every 1.5 seconds if S0 is pressed,
+* blink thrice every 1.5 seconds if S1 is pressed.
+
 <a name="LevelMatchingTolerance"></a>
 ## Level Matching Tolerance Range
 
@@ -492,21 +548,14 @@ The size of the gap determines how many resistors can be supported by a single
 pin. I don't know exactly what the realistic maximum may be, but I suspect it is
 somewhere between 6-10 buttons, using 5% resistors.
 
-<a name="LadderButtonsCalibration"></a>
-## LadderButtons Calibration
+<a name="LadderButtonCalibrator"></a>
+## Ladder Button Calibrator
 
-The example code [LadderButtons](../../examples/LadderButtons/) supports
-a Calibration mode. Edit the file and set the `MODE` to `MODE_CALIBRATE`:
-```C++
-#define MODE_CALIBRATE 1
-#define MODE_READ_BUTTONS 2
-#define MODE MODE_CALIBRATE
-```
-
-In calibration mode, the program prints the value of the `analogRead()` method
-as fast as possible on the `Serial` port. You can press each of the buttons and
-determine the actual ADC values for each button. These values can be fed back
-into the `levels[]` array for better accuracy.
+The [LadderButtonCalibrator](../../examples/LadderButtonCalibrator/) program is
+a simple app that reads the `analogRead()` value and prints it to the `Serial`
+port every 5 milliseconds. You can press each of the buttons and determine the
+actual ADC values for each button. These values can be fed back into the
+`levels[]` array for better accuracy.
 
 As each button is pressed, the output will look something like this:
 
@@ -547,6 +596,10 @@ These values can be compared with the values of the `levels[]` array which were
 calculated using theoretical formulas. If the circuit was wired correctly and
 resistors were chosen properly, the theoretical and actual values should be
 close to each other.
+
+If the microcontroller under calibration does not have a Serial port (e.g.
+ATtiny85), the `LadderButtonCalibrator` has the option to print the result to an
+LED module using the AceSegment library (https://github.com/bxparks/AceSegment).
 
 <a name="Appendix"></a>
 ## Appendix

@@ -10,11 +10,12 @@
 
 //-----------------------------------------------------------------------------
 
-// Choose how to output the results. Normally, we would send to the Serial
-// monitor. But some environments (e.g. ATtiny85) do not normally provide a
-// USB-to-Serial monitor. If we can hook up a seven-segment LED module, we can
-// use AceSegment (https://github.com/bxparks/AceSegment) to print to the LED
-// module.
+// Choose the output destination. Normally, we would send to the Serial monitor.
+// But some environments (e.g. ATtiny85) do not normally provide a USB-to-Serial
+// monitor. One alternative would be to use a seven-segment LED module and print
+// the analogRead() value to the LED module. This option requires the AceSegment
+// (https://github.com/bxparks/AceSegment) library. The example below uses a
+// TM1637 LED module.
 #define OUTPUT_TYPE_SERIAL 0
 #define OUTPUT_TYPE_TM1637 1
 #define OUTPUT_TYPE OUTPUT_TYPE_SERIAL

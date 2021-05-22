@@ -1,9 +1,11 @@
 /*
  * A version of LadderButtons specially crafted for an ATtiny85 with 2 buttons
- * connected to the one of the analog pins using a resistor ladder. When no
- * button is pressed, this program emits one short blink every 1.5 seconds. When
- * Button 0 is pressed, it emits two short blinks every 1.5 seconds. When Button
- * 1 is pressed, it emits 3 short blinks every 1.5 seconds.
+ * connected to the one of the analog pins using a resistor ladder. The ATtiny85
+ * does not have a Serial port, so we use a single LED connected to the D0 pin.
+ *
+ * When no button is pressed, this program emits one short blink every 1.5
+ * seconds. When Button 0 is pressed, it emits two short blinks every 1.5
+ * seconds. When Button 1 is pressed, it emits 3 short blinks every 1.5 seconds.
  *
  * The ATtiny85 has only 6 GPIO pins which makes them very precious. One of the
  * GPIO pins does double duty as the RESET pin. It turns out that it is possible
@@ -25,10 +27,10 @@
  *   +-|RST/A0  VCC|-+
  *   | |D3/A3 A1/D2| |
  *   | |D4/D2    D1| |
- *   | |GND      D0| |
- *   | +-----------+ |
- *   |               |
- *   |              1k
+ *   | |GND      D0|-|-- R -- LED --+
+ *   | +-----------+ |              |
+ *   |               |              |
+ *   |              1k             GND
  *   |               |
  *   +-----------+---+---+
  *               |       |
@@ -43,7 +45,7 @@
  *                   |
  *                  GND
  *
- * The computed voltage levels of S0 and S1 are 90.0% (10k/11k) and 95.7%
+ * The computed voltage levels of S0 and S1 are 90.9% (10k/11k) and 95.7%
  * (22k/23k) respectively. Since the ATtiny85 has a 10-bit ADC, the highest
  * value, with an open circuit (no switch pressed), is 1023. So the analogRead()
  * values are 930 and 979. Using examples/LadderButtonCalibrator, we find that
