@@ -1,13 +1,21 @@
 /*
- * A demo of 2 AceButtons using a single ButtonConfig.
+ * Same as examples/SingleButton but using ButtonConfigFast1<PIN> instead of
+ * ButtonConfig. Using the digitalWriteFast.h library saves 450 bytes (3608 ->
+ * 3158) on an ATmega328 and 146 bytes (2722 -> 2576) on an ATtiny85.
  */
 
+#include <Arduino.h>
 #include <AceButton.h>
+#include <digitalWriteFast.h>
+#include <ace_button/fast/ButtonConfigFast1.h>
+
 using namespace ace_button;
 
-// Physical pin numbers attached to the buttons.
-const int BUTTON1_PIN = 2;
-const int BUTTON2_PIN = 3;
+// The physical pin number attached to the button.
+const int BUTTON_PHYSICAL_PIN = 2;
+
+// The virtual pin number attached to the button.
+const uint8_t BUTTON_PIN = 0;
 
 #ifdef ESP32
   // Different ESP32 boards use different pins
@@ -20,10 +28,10 @@ const int BUTTON2_PIN = 3;
 const int LED_ON = HIGH;
 const int LED_OFF = LOW;
 
-// Both buttons automatically use the default System ButtonConfig. The
-// alternative is to call the AceButton::init() method in setup() below.
-AceButton button1(BUTTON1_PIN);
-AceButton button2(BUTTON2_PIN);
+// Use the custom ButtonConfigFast1<> instance instead of the system
+// ButtonConfig.
+ButtonConfigFast1<BUTTON_PHYSICAL_PIN> buttonConfig;
+AceButton button(&buttonConfig, BUTTON_PIN);
 
 // Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
@@ -34,16 +42,16 @@ void setup() {
   while (! Serial); // Wait until Serial is ready - Leonardo/Micro
   Serial.println(F("setup(): begin"));
 
-  // Initialize built-in LED as an output.
-  pinMode(LED_PIN, OUTPUT);
+  // initialize built-in LED as an output
+  pinModeFast(LED_PIN, OUTPUT);
+  digitalWriteFast(LED_PIN, LED_OFF);
 
-  // Buttons use the built-in pull up register.
-  pinMode(BUTTON1_PIN, INPUT_PULLUP);
-  pinMode(BUTTON2_PIN, INPUT_PULLUP);
+  // Button uses the built-in pull up register.
+  pinModeFast(BUTTON_PIN, INPUT_PULLUP);
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
-  ButtonConfig* buttonConfig = ButtonConfig::getSystemButtonConfig();
+  ButtonConfig* buttonConfig = button.getButtonConfig();
   buttonConfig->setEventHandler(handleEvent);
   buttonConfig->setFeature(ButtonConfig::kFeatureClick);
   buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
@@ -51,11 +59,8 @@ void setup() {
   buttonConfig->setFeature(ButtonConfig::kFeatureRepeatPress);
 
   // Check if the button was pressed while booting
-  if (button1.isPressedRaw()) {
-    Serial.println(F("setup(): button 1 was pressed while booting"));
-  }
-  if (button2.isPressedRaw()) {
-    Serial.println(F("setup(): button 2 was pressed while booting"));
+  if (button.isPressedRaw()) {
+    Serial.println(F("setup(): button was pressed while booting"));
   }
 
   Serial.println(F("setup(): ready"));
@@ -64,39 +69,28 @@ void setup() {
 void loop() {
   // Should be called every 4-5ms or faster, for the default debouncing time
   // of ~20ms.
-  button1.check();
-  button2.check();
+  button.check();
 }
 
-// The event handler for both buttons.
-void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+// The event handler for the button.
+void handleEvent(AceButton* /* button */, uint8_t eventType,
+    uint8_t buttonState) {
 
-  // Print out a message for all events, for both buttons.
-  Serial.print(F("handleEvent(): pin: "));
-  Serial.print(button->getPin());
-  Serial.print(F("; eventType: "));
+  // Print out a message for all events.
+  Serial.print(F("handleEvent(): eventType: "));
   Serial.print(eventType);
   Serial.print(F("; buttonState: "));
   Serial.println(buttonState);
 
-  // Control the LED only for the Pressed and Released events of Button 1.
+  // Control the LED only for the Pressed and Released events.
   // Notice that if the MCU is rebooted while the button is pressed down, no
   // event is triggered and the LED remains off.
   switch (eventType) {
     case AceButton::kEventPressed:
-      if (button->getPin() == BUTTON1_PIN) {
-        digitalWrite(LED_PIN, LED_ON);
-      }
+      digitalWriteFast(LED_PIN, LED_ON);
       break;
     case AceButton::kEventReleased:
-      if (button->getPin() == BUTTON1_PIN) {
-        digitalWrite(LED_PIN, LED_OFF);
-      }
-      break;
-    case AceButton::kEventClicked:
-      if (button->getPin() == BUTTON2_PIN) {
-        Serial.println(F("Button 2 clicked!"));
-      }
+      digitalWriteFast(LED_PIN, LED_OFF);
       break;
   }
 }

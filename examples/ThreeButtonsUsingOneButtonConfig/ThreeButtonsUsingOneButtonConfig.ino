@@ -1,5 +1,5 @@
 /*
- * A demo of 2 AceButtons using a single ButtonConfig.
+ * A demo of 3 AceButtons using a single ButtonConfig.
  */
 
 #include <AceButton.h>
@@ -8,6 +8,7 @@ using namespace ace_button;
 // Physical pin numbers attached to the buttons.
 const int BUTTON1_PIN = 2;
 const int BUTTON2_PIN = 3;
+const int BUTTON3_PIN = 4;
 
 #ifdef ESP32
   // Different ESP32 boards use different pins
@@ -24,6 +25,7 @@ const int LED_OFF = LOW;
 // alternative is to call the AceButton::init() method in setup() below.
 AceButton button1(BUTTON1_PIN);
 AceButton button2(BUTTON2_PIN);
+AceButton button3(BUTTON3_PIN);
 
 // Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
@@ -40,6 +42,7 @@ void setup() {
   // Buttons use the built-in pull up register.
   pinMode(BUTTON1_PIN, INPUT_PULLUP);
   pinMode(BUTTON2_PIN, INPUT_PULLUP);
+  pinMode(BUTTON3_PIN, INPUT_PULLUP);
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
@@ -57,6 +60,9 @@ void setup() {
   if (button2.isPressedRaw()) {
     Serial.println(F("setup(): button 2 was pressed while booting"));
   }
+  if (button3.isPressedRaw()) {
+    Serial.println(F("setup(): button 3 was pressed while booting"));
+  }
 
   Serial.println(F("setup(): ready"));
 }
@@ -66,6 +72,7 @@ void loop() {
   // of ~20ms.
   button1.check();
   button2.check();
+  button3.check();
 }
 
 // The event handler for both buttons.
@@ -96,6 +103,8 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
     case AceButton::kEventClicked:
       if (button->getPin() == BUTTON2_PIN) {
         Serial.println(F("Button 2 clicked!"));
+      } else if (button->getPin() == BUTTON3_PIN) {
+        Serial.println(F("Button 3 clicked!"));
       }
       break;
   }

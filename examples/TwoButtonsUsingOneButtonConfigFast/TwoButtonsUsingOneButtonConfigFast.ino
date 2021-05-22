@@ -1,13 +1,21 @@
 /*
- * A demo of 2 AceButtons using a single ButtonConfig.
+ * A demo of 2 AceButtons using a single ButtonConfigFast2. Compared to
+ * TwoButtonsUsingOneButtonConfig, this saves about 430 bytes (3732 -> 3302) of
+ * flash on an ATmega328, and 234 bytes (2940 -> 2706) on an ATtiny85.
  */
 
 #include <AceButton.h>
+#include <digitalWriteFast.h>
+#include <ace_button/fast/ButtonConfigFast2.h>
 using namespace ace_button;
 
 // Physical pin numbers attached to the buttons.
-const int BUTTON1_PIN = 2;
-const int BUTTON2_PIN = 3;
+const uint8_t BUTTON1_PHYSICAL_PIN = 2;
+const uint8_t BUTTON2_PHYSICAL_PIN = 3;
+
+// Virtual pin numbers attached to the buttons.
+const uint8_t BUTTON1_PIN = 0;
+const uint8_t BUTTON2_PIN = 1;
 
 #ifdef ESP32
   // Different ESP32 boards use different pins
@@ -22,8 +30,9 @@ const int LED_OFF = LOW;
 
 // Both buttons automatically use the default System ButtonConfig. The
 // alternative is to call the AceButton::init() method in setup() below.
-AceButton button1(BUTTON1_PIN);
-AceButton button2(BUTTON2_PIN);
+ButtonConfigFast2<BUTTON1_PHYSICAL_PIN, BUTTON2_PHYSICAL_PIN> buttonConfig;
+AceButton button1(&buttonConfig, BUTTON1_PIN);
+AceButton button2(&buttonConfig, BUTTON2_PIN);
 
 // Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
@@ -35,20 +44,19 @@ void setup() {
   Serial.println(F("setup(): begin"));
 
   // Initialize built-in LED as an output.
-  pinMode(LED_PIN, OUTPUT);
+  pinModeFast(LED_PIN, OUTPUT);
 
   // Buttons use the built-in pull up register.
-  pinMode(BUTTON1_PIN, INPUT_PULLUP);
-  pinMode(BUTTON2_PIN, INPUT_PULLUP);
+  pinModeFast(BUTTON1_PIN, INPUT_PULLUP);
+  pinModeFast(BUTTON2_PIN, INPUT_PULLUP);
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
-  ButtonConfig* buttonConfig = ButtonConfig::getSystemButtonConfig();
-  buttonConfig->setEventHandler(handleEvent);
-  buttonConfig->setFeature(ButtonConfig::kFeatureClick);
-  buttonConfig->setFeature(ButtonConfig::kFeatureDoubleClick);
-  buttonConfig->setFeature(ButtonConfig::kFeatureLongPress);
-  buttonConfig->setFeature(ButtonConfig::kFeatureRepeatPress);
+  buttonConfig.setEventHandler(handleEvent);
+  buttonConfig.setFeature(ButtonConfig::kFeatureClick);
+  buttonConfig.setFeature(ButtonConfig::kFeatureDoubleClick);
+  buttonConfig.setFeature(ButtonConfig::kFeatureLongPress);
+  buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
 
   // Check if the button was pressed while booting
   if (button1.isPressedRaw()) {
@@ -85,12 +93,12 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
   switch (eventType) {
     case AceButton::kEventPressed:
       if (button->getPin() == BUTTON1_PIN) {
-        digitalWrite(LED_PIN, LED_ON);
+        digitalWriteFast(LED_PIN, LED_ON);
       }
       break;
     case AceButton::kEventReleased:
       if (button->getPin() == BUTTON1_PIN) {
-        digitalWrite(LED_PIN, LED_OFF);
+        digitalWriteFast(LED_PIN, LED_OFF);
       }
       break;
     case AceButton::kEventClicked:
