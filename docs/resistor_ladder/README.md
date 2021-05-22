@@ -28,7 +28,6 @@ single analog line.
 * [Examples](#Examples)
     * [LadderButtons](#LadderButtons)
     * [LadderButtonsTiny](#LadderButtonsTiny)
-* [LadderButtons Example](#LadderButtonsExample)
 * [Level Matching Tolerance Range](#LevelMatchingTolerance)
 * [Ladder Button Calibrator](#LadderButtonCalibrator)
 * [Appendix](#Appendix)
@@ -332,7 +331,7 @@ advanced usage which seems out of scope for this documentation.
 <a name="Examples"></a>
 ## Examples
 
-<a name="LadderButtonsExample"></a>
+<a name="LadderButtons"></a>
 ### LadderButtons
 
 The example code [LadderButtons](../../examples/LadderButtons/) looks something
@@ -456,40 +455,40 @@ voltage level remains above 0.9 Vcc.
 
 The LadderButtonsTiny program shows that it is possible to connect 2 buttons
 through a resistor ladder on the RESET pin, with one button configured to
-trigger at the 90% level, and the other button configured to trigger at the 95%
+trigger at the 91% level, and the other button configured to trigger at the 95%
 level.
 
 The wiring diagram looks like this:
 
-```
-    ATtiny85
-  +-----------+
-+-|RST/A0  VCC|-+
-| |D3/A3 A1/D2| |
-| |D4/D2    D1| |
-| |GND      D0|-|-- R -- LED --+
-| +-----------+ |              |
-|               |              |
-|              1k             GND
-|               |
-+-----------+---+---+
-            |       |
-           10k     22k
-            |       |
-            +       +
-           /       /
-          v  S0   v  S1
-            x       x
-            |       |
-            +-------+
-                |
-               GND
+![LadderButtonsTiny](ladder_buttons_tiny.png)
+
+With the resistor values shown above (1k, 10k, and 22k), button S0 corresponds
+to 90.9% (10k/11k) and `analogRead()` should return a value of 933. Button S1
+corresponds to 95.7% (22k/23k) and should return a value of 978. The actual
+values observed using the LadderButtonCalibrator (see below) are 933 and 980
+respectively. The button configurations look like:
+
+```C++
+static const uint8_t NUM_BUTTONS = 2;
+static AceButton b0((uint8_t) 0);
+static AceButton b1(1);
+static AceButton* const BUTTONS[NUM_BUTTONS] = { &b0, &b1 };
+
+static const uint8_t NUM_LEVELS = NUM_BUTTONS + 1;
+static const uint16_t LEVELS[NUM_LEVELS] = {
+  933 /* 91.2%, 10 kohm */,
+  980 /* 95.8%, 22 kohm */,
+  1023 /* 100%, open circuit */,
+};
+
+static LadderButtonConfig buttonConfig(
+  BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, BUTTONS
+);
 ```
 
-With the resistor values shown above (1k, 10k, and 22k), S0 corresponds to 90.9%
-(10k/11k), and S1 corresponds to 95.7% (22k/23k). Since the ATtiny85 does not
-have a Serial port, the `LadderButtonsTiny` uses a single LED connected to the
-D0 pin, and blinks differently depending on the button that was pressed:
+Since the ATtiny85 does not have a Serial port, the `LadderButtonsTiny` uses a
+single LED connected to the D0 pin, and blinks differently depending on the
+button that was pressed:
 
 * blink once every 1.5 seconds if no button is pressed,
 * blink twice every 1.5 seconds if S0 is pressed,
