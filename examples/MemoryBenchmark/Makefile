@@ -15,6 +15,9 @@ README.md: $(TARGETS) generate_readme.py generate_table.awk
 
 benchmarks: $(TARGETS)
 
+attiny.txt:
+	./collect.sh attiny $@
+
 nano.txt:
 	./collect.sh nano $@
 

@@ -3,6 +3,8 @@
 * Unreleased
     * Split [LadderButtonCalibrator](examples/LadderButtonCalibrator)
       from [LadderButtons](examples/LadderButtons) for convenience.
+    * Add preliminary support for ATtiny85 using
+      [SpenceKonde/ATTinyCore](https://github.com/SpenceKonde/ATTinyCore).
     * Add [LadderButtonsTiny](examples/LadderButtonsTiny), a demo of attaching
       2 buttons to the `RESET/A0` pin of the ATtiny85 micrcontroller using
       a resistor ladder. This avoids wasting the RESET pin, freeing the other 5

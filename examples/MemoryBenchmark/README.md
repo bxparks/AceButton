@@ -99,6 +99,27 @@ implementation of `analogRead()` in v1.0.5. See
 https://github.com/espressif/arduino-esp32/issues/4973 and
 https://github.com/espressif/arduino-esp32/pull/3377.
 
+## ATtiny85
+
+* 8MHz ATtiny85
+* Arduino IDE 1.8.13
+* SpenceKonde ATTinyCore 1.5.2
+
+```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| Baseline                        |    406/   11 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| ButtonConfig                    |   1524/   49 |  1118/   38 |
+| Encoded4To2ButtonConfig         |   1788/   80 |  1382/   69 |
+| Encoded8To3ButtonConfig         |   2046/  137 |  1640/  126 |
+| EncodedButtonConfig             |   2120/  184 |  1714/  173 |
+| LadderButtonConfig              |   2044/  197 |  1638/  186 |
++--------------------------------------------------------------+
+
+```
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
