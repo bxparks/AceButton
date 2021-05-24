@@ -12,7 +12,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.8.3
+**Version**: AceButton v1.8.3+
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -99,6 +99,10 @@ implementation of `analogRead()` in v1.0.5. See
 https://github.com/espressif/arduino-esp32/issues/4973 and
 https://github.com/espressif/arduino-esp32/pull/3377.
 
+In v1.8.3+, added `ButtonConfigFast1`, `ButtonConfigFast2`, and
+`ButtonConfigFast3` to support `digitalWriteFast.h` libraries. Uses flash
+consumption on AVR processors from 100 to 400 bytes.
+
 ## ATtiny85
 
 * 8MHz ATtiny85
@@ -112,6 +116,9 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 | Baseline                        |    406/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |   1554/   51 |  1148/   40 |
+| ButtonConfigFast1               |   1450/   51 |  1044/   40 |
+| ButtonConfigFast2               |   1408/   65 |  1002/   54 |
+| ButtonConfigFast3               |   1454/   79 |  1048/   68 |
 | Encoded4To2ButtonConfig         |   1812/   82 |  1406/   71 |
 | Encoded8To3ButtonConfig         |   2070/  139 |  1664/  128 |
 | EncodedButtonConfig             |   2118/  162 |  1712/  151 |
@@ -133,6 +140,9 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 | Baseline                        |    610/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |   1946/   51 |  1336/   40 |
+| ButtonConfigFast1               |   1662/   51 |  1052/   40 |
+| ButtonConfigFast2               |   1630/   65 |  1020/   54 |
+| ButtonConfigFast3               |   1678/   79 |  1068/   68 |
 | Encoded4To2ButtonConfig         |   2160/   82 |  1550/   71 |
 | Encoded8To3ButtonConfig         |   2428/  139 |  1818/  128 |
 | EncodedButtonConfig             |   2474/  162 |  1864/  151 |
@@ -154,6 +164,9 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 | Baseline                        |   3558/  151 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |   4950/  191 |  1392/   40 |
+| ButtonConfigFast1               |   4548/  191 |   990/   40 |
+| ButtonConfigFast2               |   4512/  205 |   954/   54 |
+| ButtonConfigFast3               |   4560/  219 |  1002/   68 |
 | Encoded4To2ButtonConfig         |   5166/  222 |  1608/   71 |
 | Encoded8To3ButtonConfig         |   5434/  279 |  1876/  128 |
 | EncodedButtonConfig             |   5494/  300 |  1936/  149 |
@@ -175,6 +188,9 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 | Baseline                        |  10072/    0 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |  11344/    0 |  1272/    0 |
+| ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
 | Encoded4To2ButtonConfig         |  11600/    0 |  1528/    0 |
 | Encoded8To3ButtonConfig         |  11744/    0 |  1672/    0 |
 | EncodedButtonConfig             |  11824/    0 |  1752/    0 |
@@ -196,6 +212,9 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 | Baseline                        | 256924/26800 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    | 258424/26840 |  1500/   40 |
+| ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
 | Encoded4To2ButtonConfig         | 258732/26916 |  1808/  116 |
 | Encoded8To3ButtonConfig         | 258876/26980 |  1952/  180 |
 | EncodedButtonConfig             | 259004/27020 |  2080/  220 |
@@ -216,11 +235,14 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        |  19144/ 3788 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  21872/ 3848 |  2728/   60 |
+| ButtonConfig                    |  21860/ 3848 |  2716/   60 |
+| ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
 | Encoded4To2ButtonConfig         |  22024/ 3884 |  2880/   96 |
 | Encoded8To3ButtonConfig         |  22164/ 3948 |  3020/  160 |
-| EncodedButtonConfig             |  22280/ 3980 |  3136/  192 |
-| LadderButtonConfig              |  25076/ 3992 |  5932/  204 |
+| EncodedButtonConfig             |  22228/ 3956 |  3084/  168 |
+| LadderButtonConfig              |  24948/ 3968 |  5804/  180 |
 +--------------------------------------------------------------+
 
 ```
@@ -238,6 +260,9 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 | Baseline                        | 197914/13092 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    | 200822/13344 |  2908/  252 |
+| ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
 | Encoded4To2ButtonConfig         | 201042/13368 |  3128/  276 |
 | Encoded8To3ButtonConfig         | 201170/13432 |  3256/  340 |
 | EncodedButtonConfig             | 201274/13440 |  3360/  348 |
@@ -260,6 +285,9 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 | Baseline                        |   7632/ 3048 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |  12624/ 4200 |  4992/ 1152 |
+| ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
 | Encoded4To2ButtonConfig         |  12872/ 4260 |  5240/ 1212 |
 | Encoded8To3ButtonConfig         |  13020/ 4324 |  5388/ 1276 |
 | EncodedButtonConfig             |  13060/ 4332 |  5428/ 1284 |
