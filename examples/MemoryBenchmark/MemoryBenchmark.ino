@@ -10,10 +10,13 @@
 // List of features of the AceButton library that we want to examine.
 #define FEATURE_BASELINE 0
 #define FEATURE_BUTTON_CONFIG 1
-#define FEATURE_ENCODED_4TO2_BUTTON_CONFIG 2
-#define FEATURE_ENCODED_8TO3_BUTTON_CONFIG 3
-#define FEATURE_ENCODED_BUTTON_CONFIG 4
-#define FEATURE_LADDER_BUTTON_CONFIG 5
+#define FEATURE_BUTTON_CONFIG_FAST1 2
+#define FEATURE_BUTTON_CONFIG_FAST2 3
+#define FEATURE_BUTTON_CONFIG_FAST3 4
+#define FEATURE_ENCODED_4TO2_BUTTON_CONFIG 5
+#define FEATURE_ENCODED_8TO3_BUTTON_CONFIG 6
+#define FEATURE_ENCODED_BUTTON_CONFIG 7
+#define FEATURE_LADDER_BUTTON_CONFIG 8
 
 // Select one of the FEATURE_* parameters and compile. Then look at the flash
 // and RAM usage, compared to FEATURE_BASELINE usage to determine how much
@@ -39,6 +42,59 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
 #if FEATURE == FEATURE_BUTTON_CONFIG
   static const int BUTTON_PIN = 2;
   AceButton button(BUTTON_PIN);
+
+#elif FEATURE == FEATURE_BUTTON_CONFIG_FAST1
+  #if ! defined(ARDUINO_ARCH_AVR) && ! defined(EPOXY_DUINO)
+    #error Unsupported FEATURE on this platform
+  #endif
+
+  #include <digitalWriteFast.h>
+  #include <ace_button/fast/ButtonConfigFast1.h>
+
+  static const int BUTTON1_PHYSICAL_PIN = 2;
+  static const int BUTTON1_PIN = 0;
+  ButtonConfigFast1<BUTTON1_PHYSICAL_PIN> buttonConfig;
+  AceButton button1(&buttonConfig, BUTTON1_PIN);
+
+#elif FEATURE == FEATURE_BUTTON_CONFIG_FAST2
+  #if ! defined(ARDUINO_ARCH_AVR) && ! defined(EPOXY_DUINO)
+    #error Unsupported FEATURE on this platform
+  #endif
+
+  #include <digitalWriteFast.h>
+  #include <ace_button/fast/ButtonConfigFast2.h>
+
+  static const int BUTTON1_PHYSICAL_PIN = 2;
+  static const int BUTTON2_PHYSICAL_PIN = 3;
+  static const int BUTTON1_PIN = 0;
+  static const int BUTTON2_PIN = 1;
+  ButtonConfigFast2<BUTTON1_PHYSICAL_PIN, BUTTON2_PHYSICAL_PIN> buttonConfig;
+  AceButton button1(&buttonConfig, BUTTON1_PIN);
+  AceButton button2(&buttonConfig, BUTTON2_PIN);
+
+#elif FEATURE == FEATURE_BUTTON_CONFIG_FAST3
+  #if ! defined(ARDUINO_ARCH_AVR) && ! defined(EPOXY_DUINO)
+    #error Unsupported FEATURE on this platform
+  #endif
+
+  #include <digitalWriteFast.h>
+  #include <ace_button/fast/ButtonConfigFast3.h>
+
+  static const int BUTTON1_PHYSICAL_PIN = 2;
+  static const int BUTTON2_PHYSICAL_PIN = 3;
+  static const int BUTTON3_PHYSICAL_PIN = 4;
+  static const int BUTTON1_PIN = 0;
+  static const int BUTTON2_PIN = 1;
+  static const int BUTTON3_PIN = 2;
+  ButtonConfigFast3<
+      BUTTON1_PHYSICAL_PIN,
+      BUTTON2_PHYSICAL_PIN,
+      BUTTON3_PHYSICAL_PIN
+  > buttonConfig;
+  AceButton button1(&buttonConfig, BUTTON1_PIN);
+  AceButton button2(&buttonConfig, BUTTON2_PIN);
+  AceButton button3(&buttonConfig, BUTTON3_PIN);
+
 #elif FEATURE == FEATURE_ENCODED_4TO2_BUTTON_CONFIG
   static const uint8_t BUTTON_PIN0 = 2;
   static const uint8_t BUTTON_PIN1 = 3;
@@ -47,6 +103,7 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
   AceButton b1(&buttonConfig, 1);
   AceButton b2(&buttonConfig, 2);
   AceButton b3(&buttonConfig, 3);
+
 #elif FEATURE == FEATURE_ENCODED_8TO3_BUTTON_CONFIG
   static const uint8_t BUTTON_PIN0 = 2;
   static const uint8_t BUTTON_PIN1 = 3;
@@ -60,6 +117,7 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
   AceButton b5(&buttonConfig, 5);
   AceButton b6(&buttonConfig, 6);
   AceButton b7(&buttonConfig, 7);
+
 #elif FEATURE == FEATURE_ENCODED_BUTTON_CONFIG
   static const uint8_t NUM_PINS = 3;
   static const uint8_t PINS[] = {2, 3, 4};
@@ -78,6 +136,7 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
   static EncodedButtonConfig buttonConfig(
     NUM_PINS, PINS, NUM_BUTTONS, BUTTONS
   );
+
 #elif FEATURE == FEATURE_LADDER_BUTTON_CONFIG
   static const uint8_t NUM_PINS = 3;
   static const uint8_t PINS[] = {2, 3, 4};
@@ -116,6 +175,15 @@ void setup() {
 
 #if FEATURE == FEATURE_BUTTON_CONFIG
   pinMode(BUTTON_PIN, INPUT_PULLUP);
+#elif FEATURE == FEATURE_BUTTON_CONFIG_FAST1
+  pinModeFast(BUTTON1_PIN, INPUT_PULLUP);
+#elif FEATURE == FEATURE_BUTTON_CONFIG_FAST2
+  pinModeFast(BUTTON1_PIN, INPUT_PULLUP);
+  pinModeFast(BUTTON2_PIN, INPUT_PULLUP);
+#elif FEATURE == FEATURE_BUTTON_CONFIG_FAST3
+  pinModeFast(BUTTON1_PIN, INPUT_PULLUP);
+  pinModeFast(BUTTON2_PIN, INPUT_PULLUP);
+  pinModeFast(BUTTON3_PIN, INPUT_PULLUP);
 #elif FEATURE == FEATURE_ENCODED_4TO2_BUTTON_CONFIG
   pinMode(BUTTON_PIN0, INPUT_PULLUP);
   pinMode(BUTTON_PIN1, INPUT_PULLUP);
@@ -154,6 +222,15 @@ void loop() {
   disableCompilerOptimization++;
 #elif FEATURE == FEATURE_BUTTON_CONFIG
   button.check();
+#elif FEATURE == FEATURE_BUTTON_CONFIG_FAST1
+  button1.check();
+#elif FEATURE == FEATURE_BUTTON_CONFIG_FAST2
+  button1.check();
+  button2.check();
+#elif FEATURE == FEATURE_BUTTON_CONFIG_FAST3
+  button1.check();
+  button2.check();
+  button3.check();
 #elif FEATURE == FEATURE_ENCODED_4TO2_BUTTON_CONFIG
   b1.check();
   b2.check();

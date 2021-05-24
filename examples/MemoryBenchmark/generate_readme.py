@@ -38,7 +38,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.8.3
+**Version**: AceButton v1.8.3+
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -124,6 +124,10 @@ factor of 2.5X (24 micros to 67 micros). It looks like they changed the
 implementation of `analogRead()` in v1.0.5. See
 https://github.com/espressif/arduino-esp32/issues/4973 and
 https://github.com/espressif/arduino-esp32/pull/3377.
+
+In v1.8.3+, added `ButtonConfigFast1`, `ButtonConfigFast2`, and
+`ButtonConfigFast3` to support `digitalWriteFast.h` libraries. Uses flash
+consumption on AVR processors from 100 to 400 bytes.
 
 ## ATtiny85
 
