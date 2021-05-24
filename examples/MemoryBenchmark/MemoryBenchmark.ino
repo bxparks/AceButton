@@ -1,26 +1,32 @@
 /*
  * A program which compiles in different ButtonConfig instances so that the
  * flash and static memory sizes can be extract from the output of the compiler.
- * Set the FEATURE macro to various integer to compile different parts of the
+ * Set the FEATURE macro to various integers to compile different parts of the
  * AceButton library.
  */
 
 #include <Arduino.h>
 
-// Set this to [0..n] to extract the flash and static memory usage.
-// 0 - baseline
-// 1 - ButtonConfig
-// 2 - Encoded4To2ButtonConfig
-// 3 - Encoded8To3ButtonConfig
-// 4 - EncodedButtonConfig
-// 5 - LadderButtonConfig
+// List of features of the AceButton library that we want to examine.
+#define FEATURE_BASELINE 0
+#define FEATURE_BUTTON_CONFIG 1
+#define FEATURE_ENCODED_4TO2_BUTTON_CONFIG 2
+#define FEATURE_ENCODED_8TO3_BUTTON_CONFIG 3
+#define FEATURE_ENCODED_BUTTON_CONFIG 4
+#define FEATURE_LADDER_BUTTON_CONFIG 5
+
+// Select one of the FEATURE_* parameters and compile. Then look at the flash
+// and RAM usage, compared to FEATURE_BASELINE usage to determine how much
+// flash and RAM is consumed by the selected feature.
+// NOTE: This line is modified by a 'sed' script in collect.sh. Be careful
+// when modifying its format.
 #define FEATURE 0
 
 // A volatile integer to prevent the compiler from optimizing away the entire
 // program.
 volatile int disableCompilerOptimization = 0;
 
-#if FEATURE != 0
+#if FEATURE != FEATURE_BASELINE
   #include <AceButton.h>
   using namespace ace_button;
 
@@ -30,10 +36,10 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
 }
 #endif
 
-#if FEATURE == 1
+#if FEATURE == FEATURE_BUTTON_CONFIG
   static const int BUTTON_PIN = 2;
   AceButton button(BUTTON_PIN);
-#elif FEATURE == 2
+#elif FEATURE == FEATURE_ENCODED_4TO2_BUTTON_CONFIG
   static const uint8_t BUTTON_PIN0 = 2;
   static const uint8_t BUTTON_PIN1 = 3;
   Encoded4To2ButtonConfig buttonConfig(BUTTON_PIN0, BUTTON_PIN1);
@@ -41,7 +47,7 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
   AceButton b1(&buttonConfig, 1);
   AceButton b2(&buttonConfig, 2);
   AceButton b3(&buttonConfig, 3);
-#elif FEATURE == 3
+#elif FEATURE == FEATURE_ENCODED_8TO3_BUTTON_CONFIG
   static const uint8_t BUTTON_PIN0 = 2;
   static const uint8_t BUTTON_PIN1 = 3;
   static const uint8_t BUTTON_PIN2 = 4;
@@ -54,7 +60,7 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
   AceButton b5(&buttonConfig, 5);
   AceButton b6(&buttonConfig, 6);
   AceButton b7(&buttonConfig, 7);
-#elif FEATURE == 4
+#elif FEATURE == FEATURE_ENCODED_BUTTON_CONFIG
   static const uint8_t NUM_PINS = 3;
   static const uint8_t PINS[] = {2, 3, 4};
   static const uint8_t NUM_BUTTONS = 7;
@@ -72,7 +78,7 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
   static EncodedButtonConfig buttonConfig(
     NUM_PINS, PINS, NUM_BUTTONS, BUTTONS
   );
-#elif FEATURE == 5
+#elif FEATURE == FEATURE_LADDER_BUTTON_CONFIG
   static const uint8_t NUM_PINS = 3;
   static const uint8_t PINS[] = {2, 3, 4};
   static const uint8_t NUM_BUTTONS = 7;
@@ -108,32 +114,32 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
 void setup() {
   delay(2000);
 
-#if FEATURE == 1
+#if FEATURE == FEATURE_BUTTON_CONFIG
   pinMode(BUTTON_PIN, INPUT_PULLUP);
-#elif FEATURE == 2
+#elif FEATURE == FEATURE_ENCODED_4TO2_BUTTON_CONFIG
   pinMode(BUTTON_PIN0, INPUT_PULLUP);
   pinMode(BUTTON_PIN1, INPUT_PULLUP);
-#elif FEATURE == 3
+#elif FEATURE == FEATURE_ENCODED_8TO3_BUTTON_CONFIG
   pinMode(BUTTON_PIN0, INPUT_PULLUP);
   pinMode(BUTTON_PIN1, INPUT_PULLUP);
   pinMode(BUTTON_PIN2, INPUT_PULLUP);
-#elif FEATURE == 4
+#elif FEATURE == FEATURE_ENCODED_BUTTON_CONFIG
   pinMode(PINS[0], INPUT_PULLUP);
   pinMode(PINS[1], INPUT_PULLUP);
   pinMode(PINS[2], INPUT_PULLUP);
-#elif FEATURE == 5
+#elif FEATURE == FEATURE_LADDER_BUTTON_CONFIG
   pinMode(ANALOG_BUTTON_PIN, INPUT);
 #endif
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
-#if FEATURE == 1
+#if FEATURE == FEATURE_BUTTON_CONFIG
   ButtonConfig* config = button.getButtonConfig();
-#elif FEATURE != 0
+#elif FEATURE > FEATURE_BUTTON_CONFIG
   ButtonConfig* config = &buttonConfig;
 #endif
 
-#if FEATURE != 0
+#if FEATURE != FEATURE_BASELINE
   config->setEventHandler(handleEvent);
   config->setFeature(ButtonConfig::kFeatureClick);
   config->setFeature(ButtonConfig::kFeatureDoubleClick);
@@ -144,15 +150,15 @@ void setup() {
 }
 
 void loop() {
-#if FEATURE == 0
+#if FEATURE == FEATURE_BASELINE
   disableCompilerOptimization++;
-#elif FEATURE == 1
+#elif FEATURE == FEATURE_BUTTON_CONFIG
   button.check();
-#elif FEATURE == 2
+#elif FEATURE == FEATURE_ENCODED_4TO2_BUTTON_CONFIG
   b1.check();
   b2.check();
   b3.check();
-#elif FEATURE == 3
+#elif FEATURE == FEATURE_ENCODED_8TO3_BUTTON_CONFIG
   b1.check();
   b2.check();
   b3.check();
@@ -160,9 +166,9 @@ void loop() {
   b5.check();
   b6.check();
   b7.check();
-#elif FEATURE == 4
+#elif FEATURE == FEATURE_ENCODED_BUTTON_CONFIG
   buttonConfig.checkButtons();
-#elif FEATURE == 5
+#elif FEATURE == FEATURE_LADDER_BUTTON_CONFIG
   buttonConfig.checkButtons();
 #endif
 }
