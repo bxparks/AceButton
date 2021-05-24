@@ -20,6 +20,10 @@
       `examples/Encoded8To3Buttons` to make the usage of the
       `Encoded4To2ButtonConfig` and `Encoded8To3ButtonConfig` classes more
       clear.
+    * Add `ButtonConfigFast1`, `ButtonConfigFast2`, and `ButtonConfigFast3`.
+        * Implementations of `ButtonConfig` which use the `digitalWriteFast`
+          library.
+        * Saves 100-400 bytes of flash on AVR processors.
 * 1.8.3 (2021-04-18)
     * AceButton now has a
       [GitHub Discussion](https://github.com/bxparks/AceButton/discussions).

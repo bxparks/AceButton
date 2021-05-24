@@ -24,22 +24,25 @@
  *
  *       ATtiny85
  *     +-----------+
- *   +-|RST/A0  VCC|-+
- *   | |D3/A3 A1/D2| |
- *   | |D4/D2    D1| |
- *   | |GND      D0|-|-- R -- LED --+
- *   | +-----------+ |              |
- *   |               |              |
- *   |              1k             GND
+ *   +-|RST/A0  VCC|---------------+
+ *   | |D3/A3 A1/D2|               |
+ *   | |D4/D2    D1|               |
+ *   | |GND      D0|-- R -- LED    |
+ *   | +-----------+         |     |
+ *   |                      GND    |
+ *   |                             |
+ *   |               +-------------+
+ *   |               |
+ *   |              1k
  *   |               |
  *   +-----------+---+---+
  *               |       |
  *              10k     22k
  *               |       |
- *               +       +
+ *               *       *
  *              /       /
  *             v  S0   v  S1
- *               x       x
+ *               *       *
  *               |       |
  *               +-------+
  *                   |
@@ -56,6 +59,12 @@
  * to the Serial object. The simplest way to send feedback about which button
  * was pressed is through an LED connected to one of the pins. This program
  * assumes that such an LED is connect to one of the digital output pins.
+ *
+ * DigitalWriteFast: I tried converting this program to use the digitalWriteFast
+ * library. LadderButtonConfig uses analogRead() which is not supported by
+ * digitalWriteFast. We can convert the digitalWrite() and pinMode() calls below
+ * to digitalWriteFast() and pinModeFast(). The difference is only about 50
+ * bytes of flash, so this conversion does not seem worth the effort.
  */
 
 #include <stdint.h>
