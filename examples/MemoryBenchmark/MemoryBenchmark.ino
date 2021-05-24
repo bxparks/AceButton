@@ -58,13 +58,14 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
   static const uint8_t NUM_PINS = 3;
   static const uint8_t PINS[] = {2, 3, 4};
   static const uint8_t NUM_BUTTONS = 7;
-  static AceButton b01(1);
-  static AceButton b02(2);
-  static AceButton b03(3);
-  static AceButton b04(4);
-  static AceButton b05(5);
-  static AceButton b06(6);
-  static AceButton b07(7);
+  // button 0 cannot be used because it represents "no button pressed"
+  static AceButton b01(nullptr, 1);
+  static AceButton b02(nullptr, 2);
+  static AceButton b03(nullptr, 3);
+  static AceButton b04(nullptr, 4);
+  static AceButton b05(nullptr, 5);
+  static AceButton b06(nullptr, 6);
+  static AceButton b07(nullptr, 7);
   static AceButton* const BUTTONS[NUM_BUTTONS] = {
       &b01, &b02, &b03, &b04, &b05, &b06, &b07,
   };
@@ -75,15 +76,16 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
   static const uint8_t NUM_PINS = 3;
   static const uint8_t PINS[] = {2, 3, 4};
   static const uint8_t NUM_BUTTONS = 7;
-  static AceButton b01(1);
-  static AceButton b02(2);
-  static AceButton b03(3);
-  static AceButton b04(4);
-  static AceButton b05(5);
-  static AceButton b06(6);
-  static AceButton b07(7);
+  static AceButton b00(nullptr, 0);
+  static AceButton b01(nullptr, 1);
+  static AceButton b02(nullptr, 2);
+  static AceButton b03(nullptr, 3);
+  static AceButton b04(nullptr, 4);
+  static AceButton b05(nullptr, 5);
+  static AceButton b06(nullptr, 6);
+  // button 7 cannot be used because it represents "no button pressed"
   static AceButton* const BUTTONS[NUM_BUTTONS] = {
-      &b01, &b02, &b03, &b04, &b05, &b06, &b07,
+      &b00, &b01, &b02, &b03, &b04, &b05, &b06,
   };
 
   static const int ANALOG_BUTTON_PIN = A0;
