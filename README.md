@@ -266,23 +266,27 @@ The source files are organized as follows:
 
 The following example sketches are provided:
 
-* [HelloButton.ino](examples/HelloButton)
+* [HelloButton](examples/HelloButton)
     * minimal program that reads a switch and control the built-in LED
-* [SingleButton.ino](examples/SingleButton)
+* [SingleButton](examples/SingleButton)
     * single button wired with an internal pull-up resistor
-* [SingleButtonPullDown.ino](examples/SingleButtonPullDown)
-    * same as SingleButton.ino but with an external pull-down resistor
-* [SingleButtonUsingIEventHandler.ino](examples/SingleButtonUsingIEventHandler)
-    * same as SingleButton.ino using an object-based `IEventHandler`
-* [Stopwatch.ino](examples/Stopwatch)
+* [SingleButtonPullDown](examples/SingleButtonPullDown)
+    * same as `SingleButton` but with an external pull-down resistor
+* [SingleButtonUsingIEventHandler](examples/SingleButtonUsingIEventHandler)
+    * same as `SingleButton` using an object-based `IEventHandler`
+* [Stopwatch](examples/Stopwatch)
     * measures the speed of `AceButton:check()` with a start/stop/reset button
     * uses `kFeatureLongPress`
 * Multiple Buttons
-    * [TwoButtonsUsingOneButtonConfig.ino](examples/TwoButtonsUsingOneButtonConfig)
+    * [TwoButtonsUsingOneButtonConfig](examples/TwoButtonsUsingOneButtonConfig)
         * two buttons using one ButtonConfig
-    * [TwoButtonsUsingTwoButtonConfigs.ino](examples/TwoButtonsUsingTwoButtonConfigs/)
+    * [TwoButtonsUsingTwoButtonConfigs](examples/TwoButtonsUsingTwoButtonConfigs/)
         * two buttons using two ButtonConfigs
-    * [TunerButtons.ino](examples/TunerButtons)
+    * [ThreeButtonsUsingOneButtonConfig](examples/ThreeButtonsUsingOneButtonConfig)
+        * three buttons using one ButtonConfig
+        * used as a reference for `ThreeButtonsUsingOneButtonConfigFast`
+          (below)
+    * [TunerButtons](examples/TunerButtons)
         * implements 5 radio buttons (tune-up, tune-down, and 3 presets)
         * shows multiple `ButtonConfig` and `EventHandler` instances
         * shows an example of how to use `getId()`
@@ -293,15 +297,15 @@ The following example sketches are provided:
         * shows how to define an array of `AceButton` and initialize them using
           the `init()` method in a loop
 * distinguishing Click versus Double-Click
-    * [ClickVersusDoubleClickUsingReleased.ino](examples/ClickVersusDoubleClickUsingReleased)
+    * [ClickVersusDoubleClickUsingReleased](examples/ClickVersusDoubleClickUsingReleased)
         * a way to distinguish between a `kEventClicked` from a
           `kEventDoubleClicked` using a `kEventReleased` instead
-    * [ClickVersusDoubleClickUsingSuppression.ino](examples/ClickVersusDoubleClickUsingSuppression)
+    * [ClickVersusDoubleClickUsingSuppression](examples/ClickVersusDoubleClickUsingSuppression)
         * another way to dstinguish between a `kEventClicked` from a
           `kEventDoubleClicked` using the
           `kFeatureSuppressClickBeforeDoubleClick` flag at the cost of
           increasing the response time of the `kEventClicked` event
-    * [ClickVersusDoubleClickUsingBoth.ino](examples/ClickVersusDoubleClickUsingBoth)
+    * [ClickVersusDoubleClickUsingBoth](examples/ClickVersusDoubleClickUsingBoth)
         * an example that combines both the "UsingPressed" and
           "UsingSuppression" techniques
 * distinguishing Pressed and LongPressed
@@ -333,14 +337,26 @@ The following example sketches are provided:
     * [LadderButtonsTiny](examples/LadderButtonsTiny)
         * 2 buttons on the `RESET/A0` pin of an ATtiny85 microcontroller
         * avoids wasting the RESET pin, saving the other pins for other purposes
+* digitalWriteFast
+    * [SingleButtonFast](examples/SingleButtonFast)
+        * Same as `SingleButton` but using `ButtonConfigFast1<PIN>` which
+          uses the `digitalWriteFast` library
+    * [TwoButtonsUsingOneButtonConfigFast](examples/TwoButtonsUsingOneButtonConfigFast)
+        * Same as `TwoButtonsUsingOneButtonConfig` but using
+          `ButtonConfigFast2<PIN0,PIN1>` which uses the `digitalWriteFast`
+          library
+    * [ThreeButtonsUsingOneButtonConfigFast](examples/ThreeButtonsUsingOneButtonConfigFast)
+        * Same as `ThreeButtonsUsingOneButtonConfig` but using
+          `ButtonConfigFast3<PIN0,PIN1,PIN2>` which uses the `digitalWriteFast`
+          library
 * Benchmarks
     * These are internal benchmark programs. They were not written as examples
       of how to use the library.
-    * [AutoBenchmark.ino](examples/AutoBenchmark)
+    * [AutoBenchmark](examples/AutoBenchmark)
         * generates the timing stats (min/average/max) for the
           `AceButton::check()` method for various types of events (idle,
           press/release, click, double-click, and long-press)
-    * [MemoryBenchmark.ino](examples/MemoryBenchmark/)
+    * [MemoryBenchmark](examples/MemoryBenchmark/)
         * determines the amount of flash memory consumes by various objects and
           features of the library
 
@@ -1204,7 +1220,7 @@ void loop() {
 ```
 
 See the example sketch
-[TwoButtonsUsingTwoButtonConfigs.ino](examples/TwoButtonsUsingTwoButtonConfigs)
+[TwoButtonsUsingTwoButtonConfigs](examples/TwoButtonsUsingTwoButtonConfigs)
 which uses 2 `ButtonConfig` instances to configure 2 `AceButton`
 instances.
 
@@ -1261,7 +1277,7 @@ instances.
 
 Sometimes, it is more convenient to use the `AceButton::getId()` method
 to identify the button instead of the `AceButton::getPin()`.
-See [ArrayButtons.ino](examples/ArrayButtons) for an example.
+See [ArrayButtons](examples/ArrayButtons) for an example.
 
 <a name="AdvancedTopics"></a>
 ## Advanced Topics
