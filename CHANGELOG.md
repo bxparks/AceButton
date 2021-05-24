@@ -9,6 +9,13 @@
       2 buttons to the `RESET/A0` pin of the ATtiny85 micrcontroller using
       a resistor ladder. This avoids wasting the RESET pin, freeing the other 5
       GPIO pins for other purposes.
+    * Update docs and examples for `LadderButtonConfig` and
+      `EncodedButtonConfig` to prevent the creation of the unused
+      SystemButtonConfig.
+        * Uses the 4-parameter `AceButton()` constructor to set the
+          `buttonConfig` parameter explicitly to `nullptr`.
+        * Saves 30 bytes of flash and 26 bytes of RAM on AVR (e.g. ATmega328,
+          ATtiny83) processors.
 * 1.8.3 (2021-04-18)
     * AceButton now has a
       [GitHub Discussion](https://github.com/bxparks/AceButton/discussions).

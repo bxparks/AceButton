@@ -43,11 +43,17 @@ static const uint8_t BUTTON_PIN = A0;
 // 3. Note that we could use an array of `AceButton BUTTONS[NUM_BUTTONS]`, and
 // use a loop in setup() to initialize these buttons. But I think writing this
 // out explicitly is easier to understand for demo purposes.
+//
+// We use the 4-parameter AceButton() constructor with the `buttonConfig`
+// parameter set to `nullptr` to prevent the creation of the default
+// SystemButtonConfig which will never be used. This saves about 30 bytes of
+// flash and 26 bytes of static RAM on an AVR processor.
 static const uint8_t NUM_BUTTONS = 4;
-static AceButton b0((uint8_t) 0);
-static AceButton b1(1);
-static AceButton b2(2);
-static AceButton b3(3);
+static AceButton b0(nullptr, 0);
+static AceButton b1(nullptr, 1);
+static AceButton b2(nullptr, 2);
+static AceButton b3(nullptr, 3);
+// button 4 cannot be used because it represents "no button pressed"
 static AceButton* const BUTTONS[NUM_BUTTONS] = {
     &b0, &b1, &b2, &b3,
 };

@@ -112,9 +112,14 @@ void blinkLed() {
 static const uint8_t BUTTON_PIN = A0; // RESET pin
 
 // Create 2 AceButton objects, with their virtual pin numbers 0 and 1.
+//
+// We use the 4-parameter AceButton() constructor with the `buttonConfig`
+// parameter set to `nullptr` to prevent the creation of the default
+// SystemButtonConfig which will never be used. This saves about 30 bytes of
+// flash and 26 bytes of static RAM on an AVR processor.
 static const uint8_t NUM_BUTTONS = 2;
-static AceButton b0((uint8_t) 0);
-static AceButton b1(1);
+static AceButton b0(nullptr, 0);
+static AceButton b1(nullptr, 1);
 static AceButton* const BUTTONS[NUM_BUTTONS] = { &b0, &b1 };
 
 // Define the ADC voltage levels for each button. For 2 buttons, we need 3

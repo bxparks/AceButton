@@ -22,26 +22,32 @@ static const int LED_OFF = LOW;
 static const uint8_t NUM_PINS = 4;
 static const uint8_t PINS[] = {2, 3, 4, 5};
 
-// Create 15 AceButton objects.
-// Note: we could use an array of AceButton BUTTONS[15], and use a loop to
-// initialize these arrays, but this is more explicit and easier to understand
-// as an example code.
+// Create 15 AceButton objects manually with their virtual pin numbers 1 to 15.
+// We could use an array of AceButton BUTTONS[15], and use a loop to initialize
+// these arrays, but this is more explicit and easier to understand as an
+// example code.
+//
+// We use the 4-parameter AceButton() constructor with the `buttonConfig`
+// parameter set to `nullptr` to prevent the creation of the default
+// SystemButtonConfig which will never be used. This saves about 30 bytes of
+// flash and 26 bytes of static RAM on an AVR processor.
 static const uint8_t NUM_BUTTONS = 15;
-static AceButton b01(1);
-static AceButton b02(2);
-static AceButton b03(3);
-static AceButton b04(4);
-static AceButton b05(5);
-static AceButton b06(6);
-static AceButton b07(7);
-static AceButton b08(8);
-static AceButton b09(9);
-static AceButton b10(10);
-static AceButton b11(11);
-static AceButton b12(12);
-static AceButton b13(13);
-static AceButton b14(14);
-static AceButton b15(15);
+// button 0 cannot be used because it represents "no button pressed"
+static AceButton b01(nullptr, 1);
+static AceButton b02(nullptr, 2);
+static AceButton b03(nullptr, 3);
+static AceButton b04(nullptr, 4);
+static AceButton b05(nullptr, 5);
+static AceButton b06(nullptr, 6);
+static AceButton b07(nullptr, 7);
+static AceButton b08(nullptr, 8);
+static AceButton b09(nullptr, 9);
+static AceButton b10(nullptr, 10);
+static AceButton b11(nullptr, 11);
+static AceButton b12(nullptr, 12);
+static AceButton b13(nullptr, 13);
+static AceButton b14(nullptr, 14);
+static AceButton b15(nullptr, 15);
 static AceButton* const BUTTONS[] = {
     &b01, &b02, &b03, &b04, &b05, &b06, &b07,
     &b08, &b09, &b10, &b11, &b12, &b13, &b14, &b15,
