@@ -103,7 +103,7 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 
 * 8MHz ATtiny85
 * Arduino IDE 1.8.13
-* SpenceKonde ATTinyCore 1.5.2
+* SpenceKonde/ATTinyCore 1.5.2
 
 ```
 +--------------------------------------------------------------+
@@ -111,11 +111,11 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        |    406/   11 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1524/   49 |  1118/   38 |
-| Encoded4To2ButtonConfig         |   1788/   80 |  1382/   69 |
-| Encoded8To3ButtonConfig         |   2046/  137 |  1640/  126 |
-| EncodedButtonConfig             |   2120/  184 |  1714/  173 |
-| LadderButtonConfig              |   2044/  197 |  1638/  186 |
+| ButtonConfig                    |   1554/   51 |  1148/   40 |
+| Encoded4To2ButtonConfig         |   1812/   82 |  1406/   71 |
+| Encoded8To3ButtonConfig         |   2070/  139 |  1664/  128 |
+| EncodedButtonConfig             |   2148/  188 |  1742/  177 |
+| LadderButtonConfig              |   2072/  201 |  1666/  190 |
 +--------------------------------------------------------------+
 
 ```
@@ -174,11 +174,11 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        |  10072/    0 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  11360/    0 |  1288/    0 |
+| ButtonConfig                    |  11344/    0 |  1272/    0 |
 | Encoded4To2ButtonConfig         |  11600/    0 |  1528/    0 |
 | Encoded8To3ButtonConfig         |  11744/    0 |  1672/    0 |
-| EncodedButtonConfig             |  11816/    0 |  1744/    0 |
-| LadderButtonConfig              |  12072/    0 |  2000/    0 |
+| EncodedButtonConfig             |  11808/    0 |  1736/    0 |
+| LadderButtonConfig              |  12064/    0 |  1992/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -195,7 +195,7 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        | 256924/26800 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 258440/26840 |  1516/   40 |
+| ButtonConfig                    | 258424/26840 |  1500/   40 |
 | Encoded4To2ButtonConfig         | 258732/26916 |  1808/  116 |
 | Encoded8To3ButtonConfig         | 258876/26980 |  1952/  180 |
 | EncodedButtonConfig             | 258988/27020 |  2064/  220 |
@@ -237,11 +237,11 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        | 197914/13092 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 200850/13344 |  2936/  252 |
-| Encoded4To2ButtonConfig         | 201046/13368 |  3132/  276 |
-| Encoded8To3ButtonConfig         | 201174/13432 |  3260/  340 |
-| EncodedButtonConfig             | 201358/13472 |  3444/  380 |
-| LadderButtonConfig              | 216918/13504 | 19004/  412 |
+| ButtonConfig                    | 200822/13344 |  2908/  252 |
+| Encoded4To2ButtonConfig         | 201042/13368 |  3128/  276 |
+| Encoded8To3ButtonConfig         | 201170/13432 |  3256/  340 |
+| EncodedButtonConfig             | 201342/13472 |  3428/  380 |
+| LadderButtonConfig              | 216902/13504 | 18988/  412 |
 +--------------------------------------------------------------+
 
 ```
@@ -259,11 +259,11 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        |   7632/ 3048 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12620/ 4200 |  4988/ 1152 |
+| ButtonConfig                    |  12624/ 4200 |  4992/ 1152 |
 | Encoded4To2ButtonConfig         |  12872/ 4260 |  5240/ 1212 |
 | Encoded8To3ButtonConfig         |  13020/ 4324 |  5388/ 1276 |
-| EncodedButtonConfig             |  13044/ 4332 |  5412/ 1284 |
-| LadderButtonConfig              |  13692/ 4336 |  6060/ 1288 |
+| EncodedButtonConfig             |  13068/ 4332 |  5436/ 1284 |
+| LadderButtonConfig              |  13716/ 4336 |  6084/ 1288 |
 +--------------------------------------------------------------+
 
 ```
