@@ -1,7 +1,6 @@
 /*
- * A demo of EncodedButtonConfig which can support (almost) arbitrary number of
- * buttons. This particular example shows how to handle 15 buttons using 4 GPIO
- * pins.
+ * A demo of Encoded4To2ButtonConfig to detect 3 buttons using 2 pins using
+ * binary encoding.
  */
 
 #include <AceButton.h>
@@ -18,44 +17,17 @@ using namespace ace_button;
 static const int LED_ON = HIGH;
 static const int LED_OFF = LOW;
 
-// Create an array of actual pins used.
-static const uint8_t NUM_PINS = 4;
-static const uint8_t PINS[] = {2, 3, 4, 5};
+// Physical pins
+static const uint8_t BUTTON_PIN0 = 2;
+static const uint8_t BUTTON_PIN1 = 3;
 
-// Create 15 AceButton objects manually with virtual pin numbers 1 to 15.
-// Virtual pin number 0 cannot be used because it represents "no button
-// pressed". We could use an array of AceButton BUTTONS[15], and use a loop to
-// initialize these arrays, but this is more explicit and easier to understand
-// as an example code.
-//
-// We use the 4-parameter AceButton() constructor with the `buttonConfig`
-// parameter set to `nullptr` to prevent the creation of the default
-// SystemButtonConfig which will never be used. This saves about 30 bytes of
-// flash and 26 bytes of static RAM on an AVR processor.
-static const uint8_t NUM_BUTTONS = 15;
-static AceButton b01(nullptr, 1);
-static AceButton b02(nullptr, 2);
-static AceButton b03(nullptr, 3);
-static AceButton b04(nullptr, 4);
-static AceButton b05(nullptr, 5);
-static AceButton b06(nullptr, 6);
-static AceButton b07(nullptr, 7);
-static AceButton b08(nullptr, 8);
-static AceButton b09(nullptr, 9);
-static AceButton b10(nullptr, 10);
-static AceButton b11(nullptr, 11);
-static AceButton b12(nullptr, 12);
-static AceButton b13(nullptr, 13);
-static AceButton b14(nullptr, 14);
-static AceButton b15(nullptr, 15);
-static AceButton* const BUTTONS[] = {
-    &b01, &b02, &b03, &b04, &b05, &b06, &b07,
-    &b08, &b09, &b10, &b11, &b12, &b13, &b14, &b15,
-};
-
-// The EncodedButtonConfig constructor binds the AceButton to the
-// EncodedButtonConfig.
-static EncodedButtonConfig buttonConfig(NUM_PINS, PINS, NUM_BUTTONS, BUTTONS);
+// Each button is assigned to the virtual pin number (1-3) which comes from the
+// binary bit patterns of the 2 actual pins. Button b0 on virtual pin 0 cannot
+// be used because it is used to represent "no button pressed".
+Encoded4To2ButtonConfig buttonConfig(BUTTON_PIN0, BUTTON_PIN1);
+AceButton b1(&buttonConfig, 1);
+AceButton b2(&buttonConfig, 2);
+AceButton b3(&buttonConfig, 3);
 
 // Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
@@ -70,9 +42,8 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
 
   // Pins use the built-in pull up register.
-  for (uint8_t i = 0; i < NUM_PINS; i++) {
-    pinMode(PINS[i], INPUT_PULLUP);
-  }
+  pinMode(BUTTON_PIN0, INPUT_PULLUP);
+  pinMode(BUTTON_PIN1, INPUT_PULLUP);
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
@@ -88,7 +59,9 @@ void setup() {
 void loop() {
   // Should be called every 4-5ms or faster, for the default debouncing time
   // of ~20ms.
-  buttonConfig.checkButtons();
+  b1.check();
+  b2.check();
+  b3.check();
 }
 
 // The event handler for the buttons.

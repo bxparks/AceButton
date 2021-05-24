@@ -16,6 +16,10 @@
           `buttonConfig` parameter explicitly to `nullptr`.
         * Saves 30 bytes of flash and 26 bytes of RAM on AVR (e.g. ATmega328,
           ATtiny83) processors.
+    * Split off `examples/Encoded4To2Buttons` from
+      `examples/Encoded8To3Buttons` to make the usage of the
+      `Encoded4To2ButtonConfig` and `Encoded8To3ButtonConfig` classes more
+      clear.
 * 1.8.3 (2021-04-18)
     * AceButton now has a
       [GitHub Discussion](https://github.com/bxparks/AceButton/discussions).

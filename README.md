@@ -314,23 +314,25 @@ The following example sketches are provided:
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
       library
 * Binary Encoded Buttons
+    * [Encoded4To2Buttons](examples/Encoded4To2Buttons)
+        * demo of `Encoded4To2ButtonConfig` class to decode `M=3` buttons with
+          `N=2` pins
     * [Encoded8To3Buttons](examples/Encoded8To3Buttons)
-        * demo of `Encoded4To2ButtonConfig` and `Encoded8To3Buttonconfig`
-          classes to decode `M=3` buttons with `N=2` pins, or `M=7` buttons with
+        * demo of `Encoded8To3Buttonconfig` class to decode `M=7` buttons with
           `N=3` pins
     * [Encoded16To4Buttons](examples/Encoded16To4Buttons)
         * demo of general M-to-N `EncodedButtonConfig` class to handle `M=15`
           buttons with `N=4` pins
 * Resistor Ladder Buttons
-    * [LadderButtons](examples/LadderButtons)
-        * demo of 4 buttons on a single analog pin using `analogRead()`
     * [LadderButtonCalibrator](examples/LadderButtonCalibrator)
         * print out the value returned by `analogRead()` for various buttons
         * useful to compare the expected values of the resistor ladder versus
           the actual values returned by the function
+    * [LadderButtons](examples/LadderButtons)
+        * demo of 4 buttons on a single analog pin using `analogRead()`
     * [LadderButtonsTiny](examples/LadderButtonsTiny)
         * 2 buttons on the `RESET/A0` pin of an ATtiny85 microcontroller
-        * avoid wasting the RESET pin, saving the other pins for other purposes
+        * avoids wasting the RESET pin, saving the other pins for other purposes
 * Benchmarks
     * These are internal benchmark programs. They were not written as examples
       of how to use the library.

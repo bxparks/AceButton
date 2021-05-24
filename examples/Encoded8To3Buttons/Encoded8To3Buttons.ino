@@ -1,13 +1,10 @@
 /*
- * A demo of Encoded4To2ButtonConfig to detect 3 buttons using 2 pins;
- * and Encoded8To3ButtonConfig to detect 7 buttons using 3 pins.
+ * A demo of Encoded8To3ButtonConfig to detect 7 buttons using 3 pins using
+ * binary encoding.
  */
 
 #include <AceButton.h>
 using namespace ace_button;
-
-// Select 3 to use Encoded4To2ButtonConfig or 7 to use Encoded8To3ButtonConfig.
-#define NUM_BUTTONS 7
 
 #ifdef ESP32
   // Different ESP32 boards use different pins
@@ -20,27 +17,22 @@ using namespace ace_button;
 static const int LED_ON = HIGH;
 static const int LED_OFF = LOW;
 
+// Physical pins
 static const uint8_t BUTTON_PIN0 = 2;
 static const uint8_t BUTTON_PIN1 = 3;
 static const uint8_t BUTTON_PIN2 = 4;
 
 // Each button is assigned to the virtual pin number (1-7) which comes from the
-// binary bit patterns of the 3 actual pins. Button b0 cannot be used
-// because it is used to represent "no button pressed".
-#if NUM_BUTTONS == 7
-  Encoded8To3ButtonConfig buttonConfig(BUTTON_PIN0, BUTTON_PIN1, BUTTON_PIN2);
-#else
-  Encoded4To2ButtonConfig buttonConfig(BUTTON_PIN0, BUTTON_PIN1);
-#endif
-  AceButton b1(&buttonConfig, 1);
-  AceButton b2(&buttonConfig, 2);
-  AceButton b3(&buttonConfig, 3);
-#if NUM_BUTTONS == 7
-  AceButton b4(&buttonConfig, 4);
-  AceButton b5(&buttonConfig, 5);
-  AceButton b6(&buttonConfig, 6);
-  AceButton b7(&buttonConfig, 7);
-#endif
+// binary bit patterns of the 3 actual pins. Button b0 on virtual pin 0 cannot
+// be used because it is used to represent "no button pressed".
+Encoded8To3ButtonConfig buttonConfig(BUTTON_PIN0, BUTTON_PIN1, BUTTON_PIN2);
+AceButton b1(&buttonConfig, 1);
+AceButton b2(&buttonConfig, 2);
+AceButton b3(&buttonConfig, 3);
+AceButton b4(&buttonConfig, 4);
+AceButton b5(&buttonConfig, 5);
+AceButton b6(&buttonConfig, 6);
+AceButton b7(&buttonConfig, 7);
 
 // Forward reference to prevent Arduino compiler becoming confused.
 void handleEvent(AceButton*, uint8_t, uint8_t);
@@ -51,15 +43,13 @@ void setup() {
   while (! Serial); // Wait until Serial is ready - Leonardo/Micro
   Serial.println(F("setup(): begin"));
 
-  // initialize built-in LED as an output
+  // Initialize built-in LED as an output.
   pinMode(LED_PIN, OUTPUT);
 
-  // Pins uses the built-in pull up register.
+  // Pins use the built-in pull up register.
   pinMode(BUTTON_PIN0, INPUT_PULLUP);
   pinMode(BUTTON_PIN1, INPUT_PULLUP);
-#if NUM_BUTTONS == 7
   pinMode(BUTTON_PIN2, INPUT_PULLUP);
-#endif
 
   // Configure the ButtonConfig with the event handler, and enable all higher
   // level events.
@@ -78,15 +68,13 @@ void loop() {
   b1.check();
   b2.check();
   b3.check();
-#if NUM_BUTTONS == 7
   b4.check();
   b5.check();
   b6.check();
   b7.check();
-#endif
 }
 
-// The event handler for the button.
+// The event handler for the buttons.
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 
   // Print out a message for all events.

@@ -332,9 +332,12 @@ void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
 
 ## Example Programs
 
+* [examples/Encoded4To2Buttons](../../examples/Encoded4To2Buttons) shows
+  how to use the `Encoded4To2ButtonConfig` class to decode 3 buttons using 2
+  pins
 * [examples/Encoded8To3Buttons](../../examples/Encoded8To3Buttons) shows
-  how to use the `Encoded4To2ButtonConfig` and `Encoded8To3ButtonConfig`
-  classes
+  how to use the `Encoded8To3ButtonConfig` class to decode 7 buttons using 3
+  pins
 * [examples/Encoded16To4Buttons](../../examples/Encoded16To4Buttons)
   shows how to apply the general `EncodedButtonConfig` class (which can handle
   `N` pins and a maximum of `M = 2^N - 1` buttons) to handle a specific wiring
