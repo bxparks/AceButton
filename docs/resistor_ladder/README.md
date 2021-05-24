@@ -240,8 +240,12 @@ The public API for `LadderButtonConfig` looks something like this:
 ```C++
 class LadderButtonConfig : public ButtonConfig {
   public:
-    LadderButtonConfig(uint8_t pin, uint8_t numLevels, const uint16_t levels[],
-        uint8_t numButtons, AceButton* const buttons[],
+    LadderButtonConfig(
+        uint8_t pin,
+        uint8_t numLevels,
+        const uint16_t levels[],
+        uint8_t numButtons,
+        AceButton* const buttons[],
         uint8_t defaultReleasedState = HIGH);
 
     int readButton(uint8_t pin) override;
@@ -346,11 +350,16 @@ static const uint8_t BUTTON_PIN = A0;
 // Create 4 AceButton objects, with their virtual pin number 0 to 3. The number
 // of buttons does not need to be identical to the number of analog levels. You
 // can choose to define only a subset of buttons here.
+//
+// Use the 4-parameter `AceButton()` constructor with the `buttonConfig`
+// parameter explicitly to `nullptr` to prevent the automatic creation of the
+// default SystemButtonConfig, saving about 30 bytes of flash and 26 bytes of
+// RAM on an AVR processor.
 static const uint8_t NUM_BUTTONS = 4;
-static AceButton b0((uint8_t) 0);
-static AceButton b1(1);
-static AceButton b2(2);
-static AceButton b3(3);
+static AceButton b0(nullptr, 0);
+static AceButton b1(nullptr, 1);
+static AceButton b2(nullptr, 2);
+static AceButton b3(nullptr, 3);
 static AceButton* const BUTTONS[NUM_BUTTONS] = {
     &b0, &b1, &b2, &b3,
 };
@@ -470,9 +479,14 @@ respectively. The button configurations look like:
 
 ```C++
 const uint8_t BUTTON_PIN = A0; // RESET pin
+
+// Use the 4-parameter `AceButton()` constructor with the `buttonConfig`
+// parameter explicitly to `nullptr` to prevent the automatic creation of the
+// default SystemButtonConfig, saving about 30 bytes of flash and 26 bytes of
+// RAM on an AVR processor.
 const uint8_t NUM_BUTTONS = 2;
-AceButton b0((uint8_t) 0);
-AceButton b1(1);
+AceButton b0(nullptr, 0);
+AceButton b1(nullptr, 1);
 AceButton* const BUTTONS[NUM_BUTTONS] = { &b0, &b1 };
 
 const uint8_t NUM_LEVELS = NUM_BUTTONS + 1;

@@ -6,6 +6,8 @@
 
 from subprocess import check_output
 
+attiny_results = check_output(
+    "./generate_table.awk < attiny.txt", shell=True, text=True)
 nano_results = check_output(
     "./generate_table.awk < nano.txt", shell=True, text=True)
 micro_results = check_output(
@@ -122,6 +124,16 @@ factor of 2.5X (24 micros to 67 micros). It looks like they changed the
 implementation of `analogRead()` in v1.0.5. See
 https://github.com/espressif/arduino-esp32/issues/4973 and
 https://github.com/espressif/arduino-esp32/pull/3377.
+
+## ATtiny85
+
+* 8MHz ATtiny85
+* Arduino IDE 1.8.13
+* SpenceKonde/ATTinyCore 1.5.2
+
+```
+{attiny_results}
+```
 
 ## Arduino Nano
 

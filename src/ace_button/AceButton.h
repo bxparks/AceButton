@@ -135,8 +135,14 @@ class AceButton {
      * button. For example, this could be an index into an array of data that is
      * associated with the button.
      */
-    explicit AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
-        uint8_t id = 0);
+    explicit AceButton(
+        uint8_t pin = 0,
+        uint8_t defaultReleasedState = HIGH,
+        uint8_t id = 0
+    ) :
+        mButtonConfig(ButtonConfig::getSystemButtonConfig()) {
+      init(pin, defaultReleasedState, id);
+    }
 
     /**
      * Constructor that accepts a ButtonConfig as a dependency. The
@@ -146,16 +152,37 @@ class AceButton {
      * setButtonConfig() method because it makes the dependency more clear. If
      * this constructor is used to set the pin, defaultReleasedState, and id,
      * then the init() method does not need to be called in the setup().
+     *
+     * If you know at compile-time that you will use an alternate ButtonConfig
+     * (such as EncodedButtonConfig or LadderButtonConfig) instead of the
+     * default system ButtonConfig (getSystemButtonConfig()), then you can save
+     * about 30 bytes of flash and 26 bytes of RAM on an AVR processor by using
+     * this 4-parameter constructor and passing a `nullptr` for the
+     * `buttonConfig` in this constructor, instead of the using the 3-parameter
+     * `AceButton()` constructor. The 3-parameter constructor automatically
+     * creates and assigns the `buttonConfig` parameter to be the default system
+     * ButtonConfig, and the system ButtonConfig sticks around even if it is
+     * never used after the constructor. In retrospect, automatically creating a
+     * system ButtonConfig in an attempt to simplify the single-button use case
+     * was not the best idea, but it is too late to change that behavior without
+     * breaking backwards compatibility.
      */
-    explicit AceButton(ButtonConfig* buttonConfig, uint8_t pin = 0,
-        uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
+    explicit AceButton(
+        ButtonConfig* buttonConfig,
+        uint8_t pin = 0,
+        uint8_t defaultReleasedState = HIGH,
+        uint8_t id = 0) {
+      init(buttonConfig, pin, defaultReleasedState, id);
+    }
 
     /**
      * Reset the button to the initial constructed state. In particular,
      * getLastButtonState() returns kButtonStateUnknown. The parameters are
      * identical as the parameters in the AceButton() constructor.
      */
-    void init(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
+    void init(
+        uint8_t pin = 0,
+        uint8_t defaultReleasedState = HIGH,
         uint8_t id = 0);
 
     /**
@@ -164,8 +191,11 @@ class AceButton {
      * button in the global setup() function using this method instead of using
      * the constructor.
      */
-    void init(ButtonConfig* buttonConfig, uint8_t pin = 0,
-        uint8_t defaultReleasedState = HIGH, uint8_t id = 0);
+    void init(
+        ButtonConfig* buttonConfig,
+        uint8_t pin = 0,
+        uint8_t defaultReleasedState = HIGH,
+        uint8_t id = 0);
 
     /** Get the ButtonConfig associated with this Button. */
     ButtonConfig* getButtonConfig() const {

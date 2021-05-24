@@ -99,6 +99,27 @@ implementation of `analogRead()` in v1.0.5. See
 https://github.com/espressif/arduino-esp32/issues/4973 and
 https://github.com/espressif/arduino-esp32/pull/3377.
 
+## ATtiny85
+
+* 8MHz ATtiny85
+* Arduino IDE 1.8.13
+* SpenceKonde/ATTinyCore 1.5.2
+
+```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| Baseline                        |    406/   11 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| ButtonConfig                    |   1554/   51 |  1148/   40 |
+| Encoded4To2ButtonConfig         |   1812/   82 |  1406/   71 |
+| Encoded8To3ButtonConfig         |   2070/  139 |  1664/  128 |
+| EncodedButtonConfig             |   2118/  162 |  1712/  151 |
+| LadderButtonConfig              |   2042/  175 |  1636/  164 |
++--------------------------------------------------------------+
+
+```
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
@@ -114,8 +135,8 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 | ButtonConfig                    |   1946/   51 |  1336/   40 |
 | Encoded4To2ButtonConfig         |   2160/   82 |  1550/   71 |
 | Encoded8To3ButtonConfig         |   2428/  139 |  1818/  128 |
-| EncodedButtonConfig             |   2504/  188 |  1894/  177 |
-| LadderButtonConfig              |   2506/  201 |  1896/  190 |
+| EncodedButtonConfig             |   2474/  162 |  1864/  151 |
+| LadderButtonConfig              |   2476/  175 |  1866/  164 |
 +--------------------------------------------------------------+
 
 ```
@@ -135,8 +156,8 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 | ButtonConfig                    |   4950/  191 |  1392/   40 |
 | Encoded4To2ButtonConfig         |   5166/  222 |  1608/   71 |
 | Encoded8To3ButtonConfig         |   5434/  279 |  1876/  128 |
-| EncodedButtonConfig             |   5524/  326 |  1966/  175 |
-| LadderButtonConfig              |   5574/  341 |  2016/  190 |
+| EncodedButtonConfig             |   5494/  300 |  1936/  149 |
+| LadderButtonConfig              |   5544/  315 |  1986/  164 |
 +--------------------------------------------------------------+
 
 ```
@@ -153,11 +174,11 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        |  10072/    0 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  11360/    0 |  1288/    0 |
+| ButtonConfig                    |  11344/    0 |  1272/    0 |
 | Encoded4To2ButtonConfig         |  11600/    0 |  1528/    0 |
 | Encoded8To3ButtonConfig         |  11744/    0 |  1672/    0 |
-| EncodedButtonConfig             |  11816/    0 |  1744/    0 |
-| LadderButtonConfig              |  12072/    0 |  2000/    0 |
+| EncodedButtonConfig             |  11824/    0 |  1752/    0 |
+| LadderButtonConfig              |  12080/    0 |  2008/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -174,11 +195,11 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        | 256924/26800 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 258440/26840 |  1516/   40 |
+| ButtonConfig                    | 258424/26840 |  1500/   40 |
 | Encoded4To2ButtonConfig         | 258732/26916 |  1808/  116 |
 | Encoded8To3ButtonConfig         | 258876/26980 |  1952/  180 |
-| EncodedButtonConfig             | 258988/27020 |  2064/  220 |
-| LadderButtonConfig              | 259032/27024 |  2108/  224 |
+| EncodedButtonConfig             | 259004/27020 |  2080/  220 |
+| LadderButtonConfig              | 259048/27024 |  2124/  224 |
 +--------------------------------------------------------------+
 
 ```
@@ -216,11 +237,11 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        | 197914/13092 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 200850/13344 |  2936/  252 |
-| Encoded4To2ButtonConfig         | 201046/13368 |  3132/  276 |
-| Encoded8To3ButtonConfig         | 201174/13432 |  3260/  340 |
-| EncodedButtonConfig             | 201358/13472 |  3444/  380 |
-| LadderButtonConfig              | 216918/13504 | 19004/  412 |
+| ButtonConfig                    | 200822/13344 |  2908/  252 |
+| Encoded4To2ButtonConfig         | 201042/13368 |  3128/  276 |
+| Encoded8To3ButtonConfig         | 201170/13432 |  3256/  340 |
+| EncodedButtonConfig             | 201274/13440 |  3360/  348 |
+| LadderButtonConfig              | 216766/13472 | 18852/  380 |
 +--------------------------------------------------------------+
 
 ```
@@ -238,11 +259,11 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 |---------------------------------+--------------+-------------|
 | Baseline                        |   7632/ 3048 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12620/ 4200 |  4988/ 1152 |
+| ButtonConfig                    |  12624/ 4200 |  4992/ 1152 |
 | Encoded4To2ButtonConfig         |  12872/ 4260 |  5240/ 1212 |
 | Encoded8To3ButtonConfig         |  13020/ 4324 |  5388/ 1276 |
-| EncodedButtonConfig             |  13044/ 4332 |  5412/ 1284 |
-| LadderButtonConfig              |  13692/ 4336 |  6060/ 1288 |
+| EncodedButtonConfig             |  13060/ 4332 |  5428/ 1284 |
+| LadderButtonConfig              |  13708/ 4336 |  6076/ 1288 |
 +--------------------------------------------------------------+
 
 ```
