@@ -1761,10 +1761,10 @@ As a rough summary, to check 7 buttons:
 
 ### Hardware
 
-The library has been extensively tested on the following boards:
+This library has Tier 1 support on the following boards:
 
-* Arduino Nano clone (16 MHz ATmega328P)
-* SparkFun Pro Micro clone (16 MHz ATmega32U4)
+* Arduino Nano (16 MHz ATmega328P)
+* SparkFun Pro Micro (16 MHz ATmega32U4)
 * SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
 * STM32 Blue Pill (STM32F103C8, 72 MHz ARM Cortex-M3)
 * NodeMCU 1.0 (ESP-12E module, 80MHz ESP8266)
@@ -1772,11 +1772,20 @@ The library has been extensively tested on the following boards:
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
 * Teensy 3.2 (96 MHz ARM Cortex-M4)
 
-I will occasionally test on the following boards as a sanity check:
+Tier 2 support can be expected on the following boards, mostly because I don't
+test these as often:
 
-* Arduino Pro Mini clone (16 MHz ATmega328P)
+* ATtiny85 (8 MHz ATtiny85)
+* Arduino Pro Mini (16 MHz ATmega328P)
 * Teensy LC (48 MHz ARM Cortex-M0+)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
+
+The following boards are **not** officially supported, but AceButton may
+accidentally work on these:
+
+* Any platform using the ArduinoCore-API
+  (https://github.com/arduino/ArduinoCore-api).
+    * For example, Nano Every, MKRZero, and Raspberry Pi Pico RP2040.
 
 ### Tool Chain
 
@@ -1784,6 +1793,7 @@ This library was developed and tested using:
 
 * [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
 * [Arduino CLI 0.14.0](https://arduino.github.io/arduino-cli)
+* [SpenceKonde ATTinyCore 1.5.2](https://github.com/SpenceKonde/ATTinyCore)
 * [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
 * [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
 * [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
@@ -1859,10 +1869,6 @@ Apache License 2.0 meant.
 
 <a name="FeedbackAndSupport"></a>
 ## Feedback and Support
-
-If you find this library useful, consider starring this project on GitHub. The
-stars will let me prioritize the more popular libraries over the less popular
-ones.
 
 If you have any questions, comments and other support questions about how to
 use this library, please use the
