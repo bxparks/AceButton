@@ -1852,7 +1852,7 @@ want to write everything yourself from scratch.
 That said, [examples/MemoryBenchmark](examples/MemoryBenchmark/) shows that the
 library consumes between 970-2180  bytes of flash memory, and
 [AutoBenchmark](examples/AutoBenchmark) shows that `AceButton::check()` takes
-between 13-15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
+between ~15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
 ESP32. Hopefully that is small enough and fast enough for the vast majority of
 people.
 
