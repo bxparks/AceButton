@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 1.9 (2021-06-01)
     * Split [LadderButtonCalibrator](examples/LadderButtonCalibrator)
       from [LadderButtons](examples/LadderButtons) for convenience.
     * Add preliminary support for ATtiny85 using
@@ -24,6 +25,7 @@
         * Implementations of `ButtonConfig` which use the `digitalWriteFast`
           library.
         * Saves 100-400 bytes of flash on AVR processors.
+        * See [README.md#DigitalWriteFast](README.md#DigitalWriteFast).
 * 1.8.3 (2021-04-18)
     * AceButton now has a
       [GitHub Discussion](https://github.com/bxparks/AceButton/discussions).
