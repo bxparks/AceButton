@@ -2,7 +2,7 @@
 # EpoxyDuino to compile and run AUnit tests natively on Linux or MacOS.
 
 APP_NAME := AutoBenchmark
-ARDUINO_LIBS := AceCommon AceButton
+ARDUINO_LIBS := EpoxyMockDigitalWriteFast AceCommon AceButton
 MORE_CLEAN := more_clean
 include ../../../EpoxyDuino/EpoxyDuino.mk
 

@@ -6,6 +6,8 @@
 
 from subprocess import check_output
 
+attiny_results = check_output(
+    "./generate_table.awk < attiny.txt", shell=True, text=True)
 nano_results = check_output(
     "./generate_table.awk < nano.txt", shell=True, text=True)
 micro_results = check_output(
@@ -36,7 +38,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.8.3
+**Version**: AceButton v1.9
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -123,6 +125,21 @@ implementation of `analogRead()` in v1.0.5. See
 https://github.com/espressif/arduino-esp32/issues/4973 and
 https://github.com/espressif/arduino-esp32/pull/3377.
 
+In v1.9, added `ButtonConfigFast1`, `ButtonConfigFast2`, and `ButtonConfigFast3`
+to support `digitalWriteFast.h` libraries. Reduces flash consumption on AVR
+processors by 100 to 400 bytes. Added preliminary support for ATtiny85 using
+[SpenceKonde/ATTinyCore](https://github.com/SpenceKonde/ATTinyCore).
+
+## ATtiny85
+
+* 8MHz ATtiny85
+* Arduino IDE 1.8.13
+* SpenceKonde/ATTinyCore 1.5.2
+
+```
+{attiny_results}
+```
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
@@ -133,7 +150,7 @@ https://github.com/espressif/arduino-esp32/pull/3377.
 {nano_results}
 ```
 
-## Sparkfun Pro Micro
+## SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
 * Arduino IDE 1.8.13

@@ -5,7 +5,7 @@
 #include <AceButton.h>
 using namespace ace_button;
 
-// The pin number attached to the button.
+// Physical pin numbers attached to the buttons.
 const int BUTTON1_PIN = 2;
 const int BUTTON2_PIN = 3;
 

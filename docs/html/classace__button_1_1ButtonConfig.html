@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">AceButton
-   &#160;<span id="projectnumber">1.8.3</span>
+   &#160;<span id="projectnumber">1.9</span>
    </div>
    <div id="projectbrief">An adjustable, compact, event-driven button library for Arduino.</div>
   </td>
@@ -87,11 +87,14 @@ Inheritance diagram for ace_button::ButtonConfig:</div>
 <div class="dyncontent">
 <div class="center"><img src="classace__button_1_1ButtonConfig__inherit__graph.png" border="0" usemap="#ace__button_1_1ButtonConfig_inherit__map" alt="Inheritance graph"/></div>
 <map name="ace__button_1_1ButtonConfig_inherit__map" id="ace__button_1_1ButtonConfig_inherit__map">
-<area shape="rect" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in..." alt="" coords="5,111,192,138"/>
-<area shape="rect" href="classace__button_1_1Encoded4To2ButtonConfig.html" title="A ButtonConfig that handles an 4&#45;to&#45;2 binary encoder which converts 4 inputs into 2 outputs." alt="" coords="240,5,471,47"/>
-<area shape="rect" href="classace__button_1_1Encoded8To3ButtonConfig.html" title="A ButtonConfig that handles an 8&#45;to&#45;3 binary encoder which converts 8 inputs into 3 outputs." alt="" coords="240,71,471,112"/>
-<area shape="rect" href="classace__button_1_1EncodedButtonConfig.html" title="A ButtonConfig that handles an N&#45;to&#45;M binary encoder where N = 2^M." alt="" coords="255,136,455,177"/>
-<area shape="rect" href="classace__button_1_1LadderButtonConfig.html" title="A ButtonConfig that handles multiple buttons using a resistor ladder." alt="" coords="261,201,450,243"/>
+<area shape="rect" title="Class that defines the timing parameters and event handler of an AceButton or a group of AceButton in..." alt="" coords="5,225,192,251"/>
+<area shape="rect" href="classace__button_1_1ButtonConfigFast1.html" title="An implementation of ButtonConfig that uses digitalReadFast() instead of digitalRead() to support 1 b..." alt="" coords="262,5,449,47"/>
+<area shape="rect" href="classace__button_1_1ButtonConfigFast2.html" title="An implementation of ButtonConfig that uses digitalReadFast() instead of digitalRead() to support 2 b..." alt="" coords="262,71,449,112"/>
+<area shape="rect" href="classace__button_1_1ButtonConfigFast3.html" title="An implementation of ButtonConfig that uses digitalReadFast() instead of digitalRead() to support 3 b..." alt="" coords="262,137,449,193"/>
+<area shape="rect" href="classace__button_1_1Encoded4To2ButtonConfig.html" title="A ButtonConfig that handles an 4&#45;to&#45;2 binary encoder which converts 4 inputs into 2 outputs." alt="" coords="240,217,471,259"/>
+<area shape="rect" href="classace__button_1_1Encoded8To3ButtonConfig.html" title="A ButtonConfig that handles an 8&#45;to&#45;3 binary encoder which converts 8 inputs into 3 outputs." alt="" coords="240,283,471,324"/>
+<area shape="rect" href="classace__button_1_1EncodedButtonConfig.html" title="A ButtonConfig that handles an N&#45;to&#45;M binary encoder where N = 2^M." alt="" coords="255,348,455,389"/>
+<area shape="rect" href="classace__button_1_1LadderButtonConfig.html" title="A ButtonConfig that handles multiple buttons using a resistor ladder." alt="" coords="261,413,450,455"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -521,7 +524,7 @@ static const <a class="el" href="classace__button_1_1ButtonConfig.html#a1c7c7bfc
 <p>Override to use something other than digitalRead(). The return type is 'int' instead of uint16_t because that's the return type of digitalRead().</p>
 <p>Note: This should have been a const function. I cannot change it now without breaking backwards compatibility. </p>
 
-<p>Reimplemented in <a class="el" href="classace__button_1_1EncodedButtonConfig.html#a16c46caeb76f48bcc572df4483b25549">ace_button::EncodedButtonConfig</a>, <a class="el" href="classace__button_1_1Encoded8To3ButtonConfig.html#a64b28331794008afc39df78795a6fb10">ace_button::Encoded8To3ButtonConfig</a>, <a class="el" href="classace__button_1_1LadderButtonConfig.html#a9b0f911723cf3b13ec5ca4d89f793493">ace_button::LadderButtonConfig</a>, and <a class="el" href="classace__button_1_1Encoded4To2ButtonConfig.html#a4607829b4dc2bbf93fdb0608e1677496">ace_button::Encoded4To2ButtonConfig</a>.</p>
+<p>Reimplemented in <a class="el" href="classace__button_1_1ButtonConfigFast1.html#a58cf2040a6db658fcec87aa26726accc">ace_button::ButtonConfigFast1&lt; T_PIN0 &gt;</a>, <a class="el" href="classace__button_1_1EncodedButtonConfig.html#a16c46caeb76f48bcc572df4483b25549">ace_button::EncodedButtonConfig</a>, <a class="el" href="classace__button_1_1Encoded8To3ButtonConfig.html#a64b28331794008afc39df78795a6fb10">ace_button::Encoded8To3ButtonConfig</a>, <a class="el" href="classace__button_1_1LadderButtonConfig.html#a9b0f911723cf3b13ec5ca4d89f793493">ace_button::LadderButtonConfig</a>, <a class="el" href="classace__button_1_1Encoded4To2ButtonConfig.html#a4607829b4dc2bbf93fdb0608e1677496">ace_button::Encoded4To2ButtonConfig</a>, <a class="el" href="classace__button_1_1ButtonConfigFast3.html#ae5ea4b1ea239afdcfaf0d1eac67a49fc">ace_button::ButtonConfigFast3&lt; T_PIN0, T_PIN1, T_PIN2 &gt;</a>, and <a class="el" href="classace__button_1_1ButtonConfigFast2.html#aa54e5d8a6c67936847ba617cea41ec60">ace_button::ButtonConfigFast2&lt; T_PIN0, T_PIN1 &gt;</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="ButtonConfig_8h_source.html#l00303">303</a> of file <a class="el" href="ButtonConfig_8h_source.html">ButtonConfig.h</a>.</p>
 

@@ -33,6 +33,13 @@
 #include <AceCommon.h>
 #include <AceButton.h>
 #include "ProfilingButtonConfig.h"
+
+#if defined(EPOXY_DUINO) || defined(ARDUINO_ARCH_AVR)
+  #include <digitalWriteFast.h>
+  #include <ace_button/fast/ButtonConfigFast1.h>
+  #include <ace_button/fast/ButtonConfigFast2.h>
+  #include <ace_button/fast/ButtonConfigFast3.h>
+#endif
 using ace_common::TimingStats;
 using namespace ace_button;
 
@@ -45,6 +52,7 @@ using namespace ace_button;
 #define SERIAL_PORT_MONITOR Serial
 #endif
 
+//----------------------------------------------------------------------------
 // The pin number attached to the button.
 const int BUTTON_PIN = 2;
 
@@ -52,6 +60,43 @@ const int BUTTON_PIN = 2;
 // ButtonConfig except readButton() is overridden for profiling purposes.
 ProfilingButtonConfig buttonConfig;
 AceButton simpleButton(&buttonConfig);
+
+//----------------------------------------------------------------------------
+
+#if defined(EPOXY_DUINO) || defined(ARDUINO_ARCH_AVR)
+  // Create buttons for ButtonConfigFast{1,2,3}
+  // Physical pin numbers attached to the buttons.
+  const uint8_t BUTTON0_PHYSICAL_PIN = 4;
+  const uint8_t BUTTON1_PHYSICAL_PIN = 5;
+  const uint8_t BUTTON2_PHYSICAL_PIN = 6;
+
+  // Virtual pin numbers attached to the buttons.
+  const uint8_t BUTTON0_PIN = 0;
+  const uint8_t BUTTON1_PIN = 1;
+  const uint8_t BUTTON2_PIN = 2;
+
+  ButtonConfigFast1<BUTTON0_PHYSICAL_PIN> buttonConfigFast1;
+  AceButton buttonF1B0(&buttonConfigFast1, BUTTON0_PIN);
+
+  ButtonConfigFast2<
+      BUTTON0_PHYSICAL_PIN,
+      BUTTON1_PHYSICAL_PIN
+  > buttonConfigFast2;
+  AceButton buttonF2B0(&buttonConfigFast2, BUTTON0_PIN);
+  AceButton buttonF2B1(&buttonConfigFast2, BUTTON1_PIN);
+
+  ButtonConfigFast3<
+      BUTTON0_PHYSICAL_PIN,
+      BUTTON1_PHYSICAL_PIN,
+      BUTTON2_PHYSICAL_PIN
+  > buttonConfigFast3;
+  AceButton buttonF3B0(&buttonConfigFast3, BUTTON0_PIN);
+  AceButton buttonF3B1(&buttonConfigFast3, BUTTON1_PIN);
+  AceButton buttonF3B2(&buttonConfigFast3, BUTTON2_PIN);
+
+#endif
+
+//----------------------------------------------------------------------------
 
 // Create 3 buttons for Encoded4To2ButtonConfig
 static const uint8_t BUTTON_PIN0 = 2;
@@ -78,13 +123,14 @@ AceButton eight7(&encoded8To3ButtonConfig, 7);
 static const uint8_t NUM_PINS = 3;
 static const uint8_t PINS[] = {2, 3, 4};
 static const uint8_t NUM_BUTTONS = 7;
-static AceButton e01(1);
-static AceButton e02(2);
-static AceButton e03(3);
-static AceButton e04(4);
-static AceButton e05(5);
-static AceButton e06(6);
-static AceButton e07(7);
+// e00 represents "no button pressed"
+static AceButton e01(nullptr, 1);
+static AceButton e02(nullptr, 2);
+static AceButton e03(nullptr, 3);
+static AceButton e04(nullptr, 4);
+static AceButton e05(nullptr, 5);
+static AceButton e06(nullptr, 6);
+static AceButton e07(nullptr, 7);
 static AceButton* const ENCODED_BUTTONS[NUM_BUTTONS] = {
     &e01, &e02, &e03, &e04, &e05, &e06, &e07,
 };
@@ -105,15 +151,16 @@ static const uint16_t LEVELS[NUM_LEVELS] = {
   930 /* 91%, 100 kohm */,
   1023 /* 100%, open circuit */,
 };
-static AceButton r01(1);
-static AceButton r02(2);
-static AceButton r03(3);
-static AceButton r04(4);
-static AceButton r05(5);
-static AceButton r06(6);
-static AceButton r07(7);
+static AceButton r00(nullptr, 0);
+static AceButton r01(nullptr, 1);
+static AceButton r02(nullptr, 2);
+static AceButton r03(nullptr, 3);
+static AceButton r04(nullptr, 4);
+static AceButton r05(nullptr, 5);
+static AceButton r06(nullptr, 6);
+// r07 represents "no button pressed".
 static AceButton* const LADDER_BUTTONS[NUM_BUTTONS] = {
-    &r01, &r02, &r03, &r04, &r05, &r06, &r07,
+    &r00, &r01, &r02, &r03, &r04, &r05, &r06,
 };
 static LadderButtonConfig ladderButtonConfig(
   ANALOG_BUTTON_PIN, NUM_LEVELS, LEVELS, NUM_BUTTONS, LADDER_BUTTONS
@@ -128,11 +175,14 @@ const uint8_t LOOP_MODE_PRESS_RELEASE = 2;
 const uint8_t LOOP_MODE_CLICK = 3;
 const uint8_t LOOP_MODE_DOUBLE_CLICK = 4;
 const uint8_t LOOP_MODE_LONG_PRESS = 5;
-const uint8_t LOOP_MODE_ENCODED_4TO2_BUTTON_CONFIG = 6;
-const uint8_t LOOP_MODE_ENCODED_8TO3_BUTTON_CONFIG = 7;
-const uint8_t LOOP_MODE_ENCODED_BUTTON_CONFIG = 8;
-const uint8_t LOOP_MODE_LADDER_BUTTON_CONFIG = 9;
-const uint8_t LOOP_MODE_END = 10;
+const uint8_t LOOP_MODE_BUTTON_CONFIG_FAST1 = 6;
+const uint8_t LOOP_MODE_BUTTON_CONFIG_FAST2 = 7;
+const uint8_t LOOP_MODE_BUTTON_CONFIG_FAST3 = 8;
+const uint8_t LOOP_MODE_ENCODED_4TO2_BUTTON_CONFIG = 9;
+const uint8_t LOOP_MODE_ENCODED_8TO3_BUTTON_CONFIG = 10;
+const uint8_t LOOP_MODE_ENCODED_BUTTON_CONFIG = 11;
+const uint8_t LOOP_MODE_LADDER_BUTTON_CONFIG = 12;
+const uint8_t LOOP_MODE_END = 13;
 uint8_t loopMode;
 uint8_t loopEventType;
 
@@ -184,6 +234,32 @@ void checkSimpleButton() {
   uint16_t elapsedMicros = micros() - startMicros;
   stats.update(elapsedMicros);
 }
+
+#if defined(EPOXY_DUINO) || defined(ARDUINO_ARCH_AVR)
+  void checkButtonConfigFast1() {
+    uint16_t startMicros = micros();
+    buttonF1B0.check();
+    uint16_t elapsedMicros = micros() - startMicros;
+    stats.update(elapsedMicros);
+  }
+
+  void checkButtonConfigFast2() {
+    uint16_t startMicros = micros();
+    buttonF2B0.check();
+    buttonF2B1.check();
+    uint16_t elapsedMicros = micros() - startMicros;
+    stats.update(elapsedMicros);
+  }
+
+  void checkButtonConfigFast3() {
+    uint16_t startMicros = micros();
+    buttonF3B0.check();
+    buttonF3B1.check();
+    buttonF3B2.check();
+    uint16_t elapsedMicros = micros() - startMicros;
+    stats.update(elapsedMicros);
+  }
+#endif
 
 void checkEncoded4To2Buttons() {
   uint16_t startMicros = micros();
@@ -316,6 +392,42 @@ void loopLongPress() {
   }
 }
 
+#if defined(EPOXY_DUINO) || defined(ARDUINO_ARCH_AVR)
+void loopCheckButtonConfigFast1() {
+  static unsigned long start = millis();
+
+  checkButtonConfigFast1();
+
+  if (millis() - start > STATS_PRINT_INTERVAL) {
+    printStats(F("ButtonConfigFast1"));
+    nextMode();
+  }
+}
+
+void loopCheckButtonConfigFast2() {
+  static unsigned long start = millis();
+
+  checkButtonConfigFast2();
+
+  if (millis() - start > STATS_PRINT_INTERVAL) {
+    printStats(F("ButtonConfigFast2"));
+    nextMode();
+  }
+}
+
+void loopCheckButtonConfigFast3() {
+  static unsigned long start = millis();
+
+  checkButtonConfigFast3();
+
+  if (millis() - start > STATS_PRINT_INTERVAL) {
+    printStats(F("ButtonConfigFast3"));
+    nextMode();
+  }
+}
+
+#endif
+
 void loopEncoded4To2ButtonConfig() {
   static unsigned long start = millis();
 
@@ -384,6 +496,17 @@ void setup() {
   SERIAL_PORT_MONITOR.print(F("sizeof(ButtonConfig): "));
   SERIAL_PORT_MONITOR.println(sizeof(ButtonConfig));
 
+#if defined(EPOXY_DUINO) || defined(ARDUINO_ARCH_AVR)
+  SERIAL_PORT_MONITOR.print(F("sizeof(ButtonConfigFast1<>): "));
+  SERIAL_PORT_MONITOR.println(sizeof(ButtonConfigFast1<1>));
+
+  SERIAL_PORT_MONITOR.print(F("sizeof(ButtonConfigFast2<>): "));
+  SERIAL_PORT_MONITOR.println(sizeof(ButtonConfigFast2<1, 2>));
+
+  SERIAL_PORT_MONITOR.print(F("sizeof(ButtonConfigFast3<>): "));
+  SERIAL_PORT_MONITOR.println(sizeof(ButtonConfigFast3<1, 2, 3>));
+#endif
+
   SERIAL_PORT_MONITOR.print(F("sizeof(Encoded4To2ButtonConfig): "));
   SERIAL_PORT_MONITOR.println(sizeof(Encoded4To2ButtonConfig));
 
@@ -412,6 +535,44 @@ void setup() {
   buttonConfig.setFeature(ButtonConfig::kFeatureLongPress);
   buttonConfig.setFeature(ButtonConfig::kFeatureRepeatPress);
   buttonConfig.setFeature(ButtonConfig::kFeatureSuppressAll);
+
+#if defined(EPOXY_DUINO) || defined(ARDUINO_ARCH_AVR)
+    // Configure ButtonConfigFast1
+  #if USE_EVENT_HANDLER_CLASS
+    buttonConfigFast1.setIEventHandler(&handleEvent);
+  #else
+    buttonConfigFast1.setEventHandler(handleEvent);
+  #endif
+    buttonConfigFast1.setFeature(ButtonConfig::kFeatureClick);
+    buttonConfigFast1.setFeature(ButtonConfig::kFeatureDoubleClick);
+    buttonConfigFast1.setFeature(ButtonConfig::kFeatureLongPress);
+    buttonConfigFast1.setFeature(ButtonConfig::kFeatureRepeatPress);
+    buttonConfigFast1.setFeature(ButtonConfig::kFeatureSuppressAll);
+
+    // Configure ButtonConfigFast2
+  #if USE_EVENT_HANDLER_CLASS
+    buttonConfigFast2.setIEventHandler(&handleEvent);
+  #else
+    buttonConfigFast2.setEventHandler(handleEvent);
+  #endif
+    buttonConfigFast2.setFeature(ButtonConfig::kFeatureClick);
+    buttonConfigFast2.setFeature(ButtonConfig::kFeatureDoubleClick);
+    buttonConfigFast2.setFeature(ButtonConfig::kFeatureLongPress);
+    buttonConfigFast2.setFeature(ButtonConfig::kFeatureRepeatPress);
+    buttonConfigFast2.setFeature(ButtonConfig::kFeatureSuppressAll);
+
+    // Configure ButtonConfigFast1
+  #if USE_EVENT_HANDLER_CLASS
+    buttonConfigFast3.setIEventHandler(&handleEvent);
+  #else
+    buttonConfigFast3.setEventHandler(handleEvent);
+  #endif
+    buttonConfigFast3.setFeature(ButtonConfig::kFeatureClick);
+    buttonConfigFast3.setFeature(ButtonConfig::kFeatureDoubleClick);
+    buttonConfigFast3.setFeature(ButtonConfig::kFeatureLongPress);
+    buttonConfigFast3.setFeature(ButtonConfig::kFeatureRepeatPress);
+    buttonConfigFast3.setFeature(ButtonConfig::kFeatureSuppressAll);
+#endif
 
 #if USE_EVENT_HANDLER_CLASS
   encoded4To2ButtonConfig.setIEventHandler(&handleEvent);
@@ -483,6 +644,29 @@ void loop() {
     case LOOP_MODE_LONG_PRESS:
       loopLongPress();
       break;
+
+    case LOOP_MODE_BUTTON_CONFIG_FAST1:
+      #if defined(EPOXY_DUINO) || defined(ARDUINO_ARCH_AVR)
+        loopCheckButtonConfigFast1();
+      #else
+        nextMode();
+      #endif
+      break;
+    case LOOP_MODE_BUTTON_CONFIG_FAST2:
+      #if defined(EPOXY_DUINO) || defined(ARDUINO_ARCH_AVR)
+        loopCheckButtonConfigFast2();
+      #else
+        nextMode();
+      #endif
+      break;
+    case LOOP_MODE_BUTTON_CONFIG_FAST3:
+      #if defined(EPOXY_DUINO) || defined(ARDUINO_ARCH_AVR)
+        loopCheckButtonConfigFast3();
+      #else
+        nextMode();
+      #endif
+      break;
+
     case LOOP_MODE_ENCODED_4TO2_BUTTON_CONFIG:
       loopEncoded4To2ButtonConfig();
       break;
@@ -505,4 +689,3 @@ void loop() {
       break;
   }
 }
-

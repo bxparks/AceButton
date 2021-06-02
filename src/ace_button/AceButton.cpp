@@ -51,16 +51,6 @@ COMPILE_TIME_ASSERT(LOW == 0, "LOW must be 0")
     "kButtonStateUnknown conflicts with PinStatus enum")
 #endif
 
-AceButton::AceButton(uint8_t pin, uint8_t defaultReleasedState, uint8_t id):
-    mButtonConfig(ButtonConfig::getSystemButtonConfig()) {
-  init(pin, defaultReleasedState, id);
-}
-
-AceButton::AceButton(ButtonConfig* buttonConfig, uint8_t pin,
-    uint8_t defaultReleasedState, uint8_t id) {
-  init(buttonConfig, pin, defaultReleasedState, id);
-}
-
 void AceButton::init(uint8_t pin, uint8_t defaultReleasedState, uint8_t id) {
   mPin = pin;
   mId = id;
