@@ -52,7 +52,6 @@ END {
     print s[i]
   }
 
-
   print ""
   print "CPU:"
 
@@ -60,7 +59,12 @@ END {
   printf("| Button Event              | min/avg/max | samples |\n")
   printf("|---------------------------+-------------+---------|\n")
   for (i = 0; i < TOTAL_BENCHMARKS; i++) {
-    printf("| %-25s | %3d/%3d/%3d | %4d    |\n",
+    name = u[i]["name"]
+    if (name ~ /^ButtonConfigFast1/ \
+        || name ~ /^Encoded4To2ButtonConfig$/) {
+      printf("|---------------------------+-------------+---------|\n")
+    }
+    printf("| %-25s | %3d/%3d/%3d | %7d |\n",
       u[i]["name"], u[i]["min"], u[i]["avg"], u[i]["max"], u[i]["samples"])
   }
   printf("+---------------------------+-------------+---------+\n")
