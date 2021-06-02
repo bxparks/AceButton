@@ -150,7 +150,7 @@ processors by 100 to 400 bytes. Added preliminary support for ATtiny85 using
 {nano_results}
 ```
 
-## Sparkfun Pro Micro
+## SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
 * Arduino IDE 1.8.13
