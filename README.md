@@ -81,45 +81,51 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 * [Features](#Features)
 * [HelloButton](#HelloButton)
 * [Installation](#Installation)
-  * [External Dependencies](#ExternalDependencies)
-  * [Source Code](#SourceCode)
+    * [External Dependencies](#ExternalDependencies)
+    * [Source Code](#SourceCode)
 * [Documentation](#Documentation)
-  * [Examples](#Examples)
+    * [Examples](#Examples)
 * [Usage](#Usage)
-  * [Include Header and Use Namespace](#IncludeHeader)
-  * [Pin Wiring and Initialization](#PinWiring)
-  * [AceButton Class](#AceButtonClass)
-    * [Sampling Rate](#SamplingRate)
-    * [Compiler Error on Pin 0](#CompilerErrorOnPin0)
-  * [ButtonConfig Class](#ButtonConfigClass)
-    * [System ButtonConfig](#SystemButtonConfig)
-    * [Configuring the EventHandler](#ConfiguringEventHandler)
-    * [Timing Parameters](#TimingParameters)
-    * [Hardware Dependencies](#HardwareDependencies)
-    * [Multiple ButtonConfig Instances](#MultipleButtonConfigs)
-  * [EventHandler Typedef](#EventHandlerTypedef)
-    * [EventHandler Signature](#EventHandlerSignature)
-    * [EventHandler Parameters](#EventHandlerParameters)
-    * [One EventHandler Per ButtonConfig](#OneEventHandler)
-    * [EventHandler Tips](#EventHandlerTips)
-  * [Event Types](#EventTypes)
-  * [ButtonConfig Feature Flags](#ButtonConfigFeatureFlags)
-    * [Event Activation](#EventActivation)
-    * [Event Suppression](#EventSuppression)
-  * [Single Button Simplifications](#SingleButtonSimplifications)
-  * [Multiple Buttons](#MultipleButtons)
+    * [Include Header and Use Namespace](#IncludeHeader)
+    * [Pin Wiring and Initialization](#PinWiring)
+    * [AceButton Class](#AceButtonClass)
+        * [Sampling Rate](#SamplingRate)
+        * [Compiler Error on Pin 0](#CompilerErrorOnPin0)
+    * [ButtonConfig Class](#ButtonConfigClass)
+        * [System ButtonConfig](#SystemButtonConfig)
+        * [Configuring the EventHandler](#ConfiguringEventHandler)
+        * [Timing Parameters](#TimingParameters)
+        * [Hardware Dependencies](#HardwareDependencies)
+        * [Multiple ButtonConfig Instances](#MultipleButtonConfigs)
+    * [EventHandler Typedef](#EventHandlerTypedef)
+        * [EventHandler Signature](#EventHandlerSignature)
+        * [EventHandler Parameters](#EventHandlerParameters)
+        * [One EventHandler Per ButtonConfig](#OneEventHandler)
+        * [EventHandler Tips](#EventHandlerTips)
+    * [Event Types](#EventTypes)
+    * [ButtonConfig Feature Flags](#ButtonConfigFeatureFlags)
+        * [Event Activation](#EventActivation)
+        * [Event Suppression](#EventSuppression)
+    * [Single Button Simplifications](#SingleButtonSimplifications)
+    * [Multiple Buttons](#MultipleButtons)
 * [Advanced Topics](#AdvancedTopics)
-  * [Object-based Event Handler](#ObjectBasedEventHandler)
-  * [Distinguishing Clicked and DoubleClicked](#ClickedAndDoubleClicked)
-  * [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
-  * [Events After Reboot](#EventsAfterReboot)
-  * [Orphaned Clicks](#OrphanedClicks)
-  * [Binary Encoded Buttons](#BinaryEncodedButtons)
-  * [Resistor Ladder Buttons](#ResistorLadderButtons)
-  * [Dynamic Allocation on the Heap](#HeapAllocation)
-  * [Digital Write Fast](#DigitalWriteFast)
+    * [Object-based Event Handler](#ObjectBasedEventHandler)
+    * [Distinguishing Clicked and DoubleClicked](#ClickedAndDoubleClicked)
+    * [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
+    * [Events After Reboot](#EventsAfterReboot)
+    * [Orphaned Clicks](#OrphanedClicks)
+    * [Binary Encoded Buttons](#BinaryEncodedButtons)
+    * [Resistor Ladder Buttons](#ResistorLadderButtons)
+    * [Dynamic Allocation on the Heap](#HeapAllocation)
+    * [Digital Write Fast](#DigitalWriteFast)
 * [Resource Consumption](#ResourceConsumption)
+    * [SizeOf Classes](#SizeOfClasses)
+    * [Flash And Static Memory](#FlashAndStaticMemory)
+    * [CPU Cycles](#CpuCycles)
 * [System Requirements](#SystemRequirements)
+    * [Hardware](#Hardware)
+    * [Tool Chain](#ToolChain)
+    * [Operating System](#OperatingSystem)
 * [Background Motivation](#BackgroundMotivation)
   * [Non-goals](#NonGoals)
 * [License](#License)
@@ -1655,9 +1661,9 @@ referenced by the virtual pin number, just like the `EncodedButtonConfig` and
 
 Here are the example programs for each `ButtonConfigFast{N}` class:
 
-* [examples/SingleButtonFast](examples/SingleButtonFast)
-* [examples/TwoButtonsUsingOneButtonConfigFast](examples/TwoButtonsUsingOneButtonConfigFast)
-* [examples/ThreeButtonsUsingOneButtonConfigFast](examples/ThreeButtonsUsingOneButtonConfigFast)
+* [examples/SingleButtonFast](examples/SingleButtonFast) (`ButtonConfigFast1`)
+* [examples/TwoButtonsUsingOneButtonConfigFast](examples/TwoButtonsUsingOneButtonConfigFast) (`ButtonConfigFast2`)
+* [examples/ThreeButtonsUsingOneButtonConfigFast](examples/ThreeButtonsUsingOneButtonConfigFast) (`ButtonConfigFast3`)
 
 The `LadderButtonConfig` class uses `analogRead()` which does not seem to
 directly benefit from `digitalWriteFast` libraries. However, if you use
@@ -1679,86 +1685,138 @@ classes.
 <a name="ResourceConsumption"></a>
 ## Resource Consumption
 
+<a name="SizeOfClasses"></a>
+### SizeOf Classes
+
 Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 (Arduino Uno, Nano, etc):
 
-* sizeof(AceButton): 14
-* sizeof(ButtonConfig): 18
-* sizeof(Encoded4To2ButtonConfig): 21
-* sizeof(Encoded8To3ButtonConfig): 22
-* sizeof(EncodedButtonConfig): 25
-* sizeof(LadderButtonConfig): 26
+```
+sizeof(AceButton): 14
+sizeof(ButtonConfig): 18
+sizeof(ButtonConfigFast1<>): 18
+sizeof(ButtonConfigFast2<>): 18
+sizeof(ButtonConfigFast3<>): 18
+sizeof(Encoded4To2ButtonConfig): 21
+sizeof(Encoded8To3ButtonConfig): 22
+sizeof(EncodedButtonConfig): 25
+sizeof(LadderButtonConfig): 26
+```
 
-and 32-bit microcontrollers:
+For 32-bit microcontrollers:
 
-* sizeof(AceButton): 16
-* sizeof(ButtonConfig): 24
-* sizeof(Encoded4To2ButtonConfig): 28
-* sizeof(Encoded8To3ButtonConfig): 28
-* sizeof(EncodedButtonConfig): 36
-* sizeof(LadderButtonConfig): 36
+```
+sizeof(AceButton): 16
+sizeof(ButtonConfig): 24
+sizeof(Encoded4To2ButtonConfig): 28
+sizeof(Encoded8To3ButtonConfig): 28
+sizeof(EncodedButtonConfig): 36
+sizeof(LadderButtonConfig): 36
+```
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
 to 14.)
 
-**Program size:**
+<a name="FlashAndStaticMemory"></a>
+### Flash And Static Memory
 
 [MemoryBenchmark](examples/MemoryBenchmark/) was used to determine the
 size of the library for various microcontrollers (Arduino Nano to ESP32). Here
-are some ranges of number to give a rough estimate of how much flash and static
-memory are consumed for various button configurations:
+are 2 samples:
 
-* one button using the default system `ButtonConfig`
-  * flash memory: 1300-5000 bytes
-  * static memory: 40-1150 bytes
-* 3 buttons using one `Encoded4To2ButtonConfig`
-  * flash memory: 1600-5200 bytes
-  * static memory: 70-1200 bytes
-* 7 buttons using one `Encoded8To3ButtonConfig`
-  * flash memory: 1800-5400 bytes
-  * static memory: 130-1200 bytes
-* 7 buttons using one `EncodedButtonConfig`
-  * flash memory: 1900-5400 bytes
-  * static memory: 180-1300 bytes
-* 7 buttons using one `LadderButtonConfig`
-  * flash memory: 1900-6000 bytes
-  * static memory: 190-1300 bytes
+Arduino Nano
 
-**CPU cycles:**
+```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| Baseline                        |    610/   11 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| ButtonConfig                    |   1946/   51 |  1336/   40 |
+| ButtonConfigFast1               |   1662/   51 |  1052/   40 |
+| ButtonConfigFast2               |   1630/   65 |  1020/   54 |
+| ButtonConfigFast3               |   1678/   79 |  1068/   68 |
+| Encoded4To2ButtonConfig         |   2160/   82 |  1550/   71 |
+| Encoded8To3ButtonConfig         |   2428/  139 |  1818/  128 |
+| EncodedButtonConfig             |   2474/  162 |  1864/  151 |
+| LadderButtonConfig              |   2476/  175 |  1866/  164 |
++--------------------------------------------------------------+
+```
 
-The profiling numbers for `AceButton::check()` using a simple `ButtonConfig` can
-be found in [examples/AutoBenchmark](examples/AutoBenchmark).
+ESP8266:
 
-In summary, the average numbers for various boards are:
+```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| Baseline                        | 256924/26800 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| ButtonConfig                    | 258424/26840 |  1500/   40 |
+| ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
+| ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
+| Encoded4To2ButtonConfig         | 258732/26916 |  1808/  116 |
+| Encoded8To3ButtonConfig         | 258876/26980 |  1952/  180 |
+| EncodedButtonConfig             | 259004/27020 |  2080/  220 |
+| LadderButtonConfig              | 259048/27024 |  2124/  224 |
++--------------------------------------------------------------+
+```
 
-* Arduino Nano: 15-16 microseconds
-* SparkFun Pro Micro: 15-16 microseconds
-* SAMD21: 8-9 microseconds
-* STM32: 5 microseconds
-* ESP8266: 8 microseconds
-* ESP32: 3 microseconds
-* Teensy 3.2: 3 microseconds
+<a name="CpuCycles"></a>
+### CPU Cycles
 
-If you use the more advanced `EncodedButtonConfig` or `LadderButtonConfig`
-to check more buttons, each iteration through all the buttons takes longer.
-As a rough summary, to check 7 buttons:
+The profiling numbers for `AceButton::check()`,
+`EncodedButtonConfig::checkButtons()`, and `LadderButtonConfig::checkButtons()`
+can be found in [examples/AutoBenchmark](examples/AutoBenchmark). Here are 2
+samples, in units of microseconds.
 
-* Arduino Nano: 100-200 microseconds
-* SparkFun Pro Micro: 100-200 microseconds
-* SAMD21: 53 microseconds (EncodedButtonConfig), 470 microseconds
-  (LadderButtonConfig).
-    * Seems like the `analogRead()` function on a SAMD21 is
-      significantly slower than other microcontrollers.
-      I recommend double-checking these numbers.
-* STM32: 34-96 microseconds
-* ESP8266: 54-150 microseconds
-* ESP32: 16-24 microseconds
-* Teensy 3.2: 20-25 microseconds
+Arduino Nano:
+
+```
++---------------------------+-------------+---------+
+| Button Event              | min/avg/max | samples |
+|---------------------------+-------------+---------|
+| idle                      |   8/ 15/ 24 |    1931 |
+| press/release             |   8/ 16/ 24 |    1924 |
+| click                     |  12/ 15/ 24 |    1924 |
+| double_click              |  12/ 15/ 32 |    1921 |
+| long_press/repeat_press   |  12/ 16/ 28 |    1924 |
+|---------------------------+-------------+---------|
+| ButtonConfigFast1         |   8/ 14/ 24 |    1933 |
+| ButtonConfigFast2         |  20/ 27/ 36 |    1910 |
+| ButtonConfigFast3         |  28/ 40/ 48 |    1886 |
+|---------------------------+-------------+---------|
+| Encoded4To2ButtonConfig   |  60/ 67/ 92 |    1839 |
+| Encoded8To3ButtonConfig   | 164/186/208 |    1659 |
+| EncodedButtonConfig       |  80/100/124 |    1785 |
+| LadderButtonConfig        | 176/199/272 |    1640 |
++---------------------------+-------------+---------+
+```
+
+ESP8266:
+
+```
++---------------------------+-------------+---------+
+| Button Event              | min/avg/max | samples |
+|---------------------------+-------------+---------|
+| idle                      |   6/  8/ 52 |    1917 |
+| press/release             |   6/  8/ 62 |    1907 |
+| click                     |   6/  8/ 38 |    1902 |
+| double_click              |   6/  8/ 32 |    1907 |
+| long_press/repeat_press   |   6/  8/ 41 |    1903 |
+|---------------------------+-------------+---------|
+| Encoded4To2ButtonConfig   |  22/ 27/ 55 |    1878 |
+| Encoded8To3ButtonConfig   |  54/ 66/ 90 |    1806 |
+| EncodedButtonConfig       |  42/ 54/ 81 |    1831 |
+| LadderButtonConfig        | 136/149/491 |    1682 |
++---------------------------+-------------+---------+
+```
 
 <a name="SystemRequirements"></a>
 ## System Requirements
 
+<a name="Hardware"></a>
 ### Hardware
 
 This library has Tier 1 support on the following boards:
@@ -1787,6 +1845,7 @@ accidentally work on these:
   (https://github.com/arduino/ArduinoCore-api).
     * For example, Nano Every, MKRZero, and Raspberry Pi Pico RP2040.
 
+<a name="ToolChain"></a>
 ### Tool Chain
 
 This library was developed and tested using:
@@ -1809,6 +1868,7 @@ not tested it.
 The library works on Linux or MacOS (using both g++ and clang++ compilers) using
 the [EpoxyDuino](https://github.com/bxparks/EpoxyDuino) emulation layer.
 
+<a name="OperatingSystem"></a>
 ### Operating System
 
 I use Ubuntu Linux 18.04 and 20.04 for most of my development.
@@ -1855,6 +1915,13 @@ library consumes between 970-2180  bytes of flash memory, and
 between ~15 microseconds on a 16MHz ATmega328P chip and 2-3 microseconds on an
 ESP32. Hopefully that is small enough and fast enough for the vast majority of
 people.
+
+With v1.9, I started using AceButton on an ATtiny85 which has only 8kB of flash
+and 0.5 kB of static RAM. Flash memory consumption became more important and I
+created the `ButtonConfigFast1`, `ButtonConfigFast2`, and `ButtonConfigFast3`
+classes to decrease the flash memory consumption by using one of the
+`<digitalWriteFast.h>` 3rd party libraries. See
+[Digital Write Fast](#DigitalWriteFast) for more info.
 
 <a name="License"></a>
 ## License
