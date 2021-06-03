@@ -88,6 +88,11 @@ number of `TimingStats::update()` calls that were made.
       those calls almost twice as fast as `Encoded4To2ButtonConfig` (38
       microseconds versus 72 microseconds).
 
+**v1.9+**
+* Upgrade STM32duino Core from 1.9.0 to 2.0.0.
+* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+* No significant change in CPU times.
+
 ## Results
 
 The following table shows the minimum, average, and maximum (min/avg/max)
@@ -208,7 +213,7 @@ CPU:
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* SparkFun SAMD Core 1.8.1
+* SparkFun SAMD Core 1.8.3
 
 ```
 Sizes of Objects:
@@ -224,15 +229,15 @@ CPU:
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
 | idle                      |   5/  8/  9 |    2002 |
-| press/release             |   5/  9/ 14 |    2002 |
+| press/release             |   4/  9/ 14 |    2002 |
 | click                     |   4/  8/ 14 |    2002 |
 | double_click              |   4/  8/ 16 |    2002 |
 | long_press/repeat_press   |   5/  9/ 13 |    2002 |
 |---------------------------+-------------+---------|
 | Encoded4To2ButtonConfig   |  19/ 30/ 31 |    2002 |
 | Encoded8To3ButtonConfig   |  49/ 76/ 80 |    2002 |
-| EncodedButtonConfig       |  26/ 54/ 59 |    2002 |
-| LadderButtonConfig        | 447/473/474 |    2002 |
+| EncodedButtonConfig       |  27/ 53/ 54 |    2002 |
+| LadderButtonConfig        | 447/473/478 |    2002 |
 +---------------------------+-------------+---------+
 
 ```
@@ -241,7 +246,7 @@ CPU:
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* STM32duino 1.9.0
+* STM32duino 2.0.0
 
 ```
 Sizes of Objects:
@@ -256,16 +261,16 @@ CPU:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   3/  5/ 10 |    2002 |
-| press/release             |   3/  5/  8 |    2002 |
+| idle                      |   3/  5/  6 |    2002 |
+| press/release             |   3/  5/ 10 |    2002 |
 | click                     |   3/  5/  8 |    2002 |
 | double_click              |   3/  5/  9 |    2002 |
 | long_press/repeat_press   |   3/  5/  7 |    2002 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  14/ 20/ 21 |    2002 |
-| Encoded8To3ButtonConfig   |  38/ 54/ 58 |    2002 |
-| EncodedButtonConfig       |  19/ 33/ 35 |    2002 |
-| LadderButtonConfig        |  82/ 96/ 97 |    2002 |
+| Encoded4To2ButtonConfig   |  15/ 21/ 22 |    2002 |
+| Encoded8To3ButtonConfig   |  42/ 56/ 57 |    2002 |
+| EncodedButtonConfig       |  19/ 35/ 39 |    2002 |
+| LadderButtonConfig        |  80/ 94/ 95 |    2002 |
 +---------------------------+-------------+---------+
 
 ```
@@ -307,7 +312,7 @@ CPU:
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
-* ESP32 Boards 1.0.4
+* ESP32 Boards 1.0.6
 
 ```
 Sizes of Objects:

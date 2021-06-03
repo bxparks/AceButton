@@ -113,6 +113,11 @@ number of `TimingStats::update()` calls that were made.
       those calls almost twice as fast as `Encoded4To2ButtonConfig` (38
       microseconds versus 72 microseconds).
 
+**v1.9+**
+* Upgrade STM32duino Core from 1.9.0 to 2.0.0.
+* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+* No significant change in CPU times.
+
 ## Results
 
 The following table shows the minimum, average, and maximum (min/avg/max)
@@ -173,7 +178,7 @@ time taken for a number of scenarios in units of microseconds:
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* SparkFun SAMD Core 1.8.1
+* SparkFun SAMD Core 1.8.3
 
 ```
 {samd_results}
@@ -183,7 +188,7 @@ time taken for a number of scenarios in units of microseconds:
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* STM32duino 1.9.0
+* STM32duino 2.0.0
 
 ```
 {stm32_results}
@@ -203,7 +208,7 @@ time taken for a number of scenarios in units of microseconds:
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
-* ESP32 Boards 1.0.4
+* ESP32 Boards 1.0.6
 
 ```
 {esp32_results}

@@ -63,46 +63,63 @@ $ make README.md
 
 ## Library Size Changes
 
-Prior to v1.5, the 'Baseline' numbers also included the system `ButtonConfig`
-that is automatically created by the library. But in v1.5, I discovered that
-defining the `ButtonConfig::ButtonConfig()` constructor with a `= default`
-instead of explicitly defining an empty body `{}` allows the compiler/linker
-to completely remove the static instance of the system `ButtonConfig` if it is
-never referenced. This caused the incremental size of the library as listed in
-the tables to increase by 200-1000 bytes, but the total flash size of any
-program that uses the AceButton library to actually decreased by 40-80 bytes
-because it could use the `= default` implementation instead of an explicit empty
-implementation.
+**v1.5**
+* Prior to v1.5, the 'Baseline' numbers also included the system `ButtonConfig`
+  that is automatically created by the library.
+* In v1.5, discovered that defining the `ButtonConfig::ButtonConfig()`
+  constructor with a `= default` instead of explicitly defining an empty body
+  `{}` allows the compiler/linker to completely remove the static instance of
+  the system `ButtonConfig` if it is never referenced.
+* Incremental size of the library as listed in the tables to increase by
+  200-1000 bytes.
+* The total flash size of any program that uses the AceButton library to
+  actually decreased by 40-80 bytes because it could use the `= default`
+  implementation instead of an explicit empty implementation.
 
-In v1.6, adding support for using `IEventHandler` as the event handler increased
-the library flash size between 34 to 64 bytes on 8-bit and 32-bit processors.
-The RAM size is unchanged because only a single bit-field flag is used which
-required no additional fields to be added to the `ButtonConfig`.
+**v1.6**
+* Support for using `IEventHandler` increases the library flash size between 34
+  to 64 bytes on 8-bit and 32-bit processors.
+* The RAM size is unchanged because only a single bit-field flag is used which
+  required no additional fields to be added to the `ButtonConfig`.
 
-In v1.6.1, making the destructor in `ButtonConfig` to be `virtual` was extended
-to SAMD and Teensy architectures (joining ESP8266 and ESP32). This seems to
-cause flash memory usage to increase by about 200-300 bytes on the SAMD, and
-about 3500 bytes on the Teensy 3.2. Even though those platforms have significant
-amounts of flash memory (256kB if I recall), those numbers are not ideal. The
-mitigating factor is that the increase in flash size is probably due `malloc()`
-and `free()` so if any other library brings those in (e.g. the `String` class),
-then the incremental cost is not significant.
+**v1.6.1**
+* Enable virtual destructor in `ButtonConfig` to only for 32-bit processors
+  (e.g. SAMD21, STM32, ESP8266, ESP32, Teensy 3.2).
+* Seems to cause flash memory usage to increase by about 200-300 bytes on the
+  SAMD, and about 3500 bytes on the Teensy 3.2. Even though those platforms have
+  significant amounts of flash memory (256kB or more if I recall), those numbers
+  are not ideal.
+* The mitigating factor is that the increase in flash size is probably due
+  `malloc()` and `free()` so if any other library brings those in (e.g. the
+  `String` class), then the incremental cost is not significant.
 
-In v1.8, adding support for `kEventLongReleased` increased the flash memory
-consumption by 8 to 56 bytes.
+**v1.8**
+* Support for `kEventLongReleased` increase the flash memory consumption by 8 to
+  56 bytes.
 
-In v1.8.3, I upgraded my ESP32 Arduino Core from v1.0.4 to v1.0.6. For some
-reason, it causes the `LadderButtConfig` to increase flash consumption from ~5kB
-to ~19kB. The CPU time consumption for `LadderButtonConfig` also went up by a
-factor of 2.5X (24 micros to 67 micros). It looks like they changed the
-implementation of `analogRead()` in v1.0.5. See
-https://github.com/espressif/arduino-esp32/issues/4973 and
-https://github.com/espressif/arduino-esp32/pull/3377.
+**v1.8.3**
+* Upgrade ESP32 Arduino Core from v1.0.4 to v1.0.6.
+    * Causes the `LadderButtConfig` to increase flash consumption from ~5kB
+      to ~19kB.
+    * CPU time consumption for `LadderButtonConfig` also goes up by a factor of
+      2.5X (24 micros to 67 micros).
+    * Looks like they changed the implementation of `analogRead()` in v1.0.5.
+      See https://github.com/espressif/arduino-esp32/issues/4973 and
+      https://github.com/espressif/arduino-esp32/pull/3377.
 
-In v1.9, added `ButtonConfigFast1`, `ButtonConfigFast2`, and `ButtonConfigFast3`
-to support `digitalWriteFast.h` libraries. Reduces flash consumption on AVR
-processors by 100 to 400 bytes. Added preliminary support for ATtiny85 using
-[SpenceKonde/ATTinyCore](https://github.com/SpenceKonde/ATTinyCore).
+**v1.9**
+* Add `ButtonConfigFast1`, `ButtonConfigFast2`, and `ButtonConfigFast3`
+  to support `digitalWriteFast.h` libraries. Reduces flash consumption on AVR
+  processors by 100 to 400 bytes. Added preliminary support for ATtiny85 using
+  [SpenceKonde/ATTinyCore](https://github.com/SpenceKonde/ATTinyCore).
+
+**v1.9+**
+* Upgrade STM32duino Core from 1.9.0 to 2.0.0
+    * Flash memory increases by 2.6kB across the board.
+    * Static memory decreases by 250 bytes across the board.
+    * AceButton code size unchanged.
+* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+    * No changes to flash or static memory.
 
 ## ATtiny85
 
@@ -180,7 +197,7 @@ processors by 100 to 400 bytes. Added preliminary support for ATtiny85 using
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* SparkFun SAMD Core 1.8.1
+* SparkFun SAMD Core 1.8.3
 
 ```
 +--------------------------------------------------------------+
@@ -228,22 +245,22 @@ processors by 100 to 400 bytes. Added preliminary support for ATtiny85 using
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* STM32duino 1.9.0
+* STM32duino 2.0.0
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |  19144/ 3788 |     0/    0 |
+| Baseline                        |  21428/ 3536 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  21860/ 3848 |  2716/   60 |
+| ButtonConfig                    |  24492/ 3596 |  3064/   60 |
 | ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
 | ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
 | ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
-| Encoded4To2ButtonConfig         |  22024/ 3884 |  2880/   96 |
-| Encoded8To3ButtonConfig         |  22164/ 3948 |  3020/  160 |
-| EncodedButtonConfig             |  22228/ 3956 |  3084/  168 |
-| LadderButtonConfig              |  24948/ 3968 |  5804/  180 |
+| Encoded4To2ButtonConfig         |  24656/ 3632 |  3228/   96 |
+| Encoded8To3ButtonConfig         |  24796/ 3696 |  3368/  160 |
+| EncodedButtonConfig             |  24860/ 3704 |  3432/  168 |
+| LadderButtonConfig              |  27768/ 3716 |  6340/  180 |
 +--------------------------------------------------------------+
 
 ```
