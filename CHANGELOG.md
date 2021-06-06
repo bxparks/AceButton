@@ -23,7 +23,7 @@
         * Uses the 4-parameter `AceButton()` constructor to set the
           `buttonConfig` parameter explicitly to `nullptr`.
         * Saves 30 bytes of flash and 26 bytes of RAM on AVR (e.g. ATmega328,
-          ATtiny83) processors.
+          ATtiny85) processors.
     * Split off `examples/Encoded4To2Buttons` from
       `examples/Encoded8To3Buttons` to make the usage of the
       `Encoded4To2ButtonConfig` and `Encoded8To3ButtonConfig` classes more
