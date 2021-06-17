@@ -371,7 +371,7 @@ The following example sketches are provided:
           `AceButton::check()` method for various types of events (idle,
           press/release, click, double-click, and long-press)
     * [MemoryBenchmark](examples/MemoryBenchmark/)
-        * determines the amount of flash memory consumes by various objects and
+        * determines the amount of flash memory consumed by various objects and
           features of the library
 
 <a name="Usage"></a>
