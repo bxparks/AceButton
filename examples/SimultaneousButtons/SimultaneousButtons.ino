@@ -112,13 +112,13 @@ class ButtonHandler: public IEventHandler {
     /**
      * Determine if both buttons are pressed at the same time.
      *
-     * Check if the Pressed event of one button occurred within
-     * kConcurrentTriggerMillis of the other button. The mB{x}PressedMillis is
-     * a 16-bit integer which can rollover after 65536 milliseconds. So if the
-     * first button is held down for more than (65536 - 100 = 65435)
-     * milliseconds, it is possible for the 2nd button to trigger a concurrent
-     * press when pressed 65 seconds after the first. I can think of 2
-     * possible fixes:
+     * If mRequireConcurrentTrigger is true, then also check if the Pressed
+     * event of one button occurred within kConcurrentTriggerMillis of the other
+     * button. The mB{x}PressedMillis is a 16-bit integer which can rollover
+     * after 65536 milliseconds. So if the first button is held down for more
+     * than (65536 - 100 = 65435) milliseconds, it is possible for the 2nd
+     * button to trigger a concurrent press when pressed 65 seconds after the
+     * first. I can think of 2 possible fixes:
      *
      *  1) Enable kEventRepeatPress, and use one of those events to reset
      *     the mB{x}PressedMillis of the other button appropriately.
