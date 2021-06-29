@@ -280,17 +280,18 @@ The source files are organized as follows:
 
 The following example sketches are provided:
 
-* [HelloButton](examples/HelloButton)
-    * minimal program that reads a switch and control the built-in LED
-* [SingleButton](examples/SingleButton)
-    * single button wired with an internal pull-up resistor
-* [SingleButtonPullDown](examples/SingleButtonPullDown)
-    * same as `SingleButton` but with an external pull-down resistor
-* [SingleButtonUsingIEventHandler](examples/SingleButtonUsingIEventHandler)
-    * same as `SingleButton` using an object-based `IEventHandler`
-* [Stopwatch](examples/Stopwatch)
-    * measures the speed of `AceButton:check()` with a start/stop/reset button
-    * uses `kFeatureLongPress`
+* Basic Single Button
+    * [HelloButton](examples/HelloButton)
+        * minimal program that reads a switch and control the built-in LED
+    * [SingleButton](examples/SingleButton)
+        * single button wired with an internal pull-up resistor
+    * [SingleButtonPullDown](examples/SingleButtonPullDown)
+        * same as `SingleButton` but with an external pull-down resistor
+    * [SingleButtonUsingIEventHandler](examples/SingleButtonUsingIEventHandler)
+        * same as `SingleButton` using an object-based `IEventHandler`
+    * [Stopwatch](examples/Stopwatch)
+        * measures the speed of `AceButton:check()` with a start/stop/reset
+        * button uses `kFeatureLongPress`
 * Multiple Buttons
     * [TwoButtonsUsingOneButtonConfig](examples/TwoButtonsUsingOneButtonConfig)
         * two buttons using one ButtonConfig
@@ -310,7 +311,10 @@ The following example sketches are provided:
     * [ArrayButtons](examples/ArrayButtons)
         * shows how to define an array of `AceButton` and initialize them using
           the `init()` method in a loop
-* distinguishing Click versus Double-Click
+    * [SimultaneousButtons](examples/SimultaneousButtons)
+        * detecting simultaneous button presses of 2 buttons using a custom
+          `IEventHandler`
+* Distinguishing Click versus Double-Click
     * [ClickVersusDoubleClickUsingReleased](examples/ClickVersusDoubleClickUsingReleased)
         * a way to distinguish between a `kEventClicked` from a
           `kEventDoubleClicked` using a `kEventReleased` instead
@@ -322,7 +326,7 @@ The following example sketches are provided:
     * [ClickVersusDoubleClickUsingBoth](examples/ClickVersusDoubleClickUsingBoth)
         * an example that combines both the "UsingPressed" and
           "UsingSuppression" techniques
-* distinguishing Pressed and LongPressed
+* Distinguishing Pressed and LongPressed
     * [examples/PressedAndLongPressed](examples/PressedAndLongPressed)
     * see also the
       [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
