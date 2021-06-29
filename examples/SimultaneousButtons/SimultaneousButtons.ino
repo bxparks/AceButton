@@ -56,7 +56,7 @@ class ButtonHandler: public IEventHandler {
      *    seconds apart. Set to true to require that B1 and B2 must be pressed
      *    down within a short time of each other (e.g. 100 milliseconds).
      */
-    ButtonHandler(bool requireConcurrentTrigger = false)
+    explicit ButtonHandler(bool requireConcurrentTrigger = false)
         : mRequireConcurrentTrigger(requireConcurrentTrigger)
     {}
 
