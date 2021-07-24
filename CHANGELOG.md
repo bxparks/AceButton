@@ -8,6 +8,8 @@
         * Very little change to AceButton code itself.
     * Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
         * No change observed in MemoryBenchmark or AutoBenchmark.
+    * Add `examples/SimultaneousButtons`, showing how to detect the simultaneous
+      press of 2 buttons.
 * 1.9 (2021-06-01)
     * Split [LadderButtonCalibrator](examples/LadderButtonCalibrator)
       from [LadderButtons](examples/LadderButtons) for convenience.
