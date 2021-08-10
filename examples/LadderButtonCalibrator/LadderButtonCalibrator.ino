@@ -22,7 +22,7 @@
 
 #if OUTPUT_TYPE == OUTPUT_TYPE_TM1637
   #include <AceSegment.h>
-  using ace_segment::SoftWireInterface;
+  using ace_segment::SoftTmiInterface;
   using ace_segment::Tm1637Module;
   using ace_segment::LedDisplay;
   using ace_segment::NumberWriter;
@@ -33,9 +33,9 @@
   const uint16_t BIT_DELAY = 100;
   const uint8_t NUM_DIGITS = 4;
 
-  using WireInterface = SoftWireInterface;
-  WireInterface wireInterface(CLK_PIN, DIO_PIN, BIT_DELAY);
-  Tm1637Module<WireInterface, NUM_DIGITS> tm1637Module(wireInterface);
+  using TmiInterface = SoftTmiInterface;
+  TmiInterface tmiInterface(CLK_PIN, DIO_PIN, BIT_DELAY);
+  Tm1637Module<TmiInterface, NUM_DIGITS> tm1637Module(tmiInterface);
   LedDisplay ledDisplay(tm1637Module);
   NumberWriter numberWriter (ledDisplay);
 
@@ -89,7 +89,7 @@ void setup() {
   Serial.println(F("setup(): begin"));
 
 #elif OUTPUT_TYPE == OUTPUT_TYPE_TM1637
-  wireInterface.begin();
+  tmiInterface.begin();
   tm1637Module.begin();
   ledDisplay.setBrightness(3);
 #endif

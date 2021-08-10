@@ -1,6 +1,16 @@
 # Changelog
 
 * Unreleased
+* 1.9.1 (2021-08-10)
+    * Upgrade STM32duino Core from 1.9.0 to 2.0.0.
+        * MemoryBenchmark: Flash usage increases by 2.6kB across the board, but
+          static RAM goes down by 250 bytes.
+        * AutoBenchmark: No change.
+        * Very little change to AceButton code itself.
+    * Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+        * No change observed in MemoryBenchmark or AutoBenchmark.
+    * Add `examples/SimultaneousButtons`, showing how to detect the simultaneous
+      press of 2 buttons.
 * 1.9 (2021-06-01)
     * Split [LadderButtonCalibrator](examples/LadderButtonCalibrator)
       from [LadderButtons](examples/LadderButtons) for convenience.
@@ -16,7 +26,7 @@
         * Uses the 4-parameter `AceButton()` constructor to set the
           `buttonConfig` parameter explicitly to `nullptr`.
         * Saves 30 bytes of flash and 26 bytes of RAM on AVR (e.g. ATmega328,
-          ATtiny83) processors.
+          ATtiny85) processors.
     * Split off `examples/Encoded4To2Buttons` from
       `examples/Encoded8To3Buttons` to make the usage of the
       `Encoded4To2ButtonConfig` and `Encoded8To3ButtonConfig` classes more

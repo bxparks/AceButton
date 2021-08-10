@@ -286,7 +286,7 @@ the value is `2^12 - 1 = 4095` or exactly `2^12 = 4096`.
 The `LadderButtonConfig::checkButtons()` calls `analogRead()` which is an
 expensive function compared to `digitalRead()`. On an AVR processor,
 `analogRead()` can take 100 micros compared to single-digit micros for
-`digitalRead().
+`digitalRead()`.
 
 On the ESP8266, there is an even bigger problem. If the `analogRead()` function
 is called too quickly, it causes the WiFi to disconnect, as detailed by these
@@ -305,7 +305,7 @@ slower sampling rate of less than 200 samples/second is needed to get long-term
 WiFi stability. Fortunately, AceButton needs to sample the A0 every 4-5 ms, or
 only about 200 samples/second so we should be fine.
 
-For these reasons, I recommend always rate-limit the call to
+For these reasons, I recommend always rate-limiting the call to
 `LadderButtonConfig::checkButtons()` no matter what processor you are using.
 There is no advantage to calling `checkButtons()` more often than necessary, and
 your microprocessor could be doing other things during that time.

@@ -2,11 +2,6 @@
 
 [![AUnit Tests](https://github.com/bxparks/AceButton/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceButton/actions/workflows/aunit_tests.yml)
 
-**New**: [GitHub Discussions](https://github.com/bxparks/AceButton/discussions)
-for this project is now active! Let's use that for general support questions,
-and reserve the [GitHub Issues](https://github.com/bxparks/AceButton/issues)
-section for bugs and feature requests.
-
 An adjustable, compact, event-driven button library for Arduino platforms.
 
 This library provides classes which accept inputs from a mechanical button
@@ -72,7 +67,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.9 (2021-06-01)
+**Version**: 1.9.1 (2021-08-10)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -280,17 +275,18 @@ The source files are organized as follows:
 
 The following example sketches are provided:
 
-* [HelloButton](examples/HelloButton)
-    * minimal program that reads a switch and control the built-in LED
-* [SingleButton](examples/SingleButton)
-    * single button wired with an internal pull-up resistor
-* [SingleButtonPullDown](examples/SingleButtonPullDown)
-    * same as `SingleButton` but with an external pull-down resistor
-* [SingleButtonUsingIEventHandler](examples/SingleButtonUsingIEventHandler)
-    * same as `SingleButton` using an object-based `IEventHandler`
-* [Stopwatch](examples/Stopwatch)
-    * measures the speed of `AceButton:check()` with a start/stop/reset button
-    * uses `kFeatureLongPress`
+* Basic Single Button
+    * [HelloButton](examples/HelloButton)
+        * minimal program that reads a switch and control the built-in LED
+    * [SingleButton](examples/SingleButton)
+        * single button wired with an internal pull-up resistor
+    * [SingleButtonPullDown](examples/SingleButtonPullDown)
+        * same as `SingleButton` but with an external pull-down resistor
+    * [SingleButtonUsingIEventHandler](examples/SingleButtonUsingIEventHandler)
+        * same as `SingleButton` using an object-based `IEventHandler`
+    * [Stopwatch](examples/Stopwatch)
+        * measures the speed of `AceButton:check()` with a start/stop/reset
+        * button uses `kFeatureLongPress`
 * Multiple Buttons
     * [TwoButtonsUsingOneButtonConfig](examples/TwoButtonsUsingOneButtonConfig)
         * two buttons using one ButtonConfig
@@ -310,7 +306,10 @@ The following example sketches are provided:
     * [ArrayButtons](examples/ArrayButtons)
         * shows how to define an array of `AceButton` and initialize them using
           the `init()` method in a loop
-* distinguishing Click versus Double-Click
+    * [SimultaneousButtons](examples/SimultaneousButtons)
+        * detecting simultaneous button presses of 2 buttons using a custom
+          `IEventHandler`
+* Distinguishing Click versus Double-Click
     * [ClickVersusDoubleClickUsingReleased](examples/ClickVersusDoubleClickUsingReleased)
         * a way to distinguish between a `kEventClicked` from a
           `kEventDoubleClicked` using a `kEventReleased` instead
@@ -322,7 +321,7 @@ The following example sketches are provided:
     * [ClickVersusDoubleClickUsingBoth](examples/ClickVersusDoubleClickUsingBoth)
         * an example that combines both the "UsingPressed" and
           "UsingSuppression" techniques
-* distinguishing Pressed and LongPressed
+* Distinguishing Pressed and LongPressed
     * [examples/PressedAndLongPressed](examples/PressedAndLongPressed)
     * see also the
       [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
@@ -371,7 +370,7 @@ The following example sketches are provided:
           `AceButton::check()` method for various types of events (idle,
           press/release, click, double-click, and long-press)
     * [MemoryBenchmark](examples/MemoryBenchmark/)
-        * determines the amount of flash memory consumes by various objects and
+        * determines the amount of flash memory consumed by various objects and
           features of the library
 
 <a name="Usage"></a>
@@ -1856,8 +1855,8 @@ This library was developed and tested using:
 * [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
 * [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
 * [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
-* [STM32duino 1.9.0](https://github.com/stm32duino/Arduino_Core_STM32)
+* [SparkFun SAMD Boards 1.8.3](https://github.com/sparkfun/Arduino_Boards)
+* [STM32duino 2.0.0](https://github.com/stm32duino/Arduino_Core_STM32)
 * [ESP8266 Arduino Core 2.7.4](https://github.com/esp8266/Arduino)
 * [ESP32 Arduino Core 1.0.6](https://github.com/espressif/arduino-esp32)
 * [Teensyduino 1.53](https://www.pjrc.com/teensy/td_download.html)
