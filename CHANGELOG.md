@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 1.9.1 (2021-08-10)
     * Upgrade STM32duino Core from 1.9.0 to 2.0.0.
         * MemoryBenchmark: Flash usage increases by 2.6kB across the board, but
           static RAM goes down by 250 bytes.

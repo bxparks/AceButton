@@ -12,7 +12,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.9
+**Version**: AceButton v1.9.1
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -113,7 +113,7 @@ $ make README.md
   processors by 100 to 400 bytes. Added preliminary support for ATtiny85 using
   [SpenceKonde/ATTinyCore](https://github.com/SpenceKonde/ATTinyCore).
 
-**v1.9+**
+**v1.9.1**
 * Upgrade STM32duino Core from 1.9.0 to 2.0.0
     * Flash memory increases by 2.6kB across the board.
     * Static memory decreases by 250 bytes across the board.

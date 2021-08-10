@@ -2,11 +2,6 @@
 
 [![AUnit Tests](https://github.com/bxparks/AceButton/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceButton/actions/workflows/aunit_tests.yml)
 
-**New**: [GitHub Discussions](https://github.com/bxparks/AceButton/discussions)
-for this project is now active! Let's use that for general support questions,
-and reserve the [GitHub Issues](https://github.com/bxparks/AceButton/issues)
-section for bugs and feature requests.
-
 An adjustable, compact, event-driven button library for Arduino platforms.
 
 This library provides classes which accept inputs from a mechanical button
@@ -72,7 +67,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.9 (2021-06-01)
+**Version**: 1.9.1 (2021-08-10)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
