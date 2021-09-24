@@ -309,7 +309,8 @@ void loopIdle() {
 
   checkSimpleButton();
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  unsigned long elapsed = millis() - start;
+  if (elapsed > STATS_PRINT_INTERVAL) {
     printStats(F("idle"));
     nextMode();
   }
@@ -325,7 +326,7 @@ void loopPressRelease() {
   if (100 <= elapsed && elapsed < 1000) buttonConfig.setButtonState(LOW);
   if (1000 <= elapsed) buttonConfig.setButtonState(HIGH);
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  if (elapsed > STATS_PRINT_INTERVAL) {
     if (loopEventType != AceButton::kEventReleased) {
       SERIAL_PORT_MONITOR.print(F("ERROR "));
     }
@@ -344,7 +345,7 @@ void loopClick() {
   if (100 <= elapsed && elapsed < 200) buttonConfig.setButtonState(LOW);
   if (200 <= elapsed) buttonConfig.setButtonState(HIGH);
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  if (elapsed > STATS_PRINT_INTERVAL) {
     if (loopEventType != AceButton::kEventClicked) {
       SERIAL_PORT_MONITOR.print(F("ERROR "));
     }
@@ -365,7 +366,7 @@ void loopDoubleClick() {
   if (300 <= elapsed && elapsed < 400) buttonConfig.setButtonState(LOW);
   if (400 <= elapsed) buttonConfig.setButtonState(HIGH);
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  if (elapsed > STATS_PRINT_INTERVAL) {
     if (loopEventType != AceButton::kEventDoubleClicked) {
       SERIAL_PORT_MONITOR.print(F("ERROR "));
     }
@@ -383,7 +384,7 @@ void loopLongPress() {
   unsigned long elapsed = now - start;
   if (100 <= elapsed) buttonConfig.setButtonState(LOW);
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  if (elapsed > STATS_PRINT_INTERVAL) {
     if (loopEventType != AceButton::kEventRepeatPressed) {
       SERIAL_PORT_MONITOR.print(F("ERROR "));
     }
@@ -398,7 +399,8 @@ void loopCheckButtonConfigFast1() {
 
   checkButtonConfigFast1();
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  unsigned long elapsed = millis() - start;
+  if (elapsed > STATS_PRINT_INTERVAL) {
     printStats(F("ButtonConfigFast1"));
     nextMode();
   }
@@ -409,7 +411,8 @@ void loopCheckButtonConfigFast2() {
 
   checkButtonConfigFast2();
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  unsigned long elapsed = millis() - start;
+  if (elapsed > STATS_PRINT_INTERVAL) {
     printStats(F("ButtonConfigFast2"));
     nextMode();
   }
@@ -420,7 +423,8 @@ void loopCheckButtonConfigFast3() {
 
   checkButtonConfigFast3();
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  unsigned long elapsed = millis() - start;
+  if (elapsed > STATS_PRINT_INTERVAL) {
     printStats(F("ButtonConfigFast3"));
     nextMode();
   }
@@ -433,7 +437,8 @@ void loopEncoded4To2ButtonConfig() {
 
   checkEncoded4To2Buttons();
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  unsigned long elapsed = millis() - start;
+  if (elapsed > STATS_PRINT_INTERVAL) {
     printStats(F("Encoded4To2ButtonConfig"));
     nextMode();
   }
@@ -444,7 +449,8 @@ void loopEncoded8To3ButtonConfig() {
 
   checkEncoded8To3Buttons();
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  unsigned long elapsed = millis() - start;
+  if (elapsed > STATS_PRINT_INTERVAL) {
     printStats(F("Encoded8To3ButtonConfig"));
     nextMode();
   }
@@ -455,7 +461,8 @@ void loopEncodedButtonConfig() {
 
   checkEncodedButtons();
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  unsigned long elapsed = millis() - start;
+  if (elapsed > STATS_PRINT_INTERVAL) {
     printStats(F("EncodedButtonConfig"));
     nextMode();
   }
@@ -466,7 +473,8 @@ void loopLadderButtonConfig() {
 
   checkLadderButtons();
 
-  if (millis() - start > STATS_PRINT_INTERVAL) {
+  unsigned long elapsed = millis() - start;
+  if (elapsed > STATS_PRINT_INTERVAL) {
     printStats(F("LadderButtonConfig"));
     nextMode();
   }

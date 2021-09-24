@@ -1,6 +1,16 @@
 # Changelog
 
 * Unreleased
+    * Fix incorrect subtraction of 2 `uint16_t` integers in
+      various examples and README.md docs for 32-bit processors.
+        * On 8-bit processors with `sizeof(int) == 2`, a `uint16_t - uint16_t`
+          returns a `uint16_t`.
+        * But on 32-bit processors with `sizeof(int)` == 4`, a `uint16_t -
+          uint16_t` returns an `int`, which returns a negative number if the
+          unsigned integer rolled over.
+        * The solution is to explicitly add a `(uint16_t)` cast, which is
+          harmless on 8-bit processors, but is required to produce the correct
+          value on 32-bit processors.
 * 1.9.1 (2021-08-10)
     * Upgrade STM32duino Core from 1.9.0 to 2.0.0.
         * MemoryBenchmark: Flash usage increases by 2.6kB across the board, but

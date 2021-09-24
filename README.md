@@ -587,11 +587,12 @@ AceButton button;
 ...
 
 void checkButtons() {
-  static unsigned long prev = millis();
+  static uint16_t prev = millis();
 
   // DO NOT USE delay(5) to do this.
-  unsigned long now = millis();
-  if (now - prev > 5) {
+  // The (uint16_t) cast is required on 32-bit processors, harmless on 8-bit.
+  uint16_t now = millis();
+  if ((uint16_t) (now - prev) >= 5) {
     button.check();
     prev = now;
   }

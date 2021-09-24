@@ -97,8 +97,9 @@ uint8_t blinkCount = 1;
 void blinkLed() {
   static uint16_t prev;
 
+  // The (uint16_t) cast is required on 32-bit processors, harmless on 8-bit.
   uint16_t now = millis();
-  if (now - prev >= 1500) {
+  if ((uint16_t) (now - prev) >= 1500) {
     prev = now;
     if (blinkCount == 1) {
       blink();
@@ -182,8 +183,9 @@ void checkButtons() {
   static uint16_t prev = millis();
 
   // DO NOT USE delay(5) to do this.
+  // The (uint16_t) cast is required on 32-bit processors, harmless on 8-bit.
   uint16_t now = millis();
-  if (now - prev >= 5) {
+  if ((uint16_t) (now - prev) >= 5) {
     prev = now;
     buttonConfig.checkButtons();
   }
