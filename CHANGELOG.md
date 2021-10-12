@@ -5,7 +5,7 @@
       various examples and README.md docs for 32-bit processors.
         * On 8-bit processors with `sizeof(int) == 2`, a `uint16_t - uint16_t`
           returns a `uint16_t`.
-        * But on 32-bit processors with `sizeof(int)` == 4`, a `uint16_t -
+        * But on 32-bit processors with `sizeof(int) == 4`, a `uint16_t -
           uint16_t` returns an `int`, which returns a negative number if the
           unsigned integer rolled over.
         * The solution is to explicitly add a `(uint16_t)` cast, which is
