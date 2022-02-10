@@ -12,16 +12,14 @@ nano_results = check_output(
     "./generate_table.awk < nano.txt", shell=True, text=True)
 micro_results = check_output(
     "./generate_table.awk < micro.txt", shell=True, text=True)
-samd_results = check_output(
-    "./generate_table.awk < samd.txt", shell=True, text=True)
+stm32_results = check_output(
+    "./generate_table.awk < stm32.txt", shell=True, text=True)
 esp8266_results = check_output(
     "./generate_table.awk < esp8266.txt", shell=True, text=True)
 esp32_results = check_output(
     "./generate_table.awk < esp32.txt", shell=True, text=True)
 teensy32_results = check_output(
     "./generate_table.awk < teensy32.txt", shell=True, text=True)
-stm32_results = check_output(
-    "./generate_table.awk < stm32.txt", shell=True, text=True)
 
 print(f"""\
 # Memory Benchmark
@@ -38,7 +36,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.9.1
+**Version**: AceButton v1.9.2
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -55,6 +53,7 @@ $ make benchmarks
 produces the following files:
 
 ```
+attiny.txt
 nano.txt
 micro.txt
 samd.txt
@@ -147,6 +146,9 @@ $ make README.md
 * Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
     * No changes to flash or static memory.
 
+**v1.9.2**
+* Remove SAMD21 since I can no longer flash with the latest tool chain.
+
 ## ATtiny85
 
 * 8MHz ATtiny85
@@ -177,14 +179,14 @@ $ make README.md
 {micro_results}
 ```
 
-## SAMD21 M0 Mini
+## STM32
 
-* 48 MHz ARM Cortex-M0+
+* STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* SparkFun SAMD Core 1.8.3
+* STM32duino 2.0.0
 
 ```
-{samd_results}
+{stm32_results}
 ```
 
 ## ESP8266
@@ -195,16 +197,6 @@ $ make README.md
 
 ```
 {esp8266_results}
-```
-
-## STM32
-
-* STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.13
-* STM32duino 2.0.0
-
-```
-{stm32_results}
 ```
 
 ## ESP32

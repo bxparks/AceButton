@@ -12,7 +12,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.9.1
+**Version**: AceButton v1.9.2
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -29,6 +29,7 @@ $ make benchmarks
 produces the following files:
 
 ```
+attiny.txt
 nano.txt
 micro.txt
 samd.txt
@@ -121,6 +122,9 @@ $ make README.md
 * Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
     * No changes to flash or static memory.
 
+**v1.9.2**
+* Remove SAMD21 since I can no longer flash with the latest tool chain.
+
 ## ATtiny85
 
 * 8MHz ATtiny85
@@ -193,26 +197,26 @@ $ make README.md
 
 ```
 
-## SAMD21 M0 Mini
+## STM32
 
-* 48 MHz ARM Cortex-M0+
+* STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* SparkFun SAMD Core 1.8.3
+* STM32duino 2.0.0
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |  10072/    0 |     0/    0 |
+| Baseline                        |  21428/ 3536 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  11344/    0 |  1272/    0 |
+| ButtonConfig                    |  24492/ 3596 |  3064/   60 |
 | ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
 | ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
 | ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
-| Encoded4To2ButtonConfig         |  11600/    0 |  1528/    0 |
-| Encoded8To3ButtonConfig         |  11744/    0 |  1672/    0 |
-| EncodedButtonConfig             |  11824/    0 |  1752/    0 |
-| LadderButtonConfig              |  12080/    0 |  2008/    0 |
+| Encoded4To2ButtonConfig         |  24656/ 3632 |  3228/   96 |
+| Encoded8To3ButtonConfig         |  24796/ 3696 |  3368/  160 |
+| EncodedButtonConfig             |  24860/ 3704 |  3432/  168 |
+| LadderButtonConfig              |  27768/ 3716 |  6340/  180 |
 +--------------------------------------------------------------+
 
 ```
@@ -237,30 +241,6 @@ $ make README.md
 | Encoded8To3ButtonConfig         | 258876/26980 |  1952/  180 |
 | EncodedButtonConfig             | 259004/27020 |  2080/  220 |
 | LadderButtonConfig              | 259048/27024 |  2124/  224 |
-+--------------------------------------------------------------+
-
-```
-
-## STM32
-
-* STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.13
-* STM32duino 2.0.0
-
-```
-+--------------------------------------------------------------+
-| functionality                   |  flash/  ram |       delta |
-|---------------------------------+--------------+-------------|
-| Baseline                        |  21428/ 3536 |     0/    0 |
-|---------------------------------+--------------+-------------|
-| ButtonConfig                    |  24492/ 3596 |  3064/   60 |
-| ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
-| ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
-| ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
-| Encoded4To2ButtonConfig         |  24656/ 3632 |  3228/   96 |
-| Encoded8To3ButtonConfig         |  24796/ 3696 |  3368/  160 |
-| EncodedButtonConfig             |  24860/ 3704 |  3432/  168 |
-| LadderButtonConfig              |  27768/ 3716 |  6340/  180 |
 +--------------------------------------------------------------+
 
 ```
