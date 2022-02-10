@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     
     steps:
     - uses: actions/checkout@v2
@@ -21,6 +21,7 @@ jobs:
     - name: Verify examples
       run: |
         make -C examples
+        make -C examples/MemoryBenchmark epoxy
 
     - name: Run tests
       run: |
