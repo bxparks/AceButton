@@ -56,11 +56,16 @@ $ make README.md
 ## Functionality
 
 * Baseline: A program that does (almost) nothing
-* ButtonConfig: 1 `AceButton` using the default system `ButtonConfig`
-* Encoded4To2ButtonConfig: 3 `AceButton` using 1 `Encoded4To2ButtonConfig`
-* Encoded8To3ButtonConfig: 7 `AceButton` using 1 `Encoded8To3ButtonConfig`
-* EncodedButtonConfig: 7 `AceButton` using 1 `EncodedButtonConfig`
-* LadderButtonConfig: 7 `AceButton` using 1 `LadderButtonConfig`
+* Baseline+pinMode+digitalRead: A program that calls `pinMode()` and
+  `digitalRead()`
+* ButtonConfig: 1 `AceButton` using a `ButtonConfig`
+* ButtonConfigFast1: 1 `AceButton` using `ButtonConfigFast1` (AVR only)
+* ButtonConfigFast2: 1 `AceButton` using `ButtonConfigFast2` (AVR only)
+* ButtonConfigFast3: 1 `AceButton` using `ButtonConfigFast3` (AVR only)
+* Encoded4To2ButtonConfig: 3 `AceButton` using a `Encoded4To2ButtonConfig`
+* Encoded8To3ButtonConfig: 7 `AceButton` using a `Encoded8To3ButtonConfig`
+* EncodedButtonConfig: 7 `AceButton` using a `EncodedButtonConfig`
+* LadderButtonConfig: 7 `AceButton` using a `LadderButtonConfig`
 
 ## Library Size Changes
 
@@ -124,11 +129,34 @@ $ make README.md
 
 **v1.9.2**
 * Remove SAMD21 since I can no longer flash with the latest tool chain.
+* Add overhead of virtual functions on Teensy.
+    * Any `virtual` function causes Teensyduino to pull in `malloc()`
+      and `free()` even if `new` and `delete` are never used.
+    * Increases memory consumption of Baseline by ~3kB, which decreases
+      the apparent flash size of various AceButton features on Teensy by ~3kB.
+* Add a second Baseline called `Baseline+pinMode+digitalRead`.
+    * Includes the Arduino framework's overhead when `pinMode()` and
+      `digitalRead()` are used.
+    * Subtracting this overhead from various AceButton features gives a better
+      benchmark about the flash cost of various features.
+    * AVR: 300-400 bytes
+    * STM32: 2200 bytes
+    * ESP8266: 80 bytes
+    * ESP32: 2300 bytes
+    * Teensy 3.2: 450 bytes
+* Upgrade various tool chains:
+    * Arduino IDE from 1.8.13 to 1.8.19
+    * Arduino CLI to 0.20.2
+    * Arduino AVR from 1.8.3 to 1.8.4
+    * STM32duino from 2.0.0 to 2.2.0
+    * ESP8266 from 2.7.4 to 3.0.2
+    * ESP32 from 1.0.6 to 2.0.2
+    * Teensyduino from 1.53 to 1.56
 
 ## ATtiny85
 
 * 8MHz ATtiny85
-* Arduino IDE 1.8.13
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
 * SpenceKonde/ATTinyCore 1.5.2
 
 ```
@@ -155,8 +183,8 @@ $ make README.md
 ## Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.13
-* Arduino AVR Boards 1.8.3
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino AVR Boards 1.8.4
 
 ```
 +--------------------------------------------------------------+
@@ -182,7 +210,7 @@ $ make README.md
 ## SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.13
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
 * SparkFun AVR Boards 1.1.13
 
 ```
@@ -209,8 +237,8 @@ $ make README.md
 ## STM32
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.13
-* STM32duino 2.0.0
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* STM32duino 2.2.0
 
 ```
 +--------------------------------------------------------------+
@@ -233,8 +261,8 @@ $ make README.md
 ## ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
-* Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.4
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* ESP8266 Boards 3.0.2
 
 ```
 +--------------------------------------------------------------+
@@ -257,8 +285,8 @@ $ make README.md
 ## ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.13
-* ESP32 Boards 1.0.6
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* ESP32 Boards 2.0.2
 
 ```
 +--------------------------------------------------------------+
@@ -281,8 +309,8 @@ $ make README.md
 ## Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.13
-* Teensyduino 1.53
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Teensyduino 1.56
 * Compiler options: "Faster"
 
 ```
