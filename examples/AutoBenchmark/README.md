@@ -14,7 +14,7 @@ which will add to the timing values shown below in actual usage.
 The [digitalWriteFast library](https://github.com/NicksonYap/digitalWriteFast)
 might be an alternative if speed is critical.
 
-**Version**: AceButton v1.9.1
+**Version**: AceButton v1.9.2
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -92,6 +92,9 @@ number of `TimingStats::update()` calls that were made.
 * Upgrade STM32duino Core from 1.9.0 to 2.0.0.
 * Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
 * No significant change in CPU times.
+
+**v1.9.2**
+* Remove SAMD21 since I can no longer flash them using latest tool chain.
 
 ## Results
 
@@ -205,39 +208,6 @@ CPU:
 | Encoded8To3ButtonConfig   | 172/195/216 |    1646 |
 | EncodedButtonConfig       |  80/102/124 |    1782 |
 | LadderButtonConfig        | 172/201/276 |    1635 |
-+---------------------------+-------------+---------+
-
-```
-
-### SAMD21 M0 Mini
-
-* 48 MHz ARM Cortex-M0+
-* Arduino IDE 1.8.13
-* SparkFun SAMD Core 1.8.3
-
-```
-Sizes of Objects:
-sizeof(AceButton): 16
-sizeof(ButtonConfig): 24
-sizeof(Encoded4To2ButtonConfig): 28
-sizeof(Encoded8To3ButtonConfig): 28
-sizeof(EncodedButtonConfig): 36
-sizeof(LadderButtonConfig): 36
-
-CPU:
-+---------------------------+-------------+---------+
-| Button Event              | min/avg/max | samples |
-|---------------------------+-------------+---------|
-| idle                      |   5/  8/  9 |    2002 |
-| press/release             |   4/  9/ 14 |    2002 |
-| click                     |   4/  8/ 14 |    2002 |
-| double_click              |   4/  8/ 16 |    2002 |
-| long_press/repeat_press   |   5/  9/ 13 |    2002 |
-|---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  19/ 30/ 31 |    2002 |
-| Encoded8To3ButtonConfig   |  49/ 76/ 80 |    2002 |
-| EncodedButtonConfig       |  27/ 53/ 54 |    2002 |
-| LadderButtonConfig        | 447/473/478 |    2002 |
 +---------------------------+-------------+---------+
 
 ```

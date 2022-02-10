@@ -10,8 +10,6 @@ nano_results = check_output(
     "./generate_table.awk < nano.txt", shell=True, text=True)
 micro_results = check_output(
     "./generate_table.awk < micro.txt", shell=True, text=True)
-samd_results = check_output(
-    "./generate_table.awk < samd.txt", shell=True, text=True)
 stm32_results = check_output(
     "./generate_table.awk < stm32.txt", shell=True, text=True)
 esp8266_results = check_output(
@@ -39,7 +37,7 @@ which will add to the timing values shown below in actual usage.
 The [digitalWriteFast library](https://github.com/NicksonYap/digitalWriteFast)
 might be an alternative if speed is critical.
 
-**Version**: AceButton v1.9.1
+**Version**: AceButton v1.9.2
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -118,6 +116,9 @@ number of `TimingStats::update()` calls that were made.
 * Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
 * No significant change in CPU times.
 
+**v1.9.2**
+* Remove SAMD21 since I can no longer flash them using latest tool chain.
+
 ## Results
 
 The following table shows the minimum, average, and maximum (min/avg/max)
@@ -172,16 +173,6 @@ time taken for a number of scenarios in units of microseconds:
 
 ```
 {micro_results}
-```
-
-### SAMD21 M0 Mini
-
-* 48 MHz ARM Cortex-M0+
-* Arduino IDE 1.8.13
-* SparkFun SAMD Core 1.8.3
-
-```
-{samd_results}
 ```
 
 ### STM32
