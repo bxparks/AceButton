@@ -39,13 +39,19 @@ END {
 
   printf("+--------------------------------------------------------------+\n")
   printf("| functionality                   |  flash/  ram |       delta |\n")
-  printf("|---------------------------------+--------------+-------------|\n")
-  printf("| %-31s | %6d/%5d | %5d/%5d |\n",
-      labels[0], u[0]["flash"], u[0]["ram"], u[0]["d_flash"], u[0]["d_ram"])
-  printf("|---------------------------------+--------------+-------------|\n")
-  for (i = 1; i < NUM_ENTRIES; i++) {
+  for (i = 0; i < NUM_ENTRIES; i++) {
+    if (u[i]["flash"] == "-1") continue
+
+    name = labels[i]
+    if (name ~ /^Baseline/ \
+        || name ~ /^ButtonConfig$/ \
+        || name ~ /^Encoded4To2ButtonConfig$/ \
+        || name ~ /^LadderButtonConfig$/) {
+      printf(\
+        "|---------------------------------+--------------+-------------|\n")
+    }
     printf("| %-31s | %6d/%5d | %5d/%5d |\n",
-        labels[i], u[i]["flash"], u[i]["ram"], u[i]["d_flash"], u[i]["d_ram"])
+        name, u[i]["flash"], u[i]["ram"], u[i]["d_flash"], u[i]["d_ram"])
   }
   printf("+--------------------------------------------------------------+\n")
 }
