@@ -148,6 +148,20 @@ $ make README.md
 
 **v1.9.2**
 * Remove SAMD21 since I can no longer flash with the latest tool chain.
+* Add overhead of virtual functions on Teensy, which pulls in `malloc()`
+  and `free()` even if `new` and `delete` are never used.
+    * Increases memory consumption of Baseline by ~3kB, which decreases
+      the apparent flash size of various AceButton features on Teensy by ~3kB.
+* Add a second Baseline called `Baseline+pinMode+digitalRead`.
+    * Includes the Arduino framework's overhead when `pinMode()` and
+      `digitalRead()` are used.
+    * Subtracting this overhead from various AceButton features gives a better
+      benchmark about the flash cost of various features.
+    * AVR: 300-400 bytes
+    * STM32: 2200 bytes
+    * ESP8266: 80 bytes
+    * ESP32: 2300 bytes
+    * Teensy 3.2: 450 bytes
 
 ## ATtiny85
 

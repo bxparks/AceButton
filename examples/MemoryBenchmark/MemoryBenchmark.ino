@@ -9,14 +9,15 @@
 
 // List of features of the AceButton library that we want to examine.
 #define FEATURE_BASELINE 0
-#define FEATURE_BUTTON_CONFIG 1
-#define FEATURE_BUTTON_CONFIG_FAST1 2
-#define FEATURE_BUTTON_CONFIG_FAST2 3
-#define FEATURE_BUTTON_CONFIG_FAST3 4
-#define FEATURE_ENCODED_4TO2_BUTTON_CONFIG 5
-#define FEATURE_ENCODED_8TO3_BUTTON_CONFIG 6
-#define FEATURE_ENCODED_BUTTON_CONFIG 7
-#define FEATURE_LADDER_BUTTON_CONFIG 8
+#define FEATURE_BASELINE_DIGITAL_READ 1
+#define FEATURE_BUTTON_CONFIG 2
+#define FEATURE_BUTTON_CONFIG_FAST1 3
+#define FEATURE_BUTTON_CONFIG_FAST2 4
+#define FEATURE_BUTTON_CONFIG_FAST3 5
+#define FEATURE_ENCODED_4TO2_BUTTON_CONFIG 6
+#define FEATURE_ENCODED_8TO3_BUTTON_CONFIG 7
+#define FEATURE_ENCODED_BUTTON_CONFIG 8
+#define FEATURE_LADDER_BUTTON_CONFIG 9
 
 // Select one of the FEATURE_* parameters and compile. Then look at the flash
 // and RAM usage, compared to FEATURE_BASELINE usage to determine how much
@@ -29,7 +30,7 @@
 // program.
 volatile int disableCompilerOptimization = 0;
 
-#if FEATURE != FEATURE_BASELINE
+#if FEATURE != FEATURE_BASELINE && FEATURE != FEATURE_BASELINE_DIGITAL_READ
   #include <AceButton.h>
   using namespace ace_button;
 
@@ -39,7 +40,10 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
 }
 #endif
 
-#if FEATURE == FEATURE_BUTTON_CONFIG
+#if FEATURE == FEATURE_BASELINE_DIGITAL_READ
+  static const int BUTTON_PIN = 2;
+
+#elif FEATURE == FEATURE_BUTTON_CONFIG
   static const int BUTTON_PIN = 2;
   AceButton button(BUTTON_PIN);
 
@@ -170,10 +174,33 @@ void handleEvent(AceButton* /* button */, uint8_t /* eventType */,
   );
 #endif
 
-void setup() {
-  delay(2000);
+// TeensyDuino seems to pull in malloc() and free() when a class with virtual
+// functions is used polymorphically. This causes the memory consumption of
+// FEATURE_BASELINE (which normally has no classes defined, so does not include
+// malloc() and free()) to be artificially small which throws off the memory
+// consumption calculations for all subsequent features. Let's define a
+// throw-away class and call its method for all FEATURES, including BASELINE.
+#if defined(TEENSYDUINO)
+  class FooClass {
+    public:
+      virtual void doit() {
+        disableCompilerOptimization = 0;
+      }
+  };
 
-#if FEATURE == FEATURE_BUTTON_CONFIG
+  FooClass* foo;
+#endif
+
+void setup() {
+#if defined(TEENSYDUINO)
+  foo = new FooClass();
+#endif
+
+#if FEATURE == FEATURE_BASELINE
+  // do nothing
+#elif FEATURE == FEATURE_BASELINE_DIGITAL_READ
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+#elif FEATURE == FEATURE_BUTTON_CONFIG
   pinMode(BUTTON_PIN, INPUT_PULLUP);
 #elif FEATURE == FEATURE_BUTTON_CONFIG_FAST1
   pinModeFast(BUTTON1_PIN, INPUT_PULLUP);
@@ -207,7 +234,7 @@ void setup() {
   ButtonConfig* config = &buttonConfig;
 #endif
 
-#if FEATURE != FEATURE_BASELINE
+#if FEATURE != FEATURE_BASELINE && FEATURE != FEATURE_BASELINE_DIGITAL_READ
   config->setEventHandler(handleEvent);
   config->setFeature(ButtonConfig::kFeatureClick);
   config->setFeature(ButtonConfig::kFeatureDoubleClick);
@@ -218,8 +245,14 @@ void setup() {
 }
 
 void loop() {
+#if defined(TEENSYDUINO)
+  foo->doit();
+#endif
+
 #if FEATURE == FEATURE_BASELINE
   disableCompilerOptimization++;
+#elif FEATURE == FEATURE_BASELINE_DIGITAL_READ
+  disableCompilerOptimization = digitalRead(BUTTON_PIN);
 #elif FEATURE == FEATURE_BUTTON_CONFIG
   button.check();
 #elif FEATURE == FEATURE_BUTTON_CONFIG_FAST1
