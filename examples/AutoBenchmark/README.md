@@ -95,6 +95,19 @@ number of `TimingStats::update()` calls that were made.
 
 **v1.9.2**
 * Remove SAMD21 since I can no longer flash them using latest tool chain.
+* Upgrade various tool chains:
+    * Arduino IDE from 1.8.13 to 1.8.19
+    * Arduino CLI to 0.20.2
+    * Arduino AVR from 1.8.3 to 1.8.4
+    * STM32duino from 2.0.0 to 2.2.0
+    * ESP8266 from 2.7.4 to 3.0.2
+    * ESP32 from 1.0.6 to 2.0.2
+    * Teensyduino from 1.53 to 1.56
+* No significant changes except for LadderButtonConfig:
+    * ESP8266 3.0.2: significantly faster (150 micros to 91 micros).
+    * ESP32 2.0.2: significantly slower (68 micros to 91 micros)
+    * Probably due to implementation changes of the underlying `analogRead()`
+      function.
 
 ## Results
 
@@ -133,8 +146,8 @@ time taken for a number of scenarios in units of microseconds:
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.13
-* Arduino AVR Boards 1.8.3
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino AVR Boards 1.8.4
 * `micros()` has a resolution of 4 microseconds
 
 ```
@@ -153,20 +166,20 @@ CPU:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   8/ 15/ 24 |    1931 |
-| press/release             |   8/ 16/ 24 |    1924 |
-| click                     |  12/ 15/ 24 |    1924 |
-| double_click              |  12/ 15/ 32 |    1921 |
-| long_press/repeat_press   |  12/ 16/ 28 |    1924 |
+| idle                      |  12/ 15/ 24 |    1931 |
+| press/release             |  12/ 15/ 24 |    1927 |
+| click                     |  12/ 15/ 24 |    1928 |
+| double_click              |  12/ 15/ 32 |    1924 |
+| long_press/repeat_press   |  12/ 16/ 24 |    1926 |
 |---------------------------+-------------+---------|
-| ButtonConfigFast1         |   8/ 14/ 24 |    1933 |
+| ButtonConfigFast1         |  12/ 14/ 24 |    1934 |
 | ButtonConfigFast2         |  20/ 27/ 36 |    1910 |
 | ButtonConfigFast3         |  28/ 40/ 48 |    1886 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  60/ 67/ 92 |    1839 |
-| Encoded8To3ButtonConfig   | 164/186/208 |    1659 |
-| EncodedButtonConfig       |  80/100/124 |    1785 |
-| LadderButtonConfig        | 176/199/272 |    1640 |
+| Encoded4To2ButtonConfig   |  60/ 69/ 76 |    1836 |
+| Encoded8To3ButtonConfig   | 164/187/196 |    1656 |
+| EncodedButtonConfig       |  80/102/112 |    1782 |
+| LadderButtonConfig        | 176/201/272 |    1637 |
 +---------------------------+-------------+---------+
 
 ```
@@ -174,7 +187,7 @@ CPU:
 ### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.13
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
 * SparkFun AVR Boards 1.1.13
 * `micros()` has a resolution of 4 microseconds
 
@@ -194,20 +207,20 @@ CPU:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   8/ 15/ 20 |    1932 |
-| press/release             |   8/ 15/ 24 |    1924 |
-| click                     |   8/ 15/ 24 |    1924 |
-| double_click              |  12/ 15/ 36 |    1922 |
-| long_press/repeat_press   |  12/ 16/ 24 |    1924 |
+| idle                      |  12/ 15/ 24 |    1931 |
+| press/release             |  12/ 15/ 32 |    1928 |
+| click                     |   8/ 15/ 24 |    1929 |
+| double_click              |   8/ 15/ 32 |    1924 |
+| long_press/repeat_press   |  12/ 16/ 28 |    1925 |
 |---------------------------+-------------+---------|
-| ButtonConfigFast1         |   8/ 13/ 36 |    1936 |
-| ButtonConfigFast2         |  20/ 26/ 48 |    1912 |
-| ButtonConfigFast3         |  28/ 38/ 64 |    1890 |
+| ButtonConfigFast1         |   8/ 15/ 24 |    1932 |
+| ButtonConfigFast2         |  20/ 27/ 36 |    1909 |
+| ButtonConfigFast3         |  28/ 41/ 52 |    1886 |
 |---------------------------+-------------+---------|
 | Encoded4To2ButtonConfig   |  60/ 72/ 84 |    1830 |
-| Encoded8To3ButtonConfig   | 172/195/216 |    1646 |
-| EncodedButtonConfig       |  80/102/124 |    1782 |
-| LadderButtonConfig        | 172/201/276 |    1635 |
+| Encoded8To3ButtonConfig   | 172/197/208 |    1643 |
+| EncodedButtonConfig       |  80/104/116 |    1780 |
+| LadderButtonConfig        | 176/200/268 |    1639 |
 +---------------------------+-------------+---------+
 
 ```
@@ -215,8 +228,8 @@ CPU:
 ### STM32
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.13
-* STM32duino 2.0.0
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* STM32duino 2.2.0
 
 ```
 Sizes of Objects:
@@ -232,15 +245,15 @@ CPU:
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
 | idle                      |   3/  5/  6 |    2002 |
-| press/release             |   3/  5/ 10 |    2002 |
+| press/release             |   3/  5/  8 |    2002 |
 | click                     |   3/  5/  8 |    2002 |
-| double_click              |   3/  5/  9 |    2002 |
+| double_click              |   3/  5/ 13 |    2002 |
 | long_press/repeat_press   |   3/  5/  7 |    2002 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  15/ 21/ 22 |    2002 |
-| Encoded8To3ButtonConfig   |  42/ 56/ 57 |    2002 |
-| EncodedButtonConfig       |  19/ 35/ 39 |    2002 |
-| LadderButtonConfig        |  80/ 94/ 95 |    2002 |
+| Encoded4To2ButtonConfig   |  15/ 20/ 21 |    2002 |
+| Encoded8To3ButtonConfig   |  43/ 56/ 57 |    2002 |
+| EncodedButtonConfig       |  21/ 34/ 35 |    2002 |
+| LadderButtonConfig        |  84/ 99/103 |    2002 |
 +---------------------------+-------------+---------+
 
 ```
@@ -248,8 +261,8 @@ CPU:
 ### ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
-* Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.4
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* ESP8266 Boards 3.0.2
 
 ```
 Sizes of Objects:
@@ -264,16 +277,16 @@ CPU:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   6/  8/ 52 |    1917 |
-| press/release             |   6/  8/ 62 |    1907 |
-| click                     |   6/  8/ 38 |    1902 |
-| double_click              |   6/  8/ 32 |    1907 |
-| long_press/repeat_press   |   6/  8/ 41 |    1903 |
+| idle                      |   6/  7/ 53 |    1921 |
+| press/release             |   6/  7/ 37 |    1922 |
+| click                     |   6/  7/ 18 |    1921 |
+| double_click              |   6/  7/ 10 |    1921 |
+| long_press/repeat_press   |   6/  7/ 10 |    1921 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  22/ 27/ 55 |    1878 |
-| Encoded8To3ButtonConfig   |  54/ 66/ 90 |    1806 |
-| EncodedButtonConfig       |  42/ 54/ 81 |    1831 |
-| LadderButtonConfig        | 136/149/491 |    1682 |
+| Encoded4To2ButtonConfig   |  21/ 26/ 45 |    1887 |
+| Encoded8To3ButtonConfig   |  53/ 65/ 69 |    1809 |
+| EncodedButtonConfig       |  40/ 52/ 60 |    1842 |
+| LadderButtonConfig        |  79/ 91/193 |    1762 |
 +---------------------------+-------------+---------+
 
 ```
@@ -281,8 +294,8 @@ CPU:
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.13
-* ESP32 Boards 1.0.6
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* ESP32 Boards 2.0.2
 
 ```
 Sizes of Objects:
@@ -297,16 +310,16 @@ CPU:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   2/  3/ 16 |    2002 |
+| idle                      |   2/  3/ 16 |    2003 |
 | press/release             |   2/  2/ 13 |    2002 |
-| click                     |   2/  2/  8 |    2002 |
-| double_click              |   2/  2/  5 |    2002 |
-| long_press/repeat_press   |   2/  2/  4 |    2002 |
+| click                     |   2/  2/ 10 |    2003 |
+| double_click              |   2/  2/ 11 |    2003 |
+| long_press/repeat_press   |   2/  2/ 11 |    2003 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |   7/  7/ 12 |    2002 |
-| Encoded8To3ButtonConfig   |  15/ 18/ 19 |    2002 |
-| EncodedButtonConfig       |  12/ 16/ 25 |    2002 |
-| LadderButtonConfig        |  64/ 68/264 |    2002 |
+| Encoded4To2ButtonConfig   |   6/  6/ 15 |    2002 |
+| Encoded8To3ButtonConfig   |  13/ 16/ 17 |    2001 |
+| EncodedButtonConfig       |  11/ 14/ 22 |    2001 |
+| LadderButtonConfig        |  87/ 91/231 |    2001 |
 +---------------------------+-------------+---------+
 
 ```
@@ -314,8 +327,8 @@ CPU:
 ### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.13
-* Teensyduino 1.53
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Teensyduino 1.56
 * Compiler options: "Faster"
 
 ```
@@ -332,15 +345,15 @@ CPU:
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
 | idle                      |   2/  3/  6 |    1988 |
-| press/release             |   2/  4/  6 |    1987 |
+| press/release             |   2/  3/  6 |    1988 |
 | click                     |   2/  3/  6 |    1987 |
-| double_click              |   1/  3/  8 |    1986 |
+| double_click              |   2/  3/  8 |    1987 |
 | long_press/repeat_press   |   2/  4/  6 |    1987 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |   7/ 12/ 15 |    1970 |
-| Encoded8To3ButtonConfig   |  17/ 30/ 33 |    1937 |
-| EncodedButtonConfig       |   8/ 22/ 25 |    1951 |
-| LadderButtonConfig        |  16/ 28/ 36 |    1941 |
+| Encoded4To2ButtonConfig   |   6/ 12/ 15 |    1970 |
+| Encoded8To3ButtonConfig   |  16/ 30/ 33 |    1937 |
+| EncodedButtonConfig       |   8/ 22/ 25 |    1950 |
+| LadderButtonConfig        |  16/ 26/ 36 |    1943 |
 +---------------------------+-------------+---------+
 
 ```

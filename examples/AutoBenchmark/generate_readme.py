@@ -118,6 +118,19 @@ number of `TimingStats::update()` calls that were made.
 
 **v1.9.2**
 * Remove SAMD21 since I can no longer flash them using latest tool chain.
+* Upgrade various tool chains:
+    * Arduino IDE from 1.8.13 to 1.8.19
+    * Arduino CLI to 0.20.2
+    * Arduino AVR from 1.8.3 to 1.8.4
+    * STM32duino from 2.0.0 to 2.2.0
+    * ESP8266 from 2.7.4 to 3.0.2
+    * ESP32 from 1.0.6 to 2.0.2
+    * Teensyduino from 1.53 to 1.56
+* No significant changes except for LadderButtonConfig:
+    * ESP8266 3.0.2: significantly faster (150 micros to 91 micros).
+    * ESP32 2.0.2: significantly slower (68 micros to 91 micros)
+    * Probably due to implementation changes of the underlying `analogRead()`
+      function.
 
 ## Results
 
@@ -156,8 +169,8 @@ time taken for a number of scenarios in units of microseconds:
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.13
-* Arduino AVR Boards 1.8.3
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino AVR Boards 1.8.4
 * `micros()` has a resolution of 4 microseconds
 
 ```
@@ -167,7 +180,7 @@ time taken for a number of scenarios in units of microseconds:
 ### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.13
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
 * SparkFun AVR Boards 1.1.13
 * `micros()` has a resolution of 4 microseconds
 
@@ -178,8 +191,8 @@ time taken for a number of scenarios in units of microseconds:
 ### STM32
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.13
-* STM32duino 2.0.0
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* STM32duino 2.2.0
 
 ```
 {stm32_results}
@@ -188,8 +201,8 @@ time taken for a number of scenarios in units of microseconds:
 ### ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
-* Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.4
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* ESP8266 Boards 3.0.2
 
 ```
 {esp8266_results}
@@ -198,8 +211,8 @@ time taken for a number of scenarios in units of microseconds:
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.13
-* ESP32 Boards 1.0.6
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* ESP32 Boards 2.0.2
 
 ```
 {esp32_results}
@@ -208,8 +221,8 @@ time taken for a number of scenarios in units of microseconds:
 ### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.13
-* Teensyduino 1.53
+* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Teensyduino 1.56
 * Compiler options: "Faster"
 
 ```
