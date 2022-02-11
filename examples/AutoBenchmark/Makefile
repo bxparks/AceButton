@@ -10,8 +10,7 @@ include ../../../EpoxyDuino/EpoxyDuino.mk
 
 AUNITER_DIR := ../../../AUniter/tools
 
-TARGETS := nano.txt micro.txt samd.txt stm32.txt esp8266.txt esp32.txt \
-teensy32.txt
+TARGETS := nano.txt micro.txt stm32.txt esp8266.txt esp32.txt teensy32.txt
 
 README.md: generate_readme.py generate_table.awk $(TARGETS)
 	./generate_readme.py > $@
@@ -25,9 +24,6 @@ nano.txt:
 
 micro.txt:
 	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END micro:ACM0
-
-samd.txt:
-	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END samd:ACM0
 
 stm32.txt:
 	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END stm32:ACM0

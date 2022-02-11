@@ -42,8 +42,9 @@
   void flushLed() {
     static uint16_t prevMillis;
 
+    // The (uint16_t) cast is required on 32-bit processors, harmless on 8-bit.
     uint16_t nowMillis = millis();
-    if (nowMillis - prevMillis >= 100) {
+    if ((uint16_t) (nowMillis - prevMillis) >= 100) {
       prevMillis = nowMillis;
       tm1637Module.flush();
     }
@@ -63,8 +64,9 @@ static const uint8_t BUTTON_PIN = A0;
 void calibrateAnalogRead() {
   static uint16_t prevMillis;
 
+  // The (uint16_t) cast is required on 32-bit processors, harmless on 8-bit.
   uint16_t nowMillis = millis();
-  if (nowMillis - prevMillis >= 5) {
+  if ((uint16_t) (nowMillis - prevMillis) >= 5) {
     prevMillis = nowMillis;
 
     uint16_t val = analogRead(BUTTON_PIN);

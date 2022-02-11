@@ -16,7 +16,7 @@
 set -eu
 
 PROGRAM_NAME='MemoryBenchmark.ino'
-NUM_FEATURES=8  # excluding FEATURE_BASELINE
+NUM_FEATURES=9  # excluding FEATURE_BASELINE
 
 # Assume that https://github.com/bxparks/AUniter is installed as a
 # sibling project to AceButton.

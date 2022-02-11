@@ -7,14 +7,15 @@
 
 BEGIN {
   labels[0] = "Baseline"
-  labels[1] = "ButtonConfig"
-  labels[2] = "ButtonConfigFast1"
-  labels[3] = "ButtonConfigFast2"
-  labels[4] = "ButtonConfigFast3"
-  labels[5] = "Encoded4To2ButtonConfig"
-  labels[6] = "Encoded8To3ButtonConfig"
-  labels[7] = "EncodedButtonConfig"
-  labels[8] = "LadderButtonConfig"
+  labels[1] = "Baseline+pinMode+digitalRead"
+  labels[2] = "ButtonConfig"
+  labels[3] = "ButtonConfigFast1"
+  labels[4] = "ButtonConfigFast2"
+  labels[5] = "ButtonConfigFast3"
+  labels[6] = "Encoded4To2ButtonConfig"
+  labels[7] = "Encoded8To3ButtonConfig"
+  labels[8] = "EncodedButtonConfig"
+  labels[9] = "LadderButtonConfig"
   record_index = 0
 }
 {
@@ -39,13 +40,19 @@ END {
 
   printf("+--------------------------------------------------------------+\n")
   printf("| functionality                   |  flash/  ram |       delta |\n")
-  printf("|---------------------------------+--------------+-------------|\n")
-  printf("| %-31s | %6d/%5d | %5d/%5d |\n",
-      labels[0], u[0]["flash"], u[0]["ram"], u[0]["d_flash"], u[0]["d_ram"])
-  printf("|---------------------------------+--------------+-------------|\n")
-  for (i = 1; i < NUM_ENTRIES; i++) {
+  for (i = 0; i < NUM_ENTRIES; i++) {
+    if (u[i]["flash"] == "-1") continue
+
+    name = labels[i]
+    if (name ~ /^Baseline$/ \
+        || name ~ /^ButtonConfig$/ \
+        || name ~ /^Encoded4To2ButtonConfig$/ \
+        || name ~ /^LadderButtonConfig$/) {
+      printf(\
+        "|---------------------------------+--------------+-------------|\n")
+    }
     printf("| %-31s | %6d/%5d | %5d/%5d |\n",
-        labels[i], u[i]["flash"], u[i]["ram"], u[i]["d_flash"], u[i]["d_ram"])
+        name, u[i]["flash"], u[i]["ram"], u[i]["d_flash"], u[i]["d_ram"])
   }
   printf("+--------------------------------------------------------------+\n")
 }

@@ -67,7 +67,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.9.1 (2021-08-10)
+**Version**: 1.9.2 (2022-02-10)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -587,11 +587,12 @@ AceButton button;
 ...
 
 void checkButtons() {
-  static unsigned long prev = millis();
+  static uint16_t prev = millis();
 
   // DO NOT USE delay(5) to do this.
-  unsigned long now = millis();
-  if (now - prev > 5) {
+  // The (uint16_t) cast is required on 32-bit processors, harmless on 8-bit.
+  uint16_t now = millis();
+  if ((uint16_t) (now - prev) >= 5) {
     button.check();
     prev = now;
   }
@@ -1731,15 +1732,18 @@ Arduino Nano
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
 | Baseline                        |    610/   11 |     0/    0 |
+| Baseline+pinMode+digitalRead    |    914/   11 |   304/    0 |
 |---------------------------------+--------------+-------------|
 | ButtonConfig                    |   1946/   51 |  1336/   40 |
 | ButtonConfigFast1               |   1662/   51 |  1052/   40 |
 | ButtonConfigFast2               |   1630/   65 |  1020/   54 |
 | ButtonConfigFast3               |   1678/   79 |  1068/   68 |
+|---------------------------------+--------------+-------------|
 | Encoded4To2ButtonConfig         |   2160/   82 |  1550/   71 |
 | Encoded8To3ButtonConfig         |   2428/  139 |  1818/  128 |
 | EncodedButtonConfig             |   2474/  162 |  1864/  151 |
-| LadderButtonConfig              |   2476/  175 |  1866/  164 |
+|---------------------------------+--------------+-------------|
+| LadderButtonConfig              |   2472/  175 |  1862/  164 |
 +--------------------------------------------------------------+
 ```
 
@@ -1749,16 +1753,16 @@ ESP8266:
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        | 256924/26800 |     0/    0 |
+| Baseline                        | 260329/27916 |     0/    0 |
+| Baseline+pinMode+digitalRead    | 260409/27916 |    80/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 258424/26840 |  1500/   40 |
-| ButtonConfigFast1               |     -1/   -1 |    -1/   -1 |
-| ButtonConfigFast2               |     -1/   -1 |    -1/   -1 |
-| ButtonConfigFast3               |     -1/   -1 |    -1/   -1 |
-| Encoded4To2ButtonConfig         | 258732/26916 |  1808/  116 |
-| Encoded8To3ButtonConfig         | 258876/26980 |  1952/  180 |
-| EncodedButtonConfig             | 259004/27020 |  2080/  220 |
-| LadderButtonConfig              | 259048/27024 |  2124/  224 |
+| ButtonConfig                    | 261733/27960 |  1404/   44 |
+|---------------------------------+--------------+-------------|
+| Encoded4To2ButtonConfig         | 261917/27992 |  1588/   76 |
+| Encoded8To3ButtonConfig         | 262045/28056 |  1716/  140 |
+| EncodedButtonConfig             | 262173/28096 |  1844/  180 |
+|---------------------------------+--------------+-------------|
+| LadderButtonConfig              | 262233/28108 |  1904/  192 |
 +--------------------------------------------------------------+
 ```
 
@@ -1776,20 +1780,20 @@ Arduino Nano:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   8/ 15/ 24 |    1931 |
-| press/release             |   8/ 16/ 24 |    1924 |
-| click                     |  12/ 15/ 24 |    1924 |
-| double_click              |  12/ 15/ 32 |    1921 |
-| long_press/repeat_press   |  12/ 16/ 28 |    1924 |
+| idle                      |  12/ 15/ 24 |    1931 |
+| press/release             |  12/ 15/ 24 |    1927 |
+| click                     |  12/ 15/ 24 |    1928 |
+| double_click              |  12/ 15/ 32 |    1924 |
+| long_press/repeat_press   |  12/ 16/ 24 |    1926 |
 |---------------------------+-------------+---------|
-| ButtonConfigFast1         |   8/ 14/ 24 |    1933 |
+| ButtonConfigFast1         |  12/ 14/ 24 |    1934 |
 | ButtonConfigFast2         |  20/ 27/ 36 |    1910 |
 | ButtonConfigFast3         |  28/ 40/ 48 |    1886 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  60/ 67/ 92 |    1839 |
-| Encoded8To3ButtonConfig   | 164/186/208 |    1659 |
-| EncodedButtonConfig       |  80/100/124 |    1785 |
-| LadderButtonConfig        | 176/199/272 |    1640 |
+| Encoded4To2ButtonConfig   |  60/ 69/ 76 |    1836 |
+| Encoded8To3ButtonConfig   | 164/187/196 |    1656 |
+| EncodedButtonConfig       |  80/102/112 |    1782 |
+| LadderButtonConfig        | 176/201/272 |    1637 |
 +---------------------------+-------------+---------+
 ```
 
@@ -1799,16 +1803,16 @@ ESP8266:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   6/  8/ 52 |    1917 |
-| press/release             |   6/  8/ 62 |    1907 |
-| click                     |   6/  8/ 38 |    1902 |
-| double_click              |   6/  8/ 32 |    1907 |
-| long_press/repeat_press   |   6/  8/ 41 |    1903 |
+| idle                      |   6/  7/ 53 |    1921 |
+| press/release             |   6/  7/ 37 |    1922 |
+| click                     |   6/  7/ 18 |    1921 |
+| double_click              |   6/  7/ 10 |    1921 |
+| long_press/repeat_press   |   6/  7/ 10 |    1921 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  22/ 27/ 55 |    1878 |
-| Encoded8To3ButtonConfig   |  54/ 66/ 90 |    1806 |
-| EncodedButtonConfig       |  42/ 54/ 81 |    1831 |
-| LadderButtonConfig        | 136/149/491 |    1682 |
+| Encoded4To2ButtonConfig   |  21/ 26/ 45 |    1887 |
+| Encoded8To3ButtonConfig   |  53/ 65/ 69 |    1809 |
+| EncodedButtonConfig       |  40/ 52/ 60 |    1842 |
+| LadderButtonConfig        |  79/ 91/193 |    1762 |
 +---------------------------+-------------+---------+
 ```
 
@@ -1818,48 +1822,54 @@ ESP8266:
 <a name="Hardware"></a>
 ### Hardware
 
-This library has Tier 1 support on the following boards:
+**Tier 1: Fully Supported**
+
+These boards are tested on each release:
 
 * Arduino Nano (16 MHz ATmega328P)
 * SparkFun Pro Micro (16 MHz ATmega32U4)
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
 * STM32 Blue Pill (STM32F103C8, 72 MHz ARM Cortex-M3)
 * NodeMCU 1.0 (ESP-12E module, 80MHz ESP8266)
 * WeMos D1 Mini (ESP-12E module, 80 MHz ESP8266)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
 * Teensy 3.2 (96 MHz ARM Cortex-M4)
 
-Tier 2 support can be expected on the following boards, mostly because I don't
-test these as often:
+**Tier 2: Should work**
+
+These boards should work but I don't test them as often:
 
 * ATtiny85 (8 MHz ATtiny85)
 * Arduino Pro Mini (16 MHz ATmega328P)
-* Teensy LC (48 MHz ARM Cortex-M0+)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
+* Teensy LC (48 MHz ARM Cortex-M0+)
 
-The following boards are **not** officially supported, but AceButton may
-accidentally work on these:
+**Tier 3: May work, but not supported**
 
+* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
+    * As Arduino IDE 1.8.19, I can no longer upload binaries to my SAMD21 boards
+      due to errors, so I cannot test this library.
+    * This library may work on these boards, but I can no longer support them.
 * Any platform using the ArduinoCore-API
   (https://github.com/arduino/ArduinoCore-api).
     * For example, Nano Every, MKRZero, and Raspberry Pi Pico RP2040.
+    * Most of my libraries do not work on platforms using the ArduinoCore-API.
+    * However AceButton is simple enough that it may still work on these boards.
 
 <a name="ToolChain"></a>
 ### Tool Chain
 
 This library was developed and tested using:
 
-* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
-* [Arduino CLI 0.14.0](https://arduino.github.io/arduino-cli)
+* [Arduino IDE 1.8.19](https://www.arduino.cc/en/Main/Software)
+* [Arduino CLI 0.20.2](https://arduino.github.io/arduino-cli)
 * [SpenceKonde ATTinyCore 1.5.2](https://github.com/SpenceKonde/ATTinyCore)
-* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino AVR Boards 1.8.4](https://github.com/arduino/ArduinoCore-avr)
 * [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
 * [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.8.3](https://github.com/sparkfun/Arduino_Boards)
-* [STM32duino 2.0.0](https://github.com/stm32duino/Arduino_Core_STM32)
-* [ESP8266 Arduino Core 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino Core 1.0.6](https://github.com/espressif/arduino-esp32)
-* [Teensyduino 1.53](https://www.pjrc.com/teensy/td_download.html)
+* [STM32duino 2.2.0](https://github.com/stm32duino/Arduino_Core_STM32)
+* [ESP8266 Arduino Core 3.0.2](https://github.com/esp8266/Arduino)
+* [ESP32 Arduino Core 2.0.2](https://github.com/espressif/arduino-esp32)
+* [Teensyduino 1.56](https://www.pjrc.com/teensy/td_download.html)
 
 It should work with [PlatformIO](https://platformio.org/) but I have
 not tested it.
@@ -1936,14 +1946,14 @@ Apache License 2.0 meant.
 <a name="FeedbackAndSupport"></a>
 ## Feedback and Support
 
-If you have any questions, comments and other support questions about how to
-use this library, please use the
-[GitHub Discussions](https://github.com/bxparks/AceButton/discussions)
-for this project. If you have bug reports or feature requests, please file a
-ticket in [GitHub Issues](https://github.com/bxparks/AceButton/issues).
-I'd love to hear about how this software and its documentation can be improved.
-I can't promise that I will incorporate everything, but I will give your ideas
-serious consideration.
+If you have any questions, comments, or feature requests for this library,
+please use the [GitHub
+Discussions](https://github.com/bxparks/AceButton/discussions) for this project.
+If you have a bug report, please file a ticket in [GitHub
+Issues](https://github.com/bxparks/AceButton/issues). Feature requests should
+go into Discussions first because they often have alternative solutions which
+are useful to remain visible, instead of disappearing from the default view of
+the Issue tracker after the ticket is closed.
 
 Please refrain from emailing me directly unless the content is sensitive. The
 problem with email is that I cannot reference the email conversation when other
