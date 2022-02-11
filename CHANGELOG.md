@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 1.9.2 (2022-02-10)
     * Fix incorrect subtraction of 2 `uint16_t` integers in
       various examples and README.md docs for 32-bit processors.
         * On 8-bit processors with `sizeof(int) == 2`, a `uint16_t - uint16_t`
@@ -11,6 +12,20 @@
         * The solution is to explicitly add a `(uint16_t)` cast, which is
           harmless on 8-bit processors, but is required to produce the correct
           value on 32-bit processors.
+    * Upgrade various tool chains:
+        * Arduino IDE from 1.8.13 to 1.8.19
+        * Arduino CLI to 0.20.2
+        * Arduino AVR from 1.8.3 to 1.8.4
+        * STM32duino from 2.0.0 to 2.2.0
+        * ESP8266 from 2.7.4 to 3.0.2
+        * ESP32 from 1.0.6 to 2.0.2
+        * Teensyduino from 1.53 to 1.56
+        * No signficant changes except for `LadderButtonConfig` on ESP8266
+          (faster) and ESP32 (slower).
+    * Downgrade support for SAMD21 boards to new "Tier 3: May work but
+      unsupported".
+        * I can no longer flash my SAMD21 boards as of Arduino IDE 1.8.19.
+    * This is a maintenance release. No functional change.
 * 1.9.1 (2021-08-10)
     * Upgrade STM32duino Core from 1.9.0 to 2.0.0.
         * MemoryBenchmark: Flash usage increases by 2.6kB across the board, but
