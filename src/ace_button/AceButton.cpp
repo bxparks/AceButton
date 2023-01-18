@@ -86,6 +86,12 @@ void AceButton::check() {
   checkState(buttonState);
 }
 
+void AceButton::check(int input) {
+  uint8_t buttonState = input;
+  checkState(buttonState);
+}
+
+
 void AceButton::checkState(uint8_t buttonState) {
   // Retrieve the current time just once and use that in the various checkXxx()
   // functions below. This provides some robustness of the various timing

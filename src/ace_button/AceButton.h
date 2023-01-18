@@ -279,7 +279,7 @@ class AceButton {
      * correctly, which may cause other event detection algorithms to fail.
      */
     void check();
-
+	void check(int input);
     /**
      * Version of check() used by EncodedButtonConfig. NOT for public
      * consumption.
