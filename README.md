@@ -311,21 +311,18 @@ The following example sketches are provided:
           `IEventHandler`
 * Distinguishing Click versus Double-Click
     * [ClickVersusDoubleClickUsingReleased](examples/ClickVersusDoubleClickUsingReleased)
-        * a way to distinguish between a `kEventClicked` from a
-          `kEventDoubleClicked` using a `kEventReleased` instead
+        * using a `kEventReleased` instead
     * [ClickVersusDoubleClickUsingSuppression](examples/ClickVersusDoubleClickUsingSuppression)
-        * another way to dstinguish between a `kEventClicked` from a
-          `kEventDoubleClicked` using the
-          `kFeatureSuppressClickBeforeDoubleClick` flag at the cost of
-          increasing the response time of the `kEventClicked` event
+        * using the `kFeatureSuppressClickBeforeDoubleClick` flag at the cost of
+          increasing the response time
     * [ClickVersusDoubleClickUsingBoth](examples/ClickVersusDoubleClickUsingBoth)
-        * an example that combines both the "UsingPressed" and
-          "UsingSuppression" techniques
+        * combining both the "UsingReleased" and "UsingSuppression" techniques
+    * See [Distinguishing Clicked and DoubleClicked](#ClickedAndDoubleClicked)
+      subsection below for more info.
 * Distinguishing Pressed and LongPressed
     * [examples/PressedAndLongPressed](examples/PressedAndLongPressed)
-    * see also the
-      [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
-      subsection below
+    * See the [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
+      subsection below for more info.
 * [CapacitiveButton](examples/CapacitiveButton)
     * reads a capacitive button using the
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
@@ -1383,7 +1380,7 @@ buttonConfig->setFeature(
 ```
 
 See the example code at
-`examples/ClickVersusDoubleClickUsingSuppression/`.
+[ClickVersusDoubleClickUsingSuppression](examples/ClickVersusDoubleClickUsingSuppression/).
 
 **Method 2:** A viable alternative is to use the Released event instead of the
 Clicked event to distinguish it from the DoubleClicked. For this method to work,
@@ -1409,7 +1406,7 @@ buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
 ```
 
 See the example code at
-`examples/ClickVersusDoubleClickUsingReleased/`.
+[ClickVersusDoubleClickUsingReleased](examples/ClickVersusDoubleClickUsingReleased/).
 
 **Method 3:** We could actually combine both Methods 1 and 2 so that either
 Released or a delayed Click is considered to be a "Click". This may be the best
