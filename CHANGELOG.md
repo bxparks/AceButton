@@ -1,6 +1,10 @@
 # Changelog
 
 * Unreleased
+    * [Binary Encoded Buttons](docs/binary_encoding)
+        * Derive formula of the number of diodes required to implement
+          binary encoded buttons for `N` lines.
+        * total diodes = `N * (2^(N-1) - 1)`
 * 1.9.2 (2022-02-10)
     * Fix incorrect subtraction of 2 `uint16_t` integers in
       various examples and README.md docs for 32-bit processors.
