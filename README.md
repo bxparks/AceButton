@@ -320,7 +320,7 @@ The following example sketches are provided:
     * See [Distinguishing Clicked and DoubleClicked](#ClickedAndDoubleClicked)
       subsection below for more info.
 * Distinguishing Pressed and LongPressed
-    * [examples/PressedAndLongPressed](examples/PressedAndLongPressed)
+    * [examples/PressVersusLongPress](examples/PressVersusLongPress)
     * See the [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
       subsection below for more info.
 * [CapacitiveButton](examples/CapacitiveButton)
