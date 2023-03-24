@@ -69,7 +69,7 @@ int state = 0;
 int counter = 0;
 
 // LongPress on ModeButton will go into "edit" mode.
-bool isEditting = false;
+bool isEditing = false;
 
 // In edit mode, the "field" is blinking. But when the Change button is
 // Pressed or LongPressed, the blinking temporarily stops.
@@ -95,7 +95,7 @@ void handleEvent(AceButton* button, uint8_t eventType,
       // Interpret a Released event as a Pressed event, to distiguish it
       // from a LongPressed event.
       case AceButton::kEventReleased:
-        if (!isEditting) {
+        if (!isEditing) {
           state++;
           if (state > 2) state = 0;
           Serial.println(F("Mode Button: Pressed"));
@@ -106,13 +106,13 @@ void handleEvent(AceButton* button, uint8_t eventType,
 
       // LongPressed goes in and out of edit mode.
       case AceButton::kEventLongPressed:
-        isEditting = !isEditting;
-        if (isEditting) {
+        isEditing = !isEditing;
+        if (isEditing) {
           isBlinking = true;
         }
         Serial.println(F("Mode Button: Long Pressed"));
-        Serial.print(F("Editting: "));
-        Serial.print(isEditting ? F("true") : F("false"));
+        Serial.print(F("Editing: "));
+        Serial.print(isEditing ? F("true") : F("false"));
         Serial.print(F("; blinking: "));
         Serial.println(isBlinking ? F("true") : F("false"));
         break;
@@ -122,7 +122,7 @@ void handleEvent(AceButton* button, uint8_t eventType,
       case AceButton::kEventPressed:
       case AceButton::kEventRepeatPressed:
         isBlinking = false;
-        if (isEditting) {
+        if (isEditing) {
           if (eventType == AceButton::kEventPressed) {
             Serial.println(F("Change Button: Pressed"));
           } else {
@@ -139,7 +139,7 @@ void handleEvent(AceButton* button, uint8_t eventType,
       case AceButton::kEventReleased:
       case AceButton::kEventLongReleased:
         isBlinking = true;
-        if (isEditting) {
+        if (isEditing) {
           Serial.println(F("Change Button: Released"));
           Serial.print(F("Counter: "));
           Serial.print(counter);
