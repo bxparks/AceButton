@@ -122,6 +122,22 @@ void loop() {
 // ButtonConfig tests
 // ------------------------------------------------------------------
 
+test(eventName) {
+  assertEqual(AceButton::eventName(AceButton::kEventPressed), "Pressed");
+  assertEqual(AceButton::eventName(AceButton::kEventReleased), "Released");
+  assertEqual(AceButton::eventName(AceButton::kEventClicked), "Clicked");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventDoubleClicked), "DoubleClicked");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventLongPressed), "LongPressed");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventRepeatPressed), "RepeatPressed");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventLongReleased), "LongReleased");
+  assertEqual(AceButton::eventName(7), "(unknown)");
+  assertEqual(AceButton::eventName(255), "(unknown)");
+}
+
 test(feature_flags_off_by_default) {
   assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureClick));
   assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureDoubleClick));
