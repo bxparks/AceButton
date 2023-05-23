@@ -9,6 +9,10 @@
         * Translates the event integer constant (e.g. `kEventDoublePressed`)
           into a human readable string (e.g. "DoublePressed").
         * Intended for development and debugging.
+    * AutoBenchmark, MemoryBenchmark
+        * Add SAMD21, using Seeed XIAO M0.
+        * Add SAMD51, using Adafruit ItsyBitsy M4.
+        * Remove Teensy 3.2.
 * 1.9.2 (2022-02-10)
     * Fix incorrect subtraction of 2 `uint16_t` integers in
       various examples and README.md docs for 32-bit processors.

@@ -1743,19 +1743,19 @@ Arduino Nano
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |    610/   11 |     0/    0 |
-| Baseline+pinMode+digitalRead    |    914/   11 |   304/    0 |
+| Baseline                        |    462/   11 |     0/    0 |
+| Baseline+pinMode+digitalRead    |    766/   11 |   304/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1946/   51 |  1336/   40 |
-| ButtonConfigFast1               |   1662/   51 |  1052/   40 |
-| ButtonConfigFast2               |   1630/   65 |  1020/   54 |
-| ButtonConfigFast3               |   1678/   79 |  1068/   68 |
+| ButtonConfig                    |   1798/   51 |  1336/   40 |
+| ButtonConfigFast1               |   1514/   51 |  1052/   40 |
+| ButtonConfigFast2               |   1482/   65 |  1020/   54 |
+| ButtonConfigFast3               |   1530/   79 |  1068/   68 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |   2160/   82 |  1550/   71 |
-| Encoded8To3ButtonConfig         |   2428/  139 |  1818/  128 |
-| EncodedButtonConfig             |   2474/  162 |  1864/  151 |
+| Encoded4To2ButtonConfig         |   2012/   82 |  1550/   71 |
+| Encoded8To3ButtonConfig         |   2280/  139 |  1818/  128 |
+| EncodedButtonConfig             |   2326/  162 |  1864/  151 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |   2472/  175 |  1862/  164 |
+| LadderButtonConfig              |   2324/  175 |  1862/  164 |
 +--------------------------------------------------------------+
 ```
 
@@ -1765,16 +1765,16 @@ ESP8266:
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        | 260329/27916 |     0/    0 |
-| Baseline+pinMode+digitalRead    | 260409/27916 |    80/    0 |
+| Baseline                        | 260105/27892 |     0/    0 |
+| Baseline+pinMode+digitalRead    | 260201/27892 |    96/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 261733/27960 |  1404/   44 |
+| ButtonConfig                    | 261509/27936 |  1404/   44 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         | 261917/27992 |  1588/   76 |
-| Encoded8To3ButtonConfig         | 262045/28056 |  1716/  140 |
-| EncodedButtonConfig             | 262173/28096 |  1844/  180 |
+| Encoded4To2ButtonConfig         | 261693/27976 |  1588/   84 |
+| Encoded8To3ButtonConfig         | 261837/28040 |  1732/  148 |
+| EncodedButtonConfig             | 261965/28080 |  1860/  188 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              | 262233/28108 |  1904/  192 |
+| LadderButtonConfig              | 262009/28092 |  1904/  200 |
 +--------------------------------------------------------------+
 ```
 
@@ -1816,15 +1816,15 @@ ESP8266:
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
 | idle                      |   6/  7/ 53 |    1921 |
-| press/release             |   6/  7/ 37 |    1922 |
-| click                     |   6/  7/ 18 |    1921 |
-| double_click              |   6/  7/ 10 |    1921 |
+| press/release             |   6/  7/ 37 |    1918 |
+| click                     |   6/  7/ 18 |    1920 |
+| double_click              |   6/  7/ 10 |    1920 |
 | long_press/repeat_press   |   6/  7/ 10 |    1921 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  21/ 26/ 45 |    1887 |
-| Encoded8To3ButtonConfig   |  53/ 65/ 69 |    1809 |
+| Encoded4To2ButtonConfig   |  21/ 26/ 45 |    1888 |
+| Encoded8To3ButtonConfig   |  54/ 65/ 69 |    1813 |
 | EncodedButtonConfig       |  40/ 52/ 60 |    1842 |
-| LadderButtonConfig        |  79/ 91/193 |    1762 |
+| LadderButtonConfig        |  79/ 91/194 |    1762 |
 +---------------------------+-------------+---------+
 ```
 
