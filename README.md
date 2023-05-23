@@ -1433,7 +1433,7 @@ Sometimes it is useful to capture both a Pressed event and a LongPressed event
 from a single button. Since every button press always triggers a `kEventPressed`
 event, the only reasonable way to distinguish between Pressed and LongPressed is
 to use the `kEventReleased` as a substitute for the simple Pressed event. When
-we active `kFeatureLongPress`, we then must activate the
+we activate `kFeatureLongPress`, we then must activate the
 `kFeatureSuppressAfterLongPress` feature to suppress the `kEventReleased` event
 after the `kEventLongPressed` to avoid yet another overlap of events.
 
