@@ -50,6 +50,7 @@ The supported events are:
 * `AceButton::kEventLongPressed`
 * `AceButton::kEventRepeatPressed`
 * `AceButton::kEventLongReleased` (v1.8)
+* `AceButton::kEventHeartBeat` (v1.10)
 
 The basic `ButtonConfig` class assumes that each button is connected to a single
 digital input pin. In some situations, the number of buttons that we want is
@@ -144,6 +145,7 @@ Here are the high-level features of the AceButton library:
     * `kEventLongPressed`
     * `kEventRepeatPressed`
     * `kEventLongReleased`
+    * `kEventHeartBeat`
 * adjustable configurations at runtime or compile-time
     * timing parameters
     * `digitalRead()` button read function can be overridden
@@ -475,6 +477,8 @@ class AceButton {
     static const uint8_t kEventLongPressed = 4;
     static const uint8_t kEventRepeatPressed = 5;
     static const uint8_t kEventLongReleased = 6;
+    static const uint8_t kEventHeartBeat = 7;
+
     static const uint8_t kButtonStateUnknown = 127;
 
     static __FlashStringHelper eventName(uint8_t e);
@@ -655,6 +659,7 @@ class ButtonConfig {
     static const uint16_t kLongPressDelay = 1000;
     static const uint16_t kRepeatPressDelay = 1000;
     static const uint16_t kRepeatPressInterval = 200;
+    static const uint16_t kHeartBeatInterval = 5000;
 
     typedef uint16_t FeatureFlagType;
     static const FeatureFlagType kFeatureClick = 0x01;
@@ -666,6 +671,7 @@ class ButtonConfig {
     static const FeatureFlagType kFeatureSuppressAfterLongPress = 0x40;
     static const FeatureFlagType kFeatureSuppressAfterRepeatPress = 0x80;
     static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
+    static const FeatureFlagType kFeatureHeartBeat = 0x200;
     static const FeatureFlagType kFeatureSuppressAll = (
         kFeatureSuppressAfterClick
         | kFeatureSuppressAfterDoubleClick
@@ -678,12 +684,13 @@ class ButtonConfig {
 
     ButtonConfig() = default;
 
-    uint16_t getDebounceDelay();
-    uint16_t getClickDelay();
-    uint16_t getDoubleClickDelay();
-    uint16_t getLongPressDelay();
-    uint16_t getRepeatPressDelay();
-    uint16_t getRepeatPressInterval();
+    uint16_t getDebounceDelay() const;
+    uint16_t getClickDelay() const;
+    uint16_t getDoubleClickDelay() const;
+    uint16_t getLongPressDelay() const;
+    uint16_t getRepeatPressDelay() const;
+    uint16_t getRepeatPressInterval() const;
+    uint16_t getHeartBeatInterval() const;
 
     void setDebounceDelay(uint16_t debounceDelay);
     void setClickDelay(uint16_t clickDelay);
@@ -691,11 +698,12 @@ class ButtonConfig {
     void setLongPressDelay(uint16_t longPressDelay);
     void setRepeatPressDelay(uint16_t repeatPressDelay);
     void setRepeatPressInterval(uint16_t repeatPressInterval);
+    void setHeartBeatInterval(uint16_t heartBeatInterval);
 
     virtual unsigned long getClock();
     virtual int readButton(uint8_t pin);
 
-    bool isFeature(FeatureFlagType features);
+    bool isFeature(FeatureFlagType features) const;
     void setFeature(FeatureFlagType features);
     void clearFeature(FeatureFlagType features);
     void resetFeatures();
@@ -1693,6 +1701,55 @@ physical pins. These are not compile-time constants so we would not be able to
 use the `digitalWriteFast` libraries directly. I think the best we could do is
 create special `Encoded16To4ButtonConfigFast` and `Encoded32To5ButtonConfigFast`
 classes.
+
+<a name="HeartBeat"></a>
+### Heart Beat Event
+
+Version 1.10 added the `kEventHeartBeat` event. By default it is disabled. It
+can be enabled using the `kFeatureHeartBeat` flag:
+
+```C++
+ButtonConfig buttonConfig(...);
+buttonConfig.setFeature(ButtonConfig::kFeatureHeartBeat);
+```
+
+When enabled, the `AceButton` object sends a `kEventHeartBeat` event
+at a periodic number of milliseconds managed by the following methods on the
+`ButtonConfig` object:
+
+* `void setHeartBeatInterval(uint16_t interval)`
+* `uint16_t getHeartBeatInterval() const`
+
+The default is 5000 milliseconds.
+
+The primary purpose of the HeartBeat event is to allow the user-provided event
+handler (the `IEventHandler` will probably be easiest to use for this purpose)
+to generate custom event types which are not provided by `AceButton` itself by
+default. When the button does not undergo any change in state explicitly
+initiated by the user (e.g. Released for a long time), the `AceButton` object
+will not trigger any events normally. By activating the `kFeatureHeartBeat`, the
+event handler can generate custom events such as "Pressed for 5 minutes", or
+"Released for 5 Minutes". See [examples/HeartBeat](examples/HeartBeat) for an
+example of an `IEventHandler` that implements this.
+
+The `kEventHeartBeat` is triggered only by the elapsed time, and is not affected
+by any internal state of the `AceButton`, such as the debouncing state, or the
+various detection logic of Clicked, DoubleClicked, and so on. The
+`HeartBeatInterval` is intended to be large, with the default set to 5000
+milliseconds, to avoid the overhead of calling the event handler too often.
+Using a smaller interval may affect the detection logic of various other button
+events if the heart beat handler consumes too much CPU time.
+
+The `buttonState` passed to the event handler by the HeartBeat dispatcher:
+```C++
+typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
+    uint8_t buttonState);
+```
+will be the last known, debounced, and validated button state. It will not be
+the current button state. This is because the HeartBeat detector operates
+independently of the debouncing logic, and it did not seem appropriate for the
+unvalidated `buttonState` to be passed to the event handler just because the
+timer for the HeartBeat triggered in the middle of the debouncing logic.
 
 <a name="ResourceConsumption"></a>
 ## Resource Consumption

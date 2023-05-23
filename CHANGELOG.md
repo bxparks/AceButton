@@ -1,10 +1,6 @@
 # Changelog
 
 * Unreleased
-    * [Binary Encoded Buttons](docs/binary_encoding)
-        * Derive formula of the number of diodes required to implement
-          binary encoded buttons for `N` lines.
-        * total diodes = `N * (2^(N-1) - 1)`
     * Add `AceButton::eventName(e)` lookup function
         * Translates the event integer constant (e.g. `kEventDoublePressed`)
           into a human readable string (e.g. "DoublePressed").
@@ -13,6 +9,17 @@
         * Add SAMD21, using Seeed XIAO M0.
         * Add SAMD51, using Adafruit ItsyBitsy M4.
         * Remove Teensy 3.2.
+    * Add HeartBeat event
+        * `AceButton::kEventHeartBeat` event
+        * `ButtonConfig::kHeartBeatInterval` (default 5000)
+        * `ButtonConfig::setHeartBeatInterval(uint16)t)`
+        * `ButtonConfig::getHeartBeatInterval()`
+        * See the [Heart Best](README.md#HeartBeat) section in the README.md,
+        * and the [examples/HeartBeat](examples/HeartBeat) sample application.
+    * [Binary Encoded Buttons](docs/binary_encoding)
+        * Derive formula of the number of diodes required to implement
+          binary encoded buttons for `N` lines.
+        * total diodes = `N * (2^(N-1) - 1)`
 * 1.9.2 (2022-02-10)
     * Fix incorrect subtraction of 2 `uint16_t` integers in
       various examples and README.md docs for 32-bit processors.
