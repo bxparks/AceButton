@@ -12,7 +12,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.9.2
+**Version**: AceButton v1.10.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -165,6 +165,9 @@ $ make README.md
     * Update STM32duino 2.5.0
     * Add Seeeduino SAMD 1.8.4
     * Add Adafruit SAMD 1.7.11
+* Add `kEventHeartBeat`
+    * Increases flash size of `ButtonConfig` by ~150 bytes on AVR, ~50 bytes on
+      32-bit processors.
 
 ## ATtiny85
 
@@ -179,16 +182,16 @@ $ make README.md
 | Baseline                        |    266/   11 |     0/    0 |
 | Baseline+pinMode+digitalRead    |    276/   11 |    10/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1406/   51 |  1140/   40 |
-| ButtonConfigFast1               |   1302/   51 |  1036/   40 |
-| ButtonConfigFast2               |   1266/   65 |  1000/   54 |
-| ButtonConfigFast3               |   1312/   79 |  1046/   68 |
+| ButtonConfig                    |   1576/   56 |  1310/   45 |
+| ButtonConfigFast1               |   1472/   56 |  1206/   45 |
+| ButtonConfigFast2               |   1368/   73 |  1102/   62 |
+| ButtonConfigFast3               |   1408/   90 |  1142/   79 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |   1670/   82 |  1404/   71 |
-| Encoded8To3ButtonConfig         |   1926/  139 |  1660/  128 |
-| EncodedButtonConfig             |   1970/  162 |  1704/  151 |
+| Encoded4To2ButtonConfig         |   1754/   93 |  1488/   82 |
+| Encoded8To3ButtonConfig         |   1962/  162 |  1696/  151 |
+| EncodedButtonConfig             |   2010/  185 |  1744/  174 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |   1894/  175 |  1628/  164 |
+| LadderButtonConfig              |   1934/  198 |  1668/  187 |
 +--------------------------------------------------------------+
 
 ```
@@ -206,16 +209,16 @@ $ make README.md
 | Baseline                        |    462/   11 |     0/    0 |
 | Baseline+pinMode+digitalRead    |    766/   11 |   304/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1798/   51 |  1336/   40 |
-| ButtonConfigFast1               |   1514/   51 |  1052/   40 |
-| ButtonConfigFast2               |   1482/   65 |  1020/   54 |
-| ButtonConfigFast3               |   1530/   79 |  1068/   68 |
+| ButtonConfig                    |   1970/   56 |  1508/   45 |
+| ButtonConfigFast1               |   1686/   56 |  1224/   45 |
+| ButtonConfigFast2               |   1586/   73 |  1124/   62 |
+| ButtonConfigFast3               |   1628/   90 |  1166/   79 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |   2012/   82 |  1550/   71 |
-| Encoded8To3ButtonConfig         |   2280/  139 |  1818/  128 |
-| EncodedButtonConfig             |   2326/  162 |  1864/  151 |
+| Encoded4To2ButtonConfig         |   2098/   93 |  1636/   82 |
+| Encoded8To3ButtonConfig         |   2318/  162 |  1856/  151 |
+| EncodedButtonConfig             |   2362/  185 |  1900/  174 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |   2324/  175 |  1862/  164 |
+| LadderButtonConfig              |   2360/  198 |  1898/  187 |
 +--------------------------------------------------------------+
 
 ```
@@ -233,16 +236,16 @@ $ make README.md
 | Baseline                        |   3478/  151 |     0/    0 |
 | Baseline+pinMode+digitalRead    |   3896/  151 |   418/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   4870/  191 |  1392/   40 |
-| ButtonConfigFast1               |   4468/  191 |   990/   40 |
-| ButtonConfigFast2               |   4432/  205 |   954/   54 |
-| ButtonConfigFast3               |   4480/  219 |  1002/   68 |
+| ButtonConfig                    |   5042/  196 |  1564/   45 |
+| ButtonConfigFast1               |   4640/  196 |  1162/   45 |
+| ButtonConfigFast2               |   4536/  213 |  1058/   62 |
+| ButtonConfigFast3               |   4578/  230 |  1100/   79 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |   5086/  222 |  1608/   71 |
-| Encoded8To3ButtonConfig         |   5354/  279 |  1876/  128 |
-| EncodedButtonConfig             |   5414/  300 |  1936/  149 |
+| Encoded4To2ButtonConfig         |   5172/  233 |  1694/   82 |
+| Encoded8To3ButtonConfig         |   5392/  302 |  1914/  151 |
+| EncodedButtonConfig             |   5450/  323 |  1972/  172 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |   5460/  315 |  1982/  164 |
+| LadderButtonConfig              |   5496/  338 |  2018/  187 |
 +--------------------------------------------------------------+
 
 ```
@@ -260,13 +263,13 @@ $ make README.md
 | Baseline                        |  34068/    0 |     0/    0 |
 | Baseline+pinMode+digitalRead    |  34132/    0 |    64/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  35132/    0 |  1064/    0 |
+| ButtonConfig                    |  35180/    0 |  1112/    0 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |  35372/    0 |  1304/    0 |
-| Encoded8To3ButtonConfig         |  35508/    0 |  1440/    0 |
-| EncodedButtonConfig             |  35596/    0 |  1528/    0 |
+| Encoded4To2ButtonConfig         |  35420/    0 |  1352/    0 |
+| Encoded8To3ButtonConfig         |  35548/    0 |  1480/    0 |
+| EncodedButtonConfig             |  35636/    0 |  1568/    0 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |  35828/    0 |  1760/    0 |
+| LadderButtonConfig              |  35876/    0 |  1808/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -281,16 +284,16 @@ $ make README.md
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |  21400/ 3556 |     0/    0 |
-| Baseline+pinMode+digitalRead    |  23364/ 3576 |  1964/   20 |
+| Baseline                        |  21500/ 3840 |     0/    0 |
+| Baseline+pinMode+digitalRead    |  23440/ 3860 |  1940/   20 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  24288/ 3616 |  2888/   60 |
+| ButtonConfig                    |  24412/ 3904 |  2912/   64 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |  24448/ 3652 |  3048/   96 |
-| Encoded8To3ButtonConfig         |  24588/ 3716 |  3188/  160 |
-| EncodedButtonConfig             |  24656/ 3724 |  3256/  168 |
+| Encoded4To2ButtonConfig         |  24564/ 3948 |  3064/  108 |
+| Encoded8To3ButtonConfig         |  24700/ 4028 |  3200/  188 |
+| EncodedButtonConfig             |  24772/ 4036 |  3272/  196 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |  27628/ 3736 |  6228/  180 |
+| LadderButtonConfig              |  27708/ 4048 |  6208/  208 |
 +--------------------------------------------------------------+
 
 ```
@@ -308,13 +311,13 @@ $ make README.md
 | Baseline                        |  10584/    0 |     0/    0 |
 | Baseline+pinMode+digitalRead    |  10640/    0 |    56/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  11632/    0 |  1048/    0 |
+| ButtonConfig                    |  11684/    0 |  1100/    0 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |  11888/    0 |  1304/    0 |
-| Encoded8To3ButtonConfig         |  12028/    0 |  1444/    0 |
-| EncodedButtonConfig             |  12092/    0 |  1508/    0 |
+| Encoded4To2ButtonConfig         |  11924/    0 |  1340/    0 |
+| Encoded8To3ButtonConfig         |  12064/    0 |  1480/    0 |
+| EncodedButtonConfig             |  12132/    0 |  1548/    0 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |  12432/    0 |  1848/    0 |
+| LadderButtonConfig              |  12472/    0 |  1888/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -332,13 +335,13 @@ $ make README.md
 | Baseline                        | 260105/27892 |     0/    0 |
 | Baseline+pinMode+digitalRead    | 260201/27892 |    96/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 261509/27936 |  1404/   44 |
+| ButtonConfig                    | 261589/27944 |  1484/   52 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         | 261693/27976 |  1588/   84 |
-| Encoded8To3ButtonConfig         | 261837/28040 |  1732/  148 |
-| EncodedButtonConfig             | 261965/28080 |  1860/  188 |
+| Encoded4To2ButtonConfig         | 261741/27984 |  1636/   92 |
+| Encoded8To3ButtonConfig         | 261885/28064 |  1780/  172 |
+| EncodedButtonConfig             | 262013/28104 |  1908/  212 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              | 262009/28092 |  1904/  200 |
+| LadderButtonConfig              | 262057/28116 |  1952/  224 |
 +--------------------------------------------------------------+
 
 ```
@@ -356,13 +359,13 @@ $ make README.md
 | Baseline                        | 228349/21976 |     0/    0 |
 | Baseline+pinMode+digitalRead    | 235653/22056 |  7304/   80 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 238289/22088 |  9940/  112 |
+| ButtonConfig                    | 238385/22096 | 10036/  120 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         | 238517/22136 | 10168/  160 |
-| Encoded8To3ButtonConfig         | 238641/22200 | 10292/  224 |
-| EncodedButtonConfig             | 238685/22208 | 10336/  232 |
+| Encoded4To2ButtonConfig         | 238601/22144 | 10252/  168 |
+| Encoded8To3ButtonConfig         | 238721/22224 | 10372/  248 |
+| EncodedButtonConfig             | 238765/22232 | 10416/  256 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              | 243357/22384 | 15008/  408 |
+| LadderButtonConfig              | 243437/22408 | 15088/  432 |
 +--------------------------------------------------------------+
 
 ```
