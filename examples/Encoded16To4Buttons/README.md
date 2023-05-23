@@ -32,31 +32,31 @@ Pressed/Released quickly to generate a Clicked event. Blank lines were added for
 readability:
 
 ```
-handleEvent(): virtualPin: 1; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 1; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 1; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 1; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 7; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 7; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 7; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 7; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 8; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 8; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 8; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 8; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 15; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 15; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 15; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 15; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 1; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 1; eventType: 2; buttonState: 1
-handleEvent(): virtualPin: 1; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 1; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 1; eventType: Clicked; buttonState: 1
+handleEvent(): virtualPin: 1; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 7; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 7; eventType: 2; buttonState: 1
-handleEvent(): virtualPin: 7; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 7; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 7; eventType: Clicked; buttonState: 1
+handleEvent(): virtualPin: 7; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 8; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 8; eventType: 2; buttonState: 1
-handleEvent(): virtualPin: 8; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 8; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 8; eventType: Clicked; buttonState: 1
+handleEvent(): virtualPin: 8; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 15; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 15; eventType: 2; buttonState: 1
-handleEvent(): virtualPin: 15; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 15; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 15; eventType: Clicked; buttonState: 1
+handleEvent(): virtualPin: 15; eventType: Released; buttonState: 1
 ```

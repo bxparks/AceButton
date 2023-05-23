@@ -75,7 +75,7 @@ void handleEvent(AceButton* /* button */, uint8_t eventType,
 
   // Print out a message for all events.
   Serial.print(F("handleEvent(): eventType: "));
-  Serial.print(eventType);
+  Serial.print(AceButton::eventName(eventType));
   Serial.print(F("; buttonState: "));
   Serial.println(buttonState);
 

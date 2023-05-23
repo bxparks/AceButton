@@ -39,17 +39,17 @@ The sample output shows where each button was Pressed then Released. Blank lines
 were added for readability:
 
 ```
-handleEvent(): virtualPin: 0; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 0; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 0; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 0; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 1; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 1; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 1; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 1; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 2; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 2; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 2; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 2; eventType: Released; buttonState: 1
 
-handleEvent(): virtualPin: 3; eventType: 0; buttonState: 0
-handleEvent(): virtualPin: 3; eventType: 1; buttonState: 1
+handleEvent(): virtualPin: 3; eventType: Pressed; buttonState: 0
+handleEvent(): virtualPin: 3; eventType: Released; buttonState: 1
 ```
 
 ### `MODE_CALIBRATE`
