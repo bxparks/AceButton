@@ -477,6 +477,8 @@ class AceButton {
     static const uint8_t kEventLongReleased = 6;
     static const uint8_t kButtonStateUnknown = 127;
 
+    static __FlashStringHelper eventName(uint8_t e);
+
     explicit AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
         uint8_t id = 0);
     explicit AceButton(ButtonConfig* buttonConfig, uint8_t pin = 0,
@@ -968,7 +970,8 @@ world.
 <a name="EventTypes"></a>
 ### Event Types
 
-The supported events are defined by a list of constants in `AceButton.h`:
+The supported events are defined by a list of integer (`uint8_t`) constants in
+`AceButton.h`:
 
 * `AceButton::kEventPressed` (always enabled, cannot be suppressed)
 * `AceButton::kEventReleased` (default: enabled)
@@ -983,6 +986,18 @@ These values are sent to the `EventHandler` in the `eventType` parameter.
 
 Two of the events are enabled by default, four are disabled by default but can
 be enabled by using a Feature flag described below.
+
+During development and debugging, it is useful to print a human-readable version
+of these integer constants. The `AceButton::eventName(e)` is a static function
+which returns a string for each event constant, and can be used like this:
+
+```C++
+void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  ...
+  Serial.print(AceButton::eventName(eventType));
+  ...
+}
+```
 
 <a name="ButtonConfigFeatureFlags"></a>
 ### ButtonConfig Feature Flags

@@ -28,6 +28,8 @@ SOFTWARE.
 #include <Arduino.h>
 #include "ButtonConfig.h"
 
+class __FlashStringHelper;
+
 namespace ace_button {
 
 /**
@@ -102,6 +104,13 @@ class AceButton {
      * which has a value of 2.
      */
     static const uint8_t kButtonStateUnknown = 127;
+
+    /**
+     * Return the human-readable name of the event. This is intended to
+     * help debugging. If this translation function is not used, the underlying
+     * table of strings will not be compiled into the resulting binary.
+     */
+    static __FlashStringHelper* eventName(uint8_t e);
 
     /**
      * Constructor defines parameters of the button that changes from button to

@@ -5,6 +5,10 @@
         * Derive formula of the number of diodes required to implement
           binary encoded buttons for `N` lines.
         * total diodes = `N * (2^(N-1) - 1)`
+    * Add `AceButton::eventName(e)` lookup function
+        * Translates the event integer constant (e.g. `kEventDoublePressed`)
+          into a human readable string (e.g. "DoublePressed").
+        * Intended for development and debugging.
 * 1.9.2 (2022-02-10)
     * Fix incorrect subtraction of 2 `uint16_t` integers in
       various examples and README.md docs for 32-bit processors.

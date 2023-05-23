@@ -85,7 +85,7 @@ void handleEvent(AceButton* button, uint8_t eventType,
   Serial.print(F("handleEvent(): pin: "));
   Serial.print(pin);
   Serial.print(F("; eventType: "));
-  Serial.print(eventType);
+  Serial.print(AceButton::eventName(eventType));
   Serial.print(F("; buttonState: "));
   Serial.println(buttonState);
   */

@@ -26,6 +26,8 @@ SOFTWARE.
 
 namespace ace_button {
 
+//-----------------------------------------------------------------------------
+
 // Macros to perform compile-time assertions. See
 // https://www.embedded.com/electronics-blogs/programming-pointers/4025549/Catching-errors-early-with-compile-time-assertions
 // and https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html
@@ -50,6 +52,36 @@ COMPILE_TIME_ASSERT(LOW == 0, "LOW must be 0")
     && AceButton::kButtonStateUnknown != RISING, \
     "kButtonStateUnknown conflicts with PinStatus enum")
 #endif
+
+//-----------------------------------------------------------------------------
+
+static const char sEventUnknown[] PROGMEM = "(unknown)";
+static const char sEventPressed[] PROGMEM = "Pressed";
+static const char sEventReleased[] PROGMEM = "Released";
+static const char sEventClicked[] PROGMEM = "Clicked";
+static const char sEventDoubleClicked[] PROGMEM = "DoubleClicked";
+static const char sEventLongPressed[] PROGMEM = "LongPressed";
+static const char sEventRepeatPressed[] PROGMEM = "RepeatPressed";
+static const char sEventLongReleased[] PROGMEM = "LongReleased";
+
+static const char* const sEventNames[] PROGMEM = {
+  sEventPressed,
+  sEventReleased,
+  sEventClicked,
+  sEventDoubleClicked,
+  sEventLongPressed,
+  sEventRepeatPressed,
+  sEventLongReleased,
+};
+
+__FlashStringHelper* AceButton::eventName(uint8_t e) {
+  const char* name = (e >= sizeof(sEventNames) / sizeof(const char*))
+      ? sEventUnknown
+      : (const char*) pgm_read_ptr(sEventNames + e);
+  return (__FlashStringHelper*) name;
+}
+
+//-----------------------------------------------------------------------------
 
 void AceButton::init(uint8_t pin, uint8_t defaultReleasedState, uint8_t id) {
   mPin = pin;
