@@ -10,15 +10,16 @@ nano_results = check_output(
     "./generate_table.awk < nano.txt", shell=True, text=True)
 micro_results = check_output(
     "./generate_table.awk < micro.txt", shell=True, text=True)
+samd21_results = check_output(
+    "./generate_table.awk < samd21.txt", shell=True, text=True)
 stm32_results = check_output(
     "./generate_table.awk < stm32.txt", shell=True, text=True)
+samd51_results = check_output(
+    "./generate_table.awk < samd51.txt", shell=True, text=True)
 esp8266_results = check_output(
     "./generate_table.awk < esp8266.txt", shell=True, text=True)
 esp32_results = check_output(
     "./generate_table.awk < esp32.txt", shell=True, text=True)
-teensy32_results = check_output(
-    "./generate_table.awk < teensy32.txt", shell=True, text=True)
-#teensy32_results = 'TBD'
 
 print(f"""\
 # AutoBenchmark
@@ -132,6 +133,19 @@ number of `TimingStats::update()` calls that were made.
     * Probably due to implementation changes of the underlying `analogRead()`
       function.
 
+**v1.10.0**
+* Boards
+    * Add SAMD21, using Seeed XIAO M0.
+    * Add SAMD51, using Adafruit ItsyBitsy M4.
+    * Remove Teensy 3.2.
+* Tool chain
+    * Arduino CLI to 0.31.0
+    * Arduino AVR 1.8.6
+    * Update ESP32 to 2.0.9
+    * Update STM32duino 2.5.0
+    * Add Seeeduino SAMD 1.8.4
+    * Add Adafruit SAMD 1.7.11
+
 ## Results
 
 The following table shows the minimum, average, and maximum (min/avg/max)
@@ -169,7 +183,7 @@ time taken for a number of scenarios in units of microseconds:
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * Arduino AVR Boards 1.8.4
 * `micros()` has a resolution of 4 microseconds
 
@@ -180,7 +194,7 @@ time taken for a number of scenarios in units of microseconds:
 ### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * SparkFun AVR Boards 1.1.13
 * `micros()` has a resolution of 4 microseconds
 
@@ -188,20 +202,40 @@ time taken for a number of scenarios in units of microseconds:
 {micro_results}
 ```
 
+## SAMD21 (Seeed XIAO M0)
+
+* SAMD51, 120 MHz ARM Cortex-M4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Seeeduino SAMD 1.8.4
+
+```
+{samd21_results}
+```
+
 ### STM32
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* STM32duino 2.2.0
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* STM32duino 2.5.0
 
 ```
 {stm32_results}
 ```
 
+## SAMD51 (Adafruit ItsyBitsy M4)
+
+* SAMD51, 120 MHz ARM Cortex-M4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Adafruit SAMD 1.7.11
+
+```
+{samd51_results}
+```
+
 ### ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * ESP8266 Boards 3.0.2
 
 ```
@@ -211,21 +245,10 @@ time taken for a number of scenarios in units of microseconds:
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* ESP32 Boards 2.0.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* ESP32 Boards 2.0.9
 
 ```
 {esp32_results}
-```
-
-### Teensy 3.2
-
-* 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* Teensyduino 1.56
-* Compiler options: "Faster"
-
-```
-{teensy32_results}
 ```
 """)

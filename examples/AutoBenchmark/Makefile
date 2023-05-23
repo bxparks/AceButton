@@ -10,7 +10,8 @@ include ../../../EpoxyDuino/EpoxyDuino.mk
 
 AUNITER_DIR := ../../../AUniter/tools
 
-TARGETS := nano.txt micro.txt stm32.txt esp8266.txt esp32.txt teensy32.txt
+TARGETS := nano.txt micro.txt samd21.txt stm32.txt samd51.txt \
+	esp8266.txt esp32.txt
 
 README.md: generate_readme.py generate_table.awk $(TARGETS)
 	./generate_readme.py > $@
@@ -25,19 +26,20 @@ nano.txt:
 micro.txt:
 	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END micro:ACM0
 
+samd21.txt:
+	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END xiao:ACM0
+
 stm32.txt:
 	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END stm32:ACM0
+
+samd51.txt:
+	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END 'itsym4:ACM*'
 
 esp8266.txt:
 	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END nodemcu:USB0
 
 esp32.txt:
 	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END esp32:USB0
-
-# Teensy requires manual capture of teensy32.txt. This Makefile rule is an
-# aspirational hope for consistency.
-teensy32.txt:
-	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END teensy32:ACM0
 
 more_clean:
 	echo "Use 'make clean_benchmarks' to remove *.txt files"
