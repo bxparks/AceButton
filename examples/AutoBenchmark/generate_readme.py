@@ -38,7 +38,7 @@ which will add to the timing values shown below in actual usage.
 The [digitalWriteFast library](https://github.com/NicksonYap/digitalWriteFast)
 might be an alternative if speed is critical.
 
-**Version**: AceButton v1.9.2
+**Version**: AceButton v1.10.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -145,6 +145,13 @@ number of `TimingStats::update()` calls that were made.
     * Update STM32duino 2.5.0
     * Add Seeeduino SAMD 1.8.4
     * Add Adafruit SAMD 1.7.11
+* Add `kEventHeartBeat`.
+    * Increases CPU time by a few microseconds or less if you squint hard
+      enough.
+    * Increases `sizeof(AceButton)` by 3 bytes to 17 on AVR processors, by 4
+      bytes to 20 on 32-bit processors.
+    * Increases `sizeof(ButtonConfig)` by 2 bytes to 18 on AVR processors`,
+      no change on 32-bit processors due to padding in struct.
 
 ## Results
 
