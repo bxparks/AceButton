@@ -98,6 +98,18 @@ class AceButton {
     static const uint8_t kEventLongReleased = 6;
 
     /**
+     * An event that fires every time interval defined by
+     * `getHeartBeatInterval()`. This is intended to allow custom subclasses of
+     * `IEventHandler` to track the progression of time even when no other
+     * event is occurring with a button. For example, this allows the
+     * IEventHandler to store the timestamp of the last kEventReleased, then
+     * trigger a custom kCustomLongReleased event after (say) 30 seconds after
+     * the last kEventReleased. Without the heart beat event, the IEventHandler
+     * would not be able to fire off a custom event.
+     */
+    static const uint8_t kEventHeartBeat = 7;
+
+    /**
      * Button state is unknown. This is a third state (different from LOW or
      * HIGH) used when the class is first initialized upon reboot. No longer
      * able to use '2' because the new PinStatus enum API contains 'CHANGE'
@@ -519,6 +531,9 @@ class AceButton {
      */
     void checkPostponedClick(uint16_t now);
 
+    /** Check if a heart beat should be sent. */
+    void checkHeartBeat(uint16_t now);
+
     /**
      * Dispatch to the event handler defined in the mButtonConfig.
      *
@@ -573,6 +588,7 @@ class AceButton {
      */
     void handleEvent(uint8_t eventType);
 
+  private:
     /** ButtonConfig associated with this button. */
     ButtonConfig* mButtonConfig;
 
@@ -598,6 +614,7 @@ class AceButton {
     uint16_t mLastClickTime; // ms
     uint16_t mLastPressTime; // ms
     uint16_t mLastRepeatPressTime; // ms
+    uint16_t mLastHeartBeatTime; // ms
 };
 
 }

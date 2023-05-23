@@ -134,7 +134,9 @@ test(eventName) {
       AceButton::eventName(AceButton::kEventRepeatPressed), "RepeatPressed");
   assertEqual(
       AceButton::eventName(AceButton::kEventLongReleased), "LongReleased");
-  assertEqual(AceButton::eventName(7), "(unknown)");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventHeartBeat), "HeartBeat");
+  assertEqual(AceButton::eventName(8), "(unknown)");
   assertEqual(AceButton::eventName(255), "(unknown)");
 }
 

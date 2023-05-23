@@ -55,7 +55,6 @@ COMPILE_TIME_ASSERT(LOW == 0, "LOW must be 0")
 
 //-----------------------------------------------------------------------------
 
-static const char sEventUnknown[] PROGMEM = "(unknown)";
 static const char sEventPressed[] PROGMEM = "Pressed";
 static const char sEventReleased[] PROGMEM = "Released";
 static const char sEventClicked[] PROGMEM = "Clicked";
@@ -63,6 +62,8 @@ static const char sEventDoubleClicked[] PROGMEM = "DoubleClicked";
 static const char sEventLongPressed[] PROGMEM = "LongPressed";
 static const char sEventRepeatPressed[] PROGMEM = "RepeatPressed";
 static const char sEventLongReleased[] PROGMEM = "LongReleased";
+static const char sEventHeartBeat[] PROGMEM = "HeartBeat";
+static const char sEventUnknown[] PROGMEM = "(unknown)";
 
 static const char* const sEventNames[] PROGMEM = {
   sEventPressed,
@@ -72,6 +73,7 @@ static const char* const sEventNames[] PROGMEM = {
   sEventLongPressed,
   sEventRepeatPressed,
   sEventLongReleased,
+  sEventHeartBeat,
 };
 
 __FlashStringHelper* AceButton::eventName(uint8_t e) {
@@ -88,14 +90,18 @@ void AceButton::init(uint8_t pin, uint8_t defaultReleasedState, uint8_t id) {
   mId = id;
   mFlags = 0;
   mLastButtonState = kButtonStateUnknown;
-  mLastDebounceTime = 0;
-  mLastClickTime = 0;
+
+  uint16_t now = mButtonConfig->getClock();
+  mLastDebounceTime = now;
+  mLastClickTime = now;
+  mLastHeartBeatTime = now;
   setDefaultReleasedState(defaultReleasedState);
 }
 
 void AceButton::init(ButtonConfig* buttonConfig, uint8_t pin,
     uint8_t defaultReleasedState, uint8_t id) {
   mButtonConfig = buttonConfig;
+  mLastHeartBeatTime = mButtonConfig->getClock();
   init(pin, defaultReleasedState, id);
 }
 
@@ -125,7 +131,10 @@ void AceButton::checkState(uint8_t buttonState) {
   // threshold time limits such as 'debounceDelay' or longPressDelay'.
   uint16_t now = mButtonConfig->getClock();
 
-  // debounce the button
+  // Send heart beat if enabled and needed.
+  checkHeartBeat(now);
+
+  // Debounce the button, and send any events detected.
   if (checkDebounced(now, buttonState)) {
     // check if the button was initialized (i.e. UNKNOWN state)
     if (checkInitialized(buttonState)) {
@@ -408,6 +417,16 @@ void AceButton::checkPostponedClick(uint16_t now) {
   if (isClickPostponed() && elapsedTime >= postponedClickDelay) {
     handleEvent(kEventClicked);
     clearClickPostponed();
+  }
+}
+
+void AceButton::checkHeartBeat(uint16_t now) {
+  if (! mButtonConfig->isFeature(ButtonConfig::kFeatureHeartBeat)) return;
+
+  uint16_t elapsedTime = now - mLastHeartBeatTime;
+  if (elapsedTime >= mButtonConfig->getHeartBeatInterval()) {
+    handleEvent(kEventHeartBeat);
+    mLastHeartBeatTime = now;
   }
 }
 
