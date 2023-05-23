@@ -32,10 +32,11 @@ produces the following files:
 attiny.txt
 nano.txt
 micro.txt
-samd.txt
+samd21.txt
+stm32.txt
+samd51.txt
 esp8266.txt
 esp32.txt
-teensy32.txt
 ```
 
 The `generate_table.awk` program reads one of `*.txt` files and prints out an
@@ -129,9 +130,8 @@ $ make README.md
 
 **v1.9.2**
 * Remove SAMD21 since I can no longer flash with the latest tool chain.
-* Add overhead of virtual functions on Teensy.
-    * Any `virtual` function causes Teensyduino to pull in `malloc()`
-      and `free()` even if `new` and `delete` are never used.
+* Add overhead of virtual functions on Teensy, which pulls in `malloc()`
+  and `free()` even if `new` and `delete` are never used.
     * Increases memory consumption of Baseline by ~3kB, which decreases
       the apparent flash size of various AceButton features on Teensy by ~3kB.
 * Add a second Baseline called `Baseline+pinMode+digitalRead`.
@@ -153,29 +153,42 @@ $ make README.md
     * ESP32 from 1.0.6 to 2.0.2
     * Teensyduino from 1.53 to 1.56
 
+**v1.10.0**
+* Boards
+    * Add SAMD21, using Seeed XIAO M0.
+    * Add SAMD51, using Adafruit ItsyBitsy M4.
+    * Remove Teensy 3.2.
+* Tool chain
+    * Arduino CLI to 0.31.0
+    * Arduino AVR 1.8.6
+    * Update ESP32 to 2.0.9
+    * Update STM32duino 2.5.0
+    * Add Seeeduino SAMD 1.8.4
+    * Add Adafruit SAMD 1.7.11
+
 ## ATtiny85
 
 * 8MHz ATtiny85
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * SpenceKonde/ATTinyCore 1.5.2
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |    406/   11 |     0/    0 |
-| Baseline+pinMode+digitalRead    |    418/   11 |    12/    0 |
+| Baseline                        |    266/   11 |     0/    0 |
+| Baseline+pinMode+digitalRead    |    276/   11 |    10/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1554/   51 |  1148/   40 |
-| ButtonConfigFast1               |   1450/   51 |  1044/   40 |
-| ButtonConfigFast2               |   1408/   65 |  1002/   54 |
-| ButtonConfigFast3               |   1454/   79 |  1048/   68 |
+| ButtonConfig                    |   1406/   51 |  1140/   40 |
+| ButtonConfigFast1               |   1302/   51 |  1036/   40 |
+| ButtonConfigFast2               |   1266/   65 |  1000/   54 |
+| ButtonConfigFast3               |   1312/   79 |  1046/   68 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |   1812/   82 |  1406/   71 |
-| Encoded8To3ButtonConfig         |   2070/  139 |  1664/  128 |
-| EncodedButtonConfig             |   2118/  162 |  1712/  151 |
+| Encoded4To2ButtonConfig         |   1670/   82 |  1404/   71 |
+| Encoded8To3ButtonConfig         |   1926/  139 |  1660/  128 |
+| EncodedButtonConfig             |   1970/  162 |  1704/  151 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |   2042/  175 |  1636/  164 |
+| LadderButtonConfig              |   1894/  175 |  1628/  164 |
 +--------------------------------------------------------------+
 
 ```
@@ -183,26 +196,26 @@ $ make README.md
 ## Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* Arduino AVR Boards 1.8.4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Arduino AVR Boards 1.8.6
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |    610/   11 |     0/    0 |
-| Baseline+pinMode+digitalRead    |    914/   11 |   304/    0 |
+| Baseline                        |    462/   11 |     0/    0 |
+| Baseline+pinMode+digitalRead    |    766/   11 |   304/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1946/   51 |  1336/   40 |
-| ButtonConfigFast1               |   1662/   51 |  1052/   40 |
-| ButtonConfigFast2               |   1630/   65 |  1020/   54 |
-| ButtonConfigFast3               |   1678/   79 |  1068/   68 |
+| ButtonConfig                    |   1798/   51 |  1336/   40 |
+| ButtonConfigFast1               |   1514/   51 |  1052/   40 |
+| ButtonConfigFast2               |   1482/   65 |  1020/   54 |
+| ButtonConfigFast3               |   1530/   79 |  1068/   68 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |   2160/   82 |  1550/   71 |
-| Encoded8To3ButtonConfig         |   2428/  139 |  1818/  128 |
-| EncodedButtonConfig             |   2474/  162 |  1864/  151 |
+| Encoded4To2ButtonConfig         |   2012/   82 |  1550/   71 |
+| Encoded8To3ButtonConfig         |   2280/  139 |  1818/  128 |
+| EncodedButtonConfig             |   2326/  162 |  1864/  151 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |   2472/  175 |  1862/  164 |
+| LadderButtonConfig              |   2324/  175 |  1862/  164 |
 +--------------------------------------------------------------+
 
 ```
@@ -210,26 +223,50 @@ $ make README.md
 ## SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * SparkFun AVR Boards 1.1.13
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |   3558/  151 |     0/    0 |
-| Baseline+pinMode+digitalRead    |   3976/  151 |   418/    0 |
+| Baseline                        |   3478/  151 |     0/    0 |
+| Baseline+pinMode+digitalRead    |   3896/  151 |   418/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   4950/  191 |  1392/   40 |
-| ButtonConfigFast1               |   4548/  191 |   990/   40 |
-| ButtonConfigFast2               |   4512/  205 |   954/   54 |
-| ButtonConfigFast3               |   4560/  219 |  1002/   68 |
+| ButtonConfig                    |   4870/  191 |  1392/   40 |
+| ButtonConfigFast1               |   4468/  191 |   990/   40 |
+| ButtonConfigFast2               |   4432/  205 |   954/   54 |
+| ButtonConfigFast3               |   4480/  219 |  1002/   68 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |   5166/  222 |  1608/   71 |
-| Encoded8To3ButtonConfig         |   5434/  279 |  1876/  128 |
-| EncodedButtonConfig             |   5494/  300 |  1936/  149 |
+| Encoded4To2ButtonConfig         |   5086/  222 |  1608/   71 |
+| Encoded8To3ButtonConfig         |   5354/  279 |  1876/  128 |
+| EncodedButtonConfig             |   5414/  300 |  1936/  149 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |   5540/  315 |  1982/  164 |
+| LadderButtonConfig              |   5460/  315 |  1982/  164 |
++--------------------------------------------------------------+
+
+```
+
+## SAMD21 (Seeed XIAO M0)
+
+* SAMD51, 120 MHz ARM Cortex-M4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Seeeduino SAMD 1.8.4
+
+```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| Baseline                        |  34068/    0 |     0/    0 |
+| Baseline+pinMode+digitalRead    |  34132/    0 |    64/    0 |
+|---------------------------------+--------------+-------------|
+| ButtonConfig                    |  35132/    0 |  1064/    0 |
+|---------------------------------+--------------+-------------|
+| Encoded4To2ButtonConfig         |  35372/    0 |  1304/    0 |
+| Encoded8To3ButtonConfig         |  35508/    0 |  1440/    0 |
+| EncodedButtonConfig             |  35596/    0 |  1528/    0 |
+|---------------------------------+--------------+-------------|
+| LadderButtonConfig              |  35828/    0 |  1760/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -237,23 +274,47 @@ $ make README.md
 ## STM32
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* STM32duino 2.2.0
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* STM32duino 2.5.0
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |  21888/ 3540 |     0/    0 |
-| Baseline+pinMode+digitalRead    |  24100/ 3560 |  2212/   20 |
+| Baseline                        |  21400/ 3556 |     0/    0 |
+| Baseline+pinMode+digitalRead    |  23364/ 3576 |  1964/   20 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |  25016/ 3600 |  3128/   60 |
+| ButtonConfig                    |  24288/ 3616 |  2888/   60 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |  25180/ 3636 |  3292/   96 |
-| Encoded8To3ButtonConfig         |  25320/ 3700 |  3432/  160 |
-| EncodedButtonConfig             |  25384/ 3708 |  3496/  168 |
+| Encoded4To2ButtonConfig         |  24448/ 3652 |  3048/   96 |
+| Encoded8To3ButtonConfig         |  24588/ 3716 |  3188/  160 |
+| EncodedButtonConfig             |  24656/ 3724 |  3256/  168 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |  28348/ 3720 |  6460/  180 |
+| LadderButtonConfig              |  27628/ 3736 |  6228/  180 |
++--------------------------------------------------------------+
+
+```
+
+## SAMD51 (Adafruit ItsyBitsy M4)
+
+* SAMD51, 120 MHz ARM Cortex-M4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Adafruit SAMD 1.7.11
+
+```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| Baseline                        |  10584/    0 |     0/    0 |
+| Baseline+pinMode+digitalRead    |  10640/    0 |    56/    0 |
+|---------------------------------+--------------+-------------|
+| ButtonConfig                    |  11632/    0 |  1048/    0 |
+|---------------------------------+--------------+-------------|
+| Encoded4To2ButtonConfig         |  11888/    0 |  1304/    0 |
+| Encoded8To3ButtonConfig         |  12028/    0 |  1444/    0 |
+| EncodedButtonConfig             |  12092/    0 |  1508/    0 |
+|---------------------------------+--------------+-------------|
+| LadderButtonConfig              |  12432/    0 |  1848/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -261,23 +322,23 @@ $ make README.md
 ## ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * ESP8266 Boards 3.0.2
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        | 260329/27916 |     0/    0 |
-| Baseline+pinMode+digitalRead    | 260409/27916 |    80/    0 |
+| Baseline                        | 260105/27892 |     0/    0 |
+| Baseline+pinMode+digitalRead    | 260201/27892 |    96/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 261733/27960 |  1404/   44 |
+| ButtonConfig                    | 261509/27936 |  1404/   44 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         | 261917/27992 |  1588/   76 |
-| Encoded8To3ButtonConfig         | 262045/28056 |  1716/  140 |
-| EncodedButtonConfig             | 262173/28096 |  1844/  180 |
+| Encoded4To2ButtonConfig         | 261693/27976 |  1588/   84 |
+| Encoded8To3ButtonConfig         | 261837/28040 |  1732/  148 |
+| EncodedButtonConfig             | 261965/28080 |  1860/  188 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              | 262233/28108 |  1904/  192 |
+| LadderButtonConfig              | 262009/28092 |  1904/  200 |
 +--------------------------------------------------------------+
 
 ```
@@ -285,48 +346,23 @@ $ make README.md
 ## ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* ESP32 Boards 2.0.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* ESP32 Boards 2.0.9
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        | 204577/16060 |     0/    0 |
-| Baseline+pinMode+digitalRead    | 206917/16228 |  2340/  168 |
+| Baseline                        | 228349/21976 |     0/    0 |
+| Baseline+pinMode+digitalRead    | 235653/22056 |  7304/   80 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 208889/16308 |  4312/  248 |
+| ButtonConfig                    | 238289/22088 |  9940/  112 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         | 209097/16332 |  4520/  272 |
-| Encoded8To3ButtonConfig         | 209225/16396 |  4648/  336 |
-| EncodedButtonConfig             | 209285/16404 |  4708/  344 |
+| Encoded4To2ButtonConfig         | 238517/22136 | 10168/  160 |
+| Encoded8To3ButtonConfig         | 238641/22200 | 10292/  224 |
+| EncodedButtonConfig             | 238685/22208 | 10336/  232 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              | 214989/16596 | 10412/  536 |
-+--------------------------------------------------------------+
-
-```
-
-## Teensy 3.2
-
-* 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* Teensyduino 1.56
-* Compiler options: "Faster"
-
-```
-+--------------------------------------------------------------+
-| functionality                   |  flash/  ram |       delta |
-|---------------------------------+--------------+-------------|
-| Baseline                        |  10228/ 4152 |     0/    0 |
-| Baseline+pinMode+digitalRead    |  10676/ 4152 |   448/    0 |
-|---------------------------------+--------------+-------------|
-| ButtonConfig                    |  12052/ 4204 |  1824/   52 |
-|---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |  12288/ 4264 |  2060/  112 |
-| Encoded8To3ButtonConfig         |  12436/ 4328 |  2208/  176 |
-| EncodedButtonConfig             |  12488/ 4336 |  2260/  184 |
-|---------------------------------+--------------+-------------|
-| LadderButtonConfig              |  13136/ 4340 |  2908/  188 |
+| LadderButtonConfig              | 243357/22384 | 15008/  408 |
 +--------------------------------------------------------------+
 
 ```
