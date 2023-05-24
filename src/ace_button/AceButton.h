@@ -44,6 +44,7 @@ namespace ace_button {
  * - kEventLongPressed
  * - kEventRepeatPressed
  * - kEventLongReleased
+ * - kEventHeartBeat
  *
  * The check() method should be called from the loop() at least 2-3 times during
  * the debouncing time period. For 20 ms delay, the check() method should be
@@ -119,10 +120,10 @@ class AceButton {
 
     /**
      * Return the human-readable name of the event. This is intended to
-     * help debugging. If this translation function is not used, the underlying
-     * table of strings will not be compiled into the resulting binary.
+     * help debugging. If this function is not used, the underlying table of
+     * strings will not be compiled into the resulting binary.
      */
-    static __FlashStringHelper* eventName(uint8_t e);
+    static __FlashStringHelper* eventName(uint8_t event);
 
     /**
      * Constructor defines parameters of the button that changes from button to

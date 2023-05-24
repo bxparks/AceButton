@@ -76,10 +76,10 @@ static const char* const sEventNames[] PROGMEM = {
   sEventHeartBeat,
 };
 
-__FlashStringHelper* AceButton::eventName(uint8_t e) {
-  const char* name = (e >= sizeof(sEventNames) / sizeof(const char*))
+__FlashStringHelper* AceButton::eventName(uint8_t event) {
+  const char* name = (event >= sizeof(sEventNames) / sizeof(const char*))
       ? sEventUnknown
-      : (const char*) pgm_read_ptr(sEventNames + e);
+      : (const char*) pgm_read_ptr(sEventNames + event);
   return (__FlashStringHelper*) name;
 }
 
@@ -125,7 +125,9 @@ void AceButton::checkState(uint8_t buttonState) {
   // threshold time limits such as 'debounceDelay' or longPressDelay'.
   uint16_t now = mButtonConfig->getClock();
 
-  // Send heart beat if enabled and needed.
+  // Send heart beat if enabled and needed. Purposely placed outside of the
+  // checkDebounced() guard so that it can fire regardless of the state of the
+  // debouncing logic.
   checkHeartBeat(now);
 
   // Debounce the button, and send any events detected.
@@ -426,6 +428,9 @@ void AceButton::checkHeartBeat(uint16_t now) {
 
   uint16_t elapsedTime = now - mLastHeartBeatTime;
   if (elapsedTime >= mButtonConfig->getHeartBeatInterval()) {
+    // This causes the kEventHeartBeat to be sent with the last validated button
+    // state, not the current button state. I think that makes more sense, but
+    // there might be situations where it doesn't.
     handleEvent(kEventHeartBeat);
     mLastHeartBeatTime = now;
   }
