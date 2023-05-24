@@ -3,8 +3,8 @@
 * Unreleased
 * 1.10.0 (2023-05-24)
     * Add `AceButton::eventName(event)` lookup function
-        * Translates the event integer constant (e.g. `kEventDoublePressed`)
-          into a human readable string (e.g. "DoublePressed").
+        * Translates the event integer constant (e.g. `kEventDoubleClicked`)
+          into a human readable string (e.g. "DoubleClicked").
         * Intended for development and debugging.
     * Update supported boards and tiers
         * Add SAMD21 and SAMD51 boards to Tier 1
