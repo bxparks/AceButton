@@ -125,6 +125,7 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
     * [Operating System](#OperatingSystem)
 * [Background Motivation](#BackgroundMotivation)
   * [Non-goals](#NonGoals)
+* [Bugs and Limitations](#BugsAndLimitations)
 * [License](#License)
 * [Feedback and Support](#FeedbackAndSupport)
 * [Author](#Author)
@@ -152,8 +153,8 @@ Here are the high-level features of the AceButton library:
     * `digitalRead()` button read function can be overridden
     * `millis()` clock function can be overridden
 * small memory footprint
-    * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
-    * each `ButtonConfig` consumes 18 bytes (8-bit) or 24 bytes (32-bit)
+    * each `AceButton` consumes 17 bytes (8-bit) or 20 bytes (32-bit)
+    * each `ButtonConfig` consumes 20 bytes (8-bit) or 24 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
     * 970-2180 bytes of flash memory for the simple case of 1 AceButton and 1
       ButtonConfig, depending on 8-bit or 32-bit processors
@@ -2025,6 +2026,76 @@ created the `ButtonConfigFast1`, `ButtonConfigFast2`, and `ButtonConfigFast3`
 classes to decrease the flash memory consumption by using one of the
 `<digitalWriteFast.h>` 3rd party libraries. See
 [Digital Write Fast](#DigitalWriteFast) for more info.
+
+<a name="BugsAndLimitations"></a>
+## Bugs and Limitations
+
+This is the first Arduino library that I ever created. It has grown organically
+over time, while maintaining backwards compatibility as much as possible. There
+are some early design decisions that could have been better with infinite
+insight. Here are some limitations and bugs.
+
+* The `ButtonConfig` class should have been named `ButtonGroup`.
+    * This was not obvious until I had implemented the `EncodedButtonConfig` and
+      the `LadderButtonConfig` classes.
+    * But I cannot change the names without breaking backwards compatibility.
+* The [Single Button Simplifications](#SingleButtonSimplifications) was probably
+  a mistake.
+    * It makes the API more complex and cluttered than it could be.
+    * It causes an automatic creation of the SystemButtonConfig instance of
+      `ButtonConfig` even when it is not needed by the application, unless
+      special (non-obvious) precautions are taken.
+    * On the other hand, it makes the simplest `HelloButton` program very
+      simple.
+* Embedding multiple `AceButton` objects in an array or a `struct` is difficult
+  if not impossible.
+    * See [Discussion#106](https://github.com/bxparks/AceButton/discussions/106)
+      for some details.
+    * The C++ rules for object initialization are so complicated, and have
+      changed with different versions of C++ (C++11, C++14, C++17, C++20,
+      C++23??), that I cannot understand them anymore.
+    * Probably will never be fixed because I'm tired of the complexity of
+      the C++ language.
+* AceButton does not provide built-in support for simultaneous buttons.
+    * See [Discussion#83](https://github.com/bxparks/AceButton/discussions/83),
+      [Discussion#94](https://github.com/bxparks/AceButton/discussions/94), and
+      [Discussion#96](https://github.com/bxparks/AceButton/discussions/96).
+    * The [examples/SimultaneousButtons](examples/SimultaneousButtons) program
+      shows how it could be detected using a custom `IEventHandler`. However, it
+      has not been extensively tested. I don't even remember writing it 2 years
+      ago.
+    * This remains an open problem because I don't use simultaneous buttons in
+      my applications, and I have not spent much time thinking about how to
+      handle all the different possible combinations of events and their timing
+      interactions that are possible with 2 buttons.
+* The `EventHandler` and `IEventHandler` sends a `AceButton*` pointer into
+  the arguments, instead of a `const AceButton*` pointer.
+    * Too late to change that without breaking backwards compatibility.
+* All internal timing variables are `uint16_t` instead of `uint32_t`.
+    * This means that various timing parameters (ClickDelay, LongPressDelay,
+      etc) can be maximum of 65535 milliseconds.
+    * Using 16-bit integers saves RAM, at least 8 bytes for each instance of
+      `AceButton`, and 14 bytes for `ButtonConfig` and its subclasses. And
+      probably saves flash memory on 8-bit processors because fewer machine
+      instruction are needed to operate on timing variables.
+    * Client applications were assumed to use as many as 10-20 buttons. That's a
+      savings of 80-160 bytes which makes a difference on 8-bit AVR processors
+      with only 2 kB of RAM.
+* The library does not support the mirror-image version of `kEventLongPressed`
+  for the Released state.
+    * In other words, an event that is triggered when a button has been released
+      for a long time (several seconds).
+    * The current `kEventLongReleased` is a different type of event.
+    * See
+      [Discussion#118](https://github.com/bxparks/AceButton/discussions/118)
+      for info.
+* The [Event Supression](#EventSuppression) features are complicated, hard
+  to understand and remember.
+    * I wrote the code and I cannot remember how they all work. I have to
+      refer to this README.md each time I want to use them.
+    * These features grew organically. Maybe there is a better, more consistent
+      way of implementing them, but it was not obvious during the development of
+      these features.
 
 <a name="License"></a>
 ## License
