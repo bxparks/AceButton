@@ -1,21 +1,41 @@
 # Changelog
 
 * Unreleased
+* 1.10.0 (2022-05-23)
     * Add `AceButton::eventName(e)` lookup function
         * Translates the event integer constant (e.g. `kEventDoublePressed`)
           into a human readable string (e.g. "DoublePressed").
         * Intended for development and debugging.
-    * AutoBenchmark, MemoryBenchmark
-        * Add SAMD21, using Seeed XIAO M0.
-        * Add SAMD51, using Adafruit ItsyBitsy M4.
-        * Remove Teensy 3.2.
+    * Update supported boards and tiers
+        * Add new boards to Tier 1:
+            * Seeeduino XIAO M0 (SAMD21 48MHz ARM Cortex-M0+)
+            * Adafruit ItsyBitsy M4 (SAMD51 120MHz ARM Cortex-M4)
+            * SAMD21 and SAMD51 boards are back in Tier 1, as long as they use
+              the traditional Arduino API instead of the new
+              [Arduino-Core](https://github.com/arduino/ArduinoCore-api).
+            * Fortunately most third party SAMD21 and SAMD51 boards continue to
+              use the traditional Arduino API.
+        * Teensy 3.2 moved to Tier 2:
+            * This board is entering end-of-life.
+            * As well, the Teensyduino environment integrates with the Arduino
+              IDE and CLI in a way that's different than all other third-party
+              Arduino boards.
+            * Some of my automation scripts do not work with Teensyduino, so it
+              becomes very time consuming to test the Teensy boards.
+            * Moved all Teensy boards to Tier 2 ("Should work but not tested
+              often").
     * Add HeartBeat event
         * `AceButton::kEventHeartBeat` event
         * `ButtonConfig::kHeartBeatInterval` (default 5000)
         * `ButtonConfig::setHeartBeatInterval(uint16)t)`
         * `ButtonConfig::getHeartBeatInterval()`
         * See the [Heart Best](README.md#HeartBeat) section in the README.md,
-        * and the [examples/HeartBeat](examples/HeartBeat) sample application.
+          and the [examples/HeartBeat](examples/HeartBeat) sample application.
+        * Memory size impact
+            * Increases flash size of `ButtonConfig` by ~150 bytes on AVR, and
+              ~50 bytes on 32-bit processors.
+            * Increases RAM size of `AceButton` by 3 bytes on AVR, and 4 bytes
+              on 32-bit processors.
     * [Binary Encoded Buttons](docs/binary_encoding)
         * Derive formula of the number of diodes required to implement
           binary encoded buttons for `N` lines.

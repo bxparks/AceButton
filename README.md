@@ -68,7 +68,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.9.2 (2022-02-10)
+**Version**: 1.10.0 (2022-05-23)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -1723,7 +1723,7 @@ at a periodic number of milliseconds managed by the following methods on the
 The default is 5000 milliseconds.
 
 The primary purpose of the HeartBeat event is to allow the user-provided event
-handler (the `IEventHandler` will probably be easiest to use for this purpose)
+handler --- `IEventHandler` will probably be easiest to use for this purpose ---
 to generate custom event types which are not provided by `AceButton` itself by
 default. When the button does not undergo any change in state explicitly
 initiated by the user (e.g. Released for a long time), the `AceButton` object
@@ -1732,13 +1732,13 @@ event handler can generate custom events such as "Pressed for 5 minutes", or
 "Released for 5 Minutes". See [examples/HeartBeat](examples/HeartBeat) for an
 example of an `IEventHandler` that implements this.
 
-The `kEventHeartBeat` is triggered only by the elapsed time, and is not affected
-by any internal state of the `AceButton`, such as the debouncing state, or the
-various detection logic of Clicked, DoubleClicked, and so on. The
-`HeartBeatInterval` is intended to be large, with the default set to 5000
-milliseconds, to avoid the overhead of calling the event handler too often.
+The `kEventHeartBeat` is triggered only by the progression of time, and is not
+affected by any internal state of the `AceButton`, such as the debouncing state,
+or the various logic for detecting Clicked, DoubleClicked, and so on. The
+`HeartBeatInterval` is intended to be relatively large, with the default set to
+5000 milliseconds, to avoid the overhead of calling the event handler too often.
 Using a smaller interval may affect the detection logic of various other button
-events if the heart beat handler consumes too much CPU time.
+events if the HeartBeat handler consumes too much CPU time.
 
 The `buttonState` passed to the event handler by the HeartBeat dispatcher:
 ```C++
@@ -1761,21 +1761,21 @@ Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 (Arduino Uno, Nano, etc):
 
 ```
-sizeof(AceButton): 14
-sizeof(ButtonConfig): 18
-sizeof(ButtonConfigFast1<>): 18
-sizeof(ButtonConfigFast2<>): 18
-sizeof(ButtonConfigFast3<>): 18
-sizeof(Encoded4To2ButtonConfig): 21
-sizeof(Encoded8To3ButtonConfig): 22
-sizeof(EncodedButtonConfig): 25
-sizeof(LadderButtonConfig): 26
+sizeof(AceButton): 17
+sizeof(ButtonConfig): 20
+sizeof(ButtonConfigFast1<>): 20
+sizeof(ButtonConfigFast2<>): 20
+sizeof(ButtonConfigFast3<>): 20
+sizeof(Encoded4To2ButtonConfig): 23
+sizeof(Encoded8To3ButtonConfig): 24
+sizeof(EncodedButtonConfig): 27
+sizeof(LadderButtonConfig): 28
 ```
 
 For 32-bit microcontrollers:
 
 ```
-sizeof(AceButton): 16
+sizeof(AceButton): 20
 sizeof(ButtonConfig): 24
 sizeof(Encoded4To2ButtonConfig): 28
 sizeof(Encoded8To3ButtonConfig): 28
@@ -1803,16 +1803,16 @@ Arduino Nano
 | Baseline                        |    462/   11 |     0/    0 |
 | Baseline+pinMode+digitalRead    |    766/   11 |   304/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1798/   51 |  1336/   40 |
-| ButtonConfigFast1               |   1514/   51 |  1052/   40 |
-| ButtonConfigFast2               |   1482/   65 |  1020/   54 |
-| ButtonConfigFast3               |   1530/   79 |  1068/   68 |
+| ButtonConfig                    |   1970/   56 |  1508/   45 |
+| ButtonConfigFast1               |   1686/   56 |  1224/   45 |
+| ButtonConfigFast2               |   1586/   73 |  1124/   62 |
+| ButtonConfigFast3               |   1628/   90 |  1166/   79 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |   2012/   82 |  1550/   71 |
-| Encoded8To3ButtonConfig         |   2280/  139 |  1818/  128 |
-| EncodedButtonConfig             |   2326/  162 |  1864/  151 |
+| Encoded4To2ButtonConfig         |   2098/   93 |  1636/   82 |
+| Encoded8To3ButtonConfig         |   2318/  162 |  1856/  151 |
+| EncodedButtonConfig             |   2362/  185 |  1900/  174 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |   2324/  175 |  1862/  164 |
+| LadderButtonConfig              |   2360/  198 |  1898/  187 |
 +--------------------------------------------------------------+
 ```
 
@@ -1825,13 +1825,13 @@ ESP8266:
 | Baseline                        | 260105/27892 |     0/    0 |
 | Baseline+pinMode+digitalRead    | 260201/27892 |    96/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 261509/27936 |  1404/   44 |
+| ButtonConfig                    | 261589/27944 |  1484/   52 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         | 261693/27976 |  1588/   84 |
-| Encoded8To3ButtonConfig         | 261837/28040 |  1732/  148 |
-| EncodedButtonConfig             | 261965/28080 |  1860/  188 |
+| Encoded4To2ButtonConfig         | 261741/27984 |  1636/   92 |
+| Encoded8To3ButtonConfig         | 261885/28064 |  1780/  172 |
+| EncodedButtonConfig             | 262013/28104 |  1908/  212 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              | 262009/28092 |  1904/  200 |
+| LadderButtonConfig              | 262057/28116 |  1952/  224 |
 +--------------------------------------------------------------+
 ```
 
@@ -1849,20 +1849,20 @@ Arduino Nano:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |  12/ 15/ 24 |    1931 |
-| press/release             |  12/ 15/ 24 |    1927 |
-| click                     |  12/ 15/ 24 |    1928 |
-| double_click              |  12/ 15/ 32 |    1924 |
-| long_press/repeat_press   |  12/ 16/ 24 |    1926 |
+| idle                      |  12/ 16/ 24 |    1929 |
+| press/release             |  12/ 17/ 28 |    1924 |
+| click                     |  12/ 16/ 28 |    1925 |
+| double_click              |  12/ 16/ 32 |    1922 |
+| long_press/repeat_press   |  12/ 18/ 28 |    1923 |
 |---------------------------+-------------+---------|
-| ButtonConfigFast1         |  12/ 14/ 24 |    1934 |
-| ButtonConfigFast2         |  20/ 27/ 36 |    1910 |
-| ButtonConfigFast3         |  28/ 40/ 48 |    1886 |
+| ButtonConfigFast1         |  12/ 16/ 24 |    1932 |
+| ButtonConfigFast2         |  20/ 30/ 40 |    1905 |
+| ButtonConfigFast3         |  32/ 44/ 52 |    1880 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  60/ 69/ 76 |    1836 |
-| Encoded8To3ButtonConfig   | 164/187/196 |    1656 |
-| EncodedButtonConfig       |  80/102/112 |    1782 |
-| LadderButtonConfig        | 176/201/272 |    1637 |
+| Encoded4To2ButtonConfig   |  60/ 73/ 80 |    1831 |
+| Encoded8To3ButtonConfig   | 168/196/204 |    1645 |
+| EncodedButtonConfig       |  84/110/116 |    1769 |
+| LadderButtonConfig        | 184/211/288 |    1625 |
 +---------------------------+-------------+---------+
 ```
 
@@ -1872,16 +1872,16 @@ ESP8266:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   6/  7/ 53 |    1921 |
-| press/release             |   6/  7/ 37 |    1918 |
-| click                     |   6/  7/ 18 |    1920 |
-| double_click              |   6/  7/ 10 |    1920 |
-| long_press/repeat_press   |   6/  7/ 10 |    1921 |
+| idle                      |   6/  8/ 62 |    1920 |
+| press/release             |   6/  8/ 45 |    1921 |
+| click                     |   6/  7/ 18 |    1921 |
+| double_click              |   6/  7/ 12 |    1922 |
+| long_press/repeat_press   |   6/  8/ 12 |    1920 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  21/ 26/ 45 |    1888 |
-| Encoded8To3ButtonConfig   |  54/ 65/ 69 |    1813 |
-| EncodedButtonConfig       |  40/ 52/ 60 |    1842 |
-| LadderButtonConfig        |  79/ 91/194 |    1762 |
+| Encoded4To2ButtonConfig   |  22/ 27/ 46 |    1879 |
+| Encoded8To3ButtonConfig   |  56/ 67/ 76 |    1810 |
+| EncodedButtonConfig       |  43/ 54/ 70 |    1841 |
+| LadderButtonConfig        |  81/ 93/212 |    1772 |
 +---------------------------+-------------+---------+
 ```
 
@@ -1897,11 +1897,12 @@ These boards are tested on each release:
 
 * Arduino Nano (16 MHz ATmega328P)
 * SparkFun Pro Micro (16 MHz ATmega32U4)
+* Seeeduino XIAO M0 (48 MHz SAMD21 ARM Cortex-M0+)
 * STM32 Blue Pill (STM32F103C8, 72 MHz ARM Cortex-M3)
+* Adafruit ItsyBitsy M4 (120 MHz SAMD51 ARM Cortext-M4)
 * NodeMCU 1.0 (ESP-12E module, 80MHz ESP8266)
 * WeMos D1 Mini (ESP-12E module, 80 MHz ESP8266)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
-* Teensy 3.2 (96 MHz ARM Cortex-M4)
 
 **Tier 2: Should work**
 
@@ -1911,13 +1912,10 @@ These boards should work but I don't test them as often:
 * Arduino Pro Mini (16 MHz ATmega328P)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 * Teensy LC (48 MHz ARM Cortex-M0+)
+* Teensy 3.2 (96 MHz ARM Cortex-M4)
 
 **Tier 3: May work, but not supported**
 
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
-    * As Arduino IDE 1.8.19, I can no longer upload binaries to my SAMD21 boards
-      due to errors, so I cannot test this library.
-    * This library may work on these boards, but I can no longer support them.
 * Any platform using the ArduinoCore-API
   (https://github.com/arduino/ArduinoCore-api).
     * For example, Nano Every, MKRZero, and Raspberry Pi Pico RP2040.
@@ -1930,14 +1928,16 @@ These boards should work but I don't test them as often:
 This library was developed and tested using:
 
 * [Arduino IDE 1.8.19](https://www.arduino.cc/en/Main/Software)
-* [Arduino CLI 0.20.2](https://arduino.github.io/arduino-cli)
+* [Arduino CLI 0.31.0](https://arduino.github.io/arduino-cli)
 * [SpenceKonde ATTinyCore 1.5.2](https://github.com/SpenceKonde/ATTinyCore)
-* [Arduino AVR Boards 1.8.4](https://github.com/arduino/ArduinoCore-avr)
-* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [Arduino AVR Boards 1.8.6](https://github.com/arduino/ArduinoCore-avr)
 * [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [STM32duino 2.2.0](https://github.com/stm32duino/Arduino_Core_STM32)
+* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [Adafruit SAMD Boards 1.7.11](https://github.com/adafruit/ArduinoCore-samd)
+* [Seeeduino SAMD Boards 1.8.4](https://github.com/Seeed-Studio/ArduinoCore-samd)
+* [STM32duino 2.5.0](https://github.com/stm32duino/Arduino_Core_STM32)
 * [ESP8266 Arduino Core 3.0.2](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino Core 2.0.2](https://github.com/espressif/arduino-esp32)
+* [ESP32 Arduino Core 2.0.9](https://github.com/espressif/arduino-esp32)
 * [Teensyduino 1.56](https://www.pjrc.com/teensy/td_download.html)
 
 It should work with [PlatformIO](https://platformio.org/) but I have
@@ -1949,7 +1949,8 @@ the [EpoxyDuino](https://github.com/bxparks/EpoxyDuino) emulation layer.
 <a name="OperatingSystem"></a>
 ### Operating System
 
-I use Ubuntu Linux 18.04 and 20.04 for most of my development.
+I use Ubuntu Linux 22.04 or its variants (i.e. Linux Mint) for most of my
+development.
 
 <a name="BackgroundMotivation"></a>
 ## Background Motivation
