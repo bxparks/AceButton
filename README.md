@@ -2092,6 +2092,9 @@ insight. Here are some limitations and bugs.
     * See
       [Discussion#118](https://github.com/bxparks/AceButton/discussions/118)
       for info.
+    * An alternative solution might be to use the `kEventHeartBeat` and a custom
+      `IEventHandler` to generate a custom event. See
+      [examples/HeartBeat](examples/HeartBeat) for a example.
 * The [Event Supression](#EventSuppression) features are complicated, hard
   to understand and remember.
     * I wrote the code and I cannot remember how they all work. I have to
