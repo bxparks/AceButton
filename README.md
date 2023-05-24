@@ -7,7 +7,7 @@ An adjustable, compact, event-driven button library for Arduino platforms.
 This library provides classes which accept inputs from a mechanical button
 connected to a digital input pin on the Arduino. The library should be able to
 handle momentary buttons, maintained buttons, and switches, but it was designed
-primarily for momentary buttons.
+primarily for momentary (aka push) buttons.
 
 The library is named "AceButton" because:
 
@@ -19,11 +19,11 @@ The library is named "AceButton" because:
   a user-defined `EventHandler` callback function
 
 Most of the features of the library can be accessed through 2 classes,
-1 callback function, and 1 interface:
+using either a callback function or an interface:
 
 * `AceButton` (class)
 * `ButtonConfig` (class)
-* `EventHandler` (typedef)
+* `EventHandler` (typedef for callback function)
 * `IEventHandler` (interface)
 
 The `AceButton` class contains the logic for debouncing and determining if a
@@ -50,6 +50,7 @@ The supported events are:
 * `AceButton::kEventLongPressed`
 * `AceButton::kEventRepeatPressed`
 * `AceButton::kEventLongReleased` (v1.8)
+* `AceButton::kEventHeartBeat` (v1.10)
 
 The basic `ButtonConfig` class assumes that each button is connected to a single
 digital input pin. In some situations, the number of buttons that we want is
@@ -64,10 +65,10 @@ greater than the number of input pins available. This library provides
       resistor ladder. The `analogRead()` method is used to read the different
       voltage levels corresponding to each button.
 
-Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
+Both `EncodedButtonConfig` and `LadderButtonConfig` support all events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.9.2 (2022-02-10)
+**Version**: 1.10.0 (2023-05-24)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -113,6 +114,7 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
     * [Resistor Ladder Buttons](#ResistorLadderButtons)
     * [Dynamic Allocation on the Heap](#HeapAllocation)
     * [Digital Write Fast](#DigitalWriteFast)
+    * [Heart Beat Event](#HeartBeat)
 * [Resource Consumption](#ResourceConsumption)
     * [SizeOf Classes](#SizeOfClasses)
     * [Flash And Static Memory](#FlashAndStaticMemory)
@@ -123,6 +125,7 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
     * [Operating System](#OperatingSystem)
 * [Background Motivation](#BackgroundMotivation)
   * [Non-goals](#NonGoals)
+* [Bugs and Limitations](#BugsAndLimitations)
 * [License](#License)
 * [Feedback and Support](#FeedbackAndSupport)
 * [Author](#Author)
@@ -136,7 +139,7 @@ Here are the high-level features of the AceButton library:
 * supports both pull-up and pull-down wiring
 * event-driven through a user-defined `EventHandler` callback function
 * event-driven through an object-based `IEventHandler` (>= v1.6)
-* supports 7 event types:
+* supports the following event types:
     * `kEventPressed`
     * `kEventReleased`
     * `kEventClicked`
@@ -144,13 +147,14 @@ Here are the high-level features of the AceButton library:
     * `kEventLongPressed`
     * `kEventRepeatPressed`
     * `kEventLongReleased`
+    * `kEventHeartBeat`
 * adjustable configurations at runtime or compile-time
     * timing parameters
     * `digitalRead()` button read function can be overridden
     * `millis()` clock function can be overridden
 * small memory footprint
-    * each `AceButton` consumes 14 bytes (8-bit) or 16 bytes (32-bit)
-    * each `ButtonConfig` consumes 18 bytes (8-bit) or 24 bytes (32-bit)
+    * each `AceButton` consumes 17 bytes (8-bit) or 20 bytes (32-bit)
+    * each `ButtonConfig` consumes 20 bytes (8-bit) or 24 bytes (32-bit)
     * one System `ButtonConfig` instance created automatically by the library
     * 970-2180 bytes of flash memory for the simple case of 1 AceButton and 1
       ButtonConfig, depending on 8-bit or 32-bit processors
@@ -307,29 +311,31 @@ The following example sketches are provided:
         * shows how to define an array of `AceButton` and initialize them using
           the `init()` method in a loop
     * [SimultaneousButtons](examples/SimultaneousButtons)
-        * detecting simultaneous button presses of 2 buttons using a custom
-          `IEventHandler`
+        * detecting simultaneous Pressed and Released of 2 buttons using
+          a custom `IEventHandler`
 * Distinguishing Click versus Double-Click
     * [ClickVersusDoubleClickUsingReleased](examples/ClickVersusDoubleClickUsingReleased)
-        * a way to distinguish between a `kEventClicked` from a
-          `kEventDoubleClicked` using a `kEventReleased` instead
+        * using a `kEventReleased` instead
     * [ClickVersusDoubleClickUsingSuppression](examples/ClickVersusDoubleClickUsingSuppression)
-        * another way to dstinguish between a `kEventClicked` from a
-          `kEventDoubleClicked` using the
-          `kFeatureSuppressClickBeforeDoubleClick` flag at the cost of
-          increasing the response time of the `kEventClicked` event
+        * using the `kFeatureSuppressClickBeforeDoubleClick` flag at the cost of
+          increasing the response time
     * [ClickVersusDoubleClickUsingBoth](examples/ClickVersusDoubleClickUsingBoth)
-        * an example that combines both the "UsingPressed" and
-          "UsingSuppression" techniques
+        * combining both the "UsingReleased" and "UsingSuppression" techniques
+    * See [Distinguishing Clicked and DoubleClicked](#ClickedAndDoubleClicked)
+      subsection below for more info.
 * Distinguishing Pressed and LongPressed
-    * [examples/PressedAndLongPressed](examples/PressedAndLongPressed)
-    * see also the
-      [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
-      subsection below
+    * [examples/PressVersusLongPress](examples/PressVersusLongPress)
+    * See the [Distinguishing Pressed and LongPressed](#PressedAndLongPressed)
+      subsection below for more info.
 * [CapacitiveButton](examples/CapacitiveButton)
     * reads a capacitive button using the
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
       library
+* [HeartBeat](examples/HeartBeat)
+    * demo of activating the new (v1.10) `kEventHeartBeat` feature, and using it
+      to generate 2 custom events: `kCustomEventLongPressed` (similar to
+      `kEventLongPressed`) and `kCustomEventLongReleased` (no built-in
+      equivalent)
 * Binary Encoded Buttons
     * [Encoded4To2Buttons](examples/Encoded4To2Buttons)
         * demo of `Encoded4To2ButtonConfig` class to decode `M=3` buttons with
@@ -478,7 +484,11 @@ class AceButton {
     static const uint8_t kEventLongPressed = 4;
     static const uint8_t kEventRepeatPressed = 5;
     static const uint8_t kEventLongReleased = 6;
+    static const uint8_t kEventHeartBeat = 7;
+
     static const uint8_t kButtonStateUnknown = 127;
+
+    static __FlashStringHelper eventName(uint8_t e);
 
     explicit AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH,
         uint8_t id = 0);
@@ -656,6 +666,7 @@ class ButtonConfig {
     static const uint16_t kLongPressDelay = 1000;
     static const uint16_t kRepeatPressDelay = 1000;
     static const uint16_t kRepeatPressInterval = 200;
+    static const uint16_t kHeartBeatInterval = 5000;
 
     typedef uint16_t FeatureFlagType;
     static const FeatureFlagType kFeatureClick = 0x01;
@@ -667,6 +678,7 @@ class ButtonConfig {
     static const FeatureFlagType kFeatureSuppressAfterLongPress = 0x40;
     static const FeatureFlagType kFeatureSuppressAfterRepeatPress = 0x80;
     static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
+    static const FeatureFlagType kFeatureHeartBeat = 0x200;
     static const FeatureFlagType kFeatureSuppressAll = (
         kFeatureSuppressAfterClick
         | kFeatureSuppressAfterDoubleClick
@@ -679,12 +691,13 @@ class ButtonConfig {
 
     ButtonConfig() = default;
 
-    uint16_t getDebounceDelay();
-    uint16_t getClickDelay();
-    uint16_t getDoubleClickDelay();
-    uint16_t getLongPressDelay();
-    uint16_t getRepeatPressDelay();
-    uint16_t getRepeatPressInterval();
+    uint16_t getDebounceDelay() const;
+    uint16_t getClickDelay() const;
+    uint16_t getDoubleClickDelay() const;
+    uint16_t getLongPressDelay() const;
+    uint16_t getRepeatPressDelay() const;
+    uint16_t getRepeatPressInterval() const;
+    uint16_t getHeartBeatInterval() const;
 
     void setDebounceDelay(uint16_t debounceDelay);
     void setClickDelay(uint16_t clickDelay);
@@ -692,11 +705,12 @@ class ButtonConfig {
     void setLongPressDelay(uint16_t longPressDelay);
     void setRepeatPressDelay(uint16_t repeatPressDelay);
     void setRepeatPressInterval(uint16_t repeatPressInterval);
+    void setHeartBeatInterval(uint16_t heartBeatInterval);
 
     virtual unsigned long getClock();
     virtual int readButton(uint8_t pin);
 
-    bool isFeature(FeatureFlagType features);
+    bool isFeature(FeatureFlagType features) const;
     void setFeature(FeatureFlagType features);
     void clearFeature(FeatureFlagType features);
     void resetFeatures();
@@ -924,13 +938,13 @@ Use the helper function `button->isReleased(buttonState)` to translate the raw
 #### One EventHandler Per ButtonConfig
 
 Only a single `EventHandler` per `ButtonConfig` is supported. An alternative
-would have been to register a separate event handler for each of the 6
-`kEventXxx` events. But each callback function requires 2 bytes of memory, and
-it was assumed that in most cases, the calling client code would be interested
-in only a few of these event types, so it seemed wasteful to allocate 12 bytes
-when most of these would be unused. If the client code really wanted separate
-event handlers, it can be easily emulated by invoking them through the main
-event handler:
+would have been to register a separate event handler for each of the 8
+`kEventXxx` events. But each callback function requires 2 bytes of memory (on
+8-bit processors, or 4 bytes on 32-bit processors) and it was assumed that in
+most cases, the calling client code would be interested in only a few of these
+event types, so it seemed wasteful to allocate 16 or 32 bytes when most of these
+would be unused. If the client code really wants separate event handlers, it can
+be easily emulated by invoking them through the main event handler:
 
 ```C++
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
@@ -971,7 +985,8 @@ world.
 <a name="EventTypes"></a>
 ### Event Types
 
-The supported events are defined by a list of constants in `AceButton.h`:
+The supported events are defined by a list of integer (`uint8_t`) constants in
+`AceButton.h`:
 
 * `AceButton::kEventPressed` (always enabled, cannot be suppressed)
 * `AceButton::kEventReleased` (default: enabled)
@@ -986,6 +1001,18 @@ These values are sent to the `EventHandler` in the `eventType` parameter.
 
 Two of the events are enabled by default, four are disabled by default but can
 be enabled by using a Feature flag described below.
+
+During development and debugging, it is useful to print a human-readable version
+of these integer constants. The `AceButton::eventName(e)` is a static function
+which returns a string for each event constant, and can be used like this:
+
+```C++
+void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
+  ...
+  Serial.print(AceButton::eventName(eventType));
+  ...
+}
+```
 
 <a name="ButtonConfigFeatureFlags"></a>
 ### ButtonConfig Feature Flags
@@ -1030,13 +1057,14 @@ The meaning of these flags are described below.
 <a name="EventActivation"></a>
 #### Event Activation
 
-Of the 7 event types, 5 are disabled by default:
+Of the various event types, the following are disabled by default:
 
 * `AceButton::kEventClicked`
 * `AceButton::kEventDoubleClicked`
 * `AceButton::kEventLongPressed`
 * `AceButton::kEventRepeatPressed`
 * `AceButton::kEventLongReleased`
+* `AceButton::kEventHeartBeat`
 
 To receive these events, call `ButtonConfig::setFeature()` with the following
 corresponding  flags:
@@ -1045,11 +1073,25 @@ corresponding  flags:
 * `ButtonConfig::kFeatureDoubleClick`
 * `ButtonConfig::kFeatureLongPress`
 * `ButtonConfig::kFeatureRepeatPress`
-* `ButtonConfig::kFeatureSuppressAfterLongPress` (suppresses `kEventReleased`
-  after a LongPress, but turns on `kEventLongReleased` as a side effect)
+* `ButtonConfig::kFeatureSuppressAfterLongPress`
+    * suppresses `kEventReleased` after a LongPress, but turns on
+      `kEventLongReleased` as a side effect
+* `ButtonConfig::kFeatureHeartBeat`
 
+like this:
+
+```C++
+ButtonConfig *config = button.getButtonConfig();
+config->setFeature(ButtonConfig::kFeatureClick);
+
+```
 To disable these events, call `ButtonConfig::clearFeature()` with one of these
-flags.
+flags, like this:
+
+```C++
+ButtonConfig *config = button.getButtonConfig();
+config->clearFeature(ButtonConfig::kFeatureLongPress);
+```
 
 Enabling `kFeatureDoubleClick` automatically enables `kFeatureClick`, because we
 need to have a Clicked event before a DoubleClicked event can be detected.
@@ -1128,7 +1170,7 @@ config->clearFeature(ButtonConfig::kFeatureSuppressAll);
 ```
 
 Note, however, that the `isFeature(ButtonConfig::kFeatureSuppressAll)` currently
-means "isAnyFeature() implemented?" not "areAllFeatures() implemented?" We don't
+means "isAnyFeature() implemented?" not "areAllFeatures() implemented?" I don't
 expect `isFeature()` to be used often (or at all) for `kFeatureSuppressAll`.
 
 You can clear all feature at once using:
@@ -1383,7 +1425,7 @@ buttonConfig->setFeature(
 ```
 
 See the example code at
-`examples/ClickVersusDoubleClickUsingSuppression/`.
+[ClickVersusDoubleClickUsingSuppression](examples/ClickVersusDoubleClickUsingSuppression/).
 
 **Method 2:** A viable alternative is to use the Released event instead of the
 Clicked event to distinguish it from the DoubleClicked. For this method to work,
@@ -1409,7 +1451,7 @@ buttonConfig->setFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick);
 ```
 
 See the example code at
-`examples/ClickVersusDoubleClickUsingReleased/`.
+[ClickVersusDoubleClickUsingReleased](examples/ClickVersusDoubleClickUsingReleased/).
 
 **Method 3:** We could actually combine both Methods 1 and 2 so that either
 Released or a delayed Click is considered to be a "Click". This may be the best
@@ -1436,7 +1478,7 @@ Sometimes it is useful to capture both a Pressed event and a LongPressed event
 from a single button. Since every button press always triggers a `kEventPressed`
 event, the only reasonable way to distinguish between Pressed and LongPressed is
 to use the `kEventReleased` as a substitute for the simple Pressed event. When
-we active `kFeatureLongPress`, we then must activate the
+we activate `kFeatureLongPress`, we then must activate the
 `kFeatureSuppressAfterLongPress` feature to suppress the `kEventReleased` event
 after the `kEventLongPressed` to avoid yet another overlap of events.
 
@@ -1583,15 +1625,18 @@ is probably smaller than the overhead of wasted space due to heap fragmentation.
 
 The `digitalWriteFast` libraries provide smaller and faster alternative versions
 the `digitalWrite()`, `digitalRead()`, and `pinMode()` functions. I have used 2
-such libraries, but there probably others:
+of the following libraries, but there probably others:
 
-* https://github.com/NicksonYap/digitalWriteFast
-    * a simplified fork of the watterott library
-    * but it seems to be unmaintained, e.g. does not support ATtiny85
 * https://github.com/watterott/Arduino-Libs/tree/master/digitalWriteFast
-    * seems to be better maintained, but is not an independent library
+    * not an independent library
     * you must manually `git clone` the repo and copy or symlink the
       `digitalWriteFast/` directory into your Arduino IDE `libraries` directory
+* https://github.com/NicksonYap/digitalWriteFast
+    * a simplified fork of the watterott library
+    * but seems to be unmaintained, e.g. does not support ATtiny85
+* https://github.com/ArminJo/digitalWriteFast
+    * another fork of the watterott library
+    * seems to be maintained
 
 These libraries provide the following functions: `digitalWriteFast()`,
 `digitalReadFast()`, and `pinModeFast()` which are usually valid only AVR
@@ -1682,6 +1727,58 @@ use the `digitalWriteFast` libraries directly. I think the best we could do is
 create special `Encoded16To4ButtonConfigFast` and `Encoded32To5ButtonConfigFast`
 classes.
 
+<a name="HeartBeat"></a>
+### Heart Beat Event
+
+Version 1.10 added the `kEventHeartBeat` event. By default it is disabled. It
+can be enabled using the `kFeatureHeartBeat` flag:
+
+```C++
+ButtonConfig config = button.getButtonConfig();
+config.setFeature(ButtonConfig::kFeatureHeartBeat);
+```
+
+When enabled, the `AceButton` object sends a `kEventHeartBeat` event at a
+periodic interval, with the number of milliseconds managed by the following
+methods on the `ButtonConfig` object:
+
+* `void setHeartBeatInterval(uint16_t interval)`
+* `uint16_t getHeartBeatInterval() const`
+
+The default is 5000 milliseconds.
+
+The primary purpose of the HeartBeat event is to allow the user-provided event
+handler (`IEventHandler` will likely be easiest for this purpose) to generate
+custom event types which are not provided by `AceButton` itself by default. When
+the button does not undergo any change in state explicitly initiated by the user
+(e.g. Released for a long time), the `AceButton` object will not trigger any
+events normally. By activating the `kFeatureHeartBeat`, the event handler can
+generate custom events such as "Pressed for 5 minutes", or "Released for 5
+Minutes". See [examples/HeartBeat](examples/HeartBeat) for an example of an
+`IEventHandler` that implements this.
+
+The `kEventHeartBeat` is triggered only by the progression of time, and is not
+affected by any internal state of the `AceButton`, such as the debouncing state,
+or the various logic for detecting Clicked, DoubleClicked, and so on. The
+`HeartBeatInterval` is intended to be relatively large, with the default set to
+5000 milliseconds, to avoid the overhead of calling the event handler too often.
+Using a smaller interval may affect the detection logic of various other button
+events if the HeartBeat handler consumes too much CPU time.
+
+The `buttonState` is passed to the event handler by the HeartBeat dispatcher,
+through the callback function or `IEventHandler` interface, for example:
+
+```C++
+typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
+    uint8_t buttonState);
+```
+
+This button state will be the last known, debounced and validated state. It will
+not be the current button state. This is because the HeartBeat detector operates
+independently of the debouncing logic, and it did not seem appropriate for the
+unvalidated `buttonState` to be passed to the event handler just because the
+timer for the HeartBeat triggered in the middle of the debouncing logic.
+
 <a name="ResourceConsumption"></a>
 ## Resource Consumption
 
@@ -1692,21 +1789,21 @@ Here are the sizes of the various classes on the 8-bit AVR microcontrollers
 (Arduino Uno, Nano, etc):
 
 ```
-sizeof(AceButton): 14
-sizeof(ButtonConfig): 18
-sizeof(ButtonConfigFast1<>): 18
-sizeof(ButtonConfigFast2<>): 18
-sizeof(ButtonConfigFast3<>): 18
-sizeof(Encoded4To2ButtonConfig): 21
-sizeof(Encoded8To3ButtonConfig): 22
-sizeof(EncodedButtonConfig): 25
-sizeof(LadderButtonConfig): 26
+sizeof(AceButton): 17
+sizeof(ButtonConfig): 20
+sizeof(ButtonConfigFast1<>): 20
+sizeof(ButtonConfigFast2<>): 20
+sizeof(ButtonConfigFast3<>): 20
+sizeof(Encoded4To2ButtonConfig): 23
+sizeof(Encoded8To3ButtonConfig): 24
+sizeof(EncodedButtonConfig): 27
+sizeof(LadderButtonConfig): 28
 ```
 
 For 32-bit microcontrollers:
 
 ```
-sizeof(AceButton): 16
+sizeof(AceButton): 20
 sizeof(ButtonConfig): 24
 sizeof(Encoded4To2ButtonConfig): 28
 sizeof(Encoded8To3ButtonConfig): 28
@@ -1716,7 +1813,7 @@ sizeof(LadderButtonConfig): 36
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
-to 14.)
+to its current 17.)
 
 <a name="FlashAndStaticMemory"></a>
 ### Flash And Static Memory
@@ -1731,19 +1828,19 @@ Arduino Nano
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        |    610/   11 |     0/    0 |
-| Baseline+pinMode+digitalRead    |    914/   11 |   304/    0 |
+| Baseline                        |    462/   11 |     0/    0 |
+| Baseline+pinMode+digitalRead    |    766/   11 |   304/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    |   1946/   51 |  1336/   40 |
-| ButtonConfigFast1               |   1662/   51 |  1052/   40 |
-| ButtonConfigFast2               |   1630/   65 |  1020/   54 |
-| ButtonConfigFast3               |   1678/   79 |  1068/   68 |
+| ButtonConfig                    |   1970/   56 |  1508/   45 |
+| ButtonConfigFast1               |   1686/   56 |  1224/   45 |
+| ButtonConfigFast2               |   1586/   73 |  1124/   62 |
+| ButtonConfigFast3               |   1628/   90 |  1166/   79 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         |   2160/   82 |  1550/   71 |
-| Encoded8To3ButtonConfig         |   2428/  139 |  1818/  128 |
-| EncodedButtonConfig             |   2474/  162 |  1864/  151 |
+| Encoded4To2ButtonConfig         |   2098/   93 |  1636/   82 |
+| Encoded8To3ButtonConfig         |   2318/  162 |  1856/  151 |
+| EncodedButtonConfig             |   2362/  185 |  1900/  174 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              |   2472/  175 |  1862/  164 |
+| LadderButtonConfig              |   2360/  198 |  1898/  187 |
 +--------------------------------------------------------------+
 ```
 
@@ -1753,16 +1850,16 @@ ESP8266:
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| Baseline                        | 260329/27916 |     0/    0 |
-| Baseline+pinMode+digitalRead    | 260409/27916 |    80/    0 |
+| Baseline                        | 260105/27892 |     0/    0 |
+| Baseline+pinMode+digitalRead    | 260201/27892 |    96/    0 |
 |---------------------------------+--------------+-------------|
-| ButtonConfig                    | 261733/27960 |  1404/   44 |
+| ButtonConfig                    | 261589/27944 |  1484/   52 |
 |---------------------------------+--------------+-------------|
-| Encoded4To2ButtonConfig         | 261917/27992 |  1588/   76 |
-| Encoded8To3ButtonConfig         | 262045/28056 |  1716/  140 |
-| EncodedButtonConfig             | 262173/28096 |  1844/  180 |
+| Encoded4To2ButtonConfig         | 261741/27984 |  1636/   92 |
+| Encoded8To3ButtonConfig         | 261885/28064 |  1780/  172 |
+| EncodedButtonConfig             | 262013/28104 |  1908/  212 |
 |---------------------------------+--------------+-------------|
-| LadderButtonConfig              | 262233/28108 |  1904/  192 |
+| LadderButtonConfig              | 262057/28116 |  1952/  224 |
 +--------------------------------------------------------------+
 ```
 
@@ -1780,20 +1877,20 @@ Arduino Nano:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |  12/ 15/ 24 |    1931 |
-| press/release             |  12/ 15/ 24 |    1927 |
-| click                     |  12/ 15/ 24 |    1928 |
-| double_click              |  12/ 15/ 32 |    1924 |
-| long_press/repeat_press   |  12/ 16/ 24 |    1926 |
+| idle                      |  12/ 16/ 24 |    1929 |
+| press/release             |  12/ 17/ 28 |    1924 |
+| click                     |  12/ 16/ 28 |    1925 |
+| double_click              |  12/ 16/ 32 |    1922 |
+| long_press/repeat_press   |  12/ 18/ 28 |    1923 |
 |---------------------------+-------------+---------|
-| ButtonConfigFast1         |  12/ 14/ 24 |    1934 |
-| ButtonConfigFast2         |  20/ 27/ 36 |    1910 |
-| ButtonConfigFast3         |  28/ 40/ 48 |    1886 |
+| ButtonConfigFast1         |  12/ 16/ 24 |    1932 |
+| ButtonConfigFast2         |  20/ 30/ 40 |    1905 |
+| ButtonConfigFast3         |  32/ 44/ 52 |    1880 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  60/ 69/ 76 |    1836 |
-| Encoded8To3ButtonConfig   | 164/187/196 |    1656 |
-| EncodedButtonConfig       |  80/102/112 |    1782 |
-| LadderButtonConfig        | 176/201/272 |    1637 |
+| Encoded4To2ButtonConfig   |  60/ 73/ 80 |    1831 |
+| Encoded8To3ButtonConfig   | 168/196/204 |    1645 |
+| EncodedButtonConfig       |  84/110/116 |    1769 |
+| LadderButtonConfig        | 184/211/288 |    1625 |
 +---------------------------+-------------+---------+
 ```
 
@@ -1803,16 +1900,16 @@ ESP8266:
 +---------------------------+-------------+---------+
 | Button Event              | min/avg/max | samples |
 |---------------------------+-------------+---------|
-| idle                      |   6/  7/ 53 |    1921 |
-| press/release             |   6/  7/ 37 |    1922 |
+| idle                      |   6/  8/ 62 |    1920 |
+| press/release             |   6/  8/ 45 |    1921 |
 | click                     |   6/  7/ 18 |    1921 |
-| double_click              |   6/  7/ 10 |    1921 |
-| long_press/repeat_press   |   6/  7/ 10 |    1921 |
+| double_click              |   6/  7/ 12 |    1922 |
+| long_press/repeat_press   |   6/  8/ 12 |    1920 |
 |---------------------------+-------------+---------|
-| Encoded4To2ButtonConfig   |  21/ 26/ 45 |    1887 |
-| Encoded8To3ButtonConfig   |  53/ 65/ 69 |    1809 |
-| EncodedButtonConfig       |  40/ 52/ 60 |    1842 |
-| LadderButtonConfig        |  79/ 91/193 |    1762 |
+| Encoded4To2ButtonConfig   |  22/ 27/ 46 |    1879 |
+| Encoded8To3ButtonConfig   |  56/ 67/ 76 |    1810 |
+| EncodedButtonConfig       |  43/ 54/ 70 |    1841 |
+| LadderButtonConfig        |  81/ 93/212 |    1772 |
 +---------------------------+-------------+---------+
 ```
 
@@ -1828,11 +1925,12 @@ These boards are tested on each release:
 
 * Arduino Nano (16 MHz ATmega328P)
 * SparkFun Pro Micro (16 MHz ATmega32U4)
+* Seeeduino XIAO M0 (48 MHz SAMD21 ARM Cortex-M0+)
 * STM32 Blue Pill (STM32F103C8, 72 MHz ARM Cortex-M3)
+* Adafruit ItsyBitsy M4 (120 MHz SAMD51 ARM Cortext-M4)
 * NodeMCU 1.0 (ESP-12E module, 80MHz ESP8266)
 * WeMos D1 Mini (ESP-12E module, 80 MHz ESP8266)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
-* Teensy 3.2 (96 MHz ARM Cortex-M4)
 
 **Tier 2: Should work**
 
@@ -1842,13 +1940,10 @@ These boards should work but I don't test them as often:
 * Arduino Pro Mini (16 MHz ATmega328P)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 * Teensy LC (48 MHz ARM Cortex-M0+)
+* Teensy 3.2 (96 MHz ARM Cortex-M4)
 
 **Tier 3: May work, but not supported**
 
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
-    * As Arduino IDE 1.8.19, I can no longer upload binaries to my SAMD21 boards
-      due to errors, so I cannot test this library.
-    * This library may work on these boards, but I can no longer support them.
 * Any platform using the ArduinoCore-API
   (https://github.com/arduino/ArduinoCore-api).
     * For example, Nano Every, MKRZero, and Raspberry Pi Pico RP2040.
@@ -1861,14 +1956,16 @@ These boards should work but I don't test them as often:
 This library was developed and tested using:
 
 * [Arduino IDE 1.8.19](https://www.arduino.cc/en/Main/Software)
-* [Arduino CLI 0.20.2](https://arduino.github.io/arduino-cli)
+* [Arduino CLI 0.31.0](https://arduino.github.io/arduino-cli)
 * [SpenceKonde ATTinyCore 1.5.2](https://github.com/SpenceKonde/ATTinyCore)
-* [Arduino AVR Boards 1.8.4](https://github.com/arduino/ArduinoCore-avr)
-* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [Arduino AVR Boards 1.8.6](https://github.com/arduino/ArduinoCore-avr)
 * [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [STM32duino 2.2.0](https://github.com/stm32duino/Arduino_Core_STM32)
+* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [Adafruit SAMD Boards 1.7.11](https://github.com/adafruit/ArduinoCore-samd)
+* [Seeeduino SAMD Boards 1.8.4](https://github.com/Seeed-Studio/ArduinoCore-samd)
+* [STM32duino 2.5.0](https://github.com/stm32duino/Arduino_Core_STM32)
 * [ESP8266 Arduino Core 3.0.2](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino Core 2.0.2](https://github.com/espressif/arduino-esp32)
+* [ESP32 Arduino Core 2.0.9](https://github.com/espressif/arduino-esp32)
 * [Teensyduino 1.56](https://www.pjrc.com/teensy/td_download.html)
 
 It should work with [PlatformIO](https://platformio.org/) but I have
@@ -1880,7 +1977,8 @@ the [EpoxyDuino](https://github.com/bxparks/EpoxyDuino) emulation layer.
 <a name="OperatingSystem"></a>
 ### Operating System
 
-I use Ubuntu Linux 18.04 and 20.04 for most of my development.
+I use Ubuntu Linux 22.04 or its variants (i.e. Linux Mint) for most of my
+development.
 
 <a name="BackgroundMotivation"></a>
 ## Background Motivation
@@ -1931,6 +2029,76 @@ created the `ButtonConfigFast1`, `ButtonConfigFast2`, and `ButtonConfigFast3`
 classes to decrease the flash memory consumption by using one of the
 `<digitalWriteFast.h>` 3rd party libraries. See
 [Digital Write Fast](#DigitalWriteFast) for more info.
+
+<a name="BugsAndLimitations"></a>
+## Bugs and Limitations
+
+This is the first Arduino library that I ever created. It has grown organically
+over time, while maintaining backwards compatibility as much as possible. There
+are some early design decisions that could have been better with infinite
+insight. Here are some limitations and bugs.
+
+* The `ButtonConfig` class should have been named `ButtonGroup`.
+    * This was not obvious until I had implemented the `EncodedButtonConfig` and
+      the `LadderButtonConfig` classes.
+    * But I cannot change the names without breaking backwards compatibility.
+* The [Single Button Simplifications](#SingleButtonSimplifications) was probably
+  a mistake.
+    * It makes the API more complex and cluttered than it could be.
+    * It causes an automatic creation of the SystemButtonConfig instance of
+      `ButtonConfig` even when it is not needed by the application, unless
+      special (non-obvious) precautions are taken.
+    * On the other hand, it makes the simplest `HelloButton` program very
+      simple.
+* Embedding multiple `AceButton` objects in an array or a `struct` is difficult
+  if not impossible.
+    * See [Discussion#106](https://github.com/bxparks/AceButton/discussions/106)
+      for some details.
+    * The C++ rules for object initialization are so complicated, and have
+      changed with different versions of C++ (C++11, C++14, C++17, C++20,
+      C++23??), that I cannot understand them anymore.
+    * Probably will never be fixed because I'm tired of the complexity of
+      the C++ language.
+* AceButton does not provide built-in support for simultaneous buttons.
+    * See [Discussion#83](https://github.com/bxparks/AceButton/discussions/83),
+      [Discussion#94](https://github.com/bxparks/AceButton/discussions/94), and
+      [Discussion#96](https://github.com/bxparks/AceButton/discussions/96).
+    * The [examples/SimultaneousButtons](examples/SimultaneousButtons) program
+      shows how it could be detected using a custom `IEventHandler`. However, it
+      has not been extensively tested. I don't even remember writing it 2 years
+      ago.
+    * This remains an open problem because I don't use simultaneous buttons in
+      my applications, and I have not spent much time thinking about how to
+      handle all the different possible combinations of events and their timing
+      interactions that are possible with 2 buttons.
+* The `EventHandler` and `IEventHandler` sends a `AceButton*` pointer into
+  the arguments, instead of a `const AceButton*` pointer.
+    * Too late to change that without breaking backwards compatibility.
+* All internal timing variables are `uint16_t` instead of `uint32_t`.
+    * This means that various timing parameters (ClickDelay, LongPressDelay,
+      etc) can be maximum of 65535 milliseconds.
+    * Using 16-bit integers saves RAM, at least 8 bytes for each instance of
+      `AceButton`, and 14 bytes for `ButtonConfig` and its subclasses. And
+      probably saves flash memory on 8-bit processors because fewer machine
+      instruction are needed to operate on timing variables.
+    * Client applications were assumed to use as many as 10-20 buttons. That's a
+      savings of 80-160 bytes which makes a difference on 8-bit AVR processors
+      with only 2 kB of RAM.
+* The library does not support the mirror-image version of `kEventLongPressed`
+  for the Released state.
+    * In other words, an event that is triggered when a button has been released
+      for a long time (several seconds).
+    * The current `kEventLongReleased` is a different type of event.
+    * See
+      [Discussion#118](https://github.com/bxparks/AceButton/discussions/118)
+      for info.
+* The [Event Supression](#EventSuppression) features are complicated, hard
+  to understand and remember.
+    * I wrote the code and I cannot remember how they all work. I have to
+      refer to this README.md each time I want to use them.
+    * These features grew organically. Maybe there is a better, more consistent
+      way of implementing them, but it was not obvious during the development of
+      these features.
 
 <a name="License"></a>
 ## License

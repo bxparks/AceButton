@@ -1,6 +1,53 @@
 # Changelog
 
 * Unreleased
+* 1.10.0 (2023-05-24)
+    * Add `AceButton::eventName(event)` lookup function
+        * Translates the event integer constant (e.g. `kEventDoublePressed`)
+          into a human readable string (e.g. "DoublePressed").
+        * Intended for development and debugging.
+    * Update supported boards and tiers
+        * Add SAMD21 and SAMD51 boards to Tier 1
+            * Add 2 SAMD boards from 2 different companies, to test their
+              Arduino Core software:
+                * Seeeduino XIAO M0 (SAMD21 48MHz ARM Cortex-M0+)
+                * Adafruit ItsyBitsy M4 (SAMD51 120MHz ARM Cortex-M4)
+            * SAMD21 and SAMD51 boards are back in Tier 1, as long as they use
+              the traditional Arduino API instead of the new
+              [Arduino-Core](https://github.com/arduino/ArduinoCore-api).
+            * Fortunately most third party SAMD21 and SAMD51 boards continue to
+              use the traditional Arduino API.
+        * Move Teensy 3.2 to Tier 2
+            * This board is entering end-of-life.
+            * As well, the Teensyduino environment integrates with the Arduino
+              IDE and CLI in a way that's different than all other third-party
+              Arduino boards. Some of my automation scripts do not work with
+              Teensyduino, so it becomes very time consuming to test the Teensy
+              boards.
+            * All Teensy boards are now in Tier 2 ("Should work but not tested
+              often").
+    * Add HeartBeat event
+        * `AceButton::kEventHeartBeat` event
+        * `ButtonConfig::kHeartBeatInterval` (default 5000)
+        * `ButtonConfig::setHeartBeatInterval(uint16)t)`
+        * `ButtonConfig::getHeartBeatInterval()`
+        * See the [Heart Best](README.md#HeartBeat) section in the README.md,
+          and the [examples/HeartBeat](examples/HeartBeat) sample application.
+        * Memory size impact
+            * Increases flash size of `ButtonConfig` by ~150 bytes on AVR, and
+              ~50 bytes on 32-bit processors.
+            * Increases RAM size of `AceButton` by 3 bytes on AVR, and 4 bytes
+              on 32-bit processors.
+    * [Binary Encoded Buttons](docs/binary_encoding)
+        * Derive formula of the number of diodes required to implement
+          binary encoded buttons for `N` lines.
+        * total diodes = `N * (2^(N-1) - 1)`
+    * Add extensive [Bugs and Limitations](README.md#BugsAndLimitations) section
+      in the README.md.
+    * Update [examples/SimultaneousButtons](examples/SimultaneousButtons)
+        * Simplify transition logic, removing 'concurrent event' option, which
+          is too difficult to get right in the time that I have right now.
+        * Handle "Both Buttons Released" event.
 * 1.9.2 (2022-02-10)
     * Fix incorrect subtraction of 2 `uint16_t` integers in
       various examples and README.md docs for 32-bit processors.

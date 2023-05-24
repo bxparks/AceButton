@@ -79,23 +79,26 @@ class ButtonConfig {
     // assume that their code won't be running continuously for the rollover
     // time of an 'unsigned long' (i.e. 49.7 days).
 
-    /** Default value returned by getDebounceDelay(). */
+    /** Default milliseconds returned by getDebounceDelay(). */
     static const uint16_t kDebounceDelay = 20;
 
-    /** Default value returned by getClickDelay(). */
+    /** Default milliseconds returned by getClickDelay(). */
     static const uint16_t kClickDelay = 200;
 
-    /** Default value returned by getDoubleClickDelay(). */
+    /** Default milliseconds returned by getDoubleClickDelay(). */
     static const uint16_t kDoubleClickDelay = 400;
 
-    /** Default value returned by getLongPressDelay(). */
+    /** Default milliseconds returned by getLongPressDelay(). */
     static const uint16_t kLongPressDelay = 1000;
 
-    /** Default value returned by getRepeatPressDelay(). */
+    /** Default milliseconds returned by getRepeatPressDelay(). */
     static const uint16_t kRepeatPressDelay = 1000;
 
-    /** Default value returned by getRepeatPressInterval(). */
+    /** Default milliseconds returned by getRepeatPressInterval(). */
     static const uint16_t kRepeatPressInterval = 200;
+
+    /** Default milliseconds returned by getHeartBeatInterval(). */
+    static const uint16_t kHeartBeatInterval = 5000;
 
     // Various features controlled by feature flags.
 
@@ -145,6 +148,9 @@ class ButtonConfig {
      * kEventDoubleClicked.
      */
     static const FeatureFlagType kFeatureSuppressClickBeforeDoubleClick = 0x100;
+
+    /** Flag to enable periodic kEventHeartBeat. */
+    static const FeatureFlagType kFeatureHeartBeat = 0x200;
 
     /**
      * Internal flag to indicate that mEventHandler is an IEventHandler object
@@ -241,41 +247,49 @@ class ButtonConfig {
       return mRepeatPressDelay;
     }
 
-    /**
-     * Milliseconds between two successive RepeatPressed events.
-     */
+    /** Milliseconds between two successive RepeatPressed events. */
     uint16_t getRepeatPressInterval() const {
       return mRepeatPressInterval;
     }
 
-    /** Set the debounceDelay. */
+    /** Milliseconds between two successive HeartBeat events. */
+    uint16_t getHeartBeatInterval() const {
+      return mHeartBeatInterval;
+    }
+
+    /** Set the debounceDelay milliseconds */
     void setDebounceDelay(uint16_t debounceDelay) {
       mDebounceDelay = debounceDelay;
     }
 
-    /** Set the clickDelay. */
+    /** Set the clickDelay milliseconds */
     void setClickDelay(uint16_t clickDelay) {
       mClickDelay = clickDelay;
     }
 
-    /** Set the doubleClickDelay. */
+    /** Set the doubleClickDelay milliseconds */
     void setDoubleClickDelay(uint16_t doubleClickDelay) {
       mDoubleClickDelay = doubleClickDelay;
     }
 
-    /** Set the longPressDelay. */
+    /** Set the longPressDelay milliseconds */
     void setLongPressDelay(uint16_t longPressDelay) {
       mLongPressDelay = longPressDelay;
     }
 
-    /** Set the repeatPressDelay. */
+    /** Set the repeatPressDelay milliseconds */
     void setRepeatPressDelay(uint16_t repeatPressDelay) {
       mRepeatPressDelay = repeatPressDelay;
     }
 
-    /** Set the repeatPressInterval. */
+    /** Set the repeatPressInterval milliseconds */
     void setRepeatPressInterval(uint16_t repeatPressInterval) {
       mRepeatPressInterval = repeatPressInterval;
+    }
+
+    /** Set the heartBeatInterval milliseconds */
+    void setHeartBeatInterval(uint16_t heartBeatInterval) {
+      mHeartBeatInterval = heartBeatInterval;
     }
 
     // The getClock() and readButton() are external dependencies that normally
@@ -422,6 +436,7 @@ class ButtonConfig {
     uint16_t mLongPressDelay = kLongPressDelay;
     uint16_t mRepeatPressDelay = kRepeatPressDelay;
     uint16_t mRepeatPressInterval = kRepeatPressInterval;
+    uint16_t mHeartBeatInterval = kHeartBeatInterval;
 };
 
 }

@@ -12,14 +12,16 @@ nano_results = check_output(
     "./generate_table.awk < nano.txt", shell=True, text=True)
 micro_results = check_output(
     "./generate_table.awk < micro.txt", shell=True, text=True)
+samd21_results = check_output(
+    "./generate_table.awk < samd21.txt", shell=True, text=True)
 stm32_results = check_output(
     "./generate_table.awk < stm32.txt", shell=True, text=True)
+samd51_results = check_output(
+    "./generate_table.awk < samd51.txt", shell=True, text=True)
 esp8266_results = check_output(
     "./generate_table.awk < esp8266.txt", shell=True, text=True)
 esp32_results = check_output(
     "./generate_table.awk < esp32.txt", shell=True, text=True)
-teensy32_results = check_output(
-    "./generate_table.awk < teensy32.txt", shell=True, text=True)
 
 print(f"""\
 # Memory Benchmark
@@ -36,7 +38,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.9.2
+**Version**: AceButton v1.10.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -56,10 +58,11 @@ produces the following files:
 attiny.txt
 nano.txt
 micro.txt
-samd.txt
+samd21.txt
+stm32.txt
+samd51.txt
 esp8266.txt
 esp32.txt
-teensy32.txt
 ```
 
 The `generate_table.awk` program reads one of `*.txt` files and prints out an
@@ -176,10 +179,26 @@ $ make README.md
     * ESP32 from 1.0.6 to 2.0.2
     * Teensyduino from 1.53 to 1.56
 
+**v1.10.0**
+* Boards
+    * Add SAMD21, using Seeed XIAO M0.
+    * Add SAMD51, using Adafruit ItsyBitsy M4.
+    * Remove Teensy 3.2.
+* Tool chain
+    * Arduino CLI to 0.31.0
+    * Arduino AVR 1.8.6
+    * Update ESP32 to 2.0.9
+    * Update STM32duino 2.5.0
+    * Add Seeeduino SAMD 1.8.4
+    * Add Adafruit SAMD 1.7.11
+* Add `kEventHeartBeat`
+    * Increases flash size of `ButtonConfig` by ~150 bytes on AVR, ~50 bytes on
+      32-bit processors.
+
 ## ATtiny85
 
 * 8MHz ATtiny85
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * SpenceKonde/ATTinyCore 1.5.2
 
 ```
@@ -189,8 +208,8 @@ $ make README.md
 ## Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* Arduino AVR Boards 1.8.4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Arduino AVR Boards 1.8.6
 
 ```
 {nano_results}
@@ -199,27 +218,47 @@ $ make README.md
 ## SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * SparkFun AVR Boards 1.1.13
 
 ```
 {micro_results}
 ```
 
+## SAMD21 (Seeed XIAO M0)
+
+* SAMD51, 120 MHz ARM Cortex-M4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Seeeduino SAMD 1.8.4
+
+```
+{samd21_results}
+```
+
 ## STM32
 
 * STM32 "Blue Pill", STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* STM32duino 2.2.0
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* STM32duino 2.5.0
 
 ```
 {stm32_results}
 ```
 
+## SAMD51 (Adafruit ItsyBitsy M4)
+
+* SAMD51, 120 MHz ARM Cortex-M4
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* Adafruit SAMD 1.7.11
+
+```
+{samd51_results}
+```
+
 ## ESP8266
 
 * NodeMCU 1.0 clone, 80MHz ESP8266
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
 * ESP8266 Boards 3.0.2
 
 ```
@@ -229,21 +268,10 @@ $ make README.md
 ## ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* ESP32 Boards 2.0.2
+* Arduino IDE 1.8.19, Arduino CLI 0.31.0
+* ESP32 Boards 2.0.9
 
 ```
 {esp32_results}
-```
-
-## Teensy 3.2
-
-* 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.19, Arduino CLI 0.20.2
-* Teensyduino 1.56
-* Compiler options: "Faster"
-
-```
-{teensy32_results}
 ```
 """)

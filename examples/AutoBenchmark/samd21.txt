@@ -1,0 +1,18 @@
+SIZEOF
+sizeof(AceButton): 20
+sizeof(ButtonConfig): 24
+sizeof(Encoded4To2ButtonConfig): 28
+sizeof(Encoded8To3ButtonConfig): 28
+sizeof(EncodedButtonConfig): 36
+sizeof(LadderButtonConfig): 36
+BENCHMARKS
+idle 5 8 16 1967
+press/release 5 9 15 1965
+click 5 9 15 1966
+double_click 5 8 16 1965
+long_press/repeat_press 5 9 16 1964
+Encoded4To2ButtonConfig 21 31 39 1924
+Encoded8To3ButtonConfig 55 79 86 1840
+EncodedButtonConfig 31 55 63 1880
+LadderButtonConfig 42 64 79 1866
+END

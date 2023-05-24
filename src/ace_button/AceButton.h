@@ -28,6 +28,8 @@ SOFTWARE.
 #include <Arduino.h>
 #include "ButtonConfig.h"
 
+class __FlashStringHelper;
+
 namespace ace_button {
 
 /**
@@ -42,6 +44,7 @@ namespace ace_button {
  * - kEventLongPressed
  * - kEventRepeatPressed
  * - kEventLongReleased
+ * - kEventHeartBeat
  *
  * The check() method should be called from the loop() at least 2-3 times during
  * the debouncing time period. For 20 ms delay, the check() method should be
@@ -96,12 +99,31 @@ class AceButton {
     static const uint8_t kEventLongReleased = 6;
 
     /**
+     * An event that fires every time interval defined by
+     * `getHeartBeatInterval()`. This is intended to allow custom subclasses of
+     * `IEventHandler` to track the progression of time even when no other
+     * event is occurring with a button. For example, this allows the
+     * IEventHandler to store the timestamp of the last kEventReleased, then
+     * trigger a custom kCustomLongReleased event after (say) 30 seconds after
+     * the last kEventReleased. Without the heart beat event, the IEventHandler
+     * would not be able to fire off a custom event.
+     */
+    static const uint8_t kEventHeartBeat = 7;
+
+    /**
      * Button state is unknown. This is a third state (different from LOW or
      * HIGH) used when the class is first initialized upon reboot. No longer
      * able to use '2' because the new PinStatus enum API contains 'CHANGE'
      * which has a value of 2.
      */
     static const uint8_t kButtonStateUnknown = 127;
+
+    /**
+     * Return the human-readable name of the event. This is intended to
+     * help debugging. If this function is not used, the underlying table of
+     * strings will not be compiled into the resulting binary.
+     */
+    static __FlashStringHelper* eventName(uint8_t event);
 
     /**
      * Constructor defines parameters of the button that changes from button to
@@ -345,108 +367,27 @@ class AceButton {
     // Various bit masks to store a boolean flag in the 'mFlags' field.
     // We use bit masks to save static RAM. If we had used a 'bool' type, each
     // of these would consume one byte.
-    static const uint8_t kFlagDefaultReleasedState = 0x01;
-    static const uint8_t kFlagDebouncing = 0x02;
-    static const uint8_t kFlagPressed = 0x04;
-    static const uint8_t kFlagClicked = 0x08;
-    static const uint8_t kFlagDoubleClicked = 0x10;
-    static const uint8_t kFlagLongPressed = 0x20;
-    static const uint8_t kFlagRepeatPressed = 0x40;
-    static const uint8_t kFlagClickPostponed = 0x80;
+    typedef uint16_t FlagType;
+    static const FlagType kFlagDefaultReleasedState = 0x01;
+    static const FlagType kFlagDebouncing = 0x02;
+    static const FlagType kFlagPressed = 0x04; // mLastPressTime is valid
+    static const FlagType kFlagClicked = 0x08; // mLastClickTime valid
+    static const FlagType kFlagDoubleClicked = 0x10;
+    static const FlagType kFlagLongPressed = 0x20;
+    static const FlagType kFlagRepeatPressed = 0x40; // mLastRepeatPressTime
+    static const FlagType kFlagClickPostponed = 0x80;
+    static const FlagType kFlagHeartRunning = 0x100; // mLastHeartBeatTime valid
 
-    // Methods for accessing the button's internal states.
-    // I don't expect these to be useful to the outside world.
-
-    // If this is set, then mLastDebounceTime is valid.
-    bool isDebouncing() const {
-      return mFlags & kFlagDebouncing;
+    bool isFlag(FlagType flag) const {
+      return mFlags & flag;
     }
 
-    void setDebouncing() {
-      mFlags |= kFlagDebouncing;
+    void setFlag(FlagType flag) {
+      mFlags |= flag;
     }
 
-    void clearDebouncing() {
-      mFlags &= ~kFlagDebouncing;
-    }
-
-    // If this is set, then mLastPressTime is valid.
-    bool isPressed() const {
-      return mFlags & kFlagPressed;
-    }
-
-    void setPressed() {
-      mFlags |= kFlagPressed;
-    }
-
-    void clearPressed() {
-      mFlags &= ~kFlagPressed;
-    }
-
-    // If this is set, then mLastClickTime is valid.
-    bool isClicked() const {
-      return mFlags & kFlagClicked;
-    }
-
-    void setClicked() {
-      mFlags |= kFlagClicked;
-    }
-
-    void clearClicked() {
-      mFlags &= ~kFlagClicked;
-    }
-
-    // A double click was detected. No need to store the last double-clicked
-    // time because we don't support a triple-click event (yet).
-    bool isDoubleClicked() const {
-      return mFlags & kFlagDoubleClicked;
-    }
-
-    void setDoubleClicked() {
-      mFlags |= kFlagDoubleClicked;
-    }
-
-    void clearDoubleClicked() {
-      mFlags &= ~kFlagDoubleClicked;
-    }
-
-    // If this is set, then mLastPressTime can be treated as the start
-    // of a long press.
-    bool isLongPressed() const {
-      return mFlags & kFlagLongPressed;
-    }
-
-    void setLongPressed() {
-      mFlags |= kFlagLongPressed;
-    }
-
-    void clearLongPressed() {
-      mFlags &= ~kFlagLongPressed;
-    }
-
-    // If this is set, then mLastRepeatPressTime is valid.
-    bool isRepeatPressed() const {
-      return mFlags & kFlagRepeatPressed;
-    }
-
-    void setRepeatPressed() {
-      mFlags |= kFlagRepeatPressed;
-    }
-
-    void clearRepeatPressed() {
-      mFlags &= ~kFlagRepeatPressed;
-    }
-
-    bool isClickPostponed() const {
-      return mFlags & kFlagClickPostponed;
-    }
-
-    void setClickPostponed() {
-      mFlags |= kFlagClickPostponed;
-    }
-
-    void clearClickPostponed() {
-      mFlags &= ~kFlagClickPostponed;
+    void clearFlag(FlagType flag) {
+      mFlags &= ~flag;
     }
 
     /**
@@ -510,6 +451,9 @@ class AceButton {
      */
     void checkPostponedClick(uint16_t now);
 
+    /** Check if a heart beat should be sent. */
+    void checkHeartBeat(uint16_t now);
+
     /**
      * Dispatch to the event handler defined in the mButtonConfig.
      *
@@ -564,6 +508,7 @@ class AceButton {
      */
     void handleEvent(uint8_t eventType);
 
+  private:
     /** ButtonConfig associated with this button. */
     ButtonConfig* mButtonConfig;
 
@@ -574,7 +519,7 @@ class AceButton {
     uint8_t mId;
 
     /** Internal flags. Bit masks are defined by the kFlag* constants. */
-    uint8_t mFlags;
+    FlagType mFlags;
 
     /**
      * Last button state. This is a tri-state variable: LOW, HIGH or
@@ -589,6 +534,7 @@ class AceButton {
     uint16_t mLastClickTime; // ms
     uint16_t mLastPressTime; // ms
     uint16_t mLastRepeatPressTime; // ms
+    uint16_t mLastHeartBeatTime; // ms
 };
 
 }

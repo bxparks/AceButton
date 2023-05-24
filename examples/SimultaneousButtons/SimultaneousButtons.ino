@@ -3,19 +3,35 @@
  * custom IEventHandler with internal variables to keep track of the button
  * press condition of each button.
  *
- * The program should print something like the following on the Serial monitor:
+ * In this particular implementation, a "Both Buttons Pressed" or a "Both
+ * Buttons Released" event should happen only when a transition occurs between
+ * those states. If one button is held down, and the other is pressed and
+ * released, neither of these events should trigger. Therefore, the program
+ * should print something like the following on the Serial monitor when a button
+ * is pressed and released while holding the other one:
+ *
  * <verbatim>
  * B1 pressed
  * B2 pressed
- * B1 and B2 BOTH pressed
+ * B1 and B2 both pressed
  * B1 released
- * B2 released
  * B1 pressed
+ * B2 released
  * B2 pressed
- * B1 and B2 BOTH pressed
  * B1 released
  * B2 released
+ * B1 and B2 both released
  * <endverbatim>
+ *
+ * There may be other implementations which require that when a button is held
+ * down, and the other button is pressed and released, it actually triggers the
+ * "Both Buttons are Pressed" event. The logic below needs to be modified to
+ * handle that.
+ *
+ * Another requirement may be that the "Both Buttons Pressed" event is triggered
+ * only when both buttons are pressed within a small window of time (e.g. 200
+ * milliseconds). That would require keeping track of the timestamp of when the
+ * Pressed events occurred for each button.
  *
  * Note that this program works only when using ButtonConfig. Buttons using
  * EncodedButtonConfig (binary encoding) and LadderButtonConfig (resistor
@@ -40,25 +56,7 @@ AceButton b2(&buttonConfig, BUTTON2_PIN);
  */
 class ButtonHandler: public IEventHandler {
   public:
-    /**
-     * If requireConcurrentTrigger is true in the constructor, then the 2
-     * kEventPressed events from the 2 buttons must happen within this many
-     * milliseconds of each other to trigger a "Both Buttons Pressed"
-     * detection.
-     */
-    uint16_t const kConcurrentTriggerMillis = 100;
-
-    /**
-     * Constructor.
-     *
-     * @param requireConcurrentTrigger Set to false to print a message
-     *    whenever B1 and B2 are pressed together, even if they are pressed many
-     *    seconds apart. Set to true to require that B1 and B2 must be pressed
-     *    down within a short time of each other (e.g. 100 milliseconds).
-     */
-    explicit ButtonHandler(bool requireConcurrentTrigger = false)
-        : mRequireConcurrentTrigger(requireConcurrentTrigger)
-    {}
+    explicit ButtonHandler() {}
 
     void handleEvent(AceButton* button, uint8_t eventType,
         uint8_t /*buttonState*/) override {
@@ -68,15 +66,13 @@ class ButtonHandler: public IEventHandler {
           uint16_t now = millis();
           if (pin == A2) {
             mIsB1Pressed = true;
-            mB1PressedMillis = now;
             handleB1Pressed();
           } else if (pin == A3) {
             mIsB2Pressed = true;
-            mB2PressedMillis = now;
             handleB2Pressed();
           }
 
-          if (areBothPressed()) {
+          if (checkBothPressed()) {
             handleBothPressed();
           }
 
@@ -87,10 +83,14 @@ class ButtonHandler: public IEventHandler {
           uint8_t pin = button->getPin();
           if (pin == A2) {
             mIsB1Pressed = false;
-            Serial.println("B1 released");
+            handleB1Released();
           } else if (pin == A3) {
             mIsB2Pressed = false;
-            Serial.println("B2 released");
+            handleB2Released();
+          }
+
+          if (checkBothReleased()) {
+            handleBothReleased();
           }
         }
       }
@@ -104,51 +104,60 @@ class ButtonHandler: public IEventHandler {
       Serial.println("B2 pressed");
     }
 
+    void handleB1Released() {
+      Serial.println("B1 released");
+    }
+
+    void handleB2Released() {
+      Serial.println("B2 released");
+    }
+
     void handleBothPressed() {
-      Serial.println("B1 and B2 BOTH pressed");
+      Serial.println("B1 and B2 both pressed");
+    }
+
+    void handleBothReleased() {
+      Serial.println("B1 and B2 both released");
     }
 
   private:
     /**
-     * Determine if both buttons are pressed at the same time.
-     *
-     * If mRequireConcurrentTrigger is true, then also check if the Pressed
-     * event of one button occurred within kConcurrentTriggerMillis of the other
-     * button. The mB{x}PressedMillis is a 16-bit integer which can rollover
-     * after 65536 milliseconds. So if the first button is held down for more
-     * than (65536 - 100 = 65435) milliseconds, it is possible for the 2nd
-     * button to trigger a concurrent press when pressed 65 seconds after the
-     * first. I can think of 2 possible fixes:
-     *
-     *  1) Enable kEventRepeatPress, and use one of those events to reset
-     *     the mB{x}PressedMillis of the other button appropriately.
-     *  2) Use an external periodic task to reset the mB{x}PressedMillis
-     *     every few seconds.
+     * Determine if a transition to both buttons are pressed at the same time
+     * has happened. Pressing one button up and down, while keeping the other
+     * one pressed should NOT cause this event.
      */
-    bool areBothPressed() {
+    bool checkBothPressed() {
       bool bothPressed = mIsB1Pressed && mIsB2Pressed;
-      if (! bothPressed) return false;
-      if (! mRequireConcurrentTrigger) return true;
+      if (bothPressed && ! mBothPressed) {
+        mBothPressed = true;
+        return true;
+      } else {
+        return false;
+      }
+    }
 
-      bool isTriggerConcurrent =
-          (uint16_t) (mB1PressedMillis - mB2PressedMillis)
-              < kConcurrentTriggerMillis
-          || (uint16_t) (mB2PressedMillis - mB1PressedMillis)
-              < kConcurrentTriggerMillis;
-      return isTriggerConcurrent;
+    /**
+     * Determine if a transition from both buttons Pressed to both buttons
+     * Released has happened. Pressing one button up and down, while keeping the
+     * other one pressed should NOT cause this event.
+     */
+    bool checkBothReleased() {
+      bool bothReleased = !mIsB1Pressed && !mIsB2Pressed;
+      if (bothReleased && mBothPressed) {
+        mBothPressed = false;
+        return true;
+      } else {
+        return false;
+      }
     }
 
   private:
-    // Member variables are arranged to reduce memory size on 32-bit processors.
-
-    bool const mRequireConcurrentTrigger;
     bool mIsB1Pressed = false;
     bool mIsB2Pressed = false;
-    uint16_t mB1PressedMillis;
-    uint16_t mB2PressedMillis;
+    bool mBothPressed = false;
 };
 
-ButtonHandler handleEvent(true /* requireConcurrentTrigger*/);
+ButtonHandler handleEvent;
 
 /** Check buttons with a rate limiter of 5 ms. */
 void checkButtons() {

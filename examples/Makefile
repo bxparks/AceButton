@@ -2,7 +2,7 @@ all:
 	set -e; \
 	for i in */Makefile; do \
 		echo '==== Making:' $$(dirname $$i); \
-		$(MAKE) -C $$(dirname $$i) -j; \
+		$(MAKE) -C $$(dirname $$i); \
 	done
 
 clean:

@@ -122,6 +122,24 @@ void loop() {
 // ButtonConfig tests
 // ------------------------------------------------------------------
 
+test(eventName) {
+  assertEqual(AceButton::eventName(AceButton::kEventPressed), "Pressed");
+  assertEqual(AceButton::eventName(AceButton::kEventReleased), "Released");
+  assertEqual(AceButton::eventName(AceButton::kEventClicked), "Clicked");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventDoubleClicked), "DoubleClicked");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventLongPressed), "LongPressed");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventRepeatPressed), "RepeatPressed");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventLongReleased), "LongReleased");
+  assertEqual(
+      AceButton::eventName(AceButton::kEventHeartBeat), "HeartBeat");
+  assertEqual(AceButton::eventName(8), "(unknown)");
+  assertEqual(AceButton::eventName(255), "(unknown)");
+}
+
 test(feature_flags_off_by_default) {
   assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureClick));
   assertFalse(buttonConfig.isFeature(ButtonConfig::kFeatureDoubleClick));
@@ -1538,6 +1556,44 @@ test(no_repeat_press_without_feature_flag) {
   helper.releaseButton(BASE_TIME + 1760);
   assertEqual(1, eventTracker.getNumEvents());
   expected = AceButton::kEventReleased;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+}
+
+// ------------------------------------------------------------------
+// Heart beat tests
+// ------------------------------------------------------------------
+
+// Test heart beats.
+test(heart_beat) {
+  const uint8_t DEFAULT_RELEASED_STATE = HIGH;
+  const unsigned long BASE_TIME = 65500;
+  uint8_t expected;
+
+  // reset the button
+  helper.init(PIN, DEFAULT_RELEASED_STATE, BUTTON_ID);
+  testableConfig.clearFeature(ButtonConfig::kFeatureSuppressAll);
+  testableConfig.setFeature(ButtonConfig::kFeatureHeartBeat);
+
+  // initial button state
+  helper.releaseButton(BASE_TIME + 0);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // initilization phase
+  helper.releaseButton(BASE_TIME + 50);
+  assertEqual(0, eventTracker.getNumEvents());
+
+  // Simply wait 5000 millis. Should trigger a heart beat.
+  helper.checkTime(BASE_TIME + 5100);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventHeartBeat;
+  assertEqual(expected, eventTracker.getRecord(0).getEventType());
+  assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
+
+  // Wait another 5000 millis. Should trigger a heart beat.
+  helper.checkTime(BASE_TIME + 10200);
+  assertEqual(1, eventTracker.getNumEvents());
+  expected = AceButton::kEventHeartBeat;
   assertEqual(expected, eventTracker.getRecord(0).getEventType());
   assertEqual(HIGH, eventTracker.getRecord(0).getButtonState());
 }
