@@ -329,6 +329,11 @@ The following example sketches are provided:
     * reads a capacitive button using the
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
       library
+* [HeartBeat](examples/HeartBeat)
+    * Activates the new (v1.10) `kEventHeartBeat` feature, and uses it to
+      generate 2 custom events: `kCustomEventLongPressed` (similar to
+      `kEventLongPressed`) and `kCustomEventLongReleased` (no built-in
+      equivalent).
 * Binary Encoded Buttons
     * [Encoded4To2Buttons](examples/Encoded4To2Buttons)
         * demo of `Encoded4To2ButtonConfig` class to decode `M=3` buttons with
