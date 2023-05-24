@@ -38,7 +38,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceButton v1.9.2
+**Version**: AceButton v1.10.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -191,6 +191,9 @@ $ make README.md
     * Update STM32duino 2.5.0
     * Add Seeeduino SAMD 1.8.4
     * Add Adafruit SAMD 1.7.11
+* Add `kEventHeartBeat`
+    * Increases flash size of `ButtonConfig` by ~150 bytes on AVR, ~50 bytes on
+      32-bit processors.
 
 ## ATtiny85
 

@@ -55,7 +55,6 @@ COMPILE_TIME_ASSERT(LOW == 0, "LOW must be 0")
 
 //-----------------------------------------------------------------------------
 
-static const char sEventUnknown[] PROGMEM = "(unknown)";
 static const char sEventPressed[] PROGMEM = "Pressed";
 static const char sEventReleased[] PROGMEM = "Released";
 static const char sEventClicked[] PROGMEM = "Clicked";
@@ -63,6 +62,8 @@ static const char sEventDoubleClicked[] PROGMEM = "DoubleClicked";
 static const char sEventLongPressed[] PROGMEM = "LongPressed";
 static const char sEventRepeatPressed[] PROGMEM = "RepeatPressed";
 static const char sEventLongReleased[] PROGMEM = "LongReleased";
+static const char sEventHeartBeat[] PROGMEM = "HeartBeat";
+static const char sEventUnknown[] PROGMEM = "(unknown)";
 
 static const char* const sEventNames[] PROGMEM = {
   sEventPressed,
@@ -72,6 +73,7 @@ static const char* const sEventNames[] PROGMEM = {
   sEventLongPressed,
   sEventRepeatPressed,
   sEventLongReleased,
+  sEventHeartBeat,
 };
 
 __FlashStringHelper* AceButton::eventName(uint8_t e) {
@@ -88,8 +90,6 @@ void AceButton::init(uint8_t pin, uint8_t defaultReleasedState, uint8_t id) {
   mId = id;
   mFlags = 0;
   mLastButtonState = kButtonStateUnknown;
-  mLastDebounceTime = 0;
-  mLastClickTime = 0;
   setDefaultReleasedState(defaultReleasedState);
 }
 
@@ -125,7 +125,10 @@ void AceButton::checkState(uint8_t buttonState) {
   // threshold time limits such as 'debounceDelay' or longPressDelay'.
   uint16_t now = mButtonConfig->getClock();
 
-  // debounce the button
+  // Send heart beat if enabled and needed.
+  checkHeartBeat(now);
+
+  // Debounce the button, and send any events detected.
   if (checkDebounced(now, buttonState)) {
     // check if the button was initialized (i.e. UNKNOWN state)
     if (checkInitialized(buttonState)) {
@@ -164,7 +167,7 @@ void AceButton::checkEvent(uint16_t now, uint8_t buttonState) {
 }
 
 bool AceButton::checkDebounced(uint16_t now, uint8_t buttonState) {
-  if (isDebouncing()) {
+  if (isFlag(kFlagDebouncing)) {
 
     // NOTE: This is a bit tricky. The elapsedTime will be valid even if the
     // uint16_t representation of 'now' rolls over so that (now <
@@ -181,7 +184,7 @@ bool AceButton::checkDebounced(uint16_t now, uint8_t buttonState) {
         (elapsedTime >= mButtonConfig->getDebounceDelay());
 
     if (isDebouncingTimeOver) {
-      clearDebouncing();
+      clearFlag(kFlagDebouncing);
       return true;
     } else {
       return false;
@@ -195,7 +198,7 @@ bool AceButton::checkDebounced(uint16_t now, uint8_t buttonState) {
     }
 
     // button has changed so, enter debouncing phase
-    setDebouncing();
+    setFlag(kFlagDebouncing);
     mLastDebounceTime = now;
     return false;
   }
@@ -221,10 +224,10 @@ void AceButton::checkLongPress(uint16_t now, uint8_t buttonState) {
     return;
   }
 
-  if (isPressed() && !isLongPressed()) {
+  if (isFlag(kFlagPressed) && !isFlag(kFlagLongPressed)) {
     uint16_t elapsedTime = now - mLastPressTime;
     if (elapsedTime >= mButtonConfig->getLongPressDelay()) {
-      setLongPressed();
+      setFlag(kFlagLongPressed);
       handleEvent(kEventLongPressed);
     }
   }
@@ -235,8 +238,8 @@ void AceButton::checkRepeatPress(uint16_t now, uint8_t buttonState) {
     return;
   }
 
-  if (isPressed()) {
-    if (isRepeatPressed()) {
+  if (isFlag(kFlagPressed)) {
+    if (isFlag(kFlagRepeatPressed)) {
       uint16_t elapsedTime = now - mLastRepeatPressTime;
       if (elapsedTime >= mButtonConfig->getRepeatPressInterval()) {
         handleEvent(kEventRepeatPressed);
@@ -245,7 +248,7 @@ void AceButton::checkRepeatPress(uint16_t now, uint8_t buttonState) {
     } else {
       uint16_t elapsedTime = now - mLastPressTime;
       if (elapsedTime >= mButtonConfig->getRepeatPressDelay()) {
-        setRepeatPressed();
+        setFlag(kFlagRepeatPressed);
         // Trigger the RepeatPressed immedidately, instead of waiting until the
         // first getRepeatPressInterval() has passed.
         handleEvent(kEventRepeatPressed);
@@ -268,7 +271,7 @@ void AceButton::checkPressed(uint16_t now, uint8_t buttonState) {
 
   // button was pressed
   mLastPressTime = now;
-  setPressed();
+  setFlag(kFlagPressed);
   handleEvent(kEventPressed);
 }
 
@@ -285,19 +288,19 @@ void AceButton::checkReleased(uint16_t now, uint8_t buttonState) {
   }
 
   // Save whether this was generated from a long press.
-  bool wasLongPressed = isLongPressed();
+  bool wasLongPressed = isFlag(kFlagLongPressed);
 
   // Check if Released events are suppressed.
   bool suppress =
-      ((isLongPressed() &&
+      ((isFlag(kFlagLongPressed) &&
           mButtonConfig->
               isFeature(ButtonConfig::kFeatureSuppressAfterLongPress)) ||
-      (isRepeatPressed() &&
+      (isFlag(kFlagRepeatPressed) &&
           mButtonConfig->
               isFeature(ButtonConfig::kFeatureSuppressAfterRepeatPress)) ||
-      (isClicked() &&
+      (isFlag(kFlagClicked) &&
           mButtonConfig->isFeature(ButtonConfig::kFeatureSuppressAfterClick)) ||
-      (isDoubleClicked() &&
+      (isFlag(kFlagDoubleClicked) &&
           mButtonConfig->
               isFeature(ButtonConfig::kFeatureSuppressAfterDoubleClick)));
 
@@ -305,10 +308,10 @@ void AceButton::checkReleased(uint16_t now, uint8_t buttonState) {
   // optimize the following 4 statements to be equivalent to this single one:
   //    mFlags &= ~kFlagPressed & ~kFlagDoubleClicked & ~kFlagLongPressed
   //        & ~kFlagRepeatPressed;
-  clearPressed();
-  clearDoubleClicked();
-  clearLongPressed();
-  clearRepeatPressed();
+  clearFlag(kFlagPressed);
+  clearFlag(kFlagDoubleClicked);
+  clearFlag(kFlagLongPressed);
+  clearFlag(kFlagRepeatPressed);
 
   // Fire off a Released event, unless suppressed. Replace Released with
   // LongReleased if this was a LongPressed.
@@ -322,17 +325,17 @@ void AceButton::checkReleased(uint16_t now, uint8_t buttonState) {
 }
 
 void AceButton::checkClicked(uint16_t now) {
-  if (!isPressed()) {
+  if (!isFlag(kFlagPressed)) {
     // Not a Click unless the previous state was a Pressed state.
     // This can happen if the chip was rebooted with the button Pressed. Upon
     // Release, it shouldn't generated a click, even accidentally due to a
     // spurious value in mLastPressTime.
-    clearClicked();
+    clearFlag(kFlagClicked);
     return;
   }
   uint16_t elapsedTime = now - mLastPressTime;
   if (elapsedTime >= mButtonConfig->getClickDelay()) {
-    clearClicked();
+    clearFlag(kFlagClicked);
     return;
   }
 
@@ -344,31 +347,31 @@ void AceButton::checkClicked(uint16_t now) {
   // Suppress a second click (both buttonState change and event message) if
   // double-click detected, which has the side-effect of preventing 3 clicks
   // from generating another double-click at the third click.
-  if (isDoubleClicked()) {
-    clearClicked();
+  if (isFlag(kFlagDoubleClicked)) {
+    clearFlag(kFlagClicked);
     return;
   }
 
   // we got a single click
   mLastClickTime = now;
-  setClicked();
+  setFlag(kFlagClicked);
   if (mButtonConfig->isFeature(
       ButtonConfig::kFeatureSuppressClickBeforeDoubleClick)) {
-    setClickPostponed();
+    setFlag(kFlagClickPostponed);
   } else {
     handleEvent(kEventClicked);
   }
 }
 
 void AceButton::checkDoubleClicked(uint16_t now) {
-  if (!isClicked()) {
-    clearDoubleClicked();
+  if (!isFlag(kFlagClicked)) {
+    clearFlag(kFlagDoubleClicked);
     return;
   }
 
   uint16_t elapsedTime = now - mLastClickTime;
   if (elapsedTime >= mButtonConfig->getDoubleClickDelay()) {
-    clearDoubleClicked();
+    clearFlag(kFlagDoubleClicked);
     // There should be no postponed Click at this point because
     // checkPostponedClick() should have taken care of it.
     return;
@@ -378,10 +381,10 @@ void AceButton::checkDoubleClicked(uint16_t now) {
   // postponed if kFeatureSuppressClickBeforeDoubleClick was enabled. If we got
   // to this point, there was a DoubleClick, so we must suppress the first
   // Click as requested.
-  if (isClickPostponed()) {
-    clearClickPostponed();
+  if (isFlag(kFlagClickPostponed)) {
+    clearFlag(kFlagClickPostponed);
   }
-  setDoubleClicked();
+  setFlag(kFlagDoubleClicked);
   handleEvent(kEventDoubleClicked);
 }
 
@@ -397,17 +400,34 @@ void AceButton::checkOrphanedClick(uint16_t now) {
   uint16_t orphanedClickDelay = mButtonConfig->getDoubleClickDelay();
 
   uint16_t elapsedTime = now - mLastClickTime;
-  if (isClicked() && (elapsedTime >= orphanedClickDelay)) {
-    clearClicked();
+  if (isFlag(kFlagClicked) && (elapsedTime >= orphanedClickDelay)) {
+    clearFlag(kFlagClicked);
   }
 }
 
 void AceButton::checkPostponedClick(uint16_t now) {
   uint16_t postponedClickDelay = mButtonConfig->getDoubleClickDelay();
   uint16_t elapsedTime = now - mLastClickTime;
-  if (isClickPostponed() && elapsedTime >= postponedClickDelay) {
+  if (isFlag(kFlagClickPostponed) && elapsedTime >= postponedClickDelay) {
     handleEvent(kEventClicked);
-    clearClickPostponed();
+    clearFlag(kFlagClickPostponed);
+  }
+}
+
+void AceButton::checkHeartBeat(uint16_t now) {
+  if (! mButtonConfig->isFeature(ButtonConfig::kFeatureHeartBeat)) return;
+
+  // On first call, set the last heart beat time.
+  if (! isFlag(kFlagHeartRunning)) {
+    setFlag(kFlagHeartRunning);
+    mLastHeartBeatTime = now;
+    return;
+  }
+
+  uint16_t elapsedTime = now - mLastHeartBeatTime;
+  if (elapsedTime >= mButtonConfig->getHeartBeatInterval()) {
+    handleEvent(kEventHeartBeat);
+    mLastHeartBeatTime = now;
   }
 }
 
