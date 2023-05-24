@@ -311,8 +311,8 @@ The following example sketches are provided:
         * shows how to define an array of `AceButton` and initialize them using
           the `init()` method in a loop
     * [SimultaneousButtons](examples/SimultaneousButtons)
-        * detecting simultaneous button presses of 2 buttons using a custom
-          `IEventHandler`
+        * detecting simultaneous Pressed and Released of 2 buttons using
+          a custom `IEventHandler`
 * Distinguishing Click versus Double-Click
     * [ClickVersusDoubleClickUsingReleased](examples/ClickVersusDoubleClickUsingReleased)
         * using a `kEventReleased` instead

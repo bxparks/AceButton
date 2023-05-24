@@ -44,6 +44,10 @@
         * total diodes = `N * (2^(N-1) - 1)`
     * Add extensive [Bugs and Limitations](README.md#BugsAndLimitations) section
       in the README.md.
+    * Update [examples/SimultaneousButtons](examples/SimultaneousButtons)
+        * Simplify transition logic, removing 'concurrent event' option, which
+          is too difficult to get right in the time that I have right now.
+        * Handle "Both Buttons Released" event.
 * 1.9.2 (2022-02-10)
     * Fix incorrect subtraction of 2 `uint16_t` integers in
       various examples and README.md docs for 32-bit processors.
