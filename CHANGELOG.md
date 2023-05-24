@@ -1,7 +1,7 @@
 # Changelog
 
 * Unreleased
-* 1.10.0 (2022-05-23)
+* 1.10.0 (2023-05-24)
     * Add `AceButton::eventName(e)` lookup function
         * Translates the event integer constant (e.g. `kEventDoublePressed`)
           into a human readable string (e.g. "DoublePressed").

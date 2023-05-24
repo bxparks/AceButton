@@ -7,7 +7,7 @@ An adjustable, compact, event-driven button library for Arduino platforms.
 This library provides classes which accept inputs from a mechanical button
 connected to a digital input pin on the Arduino. The library should be able to
 handle momentary buttons, maintained buttons, and switches, but it was designed
-primarily for momentary buttons.
+primarily for momentary (aka push) buttons.
 
 The library is named "AceButton" because:
 
@@ -19,11 +19,11 @@ The library is named "AceButton" because:
   a user-defined `EventHandler` callback function
 
 Most of the features of the library can be accessed through 2 classes,
-1 callback function, and 1 interface:
+using either a callback function or an interface:
 
 * `AceButton` (class)
 * `ButtonConfig` (class)
-* `EventHandler` (typedef)
+* `EventHandler` (typedef for callback function)
 * `IEventHandler` (interface)
 
 The `AceButton` class contains the logic for debouncing and determining if a
@@ -65,10 +65,10 @@ greater than the number of input pins available. This library provides
       resistor ladder. The `analogRead()` method is used to read the different
       voltage levels corresponding to each button.
 
-Both `EncodedButtonConfig` and `LadderButtonConfig` support all 7 events listed
+Both `EncodedButtonConfig` and `LadderButtonConfig` support all events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.10.0 (2022-05-23)
+**Version**: 1.10.0 (2023-05-24)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -114,6 +114,7 @@ above (e.g. `kEventClicked` and `kEventDoubleClicked`).
     * [Resistor Ladder Buttons](#ResistorLadderButtons)
     * [Dynamic Allocation on the Heap](#HeapAllocation)
     * [Digital Write Fast](#DigitalWriteFast)
+    * [Heart Beat Event](#HeartBeat)
 * [Resource Consumption](#ResourceConsumption)
     * [SizeOf Classes](#SizeOfClasses)
     * [Flash And Static Memory](#FlashAndStaticMemory)
@@ -137,7 +138,7 @@ Here are the high-level features of the AceButton library:
 * supports both pull-up and pull-down wiring
 * event-driven through a user-defined `EventHandler` callback function
 * event-driven through an object-based `IEventHandler` (>= v1.6)
-* supports 7 event types:
+* supports the following event types:
     * `kEventPressed`
     * `kEventReleased`
     * `kEventClicked`
@@ -1055,13 +1056,14 @@ The meaning of these flags are described below.
 <a name="EventActivation"></a>
 #### Event Activation
 
-Of the 7 event types, 5 are disabled by default:
+Of the various event types, the following are disabled by default:
 
 * `AceButton::kEventClicked`
 * `AceButton::kEventDoubleClicked`
 * `AceButton::kEventLongPressed`
 * `AceButton::kEventRepeatPressed`
 * `AceButton::kEventLongReleased`
+* `AceButton::kEventHeartBeat`
 
 To receive these events, call `ButtonConfig::setFeature()` with the following
 corresponding  flags:
@@ -1070,11 +1072,25 @@ corresponding  flags:
 * `ButtonConfig::kFeatureDoubleClick`
 * `ButtonConfig::kFeatureLongPress`
 * `ButtonConfig::kFeatureRepeatPress`
-* `ButtonConfig::kFeatureSuppressAfterLongPress` (suppresses `kEventReleased`
-  after a LongPress, but turns on `kEventLongReleased` as a side effect)
+* `ButtonConfig::kFeatureSuppressAfterLongPress`
+    * suppresses `kEventReleased` after a LongPress, but turns on
+      `kEventLongReleased` as a side effect
+* `ButtonConfig::kFeatureHeartBeat`
 
+like this:
+
+```C++
+ButtonConfig *config = button.getButtonConfig();
+config->setFeature(ButtonConfig::kFeatureClick);
+
+```
 To disable these events, call `ButtonConfig::clearFeature()` with one of these
-flags.
+flags, like this:
+
+```C++
+ButtonConfig *config = button.getButtonConfig();
+config->clearFeature(ButtonConfig::kFeatureLongPress);
+```
 
 Enabling `kFeatureDoubleClick` automatically enables `kFeatureClick`, because we
 need to have a Clicked event before a DoubleClicked event can be detected.
@@ -1153,7 +1169,7 @@ config->clearFeature(ButtonConfig::kFeatureSuppressAll);
 ```
 
 Note, however, that the `isFeature(ButtonConfig::kFeatureSuppressAll)` currently
-means "isAnyFeature() implemented?" not "areAllFeatures() implemented?" We don't
+means "isAnyFeature() implemented?" not "areAllFeatures() implemented?" I don't
 expect `isFeature()` to be used often (or at all) for `kFeatureSuppressAll`.
 
 You can clear all feature at once using:
@@ -1714,13 +1730,13 @@ Version 1.10 added the `kEventHeartBeat` event. By default it is disabled. It
 can be enabled using the `kFeatureHeartBeat` flag:
 
 ```C++
-ButtonConfig buttonConfig(...);
-buttonConfig.setFeature(ButtonConfig::kFeatureHeartBeat);
+ButtonConfig config = button.getButtonConfig();
+config.setFeature(ButtonConfig::kFeatureHeartBeat);
 ```
 
-When enabled, the `AceButton` object sends a `kEventHeartBeat` event
-at a periodic number of milliseconds managed by the following methods on the
-`ButtonConfig` object:
+When enabled, the `AceButton` object sends a `kEventHeartBeat` event at a
+periodic interval, with the number of milliseconds managed by the following
+methods on the `ButtonConfig` object:
 
 * `void setHeartBeatInterval(uint16_t interval)`
 * `uint16_t getHeartBeatInterval() const`
@@ -1728,14 +1744,14 @@ at a periodic number of milliseconds managed by the following methods on the
 The default is 5000 milliseconds.
 
 The primary purpose of the HeartBeat event is to allow the user-provided event
-handler --- `IEventHandler` will probably be easiest to use for this purpose ---
-to generate custom event types which are not provided by `AceButton` itself by
-default. When the button does not undergo any change in state explicitly
-initiated by the user (e.g. Released for a long time), the `AceButton` object
-will not trigger any events normally. By activating the `kFeatureHeartBeat`, the
-event handler can generate custom events such as "Pressed for 5 minutes", or
-"Released for 5 Minutes". See [examples/HeartBeat](examples/HeartBeat) for an
-example of an `IEventHandler` that implements this.
+handler (`IEventHandler` will likely be easiest for this purpose) to generate
+custom event types which are not provided by `AceButton` itself by default. When
+the button does not undergo any change in state explicitly initiated by the user
+(e.g. Released for a long time), the `AceButton` object will not trigger any
+events normally. By activating the `kFeatureHeartBeat`, the event handler can
+generate custom events such as "Pressed for 5 minutes", or "Released for 5
+Minutes". See [examples/HeartBeat](examples/HeartBeat) for an example of an
+`IEventHandler` that implements this.
 
 The `kEventHeartBeat` is triggered only by the progression of time, and is not
 affected by any internal state of the `AceButton`, such as the debouncing state,
@@ -1745,13 +1761,16 @@ or the various logic for detecting Clicked, DoubleClicked, and so on. The
 Using a smaller interval may affect the detection logic of various other button
 events if the HeartBeat handler consumes too much CPU time.
 
-The `buttonState` passed to the event handler by the HeartBeat dispatcher:
+The `buttonState` is passed to the event handler by the HeartBeat dispatcher,
+through the callback function or `IEventHandler` interface, for example:
+
 ```C++
 typedef void (*EventHandler)(AceButton* button, uint8_t eventType,
     uint8_t buttonState);
 ```
-will be the last known, debounced, and validated button state. It will not be
-the current button state. This is because the HeartBeat detector operates
+
+This button state will be the last known, debounced and validated state. It will
+not be the current button state. This is because the HeartBeat detector operates
 independently of the debouncing logic, and it did not seem appropriate for the
 unvalidated `buttonState` to be passed to the event handler just because the
 timer for the HeartBeat triggered in the middle of the debouncing logic.
@@ -1790,7 +1809,7 @@ sizeof(LadderButtonConfig): 36
 
 (An early version of `AceButton`, with only half of the functionality, consumed
 40 bytes. It got down to 11 bytes before additional functionality increased it
-to 14.)
+to its current 17.)
 
 <a name="FlashAndStaticMemory"></a>
 ### Flash And Static Memory
