@@ -332,10 +332,10 @@ The following example sketches are provided:
       [CapacitiveSensor](https://github.com/PaulStoffregen/CapacitiveSensor)
       library
 * [HeartBeat](examples/HeartBeat)
-    * Activates the new (v1.10) `kEventHeartBeat` feature, and uses it to
-      generate 2 custom events: `kCustomEventLongPressed` (similar to
+    * demo of activating the new (v1.10) `kEventHeartBeat` feature, and using it
+      to generate 2 custom events: `kCustomEventLongPressed` (similar to
       `kEventLongPressed`) and `kCustomEventLongReleased` (no built-in
-      equivalent).
+      equivalent)
 * Binary Encoded Buttons
     * [Encoded4To2Buttons](examples/Encoded4To2Buttons)
         * demo of `Encoded4To2ButtonConfig` class to decode `M=3` buttons with
@@ -938,13 +938,13 @@ Use the helper function `button->isReleased(buttonState)` to translate the raw
 #### One EventHandler Per ButtonConfig
 
 Only a single `EventHandler` per `ButtonConfig` is supported. An alternative
-would have been to register a separate event handler for each of the 6
-`kEventXxx` events. But each callback function requires 2 bytes of memory, and
-it was assumed that in most cases, the calling client code would be interested
-in only a few of these event types, so it seemed wasteful to allocate 12 bytes
-when most of these would be unused. If the client code really wanted separate
-event handlers, it can be easily emulated by invoking them through the main
-event handler:
+would have been to register a separate event handler for each of the 8
+`kEventXxx` events. But each callback function requires 2 bytes of memory (on
+8-bit processors, or 4 bytes on 32-bit processors) and it was assumed that in
+most cases, the calling client code would be interested in only a few of these
+event types, so it seemed wasteful to allocate 16 or 32 bytes when most of these
+would be unused. If the client code really wants separate event handlers, it can
+be easily emulated by invoking them through the main event handler:
 
 ```C++
 void handleEvent(AceButton* button, uint8_t eventType, uint8_t buttonState) {
