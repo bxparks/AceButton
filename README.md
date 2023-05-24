@@ -1625,15 +1625,18 @@ is probably smaller than the overhead of wasted space due to heap fragmentation.
 
 The `digitalWriteFast` libraries provide smaller and faster alternative versions
 the `digitalWrite()`, `digitalRead()`, and `pinMode()` functions. I have used 2
-such libraries, but there probably others:
+of the following libraries, but there probably others:
 
-* https://github.com/NicksonYap/digitalWriteFast
-    * a simplified fork of the watterott library
-    * but it seems to be unmaintained, e.g. does not support ATtiny85
 * https://github.com/watterott/Arduino-Libs/tree/master/digitalWriteFast
-    * seems to be better maintained, but is not an independent library
+    * not an independent library
     * you must manually `git clone` the repo and copy or symlink the
       `digitalWriteFast/` directory into your Arduino IDE `libraries` directory
+* https://github.com/NicksonYap/digitalWriteFast
+    * a simplified fork of the watterott library
+    * but seems to be unmaintained, e.g. does not support ATtiny85
+* https://github.com/ArminJo/digitalWriteFast
+    * another fork of the watterott library
+    * seems to be maintained
 
 These libraries provide the following functions: `digitalWriteFast()`,
 `digitalReadFast()`, and `pinModeFast()` which are usually valid only AVR
