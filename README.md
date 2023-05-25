@@ -68,7 +68,7 @@ greater than the number of input pins available. This library provides
 Both `EncodedButtonConfig` and `LadderButtonConfig` support all events listed
 above (e.g. `kEventClicked` and `kEventDoubleClicked`).
 
-**Version**: 1.10.0 (2023-05-24)
+**Version**: 1.10.1 (2023-05-25)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -2092,6 +2092,9 @@ insight. Here are some limitations and bugs.
     * See
       [Discussion#118](https://github.com/bxparks/AceButton/discussions/118)
       for info.
+    * An alternative solution might be to use the `kEventHeartBeat` and a custom
+      `IEventHandler` to generate a custom event. See
+      [examples/HeartBeat](examples/HeartBeat) for a example.
 * The [Event Supression](#EventSuppression) features are complicated, hard
   to understand and remember.
     * I wrote the code and I cannot remember how they all work. I have to

@@ -1,10 +1,18 @@
 # Changelog
 
 * Unreleased
+* 1.10.1 (2023-05-25)
+    * Remove unnecessary declaration of `__FlashStringHelper` in `AceButton.h`.
+        * Breaks boards using the ArduinoCore-API, which moved the
+          `__FlashStringHelper` to the `arduino::` namespace, while polluting
+          the global namespace anyway with a `using
+          arduino::__FlashStringHelper` shim in an attempt to provide backwards
+          compatibility, which doesn't always work.
+        * See [Issue#120](https://github.com/bxparks/AceButton/issues/120).
 * 1.10.0 (2023-05-24)
     * Add `AceButton::eventName(event)` lookup function
-        * Translates the event integer constant (e.g. `kEventDoublePressed`)
-          into a human readable string (e.g. "DoublePressed").
+        * Translates the event integer constant (e.g. `kEventDoubleClicked`)
+          into a human readable string (e.g. "DoubleClicked").
         * Intended for development and debugging.
     * Update supported boards and tiers
         * Add SAMD21 and SAMD51 boards to Tier 1

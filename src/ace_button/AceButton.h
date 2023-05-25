@@ -28,8 +28,6 @@ SOFTWARE.
 #include <Arduino.h>
 #include "ButtonConfig.h"
 
-class __FlashStringHelper;
-
 namespace ace_button {
 
 /**
