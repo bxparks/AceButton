@@ -167,8 +167,9 @@ Here are the high-level features of the AceButton library:
   `AceButton::check()`
 * extensive testing
     * thoroughly unit tested using [AUnit](https://github.com/bxparks/AUnit)
-    * tested on Arduino AVR (UNO, Nano, Micro etc), Teensy ARM (LC and 3.2),
-      SAMD21 (Arduino Zero compatible), ESP8266 and ESP32
+    * Tier 1 support includes: Arduino AVR (UNO, Nano, Micro etc),
+      SAMD21 (Seeed XIAO M0), STM32 (Blue Pill), SAMD51 (Adafruit ItsyBitsy M4),
+      ESP8266, and ESP32
 
 Compared to other Arduino button libraries, I think the unique or exceptional
 features of the AceButton library are:
@@ -1925,9 +1926,9 @@ These boards are tested on each release:
 
 * Arduino Nano (16 MHz ATmega328P)
 * SparkFun Pro Micro (16 MHz ATmega32U4)
-* Seeeduino XIAO M0 (48 MHz SAMD21 ARM Cortex-M0+)
+* Seeeduino XIAO M0 (SAMD21, 48 MHz ARM Cortex-M0+)
 * STM32 Blue Pill (STM32F103C8, 72 MHz ARM Cortex-M3)
-* Adafruit ItsyBitsy M4 (120 MHz SAMD51 ARM Cortext-M4)
+* Adafruit ItsyBitsy M4 (SAMD51, 120 MHz ARM Cortext-M4)
 * NodeMCU 1.0 (ESP-12E module, 80MHz ESP8266)
 * WeMos D1 Mini (ESP-12E module, 80 MHz ESP8266)
 * ESP32 Dev Module (ESP-WROOM-32 module, 240MHz dual core Tensilica LX6)
@@ -2069,9 +2070,9 @@ insight. Here are some limitations and bugs.
       ago.
     * This remains an open problem because I don't use simultaneous buttons in
       my applications, and I have not spent much time thinking about how to
-      handle all the different possible combinations of events and their timing
-      interactions that are possible with 2 buttons.
-* The `EventHandler` and `IEventHandler` sends a `AceButton*` pointer into
+      handle all the combinations of events and their timing interactions that
+      are possible with 2 buttons.
+* The `EventHandler` and `IEventHandler` send an `AceButton*` pointer into
   the arguments, instead of a `const AceButton*` pointer.
     * Too late to change that without breaking backwards compatibility.
 * All internal timing variables are `uint16_t` instead of `uint32_t`.
@@ -2080,7 +2081,8 @@ insight. Here are some limitations and bugs.
     * Using 16-bit integers saves RAM, at least 8 bytes for each instance of
       `AceButton`, and 14 bytes for `ButtonConfig` and its subclasses. And
       probably saves flash memory on 8-bit processors because fewer machine
-      instruction are needed to operate on timing variables.
+      instruction are needed to operate on 16-bit variables compared to 32-bit
+      variables.
     * Client applications were assumed to use as many as 10-20 buttons. That's a
       savings of 80-160 bytes which makes a difference on 8-bit AVR processors
       with only 2 kB of RAM.
