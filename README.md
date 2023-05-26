@@ -1735,8 +1735,8 @@ Version 1.10 added the `kEventHeartBeat` event. By default it is disabled. It
 can be enabled using the `kFeatureHeartBeat` flag:
 
 ```C++
-ButtonConfig config = button.getButtonConfig();
-config.setFeature(ButtonConfig::kFeatureHeartBeat);
+ButtonConfig* config = button.getButtonConfig();
+config->setFeature(ButtonConfig::kFeatureHeartBeat);
 ```
 
 When enabled, the `AceButton` object sends a `kEventHeartBeat` event at a
