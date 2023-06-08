@@ -32,7 +32,7 @@ stm32.txt:
 	./collect.sh stm32 $@
 
 samd51.txt:
-	./collect.sh --ide itsym4 $@
+	./collect.sh itsym4 $@
 
 esp8266.txt:
 	./collect.sh nodemcu $@
